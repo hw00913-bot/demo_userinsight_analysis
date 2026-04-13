@@ -375,7 +375,7 @@
                                 <li><strong>复核详情重构：</strong>引入 Tab 切换流（命中情况 / 历史复核记录）</li>
                                 <li><strong>可疑溯源增强：</strong>历史记录新增「复核流水 ID」展示；提交后显示包含流水号的成功反馈</li>
                                 <li><strong>导航优化：</strong>复核页面「关闭」按钮逻辑优化，支持单页面平滑返回看板</li>
-                                <li><strong>编码生成强化：</strong>明确定义了洞察标签新增时的唯一前缀机制，并统一启用 6 位随机大小写字母与数字组成的字符标识（如 usual-Xk9m2P）</li>
+                                <li><strong>编码生成规则：</strong>新增标签时自动生成 6 位英文数字随机码（A-Z/a-z/0-9），保证全局唯一，无类别前缀</li>
                             </ol>
                         </td>
                         <td>2026-04-03</td>
@@ -603,10 +603,10 @@
 
             <h3 class="sub-title">3. 树形分类结构</h3>
             <table class="flow-table">
-                <thead><tr><th>分类</th><th>层级</th><th>底层节点类型</th><th>编码前缀</th></tr></thead>
+                <thead><tr><th>分类</th><th>层级</th><th>底层节点类型</th></tr></thead>
                 <tbody>
-                    <tr><td>常见标签分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td><td><code>usual-</code></td></tr>
-                    <tr><td>客户抗拒点分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td><td><code>reject-</code></td></tr>
+                    <tr><td>常见标签分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td></tr>
+                    <tr><td>客户抗拒点分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td></tr>
                 </tbody>
             </table>
 
@@ -639,7 +639,7 @@
                 <li><strong>自动编码生成逻辑：</strong>
                     <ul>
                         <li>点击新增操作时，系统会自动基于 <code>[A-Z, a-z, 0-9]</code> 的大小写同字字符集随机抽取产生 <strong>6 位字母或数字组合</strong>。</li>
-                        <li><strong>编码前缀绑定：</strong>如果是在「常见标签」类别下生成分支，则统一加上 <code>usual-</code> 前缀；而在「客户抗拒点」分类树中创建出的分支则会自动拼合 <code>reject-</code> 前缀。例如：<code>usual-H8m3Np</code> 和 <code>reject-gL0t2V</code>。</li>
+                        <li><strong>自动编码生成：</strong>新增节点时自动生成 6 位英文数字随机码（A-Z/a-z/0-9），常见标签和抗拒点标签统一适用，保证全局唯一。</li>
                     </ul>
                 </li>
                 <li>标题根据操作类型动态显示：「新增X级分类」或「编辑X级分类」。</li>
@@ -687,10 +687,10 @@
 
             <h3 class="sub-title">3. 树形分类结构</h3>
             <table class="flow-table">
-                <thead><tr><th>分类</th><th>层级</th><th>底层节点类型</th><th>编码前缀</th></tr></thead>
+                <thead><tr><th>分类</th><th>层级</th><th>底层节点类型</th></tr></thead>
                 <tbody>
-                    <tr><td>常见标签分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td><td><code>usual-</code></td></tr>
-                    <tr><td>客户抗拒点分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td><td><code>reject-</code></td></tr>
+                    <tr><td>常见标签分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td></tr>
+                    <tr><td>客户抗拒点分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td></tr>
                 </tbody>
             </table>
 
@@ -723,7 +723,7 @@
                 <li><strong>自动编码生成逻辑：</strong>
                     <ul>
                         <li>点击新增操作时，系统会自动基于 <code>[A-Z, a-z, 0-9]</code> 的大小写同字字符集随机抽取产生 <strong>6 位字母或数字组合</strong>。</li>
-                        <li><strong>编码前缀绑定：</strong>如果是在「常见问题」类别下生成分支，则统一加上 <code>usual-</code> 前缀；而在「客户抗拒点」分类树中创建出的分支则会自动拼合 <code>reject-</code> 前缀。例如：<code>usual-H8m3Np</code> 和 <code>reject-gL0t2V</code>。</li>
+                        <li><strong>自动编码生成：</strong>新增节点时自动生成 6 位英文数字随机码（A-Z/a-z/0-9），常见标签和抗拒点标签统一适用，保证全局唯一。</li>
                     </ul>
                 </li>
                 <li>标题根据操作类型动态显示：「新增X级分类」或「编辑X级分类」。</li>
