@@ -886,21 +886,14 @@ function initNodeFormModal() {
             }
         }
 
-        let categoryType = '';
-        const modalContent = btn.closest('.modal-content');
-        if (modalContent && modalContent.id === 'resistance-points-modal') {
-            categoryType = 'reject';
-        } else if (modalContent && modalContent.id === 'common-issues-modal') {
-            categoryType = 'usual';
-        }
-
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let randomCode = '';
         for (let i = 0; i < 6; i++) {
             randomCode += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        const generatedCode = `${categoryType}-${randomCode}`;
+        const generatedCode = randomCode;
 
+        const modalContent = btn.closest('.modal-content');
         document.getElementById('nodeFormTitle').textContent = `新增${level}级分类`;
 
         let isBottomLevel = false;
