@@ -497,7 +497,7 @@ function initCommonTagCharts() {
         const dashLen = (percent / 100) * 100.53; // 圆周长约100.53
         const color = chartColors[i % chartColors.length];
         l1Svg += `<circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="${color}" stroke-width="7" stroke-dasharray="${dashLen.toFixed(2)} ${(100.53 - dashLen).toFixed(2)}" stroke-dashoffset="${-l1Offset.toFixed(2)}"></circle>`;
-        l1Legend += `<div class="legend-item"><span class="legend-color" style="background: ${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${percent}%</span></div>`;
+        l1Legend += `<div class="legend-item"><span class="legend-color" style="background: ${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count} (${percent}%)</span></div>`;
         l1Offset += dashLen;
     });
     l1Svg += '</svg>';
@@ -513,7 +513,7 @@ function initCommonTagCharts() {
         const dashLen = (percent / 100) * 100.53;
         const color = chartColors[i % chartColors.length];
         l2Svg += `<circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="${color}" stroke-width="7" stroke-dasharray="${dashLen.toFixed(2)} ${(100.53 - dashLen).toFixed(2)}" stroke-dashoffset="${-l2Offset.toFixed(2)}"></circle>`;
-        l2Legend += `<div class="legend-item"><span class="legend-color" style="background: ${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${percent}%</span></div>`;
+        l2Legend += `<div class="legend-item"><span class="legend-color" style="background: ${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count} (${percent}%)</span></div>`;
         l2Offset += dashLen;
     });
     l2Svg += '</svg>';
