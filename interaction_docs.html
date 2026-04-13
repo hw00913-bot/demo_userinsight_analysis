@@ -340,7 +340,7 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V1.3 · 2026-04-13 · 与最新代码同步</span>
+            <span class="doc-tag">版本 V1.0 · 与最新代码同步</span>
             <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
             <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界。</p>
         </header>
@@ -360,54 +360,16 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="ver-num">V1.3</td>
-                        <td>
-                            <ol style="padding-left:1.2em; margin:0; line-height:2;">
-                                <li><strong>删除 MD 生成功能：</strong>移除「生成 MD 提示词」功能说明及相关文档</li>
-                            </ol>
-                        </td>
-                        <td>2026-04-13</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td class="ver-num">V1.2</td>
-                        <td>
-                            <ol style="padding-left:1.2em; margin:0; line-height:2;">
-                                <li><strong>大项目筛选优化：</strong>从下拉单选改为输入框，支持关键字模糊查询</li>
-                                <li><strong>R渠道说明：</strong>明确标注当前为模拟数据，实际按业务需求展示</li>
-                            </ol>
-                        </td>
-                        <td>2026-04-13</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td class="ver-num">V1.1</td>
-                        <td>
-                            <ol style="padding-left:1.2em; margin:0; line-height:2;">
-                                <li><strong>下载明细数据增强：</strong>新增 R渠道、大项目、sc值 三个字段</li>
-                                <li><strong>多标签处理优化：</strong>多个常见标签/抗拒点拆分为多列显示（同一行），而非拆分为多行</li>
-                                <li><strong>表头优化：</strong>报表表格第一列"三级标签"表头已删除，保持简洁</li>
-                                <li><strong>标签命名统一：</strong>"涉及常见问题"改名为"涉及常见标签"</li>
-                            </ol>
-                        </td>
-                        <td>2026-04-13</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
                         <td class="ver-num">V1.0</td>
                         <td>
                             <ol style="padding-left:1.2em; margin:0; line-height:2;">
-                                <li>筛选栏：统计日期区间、呼叫类型、业务类型、R渠道、大项目五维筛选</li>
+                                <li>筛选栏：统计日期区间、呼叫类型、业务类型、R渠道（模拟数据，按业务需求配置）、大项目名称（输入框关键字查询）五维筛选</li>
                                 <li>4 个核心 KPI 指标卡片（通话总数、接通总数等）</li>
                                 <li>两大主页签：常见标签、抗拒点</li>
                                 <li>常见标签：报表统计（按业务类型/按R渠道）+ 一级/二级分类饼图 + 标签排行 + 排序切换</li>
                                 <li>抗拒点：报表统计（按业务类型/按R渠道）+ 抗拒点排行 + 排序切换</li>
                                 <li>洞察标签管理弹窗（常见标签分类 + 客户抗拒点分类树形结构）</li>
-                                <li>下载明细数据（CSV 导出）</li>
-                                <li>下载明细数据（CSV 导出）</li>
+                                <li>下载明细数据（CSV 导出，含 R渠道、大项目、sc值 字段；多标签拆分为多列显示）</li>
                                 <li><strong>业务颗粒度升级：</strong>全量常见标签看板向下钻取至「三级分类」</li>
                                 <li><strong>任务中心增强：</strong>新增「通话 ID」精确检索；表头重命名为「AI 标注」以明确数据源</li>
                                 <li><strong>复核详情重构：</strong>引入 Tab 切换流（命中情况 / 历史复核记录）</li>
@@ -958,7 +920,7 @@
 
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V1.3 &nbsp;|&nbsp; 更新于 2026-04-13 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V1.0 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步</p>
         </div>
     </main>
 
