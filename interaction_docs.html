@@ -328,8 +328,7 @@
                 <li><a href="#section-actionbar" class="nav-link"><i class="fa-solid fa-toolbox"></i><span>操作按钮栏</span></a></li>
                 <li><a href="#section-metrics" class="nav-link"><i class="fa-solid fa-chart-pie"></i><span>核心指标卡片</span></a></li>
                 <li><a href="#section-tabs" class="nav-link"><i class="fa-solid fa-table-columns"></i><span>标签页切换</span></a></li>
-                <li><a href="#section-faq" class="nav-link"><i class="fa-solid fa-circle-question"></i><span>常见问题页签</span></a></li>
-                <li><a href="#section-hot" class="nav-link"><i class="fa-solid fa-fire-flame-curved"></i><span>热门问题页签</span></a></li>
+                <li><a href="#section-faq" class="nav-link"><i class="fa-solid fa-circle-question"></i><span>常见标签页签</span></a></li>
                 <li><a href="#section-resistance" class="nav-link"><i class="fa-solid fa-hand"></i><span>抗拒点页签</span></a></li>
                 <li><a href="#section-insight-modal" class="nav-link"><i class="fa-solid fa-tag"></i><span>洞察标签弹窗</span></a></li>
                 <li><a href="#section-download" class="nav-link"><i class="fa-solid fa-download"></i><span>下载 &amp; 生成 MD</span></a></li>
@@ -341,7 +340,7 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V1.0 · 2026-04-03 · 与最新代码同步</span>
+            <span class="doc-tag">版本 V1.1 · 2026-04-13 · 与最新代码同步</span>
             <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
             <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界。</p>
         </header>
@@ -361,19 +360,32 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td class="ver-num">V1.1</td>
+                        <td>
+                            <ol style="padding-left:1.2em; margin:0; line-height:2;">
+                                <li><strong>下载明细数据增强：</strong>新增 R渠道、大项目、sc值 三个字段</li>
+                                <li><strong>多标签处理优化：</strong>多个常见标签/抗拒点拆分为多列显示（同一行），而非拆分为多行</li>
+                                <li><strong>表头优化：</strong>报表表格第一列"三级标签"表头已删除，保持简洁</li>
+                                <li><strong>标签命名统一：</strong>"涉及常见问题"改名为"涉及常见标签"</li>
+                            </ol>
+                        </td>
+                        <td>2026-04-13</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
                         <td class="ver-num">V1.0</td>
                         <td>
                             <ol style="padding-left:1.2em; margin:0; line-height:2;">
-                                <li>筛选栏：统计日期区间、呼叫类型、业务类型三维筛选</li>
+                                <li>筛选栏：统计日期区间、呼叫类型、业务类型、R渠道、大项目五维筛选</li>
                                 <li>4 个核心 KPI 指标卡片（通话总数、接通总数等）</li>
-                                <li>三大主页签：常见问题、热门问题、抗拒点</li>
-                                <li>常见问题：统计网格 + Top10 排行 + 环比趋势分析 + 全量弹窗</li>
-                                <li>热门问题：热度排行榜 + 极端值趋势分析 + 全量弹窗</li>
-                                <li>抗拒点：强/弱抗拒分布饼图 + 环比变动柱状图</li>
+                                <li>两大主页签：常见标签、抗拒点</li>
+                                <li>常见标签：报表统计（按业务类型/按R渠道）+ 一级/二级分类饼图 + 标签排行 + 排序切换</li>
+                                <li>抗拒点：报表统计（按业务类型/按R渠道）+ 抗拒点排行 + 排序切换</li>
                                 <li>洞察标签管理弹窗（常见标签分类 + 客户抗拒点分类树形结构）</li>
                                 <li>下载明细数据（CSV 导出）</li>
                                 <li>生成 MD 提示词（标签逻辑 + 输出结果双 Tab 切换 + 一键复制）</li>
-                                <li><strong>业务颗粒度升级：</strong>全量常见问题/热门问题看板向下钻取至「三级分类」</li>
+                                <li><strong>业务颗粒度升级：</strong>全量常见标签看板向下钻取至「三级分类」</li>
                                 <li><strong>任务中心增强：</strong>新增「通话 ID」精确检索；表头重命名为「AI 标注」以明确数据源</li>
                                 <li><strong>复核详情重构：</strong>引入 Tab 切换流（命中情况 / 历史复核记录）</li>
                                 <li><strong>可疑溯源增强：</strong>历史记录新增「复核流水 ID」展示；提交后显示包含流水号的成功反馈</li>
@@ -422,10 +434,23 @@
                 <li>默认选中「全部」。</li>
             </ul>
 
-            <h3 class="sub-title">4. 查询与重置</h3>
+            <h3 class="sub-title">4. R渠道</h3>
+            <ul class="item-list">
+                <li>下拉单选，可选项：全部、R1、R2、R3、R4。</li>
+                <li>默认选中「全部」。</li>
+                <li>用于按客户意向等级进行数据筛选。</li>
+            </ul>
+
+            <h3 class="sub-title">5. 大项目</h3>
+            <ul class="item-list">
+                <li>下拉单选，用于按大项目分类筛选数据。</li>
+                <li>默认选中「全部」。</li>
+            </ul>
+
+            <h3 class="sub-title">6. 查询与重置</h3>
             <ul class="item-list">
                 <li><strong>查询按钮：</strong>点击后触发全页数据刷新（原型中为静态展示，无实际接口调用）。</li>
-                <li><strong>重置按钮：</strong>点击后将日期恢复为最近 30 天，呼叫类型和业务类型恢复「全部」。</li>
+                <li><strong>重置按钮：</strong>点击后将所有筛选项恢复为默认值（日期恢复为最近 30 天，其他恢复「全部」）。</li>
             </ul>
         </section>
 
@@ -481,139 +506,178 @@
         <section class="section" id="section-tabs">
             <h2 class="section-title"><i class="fa-solid fa-table-columns"></i>五、标签页切换逻辑</h2>
             <ul class="item-list">
-                <li>共三个主页签：<strong>常见问题</strong>（默认激活）、<strong>热门问题</strong>、<strong>抗拒点</strong>。</li>
+                <li>共两个主页签：<strong>常见标签</strong>（默认激活）、<strong>抗拒点</strong>。</li>
                 <li>点击任意页签时：取消当前激活页签的 <code>active</code> 类，为点击的页签添加 <code>active</code> 类；对应的内容面板同步切换显示/隐藏。</li>
-                <li>「常见问题」和「热门问题」标签旁有 <i class="fa-regular fa-circle-question"></i> 问号图标，鼠标悬停时显示指标计算口径说明的 tooltip。</li>
             </ul>
 
             <table class="flow-table">
-                <thead><tr><th>页签</th><th>data-tab</th><th>内容面板 ID</th><th>Tooltip 说明</th></tr></thead>
+                <thead><tr><th>页签</th><th>data-tab</th><th>内容面板 ID</th><th>功能定位</th></tr></thead>
                 <tbody>
-                    <tr><td>常见问题</td><td><code>common-issues</code></td><td><code>#common-issues</code></td><td>以被提及次数作为统计标准，比较各类问题的占比</td></tr>
-                    <tr><td>热门问题</td><td><code>hot-issues</code></td><td><code>#hot-issues</code></td><td>提及占比×100×60% + 环比提升×100×40% 得出热度得分</td></tr>
-                    <tr><td>抗拒点</td><td><code>resistance-points</code></td><td><code>#resistance-points</code></td><td>无 tooltip</td></tr>
+                    <tr><td>常见标签</td><td><code>common-issues</code></td><td><code>#common-issues</code></td><td>展示常见标签的分布统计、排行榜及报表数据</td></tr>
+                    <tr><td>抗拒点</td><td><code>resistance-points</code></td><td><code>#resistance-points</code></td><td>展示客户抗拒点的分布统计及报表数据</td></tr>
                 </tbody>
             </table>
         </section>
 
-        <!-- 六、常见问题页签 -->
+        <!-- 六、常见标签页签 -->
         <section class="section" id="section-faq">
-            <h2 class="section-title"><i class="fa-solid fa-circle-question"></i>六、常见问题页签详细说明</h2>
+            <h2 class="section-title"><i class="fa-solid fa-circle-question"></i>六、常见标签页签详细说明</h2>
 
-            <h3 class="sub-title">1. 一级分类统计网格 (三级维度聚合)</h3>
+            <h3 class="sub-title">1. 报表统计区域</h3>
             <ul class="item-list">
-                <li>7 张统计卡片（<code>faq-stat-card</code>），以 7 列网格排列，展示「产品咨询、价格咨询、优惠促销、政策业务、现车库存、店铺信息、顾问信息」7 个一级分类。</li>
-                <li>每张卡片展示：分类名称、图标（不同颜色）、该分类的通话量数值、环比变化百分比（含趋势图标）。</li>
-                <li>hover 动画：卡片向上位移 6px，阴影增强，边框出现蓝色半透明高亮，背景渐变。</li>
-                <li>图标在 hover 时执行 <code>scale(1.1) rotate(-5deg)</code> 动画。</li>
+                <li>位于页签顶部，以 2 列网格布局展示两个报表表格。</li>
+                <li><strong>按业务类型统计：</strong>展示不同三级标签在各业务类型（NEV新线索、NEV冷线索、NEV留资未满）下的通话数量和环比变化。</li>
+                <li><strong>按R渠道统计：</strong>展示不同三级标签在各R渠道（R1~R4）下的通话数量和环比变化。</li>
+                <li>每张报表第一列为行标签（三级标签名称），单元格内显示绝对值 + 环比趋势图标。</li>
+                <li><strong>颜色规则：</strong>上升趋势（<code>trend up</code>）使用红色，下降趋势（<code>trend down</code>）使用绿色。</li>
+                <li>报表支持纵向滚动（<code>max-height: 280px</code>）。</li>
             </ul>
 
-            <h3 class="sub-title">2. 常见问题 Top 10 表格</h3>
+            <h3 class="sub-title">2. 标签分类分布（动态饼图）</h3>
             <ul class="item-list">
-                <li>以数据表格展示，显示排名前 10 的具体三级业务问题。</li>
-                <li>列字段：排名、常见问题名称 (三级分类)、咨询次数、占比。</li>
+                <li>左侧列布局展示「一级分类分布」和「二级分类分布」两个饼图。</li>
+                <li>饼图数据从洞察标签树（<code>common-issues-modal</code>）动态读取，根据树结构中的一级/二级分类节点数量计算占比。</li>
+                <li>由 JS 函数 <code>initCommonTagCharts()</code> 在弹窗打开时自动渲染。</li>
+                <li>饼图使用 SVG <code>stroke-dasharray</code> 技术实现环形图效果。</li>
+                <li>右侧图例显示各分类名称、占比百分比。</li>
+            </ul>
+
+            <h3 class="sub-title">3. 常见标签排行表格</h3>
+            <ul class="item-list">
+                <li>位于右侧卡片，展示所有三级标签的排名数据。</li>
+                <li>列字段：排名（角标）、常见标签名称、提及次数、占比（含进度条）、环比、热度。</li>
                 <li>前三名排名角标（<code>rank-badge</code>）使用不同渐变色：第1名红色、第2名橙色、第3名黄色。</li>
-                <li>占比列使用内嵌进度条可视化展示，进度条蓝色填充。</li>
-                <li>卡片右上角有「查看所有常见问题」图标按钮（<code>viewAllFaq</code>），点击后打开全量统计排行弹窗。</li>
+                <li>占比列使用内嵌进度条可视化展示。</li>
+                <li>热度值以橙色标签样式展示。</li>
             </ul>
 
-            <h3 class="sub-title">3. 全量常见问题弹窗（viewAllFaq）</h3>
+            <h3 class="sub-title">4. 排行排序切换功能</h3>
             <ul class="item-list">
-                <li>弹窗 ID：<code>faqModal</code>，宽度最大 800px，包含 17 条模拟数据。</li>
-                <li>表格包含：排名、常见问题名称、咨询次数、占比 4 列。</li>
-                <li>关闭方式：点击右上角 ✕ 按钮（<code>closeFaqModal</code>）或点击背景遮罩。</li>
-            </ul>
-
-            <h3 class="sub-title">4. 问题趋势对比分析（发散柱状图）</h3>
-            <ul class="item-list">
-                <li>展示「Top 5 上升」和「Top 5 下降」的二级分类环比变化，使用自定义发散柱状图（<code>diverging-chart</code>）。</li>
-                <li><strong>颜色规则：</strong>正向增长（<code>bar-pos</code>）使用<span style="color:#ff4d4f">红色</span>，表示问题增多需关注；负向减少（<code>bar-neg</code>）使用<span style="color:#52c41a">绿色</span>，表示问题改善。</li>
-                <li>柱子从中轴线向两侧延伸，标注具体的百分比变化值。</li>
-                <li>卡片右上角有「查看所有趋势变化」图标按钮（<code>viewAllTrends</code>），点击后打开全量趋势对比弹窗。</li>
-            </ul>
-
-            <h3 class="sub-title">5. 全量趋势弹窗（viewAllTrends）</h3>
-            <ul class="item-list">
-                <li>弹窗 ID：<code>trendModal</code>，宽度最大 900px，最大高度 70vh，内容可滚动。</li>
-                <li>内容为完整的发散柱状图（<code>allTrendChart</code>），由 JS 动态渲染，覆盖全量二级分类的环比变动。</li>
-                <li>关闭方式：点击右上角 ✕ 按钮（<code>closeTrendModal</code>）或点击背景遮罩。</li>
+                <li>卡片头部有排序切换按钮组（<code>sort-switch-group</code>），提供三种排序方式：</li>
+                <li>按提及次数（默认激活）、按环比、按热度。</li>
+                <li>由 JS 函数 <code>initCommonTagSort()</code> 处理排序逻辑。</li>
+                <li>切换排序后，表格数据重新排序，前三名角标同步更新。</li>
+                <li>问号图标悬停显示热度计算口径 tooltip：「热门问题是提及占比×100×60%+环比×100×40%得出热度得分」。</li>
             </ul>
         </section>
 
-        <!-- 七、热门问题页签 -->
-        <section class="section" id="section-hot">
-            <h2 class="section-title"><i class="fa-solid fa-fire-flame-curved"></i>七、热门问题页签详细说明</h2>
-
-            <h3 class="sub-title">热度算法说明</h3>
-            <div class="highlight-box">
-                <strong>热度得分 = 提及占比 × 100 × 60% + 环比提升幅度 × 100 × 40%</strong><br>
-                该算法综合考量问题的绝对热度（占比）与变化趋势（增速），高增速的小众问题同样可能进入榜单。
-            </div>
-
-            <h3 class="sub-title">1. 热门问题排行榜（热度柱状图）</h3>
-            <ul class="item-list">
-                <li>以横向渐变柱条展示热度最高的 5 个三级分类问题。</li>
-                <li>柱条颜色由高到低从红→橙→黄→浅蓝渐变，直观传递热度递减感。</li>
-                <li>右侧显示具体热度得分数值。</li>
-                <li>右上角「查看全量排行」按钮（<code>viewAllHotRanking</code>），点击打开全量热门问题热度排行弹窗。</li>
-            </ul>
-
-            <h3 class="sub-title">2. 全量热门问题排行弹窗</h3>
-            <ul class="item-list">
-                <li>弹窗 ID：<code>hotRankingModal</code>，宽度最大 800px。</li>
-                <li>表格字段：排名、热门问题名称、热度得分、环比变化（含前三名特殊角标配色）。</li>
-                <li>关闭方式：点击右上角 ✕（<code>closeHotRankingModal</code>）或背景遮罩。</li>
-            </ul>
-
-            <h3 class="sub-title">3. 热度趋势极端值分析</h3>
-            <ul class="item-list">
-                <li>以两列网格布局展示「环比热度激增」（左列，红色标题）和「环比热度回落」（右列，绿色标题）各 Top 5 的分类。</li>
-                <li>每列使用横向进度条（<code>extreme-bar</code>），激增用红色（<code>rise</code>），回落用绿色（<code>fall</code>）。</li>
-                <li>右上角「查看全量趋势分析」按钮（<code>viewAllHotTrends</code>），点击打开全量极端值弹窗。</li>
-            </ul>
-
-            <h3 class="sub-title">4. 全量热门趋势极端值弹窗</h3>
-            <ul class="item-list">
-                <li>弹窗 ID：<code>hotTrendsModal</code>，最大高度 75vh，内容可滚动。</li>
-                <li>内容区 <code>allHotTrendsContent</code> 由 JS 动态渲染完整数据。</li>
-                <li>关闭方式：点击右上角 ✕（<code>closeHotTrendsModal</code>）或背景遮罩。</li>
-            </ul>
-        </section>
-
-        <!-- 八、抗拒点页签 -->
+        <!-- 七、抗拒点页签 -->
         <section class="section" id="section-resistance">
-            <h2 class="section-title"><i class="fa-solid fa-hand"></i>八、抗拒点页签详细说明</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">以 2×2 网格布局呈现四个分析卡片，左列为分布饼图，右列为环比变动柱状图。</p>
+            <h2 class="section-title"><i class="fa-solid fa-hand"></i>七、抗拒点页签详细说明</h2>
 
-            <h3 class="sub-title">1. 全量强抗拒分布（饼图）</h3>
+            <h3 class="sub-title">1. 报表统计区域</h3>
             <ul class="item-list">
-                <li>左侧：SVG 环形图（donut chart），使用 <code>stroke-dasharray</code> 技术模拟 10 个扇区，每个颜色对应一个二级强抗拒分类。</li>
-                <li>右侧：图例列表，每项显示「颜色块 + 分类名称 + 占比% + (数量例)」，例如：<code>无购车需求 · 30% (375例)</code>。</li>
-                <li>卡片副标题说明覆盖的二级分类数量（如「覆盖 10 个核心二级分类」）。</li>
+                <li>位于页签顶部，以 2 列网格布局展示两个报表表格。</li>
+                <li><strong>按业务类型统计：</strong>展示不同抗拒点在各业务类型（NEV新线索、NEV冷线索、NEV留资未满）下的通话数量和环比变化。</li>
+                <li><strong>按R渠道统计：</strong>展示不同抗拒点在各R渠道（R1~R4）下的通话数量和环比变化。</li>
+                <li>每张报表第一列为行标签（抗拒点名称），单元格内显示绝对值 + 环比趋势图标。</li>
+                <li><strong>颜色规则：</strong>上升趋势（<code>trend up</code>）使用红色，下降趋势（<code>trend down</code>）使用绿色。</li>
+                <li>报表支持纵向滚动（<code>max-height: 280px</code>）。</li>
             </ul>
 
-            <h3 class="sub-title">2. 强抗拒点环比变动分析（发散柱状图）</h3>
+            <h3 class="sub-title">2. 抗拒点排行</h3>
             <ul class="item-list">
-                <li>展示各二级强抗拒分类与上期相比的新增/降低情况。</li>
-                <li><strong>颜色规则：</strong>正向新增用<span style="color:#ff4d4f">红色</span>柱（<code>bar-pos</code>），代表抗拒点恶化需警惕；负向减少用<span style="color:#52c41a">绿色</span>柱（<code>bar-neg</code>），代表抗拒点改善。</li>
-                <li>柱条从中轴线向右（新增）或向左（减少）延伸，柱尾标注数值（如 <code>+28</code> 或 <code>-15</code>）。</li>
+                <li>以数据表格展示所有抗拒点的排名数据。</li>
+                <li>列字段：排名（角标）、抗拒点名称、提及次数、占比（含进度条）、环比。</li>
+                <li>前三名排名角标使用不同渐变色：第1名红色、第2名橙色、第3名黄色。</li>
+                <li>占比列使用内嵌进度条可视化展示。</li>
             </ul>
 
-            <h3 class="sub-title">3. 全量弱抗拒分布（饼图）</h3>
+            <h3 class="sub-title">3. 排行排序切换功能</h3>
             <ul class="item-list">
-                <li>结构与强抗拒分布饼图一致，数据覆盖弱抗拒类别（购买力不足、近期不方便到店、价格不满意等）。</li>
-                <li>图例同样包含「占比% + (数量例)」双维度显示。</li>
-            </ul>
-
-            <h3 class="sub-title">4. 弱抗拒点环比变动分析（发散柱状图）</h3>
-            <ul class="item-list">
-                <li>结构与强抗拒环比变动图一致，数据和分类对应弱抗拒体系。</li>
-                <li>颜色规则相同：新增（增多）→ 红色，降低（减少）→ 绿色。</li>
+                <li>卡片头部有排序切换按钮组（<code>sort-switch-group</code>），提供两种排序方式：</li>
+                <li>按提及次数（默认激活）、按环比。</li>
+                <li>由 JS 函数 <code>initResistanceSort()</code> 处理排序逻辑。</li>
+                <li>切换排序后，表格数据重新排序，前三名角标同步更新。</li>
             </ul>
 
             <div class="warn-box">
-                <strong>注意：</strong>所有抗拒点图表中「环比」均指当前统计周期与上一个相同长度周期的对比，非固定月度环比。当前版本为静态模拟数据，生产环境需接入实际 API。
+                <strong>注意：</strong>抗拒点报表中「环比」均指当前统计周期与上一个相同长度周期的对比，非固定月度环比。当前版本为静态模拟数据，生产环境需接入实际 API。
             </div>
+        </section>
+
+        <!-- 八、洞察标签管理弹窗 -->
+        <section class="section" id="section-insight-modal">
+            <h2 class="section-title"><i class="fa-solid fa-tag"></i>八、洞察标签管理弹窗</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">点击顶部操作栏「新增洞察标签」按钮（<code>addInsightBtn</code>）打开弹窗，ID 为 <code>insightModal</code>，宽度最大 1000px，最大高度 85vh。</p>
+
+            <h3 class="sub-title">1. 弹窗打开与关闭</h3>
+            <ul class="item-list">
+                <li>打开：点击「新增洞察标签」按钮，弹窗叠加层（<code>modal-overlay</code>）添加 <code>active</code> 类显示。</li>
+                <li>关闭方式：① 点击右上角 ✕ 按钮；② 点击弹窗背景遮罩区域。</li>
+            </ul>
+
+            <h3 class="sub-title">2. 主页签体系</h3>
+            <ul class="item-list">
+                <li>弹窗顶部有两个页签（<code>modal-tab</code>）：<strong>常见标签分类</strong>（<code>common-issues-modal</code>）和<strong>客户抗拒点分类</strong>（<code>resistance-points-modal</code>）。</li>
+                <li>点击页签时：取消所有 <code>modal-tab</code> 的 <code>active</code> 类，激活点击的页签并显示对应内容面板（<code>modal-content</code>）。</li>
+            </ul>
+
+            <h3 class="sub-title">3. 树形分类结构</h3>
+            <table class="flow-table">
+                <thead><tr><th>分类</th><th>层级</th><th>底层节点类型</th><th>编码前缀</th></tr></thead>
+                <tbody>
+                    <tr><td>常见标签分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td><td><code>usual-</code></td></tr>
+                    <tr><td>客户抗拒点分类</td><td>两级（一级分类 → 二级标签）</td><td>tree-level-2</td><td><code>reject-</code></td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="sub-title">4. 树节点展开/收起</h3>
+            <ul class="item-list">
+                <li>点击「树节点头部」（非操作按钮区域）可切换展开/收起状态：添加/移除节点的 <code>open</code> 类，子节点区域（<code>tree-children</code>）切换 <code>display: block/none</code>。</li>
+                <li>展开时，左侧箭头图标（<code>tree-icon</code>）旋转 90°；收起时恢复 0°。</li>
+                <li>使用<strong>全局事件委托</strong>处理，仅在 <code>insightModal</code> 处于 <code>active</code> 状态时生效。</li>
+            </ul>
+
+            <h3 class="sub-title">5. 节点操作按钮（hover 显示）</h3>
+            <ul class="item-list">
+                <li>鼠标悬停于任意节点时，操作按钮（<code>tree-actions</code>）从透明渐变显示（<code>opacity: 0 → 1</code>）。</li>
+            </ul>
+
+            <table class="flow-table">
+                <thead><tr><th>按钮</th><th>图标</th><th>作用</th><th>显示条件</th></tr></thead>
+                <tbody>
+                    <tr><td>查看</td><td>fa-eye</td><td>打开「节点详情」弹窗，展示一/二/三级路径和标签逻辑说明</td><td>底层节点（无子节点）</td></tr>
+                    <tr><td>新增下级节点</td><td>fa-plus</td><td>打开「新增节点」表单弹窗</td><td>非底层节点</td></tr>
+                    <tr><td>编辑</td><td>fa-pen</td><td>打开「编辑节点」表单弹窗，预填当前数据</td><td>所有节点</td></tr>
+                    <tr><td>删除</td><td>fa-trash（红色）</td><td>弹出确认框，若有子节点则二次确认，确认后删除节点</td><td>所有节点</td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="sub-title">6. 新增/编辑节点表单弹窗</h3>
+            <ul class="item-list">
+                <li>弹窗 ID：<code>nodeFormModal</code>，z-index 高于主弹窗（1100），保证层叠正确。</li>
+                <li>表单字段：标签名（必填）、标签编码（必填，新增时自动生成随机编码并只读）、标签逻辑说明（底层节点时显示且必填）。</li>
+                <li><strong>自动编码生成逻辑：</strong>
+                    <ul>
+                        <li>点击新增操作时，系统会自动基于 <code>[A-Z, a-z, 0-9]</code> 的大小写同字字符集随机抽取产生 <strong>6 位字母或数字组合</strong>。</li>
+                        <li><strong>编码前缀绑定：</strong>如果是在「常见标签」类别下生成分支，则统一加上 <code>usual-</code> 前缀；而在「客户抗拒点」分类树中创建出的分支则会自动拼合 <code>reject-</code> 前缀。例如：<code>usual-H8m3Np</code> 和 <code>reject-gL0t2V</code>。</li>
+                    </ul>
+                </li>
+                <li>标题根据操作类型动态显示：「新增X级分类」或「编辑X级分类」。</li>
+                <li><strong>保存逻辑：</strong>新增时创建新 DOM 节点插入父级 <code>tree-children</code> 头部，编辑时更新对应 <code>tree-label</code> 文本内容和 <code>data-logic-desc</code> 属性。</li>
+                <li><strong>新增后自动展开：</strong>若父节点处于收起状态，新增子节点后父节点自动展开。</li>
+            </ul>
+
+            <h3 class="sub-title">7. 节点详情弹窗</h3>
+            <ul class="item-list">
+                <li>弹窗 ID：<code>nodeViewModal</code>，展示字段：一级分类、二级分类、三级分类（客户抗拒点分类中隐藏）、标签逻辑说明。</li>
+                <li>空值字段显示「-」并附 <code>empty</code> 样式。</li>
+            </ul>
+
+            <h3 class="sub-title">8. 底部操作区（导入 / 导出 / 新增一级分类）</h3>
+            <ul class="item-list">
+                <li>「新增一级分类」：打开表单弹窗，新建的节点插入到树的顶部。</li>
+                <li>「导入」（<code>importCommonIssues</code> / <code>importResistancePoints</code>）：弹出文件选择器，支持 <code>.csv</code> 文件。解析 CSV 后按编码匹配并更新现有节点的名称和逻辑说明，完成后弹出更新数量提示。</li>
+                <li>「导出」（<code>exportCommonIssues</code> / <code>exportResistancePoints</code>）：将当前树结构序列化为 CSV 文件并下载。常见标签导出含七列（一/二/三级名称+编码+逻辑说明），抗拒点导出含五列（一/二级名称+编码+逻辑说明）。</li>
+            </ul>
+
+            <h3 class="sub-title">9. 动态饼图联动</h3>
+            <ul class="item-list">
+                <li>当标签树数据发生变化（新增/编辑/删除节点）时，常见标签页签中的一级/二级分类饼图会自动重新渲染。</li>
+                <li>由 <code>initCommonTagCharts()</code> 函数配合 MutationObserver 实现。</li>
+                <li>弹窗关闭后重新打开时，饼图数据会更新为最新状态。</li>
+            </ul>
         </section>
 
         <!-- 九、洞察标签管理弹窗 -->
@@ -693,9 +757,9 @@
             </ul>
         </section>
 
-        <!-- 十、下载与生成 MD -->
+        <!-- 九、下载与生成 MD -->
         <section class="section" id="section-download">
-            <h2 class="section-title"><i class="fa-solid fa-download"></i>十、下载明细数据 &amp; 生成 MD</h2>
+            <h2 class="section-title"><i class="fa-solid fa-download"></i>九、下载明细数据 &amp; 生成 MD</h2>
 
             <h3 class="sub-title">1. 下载明细数据（downloadFullDetailBtn）</h3>
             <ul class="item-list">
@@ -723,11 +787,38 @@
                 </tbody>
             </table>
 
+            <h3 class="sub-title">2. 生成 MD 提示词（generateMdBtn）</h3>
+            <ul class="item-list">
+                <li>点击「生成 MD」按钮（<code>generateMdBtn</code>）打开弹窗，ID 为 <code>mdModal</code>。</li>
+                <li>弹窗顶部有两个 Tab（<code>md-tab</code>）：<strong>标签逻辑</strong>（默认激活）和<strong>输出结果</strong>。</li>
+                <li><strong>标签逻辑 Tab：</strong>
+                    <ul>
+                        <li>动态读取洞察标签树中所有底层标签（三级分类）的名称、编码和逻辑说明。</li>
+                        <li>按「常见标签分类」和「客户抗拒点分类」两个分组输出。</li>
+                        <li>每个标签显示完整路径（如「产品咨询 > 价格咨询 > 落地价」）和逻辑定义。</li>
+                    </ul>
+                </li>
+                <li><strong>输出结果 Tab：</strong>
+                    <ul>
+                        <li>展示 AI 通话标签输出结果的 JSON 格式说明。</li>
+                        <li>包含打标规则（逐句分析、精准匹配、多标签支持、编码要求、空值处理）。</li>
+                        <li>提供两个完整的 JSON 示例（命中标签和未命中标签）。</li>
+                    </ul>
+                </li>
+                <li><strong>一健复制功能：</strong>
+                    <ul>
+                        <li>点击「复制到剪贴板」按钮（<code>copyMdBtn</code>），将当前 Tab 的内容复制到剪贴板。</li>
+                        <li>复制成功后按钮文字变为「已复制到剪贴板」，背景变为绿色（<code>success-color</code>），2 秒后恢复原状。</li>
+                    </ul>
+                </li>
+                <li>每次打开弹窗时，内容会自动更新为最新保存的标签数据。</li>
+            </ul>
+
         </section>
 
-        <!-- 十一、人工复核流程详细逻辑说明 -->
+        <!-- 十、人工复核流程详细逻辑说明 -->
         <section class="section" id="section-review-flow">
-            <h2 class="section-title"><i class="fa-solid fa-list-check"></i>十一、人工复核流程完整说明</h2>
+            <h2 class="section-title"><i class="fa-solid fa-list-check"></i>十、人工复核流程完整说明</h2>
             <p style="color:#475569; font-size:0.95rem; margin-bottom:0.5rem;">该功能模块负责对由「AI 智能体」初步打标的通话记录进行人工质量校验与标签修正，是确保用户洞察看板数据准确性的最终关卡。整个复核链路由两个独立页面构成。</p>
             <div class="highlight-box" style="margin-bottom: 1.5rem;">
                 <strong>业务闭环路径：</strong>AI 外呼标注 → 进入复核队列 → 人工抽检复核 → 生成流水存档 → 看板数据更新
@@ -868,7 +959,7 @@
 
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V1.0 &nbsp;|&nbsp; 生成于 2026-04-02 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V1.1 &nbsp;|&nbsp; 更新于 2026-04-13 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步</p>
         </div>
     </main>
 
