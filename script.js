@@ -18,14 +18,57 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
 });
 
-// 初始化日期区间为最近30天
+// 初始化日期区间为最近30天，并增加约束限制
 function initDateRange() {
-    const endDate = new Date();
-    const startDate = new Date();
-    startDate.setDate(endDate.getDate() - 30);
+    const startInput = document.getElementById('startDate');
+    const endInput = document.getElementById('endDate');
+    if (!startInput || !endInput) return;
 
-    document.getElementById('startDate').value = formatDate(startDate);
-    document.getElementById('endDate').value = formatDate(endDate);
+    const today = new Date();
+    const twoYearsAgo = new Date();
+    twoYearsAgo.setFullYear(today.getFullYear() - 2);
+
+    // 设置全局最远和最近限制
+    const todayStr = formatDate(today);
+    const twoYearsAgoStr = formatDate(twoYearsAgo);
+
+    startInput.min = twoYearsAgoStr;
+    startInput.max = todayStr;
+    endInput.min = twoYearsAgoStr;
+    endInput.max = todayStr;
+
+    // 默认展示最近30天
+    const defaultStart = new Date();
+    defaultStart.setDate(today.getDate() - 30);
+    startInput.value = formatDate(defaultStart);
+    endInput.value = todayStr;
+
+    // 日期变更校验逻辑：最大可选3个月
+    const validateRange = (changedInput) => {
+        const start = new Date(startInput.value);
+        const end = new Date(endInput.value);
+
+        if (start > end) {
+            if (changedInput === 'start') endInput.value = startInput.value;
+            else startInput.value = endInput.value;
+            return;
+        }
+
+        const maxRange = 92 * 24 * 60 * 60 * 1000; // 约3个月 (92天)
+        if (end - start > maxRange) {
+            alert('统计日期区间最大可选 3 个月范围');
+            if (changedInput === 'start') {
+                const newEnd = new Date(start.getTime() + maxRange);
+                endInput.value = formatDate(newEnd > today ? today : newEnd);
+            } else {
+                const newStart = new Date(end.getTime() - maxRange);
+                startInput.value = formatDate(newStart < twoYearsAgo ? twoYearsAgo : newStart);
+            }
+        }
+    };
+
+    startInput.addEventListener('change', () => validateRange('start'));
+    endInput.addEventListener('change', () => validateRange('end'));
 }
 
 // 格式化日期为 YYYY-MM-DD
@@ -42,24 +85,133 @@ window.addEventListener('DOMContentLoaded', () => {
     initModal();
     initFaqExport();
     initFullDetailExport(); // 初始化全量明细下载
+    initReportTableExport(); // 新增：报表表格导出功能
+    initGlobalFilters();    // 新增：全局筛选器逻辑
     initMdGeneration();     // 初始化 MD 生成功能
-    initManualReview();     // 初始化人工复核功能
     initFaqModal();
     initTrendModal();
     initHotRankingModal();
     initHotTrendsModal();
 });
 
-// 人工复核跳转逻辑
-function initManualReview() {
-    const btn = document.getElementById('manualReviewBtn');
-    if (!btn) return;
+// 全局筛选器交互逻辑
+function initGlobalFilters() {
+    const searchBtn = document.querySelector('.filter-section .fa-search')?.parentElement;
+    const resetBtn = document.querySelector('.filter-section .fa-rotate-right')?.parentElement;
 
-    btn.addEventListener('click', () => {
-        // 跳转到人工复核任务中心
-        window.location.href = 'manual_review.html';
+    if (searchBtn) {
+        searchBtn.addEventListener('click', () => {
+            showNotification('正在根据“通话开始时间”为您聚合统计数据...', 'info');
+            
+            // 模拟加载效果和数据变动
+            const metrics = document.querySelectorAll('.metric-value');
+            metrics.forEach(m => m.style.opacity = '0.5');
+
+            setTimeout(() => {
+                metrics.forEach(m => {
+                    const original = parseInt(m.textContent.replace(/,/g, ''));
+                    // 随机浮动 5% 以内，模拟筛选后的数据变化
+                    const newVal = Math.floor(original * (0.95 + Math.random() * 0.1));
+                    m.textContent = newVal.toLocaleString();
+                    m.style.opacity = '1';
+                });
+
+                // 更新趋势图
+                if (window.commonAnalyzer) window.commonAnalyzer.renderLineChart();
+                if (window.resistanceAnalyzer) window.resistanceAnalyzer.renderLineChart();
+
+                showNotification('数据更新成功（已基于所选时间范围重新取值）', 'success');
+            }, 800);
+        });
+    }
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            initDateRange(); // 恢复默认日期
+            document.querySelectorAll('.filter-select').forEach(s => s.selectedIndex = 0);
+            document.querySelectorAll('.filter-input[type="text"]').forEach(i => i.value = '');
+            showNotification('筛选条件已重置', 'info');
+        });
+    }
+}
+
+// 通用报表表格导出逻辑
+function initReportTableExport() {
+    const exportBtns = document.querySelectorAll('.report-section .export-btn');
+    
+    exportBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const section = btn.closest('.report-section');
+            const title = section.querySelector('.report-title').textContent;
+            const table = section.querySelector('.report-table');
+            if (!table) return;
+
+            // 模拟异步体验
+            const originalHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 导出中...';
+            showNotification(`已开始为您生成 ${title} 报表，请稍候...`, 'info');
+
+            setTimeout(() => {
+                const headerRow = table.querySelector('thead tr');
+                const bodyRows = Array.from(table.querySelectorAll('tbody tr'));
+                
+                // 1. 处理表头：如果表头下方数据包含 count/trend，则拆分表头
+                const headers = [];
+                const headerCells = Array.from(headerRow.querySelectorAll('th'));
+                const columnMap = []; // 标记哪些列需要拆分
+
+                headerCells.forEach((th, idx) => {
+                    const text = th.textContent.trim();
+                    // 判断该列是否包含 count/trend (通过检查 tbody 第一行同索引列)
+                    const sampleCell = bodyRows[0]?.querySelectorAll('td')[idx];
+                    if (sampleCell && sampleCell.querySelector('.count') && sampleCell.querySelector('.trend')) {
+                        headers.push(`"${text}(数量)"`, `"${text}(环比)"`);
+                        columnMap[idx] = 'split';
+                    } else {
+                        headers.push(`"${text}"`);
+                        columnMap[idx] = 'normal';
+                    }
+                });
+
+                const csvRows = [headers.join(',')];
+
+                // 2. 处理数据行
+                bodyRows.forEach(tr => {
+                    const rowData = [];
+                    const cells = Array.from(tr.querySelectorAll('td, th'));
+                    
+                    cells.forEach((td, idx) => {
+                        if (columnMap[idx] === 'split') {
+                            const count = td.querySelector('.count')?.textContent.trim() || '0';
+                            const trend = td.querySelector('.trend')?.textContent.trim() || '0%';
+                            rowData.push(`"${count}"`, `"${trend}"`);
+                        } else {
+                            let text = (td.innerText || td.textContent).replace(/\s+/g, ' ').trim();
+                            rowData.push(`"${text.replace(/"/g, '""')}"`);
+                        }
+                    });
+                    csvRows.push(rowData.join(','));
+                });
+
+                const blob = new Blob(['\ufeff' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${title}_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
+                showNotification(`${title} 报表导出完成。`, 'success');
+            }, 1000);
+        });
     });
 }
+
 
 // MD 提示词生成逻辑
 function initMdGeneration() {
@@ -444,49 +596,61 @@ const chartColors = [
     '#0081ff', '#00b894', '#6c5ce7', '#f50', '#2db7f5', '#87d068'
 ];
 
-function initCommonTagCharts() {
-    const container = document.getElementById('commonTagChart');
+// 模拟分布权重数据（仅针对二级分类定义权重，一级分类会自动求和）
+const DISTRIBUTION_MOCKS = {
+    // 常见问题 L2
+    '购车时间': 2800, '购车意向': 3700,
+    '到店行为': 1500, '购买形态': 1200, '客服意愿': 1500,
+    
+    // 抗拒点 L2
+    '价格因素': 2200, '产品力': 1500, '品牌逻辑': 800,
+    '政策抗拒': 1200, '交付时间': 600
+};
+
+function renderDoubleRingChart(containerId, modalId) {
+    const container = document.getElementById(containerId);
     if (!container) return;
 
-    // 读取 common-issues-modal 树数据
-    const modal = document.getElementById('common-issues-modal');
+    const modal = document.getElementById(modalId);
     if (!modal) return;
 
-    // 收集一级分类
     const l1Nodes = modal.querySelectorAll(':scope > .category-tree > .tree-node.tree-level-1');
     const l1Data = [];
-    l1Nodes.forEach(node => {
-        const labelEl = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
-        if (labelEl) {
-            const name = labelEl.textContent.replace(/\s*\([^)]*\)$/, '');
-            const l2Count = node.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-2').length;
-            l1Data.push({ name, count: l2Count });
-        }
-    });
-
-    // 收集二级分类
     const l2Data = [];
+
     l1Nodes.forEach(node => {
         const l1LabelEl = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
-        const l1Name = l1LabelEl ? l1LabelEl.textContent.replace(/\s*\([^)]*\)$/, '') : '';
+        if (!l1LabelEl) return;
+        const l1Name = l1LabelEl.textContent.trim().replace(/\s*\(.*?\)$/, '');
+        
+        let l1Sum = 0;
         const l2Nodes = node.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-2');
+        
         l2Nodes.forEach(l2 => {
             const labelEl = l2.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
             if (labelEl) {
-                const name = labelEl.textContent.replace(/\s*\([^)]*\)$/, '');
+                const name = labelEl.textContent.trim().replace(/\s*\(.*?\)$/, '');
+                // 如果字典没定义，则根据该节点是否有子节点(L3)给一个默认权值
                 const l3Count = l2.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-3').length;
-                l2Data.push({ name, count: l3Count, l1Name });
+                const mockVal = DISTRIBUTION_MOCKS[name] || (l3Count > 0 ? l3Count * 200 : 300);
+                
+                l2Data.push({ name, count: mockVal, l1Name });
+                l1Sum += mockVal;
             }
         });
+
+        // 核心修正：一级分类数由二级分类之和决定
+        l1Data.push({ name: l1Name, count: l1Sum });
     });
 
-    // 计算百分比
-    const totalL1 = l1Data.reduce((sum, item) => sum + item.count, 0) || 1;
-    const totalL2 = l2Data.reduce((sum, item) => sum + item.count, 0) || 1;
+    // 计算总数（此时总数相等）
+    const totalCount = l1Data.reduce((sum, item) => sum + item.count, 0) || 1;
+    const totalL1 = totalCount;
+    const totalL2 = totalCount;
 
-    // 双环SVG：内环(L1) r=11 圆周≈69.12，外环(L2) r=17 圆周≈106.82
-    const L1_R = 11, L1_C = 2 * Math.PI * L1_R;       // 69.115
-    const L2_R = 17, L2_C = 2 * Math.PI * L2_R;       // 106.814
+    // 双环SVG：内环(L1) r=11，外环(L2) r=17
+    const L1_R = 11, L1_C = 2 * Math.PI * L1_R;
+    const L2_R = 17, L2_C = 2 * Math.PI * L2_R;
 
     let svg = `<svg width="160" height="160" viewBox="0 0 44 44" class="pie-chart-svg">`;
 
@@ -494,7 +658,7 @@ function initCommonTagCharts() {
     let l1Offset = 0;
     l1Data.forEach((item, i) => {
         const percent = Math.round((item.count / totalL1) * 100);
-        const dashLen = (percent / 100) * L1_C;
+        const dashLen = (item.count / totalL1) * L1_C;
         const color = chartColors[i % chartColors.length];
         svg += `<circle cx="22" cy="22" r="${L1_R}" fill="transparent" stroke="${color}" stroke-width="5" stroke-dasharray="${dashLen.toFixed(2)} ${(L1_C - dashLen).toFixed(2)}" stroke-dashoffset="${(-l1Offset).toFixed(2)}"></circle>`;
         l1Offset += dashLen;
@@ -504,7 +668,7 @@ function initCommonTagCharts() {
     let l2Offset = 0;
     l2Data.forEach((item, i) => {
         const percent = Math.round((item.count / totalL2) * 100);
-        const dashLen = (percent / 100) * L2_C;
+        const dashLen = (item.count / totalL2) * L2_C;
         const color = chartColors[i % chartColors.length];
         svg += `<circle cx="22" cy="22" r="${L2_R}" fill="transparent" stroke="${color}" stroke-width="4" stroke-dasharray="${dashLen.toFixed(2)} ${(L2_C - dashLen).toFixed(2)}" stroke-dashoffset="${(-l2Offset).toFixed(2)}"></circle>`;
         l2Offset += dashLen;
@@ -512,7 +676,7 @@ function initCommonTagCharts() {
 
     svg += '</svg>';
 
-    // 图例：先一级后二级，带环层级指示
+    // 图例
     let legend = '<div class="pie-legend">';
     if (l1Data.length > 0) {
         legend += '<div class="legend-group">一级分类</div>';
@@ -527,12 +691,17 @@ function initCommonTagCharts() {
         l2Data.forEach((item, i) => {
             const percent = Math.round((item.count / totalL2) * 100);
             const color = chartColors[i % chartColors.length];
-            legend += `<div class="legend-item"><span class="legend-ring-dot outer" style="background:${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count} (${percent}%)</span></div>`;
+            legend += `<div class="legend-item"><span class="legend-ring-dot outer" style="background:${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count || 0} (${percent}%)</span></div>`;
         });
     }
     legend += '</div>';
 
     container.innerHTML = '<div class="pie-chart-container"><div class="double-ring-wrapper">' + svg + '</div>' + legend + '</div>';
+}
+
+function initCommonTagCharts() {
+    renderDoubleRingChart('commonTagChart', 'common-issues-modal');
+    renderDoubleRingChart('resistanceTagChart', 'resistance-points-modal');
 }
 
 // 监听标签树变化，更新饼图
@@ -1074,65 +1243,76 @@ function initFaqExport() {
     });
 }
 
-// 全量明细数据下载逻辑
+function showNotification(message, type = 'info') {
+    const existing = document.querySelector('.async-notify');
+    if (existing) existing.remove();
+
+    const notify = document.createElement('div');
+    notify.className = `async-notify ${type}`;
+    notify.innerHTML = `
+        <div class="notify-icon"><i class="fa-solid ${type === 'success' ? 'fa-circle-check' : 'fa-info-circle'}"></i></div>
+        <div class="notify-content">${message}</div>
+    `;
+    document.body.appendChild(notify);
+
+    setTimeout(() => {
+        notify.classList.add('fade-out');
+        setTimeout(() => notify.remove(), 500);
+    }, 3000);
+}
+
+// 全量明细数据下载逻辑 - 升级为异步模拟
 function initFullDetailExport() {
     const downloadBtn = document.getElementById('downloadFullDetailBtn');
     if (!downloadBtn) return;
 
     downloadBtn.addEventListener('click', () => {
-        // 模拟生成全量详细数据
-        // 每条记录: [基础字段..., 常见问题列表, 抗拒点列表]
-        // 基础字段: callid, 外呼开始时间, 外呼结束时间, 主叫号码, 被叫号码, 业务类型, R渠道, 大项目, sc值, 呼叫类型
-        const rawData = [
-            { base: ['CALL_20240520_001', '2024-05-20 10:30:15', '2024-05-20 10:32:40', '075588881234', '13800138001', '新车新线索', 'R1', '大项目A', '85', '呼出-手动'], common: ['落地价', '购置税'], resistance: ['价格无优惠'] },
-            { base: ['CALL_20240520_002', '2024-05-20 11:15:20', '2024-05-20 11:16:46', '075588885678', '13911122223', '新车新线索', 'R2', '大项目B', '72', '呼出-预测'], common: ['样车到店', '提车周期'], resistance: ['交付周期长'] },
-            { base: ['CALL_20240520_003', '2024-05-20 14:45:10', '2024-05-20 14:48:40', '075588881234', '13722233334', '冷线索培育', 'R1', '大项目A', '68', '呼出-AI'], common: ['置换补贴', '二手车评估'], resistance: ['库存短缺'] },
-            { base: ['CALL_20240519_001', '2024-05-19 09:12:05', '2024-05-19 09:13:07', '075588881234', '13644455556', '新车新线索', 'R3', '大项目C', '90', '呼出-手动'], common: ['分期利率', '贷款政策'], resistance: ['续航焦虑'] },
-            { base: ['CALL_20240519_002', '2024-05-19 16:20:33', '2024-05-19 16:25:45', '075588885678', '15055566667', '留资未满培育', 'R2', '大项目B', '55', '呼入'], common: ['样车到店', '颜色选择'], resistance: ['家人反对'] },
-            { base: ['CALL_20240518_001', '2024-05-18 10:05:44', '2024-05-18 10:07:42', '075588881234', '15177889900', '新车新线索', 'R4', '大项目D', '78', '呼出-预测'], common: ['活动优惠'], resistance: ['品牌认可度低'] },
-            { base: ['CALL_20240518_002', '2024-05-18 15:30:12', '2024-05-18 15:33:27', '075588885678', '18899011122', '线索导入', 'R1', '大项目A', '62', '呼出-AI'], common: ['提车时间'], resistance: ['服务态度差'] }
-        ];
+        const originalHtml = downloadBtn.innerHTML;
+        downloadBtn.disabled = true;
+        downloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 任务处理中...';
+        
+        showNotification('导出任务已提交，系统正在后台生成全量数据报表，请稍候...', 'info');
 
-        const baseHeaders = ['callid', '外呼开始时间', '外呼结束时间', '主叫号码', '被叫号码', '业务类型', 'R渠道', '大项目', 'sc值', '呼叫类型'];
+        setTimeout(() => {
+            downloadBtn.disabled = false;
+            downloadBtn.innerHTML = originalHtml;
+            
+            const rawData = [
+                { base: ['CALL_20240520_001', '2024-05-20 10:30:15', '2024-05-20 10:32:40', '075588881234', '13800138001', '新车新线索', 'R1', '大项目A', '85', '呼出-手动'], common: ['落地价', '购置税'], resistance: ['价格无优惠'] },
+                { base: ['CALL_20240520_002', '2024-05-20 11:15:20', '2024-05-20 11:16:46', '075588885678', '13911122223', '新车新线索', 'R2', '大项目B', '72', '呼出-预测'], common: ['样车到店', '提车周期'], resistance: ['交付周期长'] },
+                { base: ['CALL_20240520_003', '2024-05-20 14:45:10', '2024-05-20 14:48:40', '075588881234', '13722233334', '冷线索培育', 'R1', '大项目A', '68', '呼出-AI'], common: ['置换补贴', '二手车评估'], resistance: ['库存短缺'] },
+                { base: ['CALL_20240519_001', '2024-05-19 09:12:05', '2024-05-19 09:13:07', '075588881234', '13644455556', '新车新线索', 'R3', '大项目C', '90', '呼出-手动'], common: ['分期利率', '贷款政策'], resistance: ['续航焦虑'] },
+                { base: ['CALL_20240519_002', '2024-05-19 16:20:33', '2024-05-19 16:25:45', '075588885678', '15055566667', '留资未满培育', 'R2', '大项目B', '55', '呼入'], common: ['样车到店', '颜色选择'], resistance: ['家人反对'] }
+            ];
 
-        // 计算最大标签数量
-        const maxCommon = Math.max(...rawData.map(d => d.common.length));
-        const maxResistance = Math.max(...rawData.map(d => d.resistance.length));
+            const baseHeaders = ['callid', '外呼开始时间', '外呼结束时间', '主叫号码', '被叫号码', '业务类型', 'R渠道', '大项目', 'sc值', '呼叫类型'];
+            const maxCommon = Math.max(...rawData.map(d => d.common.length));
+            const maxResistance = Math.max(...rawData.map(d => d.resistance.length));
+            const commonHeaders = Array.from({ length: maxCommon }, (_, i) => `涉及常见标签${i + 1}`);
+            const resHeaders = Array.from({ length: maxResistance }, (_, i) => `涉及抗拒点标签${i + 1}`);
+            
+            const fullHeaders = [...baseHeaders, ...commonHeaders, ...resHeaders];
+            const csvRows = [fullHeaders.join(',')];
 
-        // 动态生成表头
-        const commonHeaders = Array.from({ length: maxCommon }, (_, i) => `涉及常见标签${i + 1}`);
-        const resistanceHeaders = Array.from({ length: maxResistance }, (_, i) => `涉及抗拒点${i + 1}`);
-        const headers = [...baseHeaders, ...commonHeaders, ...resistanceHeaders];
+            rawData.forEach(item => {
+                const row = [...item.base];
+                for (let i = 0; i < maxCommon; i++) row.push(item.common[i] || '');
+                for (let i = 0; i < maxResistance; i++) row.push(item.resistance[i] || '');
+                csvRows.push(row.map(v => `"${v}"`).join(','));
+            });
 
-        // 生成数据行
-        const dataRows = rawData.map(item => {
-            // 基础字段
-            const row = [...item.base];
-            // 常见问题（补空列）
-            for (let i = 0; i < maxCommon; i++) {
-                row.push(item.common[i] || '');
-            }
-            // 抗拒点（补空列）
-            for (let i = 0; i < maxResistance; i++) {
-                row.push(item.resistance[i] || '');
-            }
-            return row;
-        });
+            const blob = new Blob(['\ufeff' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `全量话务明细_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
 
-        const csvContent = '\uFEFF' + [headers, ...dataRows]
-            .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
-            .join('\n');
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 10);
-        a.download = `用户洞察明细数据_${timestamp}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+            showNotification('数据报表生成成功，已开始自动下载。', 'success');
+        }, 2500);
     });
 }
 // 全量常见问题弹窗逻辑
@@ -1411,7 +1591,6 @@ function initHotTrendsModal() {
 
 // 常见标签排行排序功能
 function initCommonTagSort() {
-    // 使用更精确的选择器，注意HTML中Tab ID是common-issues
     const sortBtns = document.querySelectorAll('.tab-pane#common-issues .sort-switch-btn');
     if (!sortBtns.length) return;
 
@@ -1420,28 +1599,30 @@ function initCommonTagSort() {
 
     sortBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            // 更新按钮状态
             sortBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
             const sortType = this.dataset.sort;
             const rows = Array.from(tableBody.querySelectorAll('tr'));
 
-            // 提取每行数据进行排序
             const rowData = rows.map(row => {
                 const cells = row.querySelectorAll('td');
-                const count = parseInt(cells[2]?.textContent?.trim()) || 0;
-                // 提取环比数值（可能是正数或负数）
-                const trendEl = cells[4]?.querySelector('.trend-up, .trend-down');
+                // 索引：0rank, 1L1, 2L2, 3L3, 4Count, 5Prop, 6Trend, 7Hot
+                const count = parseInt(cells[4]?.textContent?.replace(/,/g, '')?.trim()) || 0;
+                
+                // 环比提取
+                const trendEl = cells[6]?.querySelector('.trend-up, .trend-down, .rise, .fall, .trend');
                 const trendText = trendEl?.textContent?.trim() || '0%';
-                const trendMatch = trendText.match(/([\d.]+)%/);
-                const trend = trendMatch ? parseFloat(trendMatch[1]) * (trendText.includes('down') ? -1 : 1) : 0;
-                const hot = parseInt(cells[5]?.querySelector('.hot-value')?.textContent?.trim()) || 0;
+                const trendVal = parseFloat(trendText.replace(/[^0-9.-]/g, '')) || 0;
+                const trendSign = (trendEl?.classList.contains('trend-down') || trendEl?.classList.contains('fall')) ? -1 : 1;
+                const trend = trendVal * trendSign;
+
+                const hotEl = cells[7]?.querySelector('.hot-value');
+                const hot = parseInt(hotEl?.textContent?.trim() || cells[7]?.textContent?.trim()) || 0;
 
                 return { row: row.cloneNode(true), count, trend, hot };
             });
 
-            // 根据排序类型排序
             if (sortType === 'count') {
                 rowData.sort((a, b) => b.count - a.count);
             } else if (sortType === 'trend') {
@@ -1450,11 +1631,9 @@ function initCommonTagSort() {
                 rowData.sort((a, b) => b.hot - a.hot);
             }
 
-            // 重新渲染表格
             tableBody.innerHTML = '';
             rowData.forEach((item, index) => {
                 const newRow = item.row;
-                // 更新排名显示
                 const rankBadge = newRow.querySelector('.rank-badge');
                 if (rankBadge) {
                     rankBadge.textContent = index + 1;
@@ -1476,38 +1655,40 @@ function initResistanceSort() {
 
     sortBtns.forEach(btn => {
         btn.addEventListener('click', function() {
-            // 更新按钮状态
             sortBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
             const sortType = this.dataset.sort;
             const rows = Array.from(tableBody.querySelectorAll('tr'));
 
-            // 提取每行数据进行排序
             const rowData = rows.map(row => {
                 const cells = row.querySelectorAll('td');
-                const count = parseInt(cells[2]?.textContent?.trim()) || 0;
-                // 提取环比数值
-                const trendEl = cells[4]?.querySelector('.trend-up, .trend-down');
+                // 索引同上：4Count, 6Trend, 7Hot
+                const count = parseInt(cells[4]?.textContent?.replace(/,/g, '')?.trim()) || 0;
+                
+                const trendEl = cells[6]?.querySelector('.trend-up, .trend-down, .rise, .fall, .trend');
                 const trendText = trendEl?.textContent?.trim() || '0%';
-                const trendMatch = trendText.match(/([\d.]+)%/);
-                const trend = trendMatch ? parseFloat(trendMatch[1]) * (trendText.includes('down') ? -1 : 1) : 0;
+                const trendVal = parseFloat(trendText.replace(/[^0-9.-]/g, '')) || 0;
+                const trendSign = (trendEl?.classList.contains('trend-down') || trendEl?.classList.contains('fall')) ? -1 : 1;
+                const trend = trendVal * trendSign;
 
-                return { row: row.cloneNode(true), count, trend };
+                const hotEl = cells[7]?.querySelector('.hot-value');
+                const hot = parseInt(hotEl?.textContent?.trim() || cells[7]?.textContent?.trim()) || 0;
+
+                return { row: row.cloneNode(true), count, trend, hot };
             });
 
-            // 根据排序类型排序
             if (sortType === 'count') {
                 rowData.sort((a, b) => b.count - a.count);
             } else if (sortType === 'trend') {
                 rowData.sort((a, b) => b.trend - a.trend);
+            } else if (sortType === 'hot') {
+                rowData.sort((a, b) => b.hot - a.hot);
             }
 
-            // 重新渲染表格
             tableBody.innerHTML = '';
             rowData.forEach((item, index) => {
                 const newRow = item.row;
-                // 更新排名显示
                 const rankBadge = newRow.querySelector('.rank-badge');
                 if (rankBadge) {
                     rankBadge.textContent = index + 1;
@@ -1519,8 +1700,596 @@ function initResistanceSort() {
     });
 }
 
+/**
+ * 修复报表表格的层级结构（处理 rowspan）
+ */
+function fixTableHierarchy(tbody) {
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    if (rows.length === 0) return;
+
+    // 先补全所有行的分类单元格，确保每行都有 L1, L2, L3 对应的 td
+    rows.forEach(row => {
+        let l1 = row.querySelector('.col-l1');
+        if (!l1) {
+            l1 = document.createElement('td');
+            l1.className = 'row-header col-l1';
+            row.insertBefore(l1, row.firstChild);
+        }
+        l1.textContent = row.dataset.l1 || '';
+        l1.rowSpan = 1;
+        l1.style.display = '';
+
+        let l2 = row.querySelector('.col-l2');
+        if (!l2) {
+            l2 = document.createElement('td');
+            l2.className = 'row-header col-l2';
+            const l3 = row.querySelector('.col-l3');
+            row.insertBefore(l2, l3);
+        }
+        l2.textContent = row.dataset.l2 || '';
+        l2.rowSpan = 1;
+        l2.style.display = '';
+    });
+
+    // 重新计算并应用合并逻辑
+    let prevL1Cell = null, prevL2Cell = null;
+    let l1Count = 0, l2Count = 0;
+
+    rows.forEach((row, i) => {
+        const l1 = row.querySelector('.col-l1'), l2 = row.querySelector('.col-l2');
+        const v1 = row.dataset.l1, v2 = row.dataset.l2;
+
+        if (prevL1Cell && prevL1Cell.textContent === v1) {
+            l1.style.display = 'none';
+            l1Count++;
+            prevL1Cell.rowSpan = l1Count;
+        } else {
+            prevL1Cell = l1;
+            l1Count = 1;
+        }
+
+        const isSameL1 = (i > 0 && rows[i-1].dataset.l1 === v1);
+        if (prevL2Cell && prevL2Cell.textContent === v2 && isSameL1) {
+            l2.style.display = 'none';
+            l2Count++;
+            prevL2Cell.rowSpan = l2Count;
+        } else {
+            prevL2Cell = l2;
+            l2Count = 1;
+        }
+    });
+}
+
+function initReportTableSort() {
+    const tables = document.querySelectorAll('.report-table');
+    tables.forEach(table => {
+        const headers = table.querySelectorAll('thead th');
+        const tbody = table.querySelector('tbody');
+        if (!tbody) return;
+
+        headers.forEach((th, index) => {
+            const sortIcon = th.querySelector('.sort-icon');
+            if (!sortIcon) return;
+            th.onclick = () => {
+                const dir = th.dataset.sortDir === 'desc' ? 'asc' : 'desc';
+                th.dataset.sortDir = dir;
+                headers.forEach(h => h !== th && (h.dataset.sortDir = ''));
+
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                rows.sort((a, b) => {
+                    const getNum = (r) => {
+                        const td = r.querySelectorAll('td:not(.col-l1):not(.col-l2):not(.col-l3)')[index - 3];
+                        return parseInt(td?.querySelector('.count')?.textContent || '0');
+                    };
+                    return dir === 'desc' ? getNum(b) - getNum(a) : getNum(a) - getNum(b);
+                });
+                tbody.innerHTML = '';
+                rows.forEach(r => tbody.appendChild(r));
+                fixTableHierarchy(tbody);
+            };
+        });
+    });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     initCommonTagSort();
     initResistanceSort();
+    initReportTableSort();
+    initReportTableFilter();
 });
+
+/**
+ * 报表筛选层级数据定义
+ */
+const filterHierarchyData = {
+    common: {
+        '核心标签': {
+            '购车时间': ['计划7天', '计划一个月内买车', '计划三个月内买车']
+        },
+        '补充标签': {
+            '到店行为': ['7天内到店', '已到店-是'],
+            '购车意向': ['有意向未确定', '明确购车意向'],
+            '购买形态': ['首购', '换购'],
+            '客服意愿': ['同意/已经加微信']
+        }
+    },
+    res: {
+        '强抗拒': {
+            '需求终止': ['无购车需求', '已买车'],
+            '意愿拒绝': ['拒绝被联系', '对品牌不认可'],
+            '条件限制': ['店内无法上牌', '无法跨区域购买']
+        },
+        '弱抗拒': {
+            '资金障碍': ['购买力不足', '无法获取底价'],
+            '便利性障碍': ['近期不方便到店', '店铺距离远'],
+            '决策障碍': ['无法直接决策'],
+            '产品方案': ['配置不满意', '无现车'],
+            '价格方案': ['价格不满意', '优惠不满意']
+        }
+    }
+};
+
+/**
+ * 初始化分析报表的筛选功能
+ * 升级：支持三级级联下拉、查询与重置按钮
+ */
+function initReportTableFilter() {
+    const tables = document.querySelectorAll('.report-table');
+    tables.forEach(table => {
+        const tbody = table.querySelector('tbody');
+        if (!tbody) return;
+        const originalRows = Array.from(tbody.querySelectorAll('tr'));
+        const filterArea = table.closest('.report-section').querySelector('.report-filters');
+        if (!filterArea) return;
+
+        const type = filterArea.dataset.type;
+        const l1Select = filterArea.querySelector('.l1-filter');
+        const l2Select = filterArea.querySelector('.l2-filter');
+        const l3Select = filterArea.querySelector('.l3-filter');
+        const btnSearch = filterArea.querySelector('.btn-search');
+        const btnReset = filterArea.querySelector('.btn-reset');
+
+        // 初始化每行的 dataset
+        let curL1 = '', curL2 = '';
+        originalRows.forEach(row => {
+            const l1 = row.querySelector('.col-l1');
+            const l2 = row.querySelector('.col-l2');
+            if (l1) curL1 = l1.textContent.trim();
+            if (l2) curL2 = l2.textContent.trim();
+            row.dataset.l1 = curL1;
+            row.dataset.l2 = curL2;
+            row.dataset.l3 = row.querySelector('.col-l3')?.textContent.trim() || '';
+        });
+
+        const updateL2 = () => {
+            const v1 = l1Select.value;
+            l2Select.innerHTML = '<option value="">二级分类</option>';
+            l3Select.innerHTML = '<option value="">三级标签</option>';
+            if (v1 && filterHierarchyData[type][v1]) {
+                Object.keys(filterHierarchyData[type][v1]).forEach(v2 => {
+                    const opt = document.createElement('option');
+                    opt.value = opt.textContent = v2;
+                    l2Select.appendChild(opt);
+                });
+            }
+        };
+
+        const updateL3 = () => {
+            const v1 = l1Select.value, v2 = l2Select.value;
+            l3Select.innerHTML = '<option value="">三级标签</option>';
+            if (v1 && v2 && filterHierarchyData[type][v1][v2]) {
+                filterHierarchyData[type][v1][v2].forEach(v3 => {
+                    const opt = document.createElement('option');
+                    opt.value = opt.textContent = v3;
+                    l3Select.appendChild(opt);
+                });
+            }
+        };
+
+        l1Select.onchange = updateL2;
+        l2Select.onchange = updateL3;
+
+        const apply = () => {
+            const v1 = l1Select.value, v2 = l2Select.value, v3 = l3Select.value;
+            const matches = originalRows.filter(r => 
+                (!v1 || r.dataset.l1 === v1) && 
+                (!v2 || r.dataset.l2 === v2) && 
+                (!v3 || r.dataset.l3 === v3)
+            );
+            tbody.innerHTML = '';
+            if (matches.length === 0) {
+                const colspan = table.querySelectorAll('thead th').length;
+                tbody.innerHTML = `<tr><td colspan="${colspan}" style="text-align:center;padding:40px;color:#999">暂无匹配数据</td></tr>`;
+            } else {
+                matches.forEach(r => tbody.appendChild(r));
+                fixTableHierarchy(tbody);
+            }
+        };
+
+        btnSearch.onclick = apply;
+        btnReset.onclick = () => {
+            l1Select.value = '';
+            updateL2();
+            apply();
+        };
+
+        // 初次加载确保状态正确
+        fixTableHierarchy(tbody);
+    });
+}
+
+// ==================== 趋势分析核心数据 ====================
+
+// 常见标签三级分类数据（用于趋势分析模拟）
+const commonTagsTreeData = {
+    l1: [
+        { name: '核心标签', count: 1250 },
+        { name: '补充标签', count: 680 }
+    ],
+    l2: [
+        { name: '计划购车时间', l1Name: '核心标签', count: 580 },
+        { name: '预计到店时间', l1Name: '核心标签', count: 420 },
+        { name: '购车意向', l1Name: '补充标签', count: 380 },
+        { name: '首购/换购', l1Name: '补充标签', count: 180 },
+        { name: '到店情况', l1Name: '补充标签', count: 120 }
+    ],
+    l3: [
+        { name: '计划7天', l1Name: '核心标签', l2Name: '计划购车时间', count: 98 },
+        { name: '计划一个月内买车', l1Name: '核心标签', l2Name: '计划购车时间', count: 245 },
+        { name: '计划三个月内买车', l1Name: '核心标签', l2Name: '计划购车时间', count: 428 },
+        { name: '计划三个月后买车', l1Name: '核心标签', l2Name: '计划购车时间', count: 156 },
+        { name: '7天内', l1Name: '核心标签', l2Name: '预计到店时间', count: 128 },
+        { name: '14天内', l1Name: '核心标签', l2Name: '预计到店时间', count: 356 },
+        { name: '30天内', l1Name: '核心标签', l2Name: '预计到店时间', count: 89 },
+        { name: '有意向未确定', l1Name: '核心标签', l2Name: '预计到店时间', count: 186 },
+        { name: '明确购车意向', l1Name: '补充标签', l2Name: '购车意向', count: 298 },
+        { name: '有意向未确定', l1Name: '补充标签', l2Name: '购车意向', count: 82 },
+        { name: '首购', l1Name: '补充标签', l2Name: '首购/换购', count: 142 },
+        { name: '换购', l1Name: '补充标签', l2Name: '首购/换购', count: 86 },
+        { name: '已到店-是', l1Name: '补充标签', l2Name: '到店情况', count: 76 },
+        { name: '同意', l1Name: '补充标签', l2Name: '到店情况', count: 44 }
+    ]
+};
+
+// 抗拒点三级分类数据（用于趋势分析模拟）
+const resistanceTagsTreeData = {
+    l1: [
+        { name: '强抗拒', count: 890 },
+        { name: '弱抗拒', count: 567 }
+    ],
+    l2: [
+        { name: '需求终止', l1Name: '强抗拒', count: 445 },
+        { name: '意愿拒绝', l1Name: '强抗拒', count: 320 },
+        { name: '产品方案', l1Name: '弱抗拒', count: 189 },
+        { name: '价格方案', l1Name: '弱抗拒', count: 234 },
+        { name: '资金障碍', l1Name: '弱抗拒', count: 144 }
+    ],
+    l3: [
+        { name: '无购车需求', l1Name: '强抗拒', l2Name: '需求终止', count: 278 },
+        { name: '已买车', l1Name: '强抗拒', l2Name: '需求终止', count: 167 },
+        { name: '拒绝被联系', l1Name: '强抗拒', l2Name: '意愿拒绝', count: 78 },
+        { name: '优惠不满意', l1Name: '弱抗拒', l2Name: '价格方案', count: 189 },
+        { name: '价格不满意', l1Name: '弱抗拒', l2Name: '价格方案', count: 312 },
+        { name: '分期费用高', l1Name: '弱抗拒', l2Name: '价格方案', count: 123 },
+        { name: '配置不满意', l1Name: '弱抗拒', l2Name: '产品方案', count: 112 },
+        { name: '无现车', l1Name: '弱抗拒', l2Name: '产品方案', count: 98 },
+        { name: '首付不够', l1Name: '弱抗拒', l2Name: '资金障碍', count: 89 }
+    ]
+};
+
+// ==================== 趋势分析核心逻辑 ====================
+
+// 统一趋势图颜色方案
+const trendChartColors = [
+    '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
+    '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#ff9f7f'
+];
+
+/**
+ * 通用趋势分析组件类
+ */
+class TrendAnalyzer {
+    constructor(config) {
+        this.config = config;
+        this.selectedTags = [];
+        this.init();
+    }
+
+    init() {
+        const { selectorBtnId, dropdownId, tagListId, chartSvgId, emptyStateId, legendId, searchInputId, clearBtnId, countElId, treeDataGetter } = this.config;
+
+        const selectorBtn = document.getElementById(selectorBtnId);
+        const dropdown = document.getElementById(dropdownId);
+        if (!selectorBtn || !dropdown) return;
+
+        selectorBtn.onclick = (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('show');
+            if (dropdown.classList.contains('show')) {
+                this.renderTagList();
+            }
+        };
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest(`#${dropdownId}`) && !e.target.closest(`#${selectorBtnId}`)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        const searchInput = document.getElementById(searchInputId);
+        if (searchInput) {
+            searchInput.oninput = (e) => {
+                const keyword = e.target.value.toLowerCase();
+                const items = document.querySelectorAll(`#${tagListId} .tag-tree-level`);
+                items.forEach(item => {
+                    const nameEl = item.querySelector('.tag-item-name');
+                    if (nameEl) {
+                        const name = nameEl.textContent.toLowerCase();
+                        item.style.display = name.includes(keyword) ? '' : 'none';
+                    }
+                });
+            };
+        }
+
+        const clearBtn = document.getElementById(clearBtnId);
+        if (clearBtn) {
+            clearBtn.onclick = () => {
+                this.selectedTags = [];
+                this.updateUI();
+            };
+        }
+
+        this.setDefaultSelection();
+    }
+
+    setDefaultSelection() {
+        const treeData = this.config.treeDataGetter();
+        if (!treeData || !treeData.l3 || treeData.l3.length === 0) return;
+        const topTag = treeData.l3.reduce((max, tag) => tag.count > max.count ? tag : max, treeData.l3[0]);
+        if (topTag) {
+            this.selectedTags = [{
+                name: topTag.name, level: 3, l1Name: topTag.l1Name, l2Name: topTag.l2Name,
+                color: trendChartColors[0], count: topTag.count
+            }];
+            this.updateUI();
+        }
+    }
+
+    renderTagList() {
+        const container = document.getElementById(this.config.tagListId);
+        if (!container) return;
+        const treeData = this.config.treeDataGetter();
+        let html = '';
+
+        treeData.l1.forEach((l1, l1Idx) => {
+            html += `<div class="tag-tree-level tag-tree-l1" data-level="1" data-name="${l1.name}">
+                <div class="tag-tree-row">
+                    <i class="fa-solid fa-chevron-right tag-tree-toggle"></i>
+                    <div class="tag-checkbox"><i class="fa-solid fa-check"></i></div>
+                    <span class="tag-item-name">${l1.name}</span>
+                    <span class="tag-item-color" style="background:${trendChartColors[l1Idx % 10]}"></span>
+                    <span class="tag-level-badge">一级</span>
+                </div><div class="tag-tree-children" style="display:none">`;
+            
+            treeData.l2.filter(l2 => l2.l1Name === l1.name).forEach((l2, l2Idx) => {
+                html += `<div class="tag-tree-level tag-tree-l2" data-level="2" data-name="${l2.name}" data-l1name="${l1.name}">
+                    <div class="tag-tree-row">
+                        <i class="fa-solid fa-chevron-right tag-tree-toggle"></i>
+                        <div class="tag-checkbox"><i class="fa-solid fa-check"></i></div>
+                        <span class="tag-item-name">${l2.name}</span>
+                        <span class="tag-item-color" style="background:${trendChartColors[(l1Idx*3+l2Idx)%10]}"></span>
+                        <span class="tag-level-badge">二级</span>
+                    </div><div class="tag-tree-children" style="display:none">`;
+                
+                treeData.l3.filter(l3 => l3.l2Name === l2.name).forEach((l3, l3Idx) => {
+                    html += `<div class="tag-tree-level tag-tree-l3" data-level="3" data-name="${l3.name}" data-l1name="${l1.name}" data-l2name="${l2.name}">
+                        <div class="tag-tree-row">
+                            <div class="tag-checkbox"><i class="fa-solid fa-check"></i></div>
+                            <span class="tag-item-name">${l3.name}</span>
+                            <span class="tag-item-color" style="background:${trendChartColors[(l1Idx*5+l2Idx*2+l3Idx)%10]}"></span>
+                            <span class="tag-level-badge">三级</span>
+                        </div></div>`;
+                });
+                html += `</div></div>`;
+            });
+            html += `</div></div>`;
+        });
+
+        container.innerHTML = html;
+        container.querySelectorAll('.tag-tree-toggle').forEach(t => t.onclick = (e) => {
+            e.stopPropagation();
+            const child = t.closest('.tag-tree-row').nextElementSibling;
+            child.style.display = child.style.display === 'none' ? 'block' : 'none';
+            t.classList.toggle('expanded');
+        });
+
+        container.querySelectorAll('.tag-tree-row').forEach(row => row.onclick = () => {
+            const item = row.closest('.tag-tree-level');
+            const level = parseInt(item.dataset.level);
+            const name = item.dataset.name;
+            const l1Name = item.dataset.l1name || '';
+            const l2Name = item.dataset.l2name || '';
+
+            const idx = this.selectedTags.findIndex(t => t.name === name && t.level === level && (level < 2 || t.l1Name === l1Name) && (level < 3 || t.l2Name === l2Name));
+            if (idx >= 0) this.selectedTags.splice(idx, 1);
+            else if (this.selectedTags.length < 8) {
+                const data = treeData[`l${level}`].find(d => d.name === name && (level < 2 || d.l1Name === l1Name) && (level < 3 || d.l2Name === l2Name));
+                this.selectedTags.push({ name, level, l1Name, l2Name, count: data?data.count:50, color: trendChartColors[this.selectedTags.length % 10] });
+            } else alert('最多选择8个标签');
+            this.updateUI();
+        });
+        this.updateTagListUI();
+    }
+
+    updateTagListUI() {
+        const container = document.getElementById(this.config.tagListId);
+        if (container) container.querySelectorAll('.tag-tree-level').forEach(item => {
+            const isSelected = this.selectedTags.some(t => t.name === item.dataset.name && t.level === parseInt(item.dataset.level));
+            item.classList.toggle('selected', isSelected);
+        });
+    }
+
+    updateUI() {
+        this.updateTagListUI();
+        const countEl = document.getElementById(this.config.countElId);
+        if (countEl) {
+            countEl.textContent = this.selectedTags.length;
+            countEl.style.display = this.selectedTags.length > 0 ? '' : 'none';
+        }
+        this.renderLineChart();
+    }
+
+    renderLineChart() {
+        const svg = document.getElementById(this.config.chartSvgId);
+        if (!svg) return;
+        const legend = document.getElementById(this.config.legendId);
+        const empty = document.getElementById(this.config.emptyStateId);
+
+        if (this.selectedTags.length === 0) {
+            svg.style.display = 'none';
+            empty.style.display = 'flex';
+            legend.innerHTML = '';
+            return;
+        }
+
+        svg.style.display = '';
+        empty.style.display = 'none';
+
+        // 根据日期区间动态决定粒度
+        const dateInfo = this.getDatesAndGranularity();
+        const { dates, isWeekly } = dateInfo;
+        const pointCount = dates.length;
+
+        const allData = this.selectedTags.map(tag => ({ ...tag, dates: dates, values: this.getValues(tag.count, pointCount) }));
+        const w = svg.parentElement.clientWidth - 32, h = 260, pad = { t: 30, b:40, l:60, r:20 }, plotW = w-pad.l-pad.r, plotH = h-pad.t-pad.b;
+        
+        const allVal = allData.flatMap(d => d.values);
+        const maxVal = Math.ceil(Math.max(...allVal, 10) * 1.1);
+        const minVal = Math.floor(Math.min(...allVal, 0) * 0.9);
+        
+        // 动态计算横轴步长
+        const xStep = plotW / Math.max(pointCount - 1, 1);
+
+        let svgHtml = '';
+        // 绘制 Y 轴
+        for(let i=0; i<=5; i++) {
+            const y = pad.t + (plotH/5)*i;
+            svgHtml += `<line x1="${pad.l}" y1="${y}" x2="${w-pad.r}" y2="${y}" stroke="#f0f0f0" stroke-dasharray="4,2"/>`;
+            svgHtml += `<text x="${pad.l-10}" y="${y+4}" text-anchor="end" font-size="11" fill="#999">${Math.round(maxVal - (maxVal-minVal)*i/5)}</text>`;
+        }
+
+        // 绘制 X 轴日期标签
+        const labelInterval = isWeekly ? 1 : (pointCount > 15 ? 5 : 2);
+        for(let i=0; i < pointCount; i += labelInterval) {
+            const x = pad.l + i * xStep;
+            const fullDate = dates[i];
+            const displayDate = isWeekly ? fullDate : fullDate.substring(5); // 周展示全名/日期截取
+            svgHtml += `<text x="${x}" y="${h-15}" text-anchor="middle" font-size="10" fill="#999">${displayDate}</text>`;
+        }
+
+        allData.forEach((s, sIdx) => {
+            const points = s.values.map((v, i) => `${pad.l+i*xStep},${pad.t+plotH-((v-minVal)/(maxVal-minVal || 1))*plotH}`).join(' ');
+            svgHtml += `<polyline points="${points}" fill="none" stroke="${s.color}" stroke-width="2.5" />`;
+            s.values.forEach((v, i) => {
+                const x = pad.l+i*xStep, y = pad.t+plotH-((v-minVal)/(maxVal-minVal || 1))*plotH;
+                svgHtml += `<circle cx="${x}" cy="${y}" r="12" fill="transparent" class="data-point" data-idx="${i}" data-v="${v}" data-date="${s.dates[i]}" data-sidx="${sIdx}"/>`;
+                svgHtml += `<circle cx="${x}" cy="${y}" r="4" fill="${s.color}" stroke="white" stroke-width="2"/>`;
+            });
+        });
+
+        svgHtml += `<g class="chart-tooltip" style="display:none"><rect class="tip-bg" rx="6" fill="rgba(0,0,0,0.85)"/><text class="tip-date" text-anchor="middle" fill="white" font-size="11"/><g class="tip-content"></g></g>`;
+        svg.innerHTML = svgHtml;
+        svg.setAttribute('width', w);
+        svg.setAttribute('height', h);
+
+        const tip = svg.querySelector('.chart-tooltip'), bg = tip.querySelector('.tip-bg'), dateEl = tip.querySelector('.tip-date'), cont = tip.querySelector('.tip-content');
+        svg.onmousemove = (e) => {
+            const p = e.target.closest('.data-point');
+            if (!p) { tip.style.display = 'none'; return; }
+            tip.style.display = 'block';
+            dateEl.textContent = p.dataset.date;
+            dateEl.setAttribute('x', 70); dateEl.setAttribute('y', 20);
+            cont.innerHTML = allData.map((s, i) => `<text x="12" y="${38+i*16}" fill="${s.color}" font-size="11">${s.name}: ${s.values[p.dataset.idx]}</text>`).join('');
+            bg.setAttribute('width', 140); bg.setAttribute('height', 45+allData.length*16);
+            const r = svg.getBoundingClientRect();
+            let x = e.clientX-r.left+15, y = e.clientY-r.top-40;
+            if (x+150 > r.width) x -= 170;
+            tip.setAttribute('transform', `translate(${x},${y})`);
+        };
+        svg.onmouseleave = () => tip.style.display = 'none';
+        legend.innerHTML = allData.map(s => `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span>${s.name}</span></div>`).join('');
+    }
+
+    getDatesAndGranularity() {
+        const startInput = document.getElementById('startDate');
+        const endInput = document.getElementById('endDate');
+        const start = new Date(startInput?.value || '2024-05-01');
+        const end = new Date(endInput?.value || '2024-05-30');
+        
+        const diffDays = Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) + 1;
+        const isWeekly = diffDays > 31;
+        const dates = [];
+
+        if (isWeekly) {
+            // 按周生成，如 2024-W19
+            let current = new Date(start);
+            while (current <= end) {
+                const weekNum = this.getWeekNumber(current);
+                const label = `${current.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
+                if (!dates.includes(label)) dates.push(label);
+                current.setDate(current.getDate() + 7);
+            }
+        } else {
+            // 按日生成
+            let current = new Date(start);
+            for(let i=0; i < diffDays; i++) {
+                dates.push(formatDate(current));
+                current.setDate(current.getDate() + 1);
+            }
+        }
+        return { dates, isWeekly };
+    }
+
+    getWeekNumber(d) {
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return weekNo;
+    }
+
+    getValues(base, count) {
+        const v = [];
+        for(let i=0; i < count; i++) v.push(Math.round(base * (0.8 + Math.random()*0.4)));
+        return v;
+    }
+}
+
+function initAnalyzers() {
+    window.commonAnalyzer = new TrendAnalyzer({
+        selectorBtnId: 'openTagSelector', dropdownId: 'tagDropdown', tagListId: 'tagListForSelection',
+        chartSvgId: 'lineChartSvg', emptyStateId: 'chartEmptyState', legendId: 'chartLegend',
+        searchInputId: 'tagSearchInput', clearBtnId: 'clearAllTags', countElId: 'selectedTagCount',
+        treeDataGetter: () => commonTagsTreeData
+    });
+
+    window.resistanceAnalyzer = new TrendAnalyzer({
+        selectorBtnId: 'openTagSelector2', dropdownId: 'tagDropdown2', tagListId: 'tagListForSelection2',
+        chartSvgId: 'lineChartSvg2', emptyStateId: 'chartEmptyState2', legendId: 'chartLegend2',
+        searchInputId: 'tagSearchInput2', clearBtnId: 'clearAllTags2', countElId: 'selectedTagCount2',
+        treeDataGetter: () => resistanceTagsTreeData
+    });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        setTimeout(() => {
+            if (window.commonAnalyzer) window.commonAnalyzer.renderLineChart();
+            if (window.resistanceAnalyzer) window.resistanceAnalyzer.renderLineChart();
+        }, 300);
+    });
+});
+
+window.addEventListener('load', initAnalyzers);
+
 

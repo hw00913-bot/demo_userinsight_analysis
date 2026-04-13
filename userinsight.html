@@ -105,13 +105,18 @@
                 <div class="filter-section">
                     <div class="filter-row">
                         <div class="filter-item">
-                            <label class="filter-label">统计日期区间:</label>
+                            <label class="filter-label">统计日期区间
+                                <div class="tooltip-container">
+                                    <i class="fa-regular fa-circle-question" style="font-size: 14px; opacity: 0.6; margin-left: 4px;"></i>
+                                    <span class="tooltip-text" style="white-space: normal; width: 200px;">基于智能体记录的“通话开始时间”进行统计</span>
+                                </div>:
+                            </label>
                             <input type="date" class="filter-input" id="startDate">
                             <span class="date-separator">至</span>
                             <input type="date" class="filter-input" id="endDate">
                         </div>
                         <div class="filter-item">
-                            <label class="filter-label">呼叫类型:</label>
+                            <label class="filter-label">呼叫渠道:</label>
                             <select class="filter-select" id="callType">
                                 <option value="all">全部</option>
                                 <option value="manual">人工外呼</option>
@@ -165,10 +170,6 @@
                         <button class="btn-secondary" id="downloadFullDetailBtn">
                             <i class="fa-solid fa-download"></i>
                             下载明细数据
-                        </button>
-                        <button class="btn-secondary" id="manualReviewBtn">
-                            <i class="fa-solid fa-user-check"></i>
-                            人工复核
                         </button>
                     </div>
                 </div>
@@ -270,103 +271,110 @@
                             <div class="tab-reports-row">
                                 <!-- 报表1：按业务类型统计 -->
                                 <div class="report-section">
-                                    <div class="report-header">
+                                    <div class="report-header hierarchical-header">
                                         <h4 class="report-title">按业务类型统计</h4>
+                                        <div class="report-filters" data-type="common">
+                                            <div class="filter-group">
+                                                <select class="filter-select l1-filter">
+                                                    <option value="">一级分类</option>
+                                                    <option value="核心标签">核心标签</option>
+                                                    <option value="补充标签">补充标签</option>
+                                                </select>
+                                                <select class="filter-select l2-filter">
+                                                    <option value="">二级分类</option>
+                                                </select>
+                                                <select class="filter-select l3-filter">
+                                                    <option value="">三级标签</option>
+                                                </select>
+                                            </div>
+                                            <div class="filter-actions">
+                                                <button class="filter-btn primary-btn btn-search">查询</button>
+                                                <button class="filter-btn secondary-btn btn-reset">重置</button>
+                                                <button class="filter-btn export-btn"><i class="fa-solid fa-download"></i> 导出报表</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="report-table-wrapper">
                                         <table class="report-table">
                                             <thead>
                                                 <tr>
-                                                    <th class="row-header"></th>
-                                                    <th>NEV新线索</th>
-                                                    <th>NEV冷线索</th>
-                                                    <th>NEV留资未满</th>
+                                                    <th class="row-header col-l1">一级分类</th>
+                                                    <th class="row-header col-l2">二级分类</th>
+                                                    <th class="row-header col-l3">三级标签</th>
+                                                    <th>NEV新线索 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>NEV冷线索 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>NEV留资未满 <i class="fa-solid fa-sort sort-icon"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <!-- 核心标签 -->
                                                 <tr>
-                                                    <td class="row-header">计划7天</td>
+                                                    <td class="row-header col-l1" rowspan="3">核心标签</td>
+                                                    <td class="row-header col-l2" rowspan="3">购车时间</td>
+                                                    <td class="row-header col-l3">计划7天</td>
                                                     <td><span class="count">156</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.5%</span></td>
                                                     <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.3%</span></td>
                                                     <td><span class="count">234</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.2%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">计划一个月内买车</td>
+                                                    <td class="row-header col-l3">计划一个月内买车</td>
                                                     <td><span class="count">312</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>15.7%</span></td>
                                                     <td><span class="count">178</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.1%</span></td>
                                                     <td><span class="count">456</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.8%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">计划三个月内买车</td>
+                                                    <td class="row-header col-l3">计划三个月内买车</td>
                                                     <td><span class="count">428</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>18.2%</span></td>
                                                     <td><span class="count">267</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.8%</span></td>
                                                     <td><span class="count">389</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.1%</span></td>
                                                 </tr>
+                                                <!-- 补充标签 -->
                                                 <tr>
-                                                    <td class="row-header">7天内到店</td>
+                                                    <td class="row-header col-l1" rowspan="7">补充标签</td>
+                                                    <td class="row-header col-l2" rowspan="2">到店行为</td>
+                                                    <td class="row-header col-l3">7天内到店</td>
                                                     <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>22.4%</span></td>
                                                     <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.2%</span></td>
                                                     <td><span class="count">123</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.6%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">有意向未确定</td>
-                                                    <td><span class="count">211</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.1%</span></td>
-                                                    <td><span class="count">134</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>1.8%</span></td>
-                                                    <td><span class="count">178</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.3%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">明确购车意向</td>
-                                                    <td><span class="count">345</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>18.9%</span></td>
-                                                    <td><span class="count">223</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.4%</span></td>
-                                                    <td><span class="count">289</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.5%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">首购</td>
-                                                    <td><span class="count">198</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>13.6%</span></td>
-                                                    <td><span class="count">145</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.5%</span></td>
-                                                    <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.2%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">换购</td>
-                                                    <td><span class="count">167</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>10.4%</span></td>
-                                                    <td><span class="count">112</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.7%</span></td>
-                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.9%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">已到店-是</td>
+                                                    <td class="row-header col-l3">已到店-是</td>
                                                     <td><span class="count">142</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>16.8%</span></td>
                                                     <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.6%</span></td>
                                                     <td><span class="count">156</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.3%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">同意/已经加微信</td>
+                                                    <td class="row-header col-l2" rowspan="2">购车意向</td>
+                                                    <td class="row-header col-l3">有意向未确定</td>
+                                                    <td><span class="count">211</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.1%</span></td>
+                                                    <td><span class="count">134</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>1.8%</span></td>
+                                                    <td><span class="count">178</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.3%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l3">明确购车意向</td>
+                                                    <td><span class="count">345</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>18.9%</span></td>
+                                                    <td><span class="count">223</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.4%</span></td>
+                                                    <td><span class="count">289</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.5%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2" rowspan="2">购买形态</td>
+                                                    <td class="row-header col-l3">首购</td>
+                                                    <td><span class="count">198</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>13.6%</span></td>
+                                                    <td><span class="count">145</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.5%</span></td>
+                                                    <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.2%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l3">换购</td>
+                                                    <td><span class="count">167</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>10.4%</span></td>
+                                                    <td><span class="count">112</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.7%</span></td>
+                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.9%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2">客服意愿</td>
+                                                    <td class="row-header col-l3">同意/已经加微信</td>
                                                     <td><span class="count">356</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>21.3%</span></td>
                                                     <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.4%</span></td>
                                                     <td><span class="count">312</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>6.7%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">优惠活动</td>
-                                                    <td><span class="count">128</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>14.5%</span></td>
-                                                    <td><span class="count">89</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.2%</span></td>
-                                                    <td><span class="count">167</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.1%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">价格优惠</td>
-                                                    <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.2%</span></td>
-                                                    <td><span class="count">72</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.9%</span></td>
-                                                    <td><span class="count">134</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.4%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">产品力</td>
-                                                    <td><span class="count">86</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.7%</span></td>
-                                                    <td><span class="count">64</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.1%</span></td>
-                                                    <td><span class="count">112</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.8%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">安全</td>
-                                                    <td><span class="count">72</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.4%</span></td>
-                                                    <td><span class="count">52</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.3%</span></td>
-                                                    <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.6%</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -374,129 +382,132 @@
                                 </div>
                                 <!-- 报表2：按R渠道统计 -->
                                 <div class="report-section">
-                                    <div class="report-header">
+                                    <div class="report-header hierarchical-header">
                                         <h4 class="report-title">按R渠道统计</h4>
+                                        <div class="report-filters" data-type="common">
+                                            <div class="filter-group">
+                                                <select class="filter-select l1-filter">
+                                                    <option value="">一级分类</option>
+                                                    <option value="核心标签">核心标签</option>
+                                                    <option value="补充标签">补充标签</option>
+                                                </select>
+                                                <select class="filter-select l2-filter">
+                                                    <option value="">二级分类</option>
+                                                </select>
+                                                <select class="filter-select l3-filter">
+                                                    <option value="">三级标签</option>
+                                                </select>
+                                            </div>
+                                            <div class="filter-actions">
+                                                <button class="filter-btn primary-btn btn-search">查询</button>
+                                                <button class="filter-btn secondary-btn btn-reset">重置</button>
+                                                <button class="filter-btn export-btn"><i class="fa-solid fa-download"></i> 导出报表</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="report-table-wrapper">
                                         <table class="report-table">
                                             <thead>
                                                 <tr>
-                                                    <th class="row-header"></th>
-                                                    <th>R1</th>
-                                                    <th>R2</th>
-                                                    <th>R3</th>
-                                                    <th>R4</th>
+                                                    <th class="row-header col-l1">一级分类</th>
+                                                    <th class="row-header col-l2">二级分类</th>
+                                                    <th class="row-header col-l3">三级标签</th>
+                                                    <th>R1 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>R2 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>R3 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>R4 <i class="fa-solid fa-sort sort-icon"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <!-- 核心标签 -->
                                                 <tr>
-                                                    <td class="row-header">计划7天</td>
+                                                    <td class="row-header col-l1" rowspan="3">核心标签</td>
+                                                    <td class="row-header col-l2" rowspan="3">购车时间</td>
+                                                    <td class="row-header col-l3">计划7天</td>
                                                     <td><span class="count">245</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>18.2%</span></td>
                                                     <td><span class="count">178</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.5%</span></td>
                                                     <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.8%</span></td>
                                                     <td><span class="count">67</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>1.2%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">计划一个月内买车</td>
+                                                    <td class="row-header col-l3">计划一个月内买车</td>
                                                     <td><span class="count">456</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>25.3%</span></td>
                                                     <td><span class="count">312</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.6%</span></td>
                                                     <td><span class="count">134</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.4%</span></td>
                                                     <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.1%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">计划三个月内买车</td>
+                                                    <td class="row-header col-l3">计划三个月内买车</td>
                                                     <td><span class="count">389</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>20.8%</span></td>
                                                     <td><span class="count">267</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.3%</span></td>
                                                     <td><span class="count">145</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.2%</span></td>
                                                     <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.4%</span></td>
                                                 </tr>
+                                                <!-- 补充标签 -->
                                                 <tr>
-                                                    <td class="row-header">7天内到店</td>
+                                                    <td class="row-header col-l1" rowspan="7">补充标签</td>
+                                                    <td class="row-header col-l2" rowspan="2">到店行为</td>
+                                                    <td class="row-header col-l3">7天内到店</td>
                                                     <td><span class="count">156</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>30.5%</span></td>
                                                     <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>15.7%</span></td>
                                                     <td><span class="count">45</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>6.8%</span></td>
                                                     <td><span class="count">34</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.9%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">有意向未确定</td>
-                                                    <td><span class="count">289</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>14.2%</span></td>
-                                                    <td><span class="count">198</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.3%</span></td>
-                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>3.7%</span></td>
-                                                    <td><span class="count">56</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>10.4%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">明确购车意向</td>
-                                                    <td><span class="count">378</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>21.6%</span></td>
-                                                    <td><span class="count">267</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.3%</span></td>
-                                                    <td><span class="count">112</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.1%</span></td>
-                                                    <td><span class="count">100</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.8%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">首购</td>
-                                                    <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>16.8%</span></td>
-                                                    <td><span class="count">156</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.2%</span></td>
-                                                    <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.5%</span></td>
-                                                    <td><span class="count">48</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.3%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">换购</td>
-                                                    <td><span class="count">178</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.9%</span></td>
-                                                    <td><span class="count">123</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.6%</span></td>
-                                                    <td><span class="count">58</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.8%</span></td>
-                                                    <td><span class="count">42</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.7%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">已到店-是</td>
+                                                    <td class="row-header col-l3">已到店-是</td>
                                                     <td><span class="count">156</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>19.4%</span></td>
                                                     <td><span class="count">108</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.8%</span></td>
                                                     <td><span class="count">52</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.3%</span></td>
                                                     <td><span class="count">38</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.2%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">同意/已经加微信</td>
+                                                    <td class="row-header col-l2" rowspan="2">购车意向</td>
+                                                    <td class="row-header col-l3">有意向未确定</td>
+                                                    <td><span class="count">289</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>14.2%</span></td>
+                                                    <td><span class="count">198</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.3%</span></td>
+                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>3.7%</span></td>
+                                                    <td><span class="count">56</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>10.4%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l3">明确购车意向</td>
+                                                    <td><span class="count">378</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>21.6%</span></td>
+                                                    <td><span class="count">267</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.3%</span></td>
+                                                    <td><span class="count">112</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.1%</span></td>
+                                                    <td><span class="count">100</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.8%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2" rowspan="2">购买形态</td>
+                                                    <td class="row-header col-l3">首购</td>
+                                                    <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>16.8%</span></td>
+                                                    <td><span class="count">156</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.2%</span></td>
+                                                    <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.5%</span></td>
+                                                    <td><span class="count">48</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.3%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l3">换购</td>
+                                                    <td><span class="count">178</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.9%</span></td>
+                                                    <td><span class="count">123</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.6%</span></td>
+                                                    <td><span class="count">58</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.8%</span></td>
+                                                    <td><span class="count">42</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.7%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2">客服意愿</td>
+                                                    <td class="row-header col-l3">同意/已经加微信</td>
                                                     <td><span class="count">412</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>24.6%</span></td>
                                                     <td><span class="count">289</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>14.1%</span></td>
                                                     <td><span class="count">134</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>7.2%</span></td>
                                                     <td><span class="count">96</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.8%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">优惠活动</td>
-                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>16.3%</span></td>
-                                                    <td><span class="count">128</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.7%</span></td>
-                                                    <td><span class="count">62</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.4%</span></td>
-                                                    <td><span class="count">45</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.6%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">价格优惠</td>
-                                                    <td><span class="count">145</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>13.8%</span></td>
-                                                    <td><span class="count">98</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.9%</span></td>
-                                                    <td><span class="count">48</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.3%</span></td>
-                                                    <td><span class="count">36</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.2%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">产品力</td>
-                                                    <td><span class="count">112</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>10.5%</span></td>
-                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.2%</span></td>
-                                                    <td><span class="count">38</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.1%</span></td>
-                                                    <td><span class="count">28</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.8%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">安全</td>
-                                                    <td><span class="count">96</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.2%</span></td>
-                                                    <td><span class="count">64</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.8%</span></td>
-                                                    <td><span class="count">32</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.4%</span></td>
-                                                    <td><span class="count">24</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.1%</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                            <!-- 常见标签分析：左右分布布局 -->
+                                <!-- 常见标签分析：新布局 -->
                             <div class="tag-analysis-layout">
-                                <!-- 左侧：标签分类内容 -->
-                                <div class="distribution-column">
-                                    <!-- 常见标签分类分布（双环图） -->
+                                <!-- 第一行：双环图 + 趋势分析左右横放 -->
+                                <div class="trend-pie-row">
+                                    <!-- 双环图 -->
                                     <div class="content-card">
                                         <div class="card-header">
                                             <h3 class="card-title">常见标签分类分布</h3>
@@ -511,9 +522,48 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- 趋势分析 -->
+                                    <div class="content-card trend-analysis-inline">
+                                        <div class="card-header">
+                                            <h3 class="card-title">标签趋势分析</h3>
+                                            <div class="card-actions">
+                                                <div class="tag-selector-wrapper">
+                                                    <button class="tag-selector-btn" id="openTagSelector">
+                                                        <i class="fa-solid fa-chart-line"></i>
+                                                        <span>选择标签</span>
+                                                        <span class="selected-count" id="selectedTagCount">0</span>
+                                                        <i class="fa-solid fa-chevron-down"></i>
+                                                    </button>
+                                                    <div class="tag-dropdown" id="tagDropdown">
+                                                        <div class="tag-dropdown-header">
+                                                            <span>选择要分析的标签（可多选）</span>
+                                                            <button class="clear-all-btn" id="clearAllTags">清空</button>
+                                                        </div>
+                                                        <div class="tag-search-wrapper">
+                                                            <i class="fa-solid fa-search"></i>
+                                                            <input type="text" class="tag-search-input" id="tagSearchInput" placeholder="搜索标签...">
+                                                        </div>
+                                                        <div class="tag-list" id="tagListForSelection">
+                                                            <!-- 动态生成 -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="line-chart-container" id="lineChartContainer">
+                                                <div class="chart-empty-state" id="chartEmptyState">
+                                                    <i class="fa-solid fa-chart-line"></i>
+                                                    <p>请从上方选择标签以查看趋势</p>
+                                                </div>
+                                                <svg class="line-chart-svg" id="lineChartSvg" style="display: none;"></svg>
+                                            </div>
+                                            <div class="chart-legend" id="chartLegend"></div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- 右侧：常见标签排行 -->
-                                <div class="content-card ranking-card">
+                                <!-- 第二行：常见标签排行（满宽） -->
+                                <div class="content-card ranking-card ranking-full-width">
                                     <div class="card-header">
                                         <h3 class="card-title">常见标签排行</h3>
                                         <div class="card-actions">
@@ -528,12 +578,14 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body ranking-card-body" style="max-height: 795px; overflow-y: auto;">
+                                    <div class="card-body ranking-card-body">
                                         <table class="data-table">
                                             <thead>
                                                 <tr>
                                                     <th class="col-rank">排名</th>
-                                                    <th class="col-name">常见标签</th>
+                                                    <th class="col-l1">一级分类</th>
+                                                    <th class="col-l2">二级分类</th>
+                                                    <th class="col-l3">三级标签</th>
                                                     <th class="col-count">提及次数</th>
                                                     <th class="col-proportion">占比</th>
                                                     <th class="col-trend">环比</th>
@@ -543,6 +595,8 @@
                                             <tbody>
                                                 <tr>
                                                     <td><span class="rank-badge top-1">1</span></td>
+                                                    <td>核心标签</td>
+                                                    <td>购车时间</td>
                                                     <td>计划三个月内买车</td>
                                                     <td>428</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 32%;"></div></div><span>32%</span></div></td>
@@ -551,6 +605,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge top-2">2</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>到店行为</td>
                                                     <td>14天内到店</td>
                                                     <td>356</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 27%;"></div></div><span>27%</span></div></td>
@@ -559,6 +615,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge top-3">3</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>购车意向</td>
                                                     <td>明确购车意向</td>
                                                     <td>298</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 22%;"></div></div><span>22%</span></div></td>
@@ -567,6 +625,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">4</span></td>
+                                                    <td>核心标签</td>
+                                                    <td>购车时间</td>
                                                     <td>计划一个月内买车</td>
                                                     <td>245</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 18%;"></div></div><span>18%</span></div></td>
@@ -575,6 +635,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">5</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>购车意向</td>
                                                     <td>有意向未确定</td>
                                                     <td>186</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 14%;"></div></div><span>14%</span></div></td>
@@ -583,6 +645,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">6</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>购买形态</td>
                                                     <td>首购</td>
                                                     <td>142</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 10%;"></div></div><span>10%</span></div></td>
@@ -591,62 +655,41 @@
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">7</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>到店行为</td>
                                                     <td>7天内到店</td>
                                                     <td>128</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 9%;"></div></div><span>9%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 1.2%</span></td>
                                                     <td><span class="hot-value">58</span></td>
                                                 </tr>
+
                                                 <tr>
                                                     <td><span class="rank-badge">8</span></td>
-                                                    <td>价格优惠</td>
-                                                    <td>98</td>
-                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 7%;"></div></div><span>7%</span></div></td>
-                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.9%</span></td>
-                                                    <td><span class="hot-value">52</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="rank-badge">9</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>购买形态</td>
                                                     <td>换购</td>
                                                     <td>86</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 6%;"></div></div><span>6%</span></div></td>
                                                     <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 0.5%</span></td>
                                                     <td><span class="hot-value">48</span></td>
                                                 </tr>
+
                                                 <tr>
-                                                    <td><span class="rank-badge">10</span></td>
-                                                    <td>优惠活动</td>
-                                                    <td>72</td>
-                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 5%;"></div></div><span>5%</span></div></td>
-                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.6%</span></td>
-                                                    <td><span class="hot-value">45</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="rank-badge">11</span></td>
+                                                    <td><span class="rank-badge">9</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>客服意愿</td>
                                                     <td>同意/已经加微信</td>
                                                     <td>65</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 4%;"></div></div><span>4%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.4%</span></td>
                                                     <td><span class="hot-value">42</span></td>
                                                 </tr>
+
                                                 <tr>
-                                                    <td><span class="rank-badge">12</span></td>
-                                                    <td>产品力</td>
-                                                    <td>58</td>
-                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 4%;"></div></div><span>4%</span></div></td>
-                                                    <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 0.3%</span></td>
-                                                    <td><span class="hot-value">38</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="rank-badge">13</span></td>
-                                                    <td>安全</td>
-                                                    <td>52</td>
-                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 3%;"></div></div><span>3%</span></div></td>
-                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.5%</span></td>
-                                                    <td><span class="hot-value">35</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="rank-badge">14</span></td>
+                                                    <td><span class="rank-badge">10</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>到店行为</td>
                                                     <td>已到店-是</td>
                                                     <td>48</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 3%;"></div></div><span>3%</span></div></td>
@@ -654,12 +697,54 @@
                                                     <td><span class="hot-value">32</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span class="rank-badge">15</span></td>
+                                                    <td><span class="rank-badge">11</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>购买形态</td>
                                                     <td>金融因子-是</td>
                                                     <td>42</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 2%;"></div></div><span>2%</span></div></td>
                                                     <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 0.2%</span></td>
                                                     <td><span class="hot-value">28</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">12</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>购车意向</td>
+                                                    <td>对比过竞品-是</td>
+                                                    <td>38</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 2%;"></div></div><span>2%</span></div></td>
+                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.1%</span></td>
+                                                    <td><span class="hot-value">25</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">13</span></td>
+                                                    <td>核心标签</td>
+                                                    <td>线索状态</td>
+                                                    <td>已邀约到店</td>
+                                                    <td>35</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 1.5%;"></div></div><span>1.5%</span></div></td>
+                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.3%</span></td>
+                                                    <td><span class="hot-value">22</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">14</span></td>
+                                                    <td>补充标签</td>
+                                                    <td>客服意愿</td>
+                                                    <td>已加企业微信</td>
+                                                    <td>28</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 1%;"></div></div><span>1%</span></div></td>
+                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.4%</span></td>
+                                                    <td><span class="hot-value">18</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">15</span></td>
+                                                    <td>补偿标签</td>
+                                                    <td>其他信息</td>
+                                                    <td>本市拍照需求-是</td>
+                                                    <td>22</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 0.8%;"></div></div><span>0.8%</span></div></td>
+                                                    <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 0.1%</span></td>
+                                                    <td><span class="hot-value">12</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -672,103 +757,143 @@
                             <div class="tab-reports-row">
                                 <!-- 报表1：按业务类型统计 -->
                                 <div class="report-section">
-                                    <div class="report-header">
+                                    <div class="report-header hierarchical-header">
                                         <h4 class="report-title">按业务类型统计</h4>
+                                        <div class="report-filters" data-type="res">
+                                            <div class="filter-group">
+                                                <select class="filter-select l1-filter">
+                                                    <option value="">一级分类</option>
+                                                    <option value="强抗拒">强抗拒</option>
+                                                    <option value="弱抗拒">弱抗拒</option>
+                                                </select>
+                                                <select class="filter-select l2-filter">
+                                                    <option value="">二级分类</option>
+                                                </select>
+                                                <select class="filter-select l3-filter">
+                                                    <option value="">三级标签</option>
+                                                </select>
+                                            </div>
+                                            <div class="filter-actions">
+                                                <button class="filter-btn primary-btn btn-search">查询</button>
+                                                <button class="filter-btn secondary-btn btn-reset">重置</button>
+                                                <button class="filter-btn export-btn"><i class="fa-solid fa-download"></i> 导出报表</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="report-table-wrapper">
                                         <table class="report-table">
                                             <thead>
                                                 <tr>
-                                                    <th class="row-header"></th>
-                                                    <th>NEV新线索</th>
-                                                    <th>NEV冷线索</th>
-                                                    <th>NEV留资未满</th>
+                                                    <th class="row-header col-l1">一级分类</th>
+                                                    <th class="row-header col-l2">二级分类</th>
+                                                    <th class="row-header col-l3">三级标签</th>
+                                                    <th>NEV新线索 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>NEV冷线索 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>NEV留资未满 <i class="fa-solid fa-sort sort-icon"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <!-- 强抗拒 -->
                                                 <tr>
-                                                    <td class="row-header">价格不满意</td>
-                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.7%</span></td>
-                                                    <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.3%</span></td>
-                                                    <td><span class="count">312</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.4%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">优惠不满意</td>
-                                                    <td><span class="count">145</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.2%</span></td>
-                                                    <td><span class="count">198</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.8%</span></td>
-                                                    <td><span class="count">267</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.6%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">配置不满意</td>
-                                                    <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>15.4%</span></td>
-                                                    <td><span class="count">123</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.7%</span></td>
-                                                    <td><span class="count">156</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.1%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">无现车</td>
-                                                    <td><span class="count">76</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.2%</span></td>
-                                                    <td><span class="count">89</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.8%</span></td>
-                                                    <td><span class="count">134</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.3%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">无法直接决策</td>
-                                                    <td><span class="count">167</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.3%</span></td>
-                                                    <td><span class="count">143</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>1.6%</span></td>
-                                                    <td><span class="count">201</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.2%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">无购车需求</td>
+                                                    <td class="row-header col-l1" rowspan="6">强抗拒</td>
+                                                    <td class="row-header col-l2" rowspan="2">需求终止</td>
+                                                    <td class="row-header col-l3">无购车需求</td>
                                                     <td><span class="count">234</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>6.8%</span></td>
                                                     <td><span class="count">312</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>14.5%</span></td>
                                                     <td><span class="count">278</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.7%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">已买车</td>
+                                                    <td class="row-header col-l3">已买车</td>
                                                     <td><span class="count">156</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.4%</span></td>
                                                     <td><span class="count">198</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.2%</span></td>
                                                     <td><span class="count">167</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.9%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">拒绝被联系</td>
+                                                    <td class="row-header col-l2" rowspan="2">意愿拒绝</td>
+                                                    <td class="row-header col-l3">拒绝被联系</td>
                                                     <td><span class="count">89</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.3%</span></td>
                                                     <td><span class="count">112</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.1%</span></td>
                                                     <td><span class="count">98</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>1.5%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">对品牌不认可</td>
+                                                    <td class="row-header col-l3">对品牌不认可</td>
                                                     <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.6%</span></td>
                                                     <td><span class="count">78</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.9%</span></td>
                                                     <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.1%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">店内无法上牌</td>
+                                                    <td class="row-header col-l2" rowspan="2">条件限制</td>
+                                                    <td class="row-header col-l3">店内无法上牌</td>
                                                     <td><span class="count">45</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.3%</span></td>
                                                     <td><span class="count">56</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.4%</span></td>
                                                     <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.7%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">购买力不足</td>
+                                                    <td class="row-header col-l3">无法跨区域购买</td>
+                                                    <td><span class="count">56</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.2%</span></td>
+                                                    <td><span class="count">67</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.1%</span></td>
+                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>3.6%</span></td>
+                                                </tr>
+                                                <!-- 弱抗拒 -->
+                                                <tr>
+                                                    <td class="row-header col-l1" rowspan="9">弱抗拒</td>
+                                                    <td class="row-header col-l2" rowspan="2">资金障碍</td>
+                                                    <td class="row-header col-l3">购买力不足</td>
                                                     <td><span class="count">123</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.8%</span></td>
                                                     <td><span class="count">145</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.1%</span></td>
                                                     <td><span class="count">178</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.9%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">无法获取底价</td>
+                                                    <td class="row-header col-l3">无法获取底价</td>
                                                     <td><span class="count">98</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.5%</span></td>
                                                     <td><span class="count">112</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.6%</span></td>
                                                     <td><span class="count">134</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.8%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">近期不方便到店</td>
+                                                    <td class="row-header col-l2" rowspan="2">便利性障碍</td>
+                                                    <td class="row-header col-l3">近期不方便到店</td>
                                                     <td><span class="count">134</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>10.2%</span></td>
                                                     <td><span class="count">156</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.8%</span></td>
                                                     <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.4%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">无法跨区域购买</td>
-                                                    <td><span class="count">56</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.2%</span></td>
-                                                    <td><span class="count">67</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.1%</span></td>
-                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>3.6%</span></td>
+                                                    <td class="row-header col-l3">店铺距离远</td>
+                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.5%</span></td>
+                                                    <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.2%</span></td>
+                                                    <td><span class="count">112</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>3.9%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2">决策障碍</td>
+                                                    <td class="row-header col-l3">无法直接决策</td>
+                                                    <td><span class="count">167</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.3%</span></td>
+                                                    <td><span class="count">143</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>1.6%</span></td>
+                                                    <td><span class="count">201</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.2%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2" rowspan="2">产品方案</td>
+                                                    <td class="row-header col-l3">配置不满意</td>
+                                                    <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>15.4%</span></td>
+                                                    <td><span class="count">123</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.7%</span></td>
+                                                    <td><span class="count">156</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.1%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l3">无现车</td>
+                                                    <td><span class="count">76</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.2%</span></td>
+                                                    <td><span class="count">89</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.8%</span></td>
+                                                    <td><span class="count">134</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.3%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2" rowspan="2">价格方案</td>
+                                                    <td class="row-header col-l3">价格不满意</td>
+                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.7%</span></td>
+                                                    <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.3%</span></td>
+                                                    <td><span class="count">312</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.4%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l3">优惠不满意</td>
+                                                    <td><span class="count">145</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.2%</span></td>
+                                                    <td><span class="count">198</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.8%</span></td>
+                                                    <td><span class="count">267</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.6%</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -776,118 +901,159 @@
                                 </div>
                                 <!-- 报表2：按R渠道统计 -->
                                 <div class="report-section">
-                                    <div class="report-header">
+                                    <div class="report-header hierarchical-header">
                                         <h4 class="report-title">按R渠道统计</h4>
+                                        <div class="report-filters" data-type="res">
+                                            <div class="filter-group">
+                                                <select class="filter-select l1-filter">
+                                                    <option value="">一级分类</option>
+                                                    <option value="强抗拒">强抗拒</option>
+                                                    <option value="弱抗拒">弱抗拒</option>
+                                                </select>
+                                                <select class="filter-select l2-filter">
+                                                    <option value="">二级分类</option>
+                                                </select>
+                                                <select class="filter-select l3-filter">
+                                                    <option value="">三级标签</option>
+                                                </select>
+                                            </div>
+                                            <div class="filter-actions">
+                                                <button class="filter-btn primary-btn btn-search">查询</button>
+                                                <button class="filter-btn secondary-btn btn-reset">重置</button>
+                                                <button class="filter-btn export-btn"><i class="fa-solid fa-download"></i> 导出报表</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="report-table-wrapper">
                                         <table class="report-table">
                                             <thead>
                                                 <tr>
-                                                    <th class="row-header"></th>
-                                                    <th>R1</th>
-                                                    <th>R2</th>
-                                                    <th>R3</th>
-                                                    <th>R4</th>
+                                                    <th class="row-header col-l1">一级分类</th>
+                                                    <th class="row-header col-l2">二级分类</th>
+                                                    <th class="row-header col-l3">三级标签</th>
+                                                    <th>R1 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>R2 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>R3 <i class="fa-solid fa-sort sort-icon"></i></th>
+                                                    <th>R4 <i class="fa-solid fa-sort sort-icon"></i></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <!-- 强抗拒 -->
                                                 <tr>
-                                                    <td class="row-header">价格不满意</td>
-                                                    <td><span class="count">312</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.2%</span></td>
-                                                    <td><span class="count">245</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>6.5%</span></td>
-                                                    <td><span class="count">123</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.8%</span></td>
-                                                    <td><span class="count">89</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.3%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">优惠不满意</td>
-                                                    <td><span class="count">278</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>18.7%</span></td>
-                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.4%</span></td>
-                                                    <td><span class="count">98</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>1.9%</span></td>
-                                                    <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.2%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">配置不满意</td>
-                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>22.3%</span></td>
-                                                    <td><span class="count">134</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.8%</span></td>
-                                                    <td><span class="count">56</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.2%</span></td>
-                                                    <td><span class="count">45</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.6%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">无现车</td>
-                                                    <td><span class="count">134</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>16.8%</span></td>
-                                                    <td><span class="count">98</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>6.3%</span></td>
-                                                    <td><span class="count">48</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.4%</span></td>
-                                                    <td><span class="count">34</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.2%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">无法直接决策</td>
-                                                    <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.4%</span></td>
-                                                    <td><span class="count">167</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.7%</span></td>
-                                                    <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.1%</span></td>
-                                                    <td><span class="count">56</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>14.3%</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="row-header">无购车需求</td>
+                                                    <td class="row-header col-l1" rowspan="6">强抗拒</td>
+                                                    <td class="row-header col-l2" rowspan="2">需求终止</td>
+                                                    <td class="row-header col-l3">无购车需求</td>
                                                     <td><span class="count">345</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>8.6%</span></td>
                                                     <td><span class="count">412</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>16.3%</span></td>
                                                     <td><span class="count">178</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.4%</span></td>
                                                     <td><span class="count">123</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.8%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">已买车</td>
+                                                    <td class="row-header col-l3">已买车</td>
                                                     <td><span class="count">198</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.4%</span></td>
                                                     <td><span class="count">234</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>7.1%</span></td>
                                                     <td><span class="count">112</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.6%</span></td>
                                                     <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>10.3%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">拒绝被联系</td>
+                                                    <td class="row-header col-l2" rowspan="2">意愿拒绝</td>
+                                                    <td class="row-header col-l3">拒绝被联系</td>
                                                     <td><span class="count">123</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.8%</span></td>
                                                     <td><span class="count">156</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.2%</span></td>
                                                     <td><span class="count">67</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.5%</span></td>
                                                     <td><span class="count">45</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.7%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">对品牌不认可</td>
+                                                    <td class="row-header col-l3">对品牌不认可</td>
                                                     <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.1%</span></td>
                                                     <td><span class="count">112</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.3%</span></td>
                                                     <td><span class="count">52</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.8%</span></td>
                                                     <td><span class="count">38</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.4%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">店内无法上牌</td>
+                                                    <td class="row-header col-l2" rowspan="2">条件限制</td>
+                                                    <td class="row-header col-l3">店内无法上牌</td>
                                                     <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.5%</span></td>
                                                     <td><span class="count">78</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.2%</span></td>
                                                     <td><span class="count">34</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.9%</span></td>
                                                     <td><span class="count">24</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.1%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">购买力不足</td>
+                                                    <td class="row-header col-l3">无法跨区域购买</td>
+                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.8%</span></td>
+                                                    <td><span class="count">89</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.2%</span></td>
+                                                    <td><span class="count">42</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.9%</span></td>
+                                                    <td><span class="count">28</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.3%</span></td>
+                                                </tr>
+                                                <!-- 弱抗拒 -->
+                                                <tr>
+                                                    <td class="row-header col-l1" rowspan="9">弱抗拒</td>
+                                                    <td class="row-header col-l2" rowspan="2">资金障碍</td>
+                                                    <td class="row-header col-l3">购买力不足</td>
                                                     <td><span class="count">178</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>10.3%</span></td>
                                                     <td><span class="count">198</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>6.7%</span></td>
                                                     <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.5%</span></td>
                                                     <td><span class="count">62</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>13.2%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">无法获取底价</td>
+                                                    <td class="row-header col-l3">无法获取底价</td>
                                                     <td><span class="count">134</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>5.1%</span></td>
                                                     <td><span class="count">156</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.4%</span></td>
                                                     <td><span class="count">72</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.9%</span></td>
                                                     <td><span class="count">52</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.6%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">近期不方便到店</td>
+                                                    <td class="row-header col-l2" rowspan="2">便利性障碍</td>
+                                                    <td class="row-header col-l3">近期不方便到店</td>
                                                     <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>13.7%</span></td>
                                                     <td><span class="count">212</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>7.8%</span></td>
                                                     <td><span class="count">98</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.6%</span></td>
                                                     <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>12.1%</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="row-header">无法跨区域购买</td>
-                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.8%</span></td>
-                                                    <td><span class="count">89</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.2%</span></td>
-                                                    <td><span class="count">42</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.9%</span></td>
-                                                    <td><span class="count">28</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.3%</span></td>
+                                                    <td class="row-header col-l3">店铺距离远</td>
+                                                    <td><span class="count">112</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.5%</span></td>
+                                                    <td><span class="count">145</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.2%</span></td>
+                                                    <td><span class="count">78</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.3%</span></td>
+                                                    <td><span class="count">56</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.1%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2">决策障碍</td>
+                                                    <td class="row-header col-l3">无法直接决策</td>
+                                                    <td><span class="count">234</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>8.4%</span></td>
+                                                    <td><span class="count">167</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>3.7%</span></td>
+                                                    <td><span class="count">89</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>6.1%</span></td>
+                                                    <td><span class="count">56</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>14.3%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2" rowspan="2">产品方案</td>
+                                                    <td class="row-header col-l3">配置不满意</td>
+                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>22.3%</span></td>
+                                                    <td><span class="count">134</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.8%</span></td>
+                                                    <td><span class="count">56</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>4.2%</span></td>
+                                                    <td><span class="count">45</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.6%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l3">无现车</td>
+                                                    <td><span class="count">134</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>16.8%</span></td>
+                                                    <td><span class="count">98</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>6.3%</span></td>
+                                                    <td><span class="count">48</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>9.4%</span></td>
+                                                    <td><span class="count">34</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.2%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l2" rowspan="2">价格方案</td>
+                                                    <td class="row-header col-l3">价格不满意</td>
+                                                    <td><span class="count">312</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>11.2%</span></td>
+                                                    <td><span class="count">245</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>6.5%</span></td>
+                                                    <td><span class="count">123</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>4.8%</span></td>
+                                                    <td><span class="count">89</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>2.3%</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="row-header col-l3">优惠不满意</td>
+                                                    <td><span class="count">278</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>18.7%</span></td>
+                                                    <td><span class="count">189</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>5.4%</span></td>
+                                                    <td><span class="count">98</span><span class="trend down"><i class="fa-solid fa-arrow-down"></i>1.9%</span></td>
+                                                    <td><span class="count">67</span><span class="trend up"><i class="fa-solid fa-arrow-up"></i>7.2%</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -896,149 +1062,243 @@
                             </div>
                             <!-- 抗拒点三级分类结构 -->
                             <div class="tag-analysis-layout">
-                                <!-- 左侧：抗拒点分类 -->
-                                <div class="distribution-column">
-                                    <!-- 一级分类分布 -->
+                                <!-- 第一行：饼图 + 趋势分析左右横放 -->
+                                <div class="trend-pie-row">
+                                    <!-- 抗拒点双环图 -->
                                     <div class="content-card">
                                         <div class="card-header">
-                                            <h3 class="card-title">抗拒点一级分类分布</h3>
+                                            <h3 class="card-title">抗拒点分类分布</h3>
+                                            <div class="card-legend-hint">
+                                                <span class="ring-hint ring-hint-inner">●</span><span class="ring-hint-text">一级分类</span>
+                                                <span class="ring-hint ring-hint-outer">●</span><span class="ring-hint-text">二级分类</span>
+                                            </div>
                                         </div>
                                         <div class="card-body">
-                                            <div class="pie-chart-container">
-                                                <svg width="120" height="120" viewBox="0 0 40 40" class="pie-chart-svg">
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#ee6666" stroke-width="7" stroke-dasharray="50 50" stroke-dashoffset="0"></circle>
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#5470c6" stroke-width="7" stroke-dasharray="50 50" stroke-dashoffset="-50"></circle>
-                                                </svg>
-                                                <div class="pie-legend">
-                                                    <div class="legend-item"><span class="legend-color" style="background: #ee6666;"></span><span class="legend-label">强抗拒</span><span class="percent">95 (50%)</span></div>
-                                                    <div class="legend-item"><span class="legend-color" style="background: #5470c6;"></span><span class="legend-label">弱抗拒</span><span class="percent">95 (50%)</span></div>
-                                                </div>
+                                            <div class="pie-chart-container" id="resistanceTagChart">
+                                                <!-- 动态生成 -->
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- 二级分类分布 -->
-                                    <div class="content-card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">抗拒点二级分类分布</h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="pie-chart-container">
-                                                <svg width="120" height="120" viewBox="0 0 40 40" class="pie-chart-svg">
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#ee6666" stroke-width="7" stroke-dasharray="20 80" stroke-dashoffset="0"></circle>
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#fac858" stroke-width="7" stroke-dasharray="18 82" stroke-dashoffset="-20"></circle>
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#ff9f7f" stroke-width="7" stroke-dasharray="12 88" stroke-dashoffset="-38"></circle>
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#5470c6" stroke-width="7" stroke-dasharray="15 85" stroke-dashoffset="-50"></circle>
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#91cc75" stroke-width="7" stroke-dasharray="12 88" stroke-dashoffset="-65"></circle>
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#73c0de" stroke-width="7" stroke-dasharray="10 90" stroke-dashoffset="-77"></circle>
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#9a60b4" stroke-width="7" stroke-dasharray="7 93" stroke-dashoffset="-87"></circle>
-                                                    <circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="#ea7ccc" stroke-width="7" stroke-dasharray="6 94" stroke-dashoffset="-94"></circle>
-                                                </svg>
-                                                <div class="pie-legend">
-                                                    <div class="legend-item"><span class="legend-color" style="background: #ee6666;"></span><span class="legend-label">需求终止</span><span class="percent">72 (24%)</span></div>
-                                                    <div class="legend-item"><span class="legend-color" style="background: #fac858;"></span><span class="legend-label">意愿拒绝</span><span class="percent">65 (22%)</span></div>
-                                                    <div class="legend-item"><span class="legend-color" style="background: #ff9f7f;"></span><span class="legend-label">条件限制</span><span class="percent">43 (14%)</span></div>
-                                                    <div class="legend-item"><span class="legend-color" style="background: #5470c6;"></span><span class="legend-label">资金障碍</span><span class="percent">54 (18%)</span></div>
-                                                    <div class="legend-item"><span class="legend-color" style="background: #91cc75;"></span><span class="legend-label">便利性障碍</span><span class="percent">43 (14%)</span></div>
-                                                    <div class="legend-item"><span class="legend-color" style="background: #73c0de;"></span><span class="legend-label">决策障碍</span><span class="percent">36 (12%)</span></div>
-                                                    <div class="legend-item"><span class="legend-color" style="background: #9a60b4;"></span><span class="legend-label">产品方案</span><span class="percent">18 (6%)</span></div>
-                                                    <div class="legend-item"><span class="legend-color" style="background: #ea7ccc;"></span><span class="legend-label">价格方案</span><span class="percent">11 (4%)</span></div>
+                                    <!-- 趋势分析 -->
+                                    <div class="content-card trend-analysis-inline">
+                                        <div class="card-header hierarchical-header">
+                                            <h3 class="card-title">抗拒趋势分析</h3>
+                                            <div class="card-actions">
+                                                <div class="tag-selector-wrapper">
+                                                    <button class="tag-selector-btn" id="openTagSelector2">
+                                                        <i class="fa-solid fa-chart-line"></i>
+                                                        <span>选择标签</span>
+                                                        <span class="selected-count" id="selectedTagCount2">0</span>
+                                                        <i class="fa-solid fa-chevron-down"></i>
+                                                    </button>
+                                                    <div class="tag-dropdown" id="tagDropdown2">
+                                                        <div class="tag-dropdown-header">
+                                                            <span>选择要分析的标签（可多选）</span>
+                                                            <button class="clear-all-btn" id="clearAllTags2">清空</button>
+                                                        </div>
+                                                        <div class="tag-search-wrapper">
+                                                            <i class="fa-solid fa-search"></i>
+                                                            <input type="text" class="tag-search-input" id="tagSearchInput2" placeholder="搜索标签...">
+                                                        </div>
+                                                        <div class="tag-list" id="tagListForSelection2">
+                                                            <!-- 动态生成 -->
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="line-chart-container" id="lineChartContainer2">
+                                                <div class="chart-empty-state" id="chartEmptyState2">
+                                                    <i class="fa-solid fa-chart-line"></i>
+                                                    <p>请从上方选择标签以查看趋势</p>
+                                                </div>
+                                                <svg class="line-chart-svg" id="lineChartSvg2" style="display: none;"></svg>
+                                            </div>
+                                            <div class="chart-legend" id="chartLegend2"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <!-- 右侧：抗拒点排行 -->
-                                <div class="content-card ranking-card">
+                                <!-- 第二行：抗拒点排行（满宽） -->
+                                <div class="content-card ranking-card ranking-full-width">
                                     <div class="card-header">
                                         <h3 class="card-title">抗拒点排行</h3>
                                         <div class="card-actions">
                                             <div class="sort-switch-group">
                                                 <button class="sort-switch-btn active" data-sort="count">按提及次数</button>
                                                 <button class="sort-switch-btn" data-sort="trend">按环比</button>
+                                                <button class="sort-switch-btn" data-sort="hot">按热度</button>
+                                            </div>
+                                            <div class="tooltip-container" style="position: relative; cursor: help; margin-left: 8px;">
+                                                <i class="fa-regular fa-circle-question" style="font-size: 14px; opacity: 0.6;"></i>
+                                                <span class="tooltip-text">热门问题是提及占比*100*60%+环比*100*40%得出热度得分</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="card-body ranking-card-body" style="max-height: 500px; overflow-y: auto;">
+                                    <div class="card-body ranking-card-body">
                                         <table class="data-table">
                                             <thead>
                                                 <tr>
                                                     <th class="col-rank">排名</th>
-                                                    <th class="col-name">抗拒点</th>
+                                                    <th class="col-l1">一级分类</th>
+                                                    <th class="col-l2">二级分类</th>
+                                                    <th class="col-l3">三级标签</th>
                                                     <th class="col-count">提及次数</th>
                                                     <th class="col-proportion">占比</th>
                                                     <th class="col-trend">环比</th>
+                                                    <th class="col-hot">热度</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td><span class="rank-badge top-1">1</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>价格方案</td>
                                                     <td>落地价超出预算</td>
                                                     <td>428</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 32%;"></div></div><span>32%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 5.2%</span></td>
+                                                    <td><span class="hot-value">92</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge top-2">2</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>产品方案</td>
                                                     <td>续航里程不足</td>
                                                     <td>315</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 24%;"></div></div><span>24%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 3.8%</span></td>
+                                                    <td><span class="hot-value">85</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge top-3">3</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>资金障碍</td>
                                                     <td>贷款利率偏高</td>
                                                     <td>286</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 21%;"></div></div><span>21%</span></div></td>
                                                     <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 1.2%</span></td>
+                                                    <td><span class="hot-value">78</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">4</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>便利性障碍</td>
                                                     <td>交付周期太长</td>
                                                     <td>198</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 15%;"></div></div><span>15%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 2.5%</span></td>
+                                                    <td><span class="hot-value">62</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">5</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>产品方案</td>
                                                     <td>颜色无现车</td>
                                                     <td>156</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 12%;"></div></div><span>12%</span></div></td>
                                                     <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 0.8%</span></td>
+                                                    <td><span class="hot-value">55</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">6</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>决策障碍</td>
                                                     <td>家人意见不合</td>
                                                     <td>124</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 9%;"></div></div><span>9%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 1.5%</span></td>
+                                                    <td><span class="hot-value">48</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">7</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>产品方案</td>
                                                     <td>配置不满意</td>
                                                     <td>98</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 7%;"></div></div><span>7%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 2.1%</span></td>
+                                                    <td><span class="hot-value">42</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">8</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>产品方案</td>
                                                     <td>对比竞品车型</td>
                                                     <td>76</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 5%;"></div></div><span>5%</span></div></td>
                                                     <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 0.5%</span></td>
+                                                    <td><span class="hot-value">36</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">9</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>价格方案</td>
                                                     <td>等有优惠活动</td>
                                                     <td>65</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 4%;"></div></div><span>4%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.3%</span></td>
+                                                    <td><span class="hot-value">31</span></td>
                                                 </tr>
                                                 <tr>
                                                     <td><span class="rank-badge">10</span></td>
+                                                    <td>强抗拒</td>
+                                                    <td>需求终止</td>
+                                                    <td>已买竞品</td>
+                                                    <td>48</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 3%;"></div></div><span>3%</span></div></td>
+                                                    <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 1.2%</span></td>
+                                                    <td><span class="hot-value">25</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">11</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>价格方案</td>
                                                     <td>保险费用高</td>
                                                     <td>52</td>
                                                     <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 3%;"></div></div><span>3%</span></div></td>
                                                     <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.2%</span></td>
+                                                    <td><span class="hot-value">22</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">12</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>产品方案</td>
+                                                    <td>空间不足</td>
+                                                    <td>45</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 2%;"></div></div><span>2%</span></div></td>
+                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.4%</span></td>
+                                                    <td><span class="hot-value">18</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">13</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>条件限制</td>
+                                                    <td>无购车资格</td>
+                                                    <td>38</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 2%;"></div></div><span>2%</span></div></td>
+                                                    <td><span class="trend-down"><i class="fa-solid fa-arrow-down"></i> 0.1%</span></td>
+                                                    <td><span class="hot-value">15</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">14</span></td>
+                                                    <td>强抗拒</td>
+                                                    <td>需求终止</td>
+                                                    <td>不考虑电车</td>
+                                                    <td>32</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 1.5%;"></div></div><span>1.5%</span></div></td>
+                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.2%</span></td>
+                                                    <td><span class="hot-value">12</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><span class="rank-badge">15</span></td>
+                                                    <td>弱抗拒</td>
+                                                    <td>决策障碍</td>
+                                                    <td>还需对比其他</td>
+                                                    <td>25</td>
+                                                    <td><div class="progress-bar-container"><div class="progress-bar"><div class="progress-fill" style="width: 1%;"></div></div><span>1%</span></div></td>
+                                                    <td><span class="trend-up"><i class="fa-solid fa-arrow-up"></i> 0.1%</span></td>
+                                                    <td><span class="hot-value">8</span></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -1467,126 +1727,6 @@
                                             <div class="tree-header">
                                                 <div class="tree-header-left">
                                                     <span class="tree-label">否</span>
-                                                </div>
-                                                <div class="tree-actions">
-                                                    <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                                    <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- 二级：利益因子 -->
-                                <div class="tree-node tree-level-2">
-                                    <div class="tree-header">
-                                        <div class="tree-header-left">
-                                            <i class="fa-solid fa-chevron-right tree-icon"></i>
-                                            <span class="tree-label">利益因子</span>
-                                        </div>
-                                        <div class="tree-actions">
-                                            <button class="tree-action-btn" title="新增下级节点"><i class="fa-solid fa-plus"></i></button>
-                                            <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                            <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="tree-children">
-                                        <div class="tree-node tree-level-3">
-                                            <div class="tree-header">
-                                                <div class="tree-header-left">
-                                                    <span class="tree-label">咨询权益</span>
-                                                </div>
-                                                <div class="tree-actions">
-                                                    <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                                    <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node tree-level-3">
-                                            <div class="tree-header">
-                                                <div class="tree-header-left">
-                                                    <span class="tree-label">优惠活动</span>
-                                                </div>
-                                                <div class="tree-actions">
-                                                    <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                                    <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node tree-level-3">
-                                            <div class="tree-header">
-                                                <div class="tree-header-left">
-                                                    <span class="tree-label">价格优惠</span>
-                                                </div>
-                                                <div class="tree-actions">
-                                                    <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                                    <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node tree-level-3">
-                                            <div class="tree-header">
-                                                <div class="tree-header-left">
-                                                    <span class="tree-label">售后服务</span>
-                                                </div>
-                                                <div class="tree-actions">
-                                                    <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                                    <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- 二级：产品因子 -->
-                                <div class="tree-node tree-level-2">
-                                    <div class="tree-header">
-                                        <div class="tree-header-left">
-                                            <i class="fa-solid fa-chevron-right tree-icon"></i>
-                                            <span class="tree-label">产品因子</span>
-                                        </div>
-                                        <div class="tree-actions">
-                                            <button class="tree-action-btn" title="新增下级节点"><i class="fa-solid fa-plus"></i></button>
-                                            <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                            <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="tree-children">
-                                        <div class="tree-node tree-level-3">
-                                            <div class="tree-header">
-                                                <div class="tree-header-left">
-                                                    <span class="tree-label">产品力</span>
-                                                </div>
-                                                <div class="tree-actions">
-                                                    <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                                    <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node tree-level-3">
-                                            <div class="tree-header">
-                                                <div class="tree-header-left">
-                                                    <span class="tree-label">安全</span>
-                                                </div>
-                                                <div class="tree-actions">
-                                                    <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                                    <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node tree-level-3">
-                                            <div class="tree-header">
-                                                <div class="tree-header-left">
-                                                    <span class="tree-label">品牌印象</span>
-                                                </div>
-                                                <div class="tree-actions">
-                                                    <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                                                    <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node tree-level-3">
-                                            <div class="tree-header">
-                                                <div class="tree-header-left">
-                                                    <span class="tree-label">竞品对比</span>
                                                 </div>
                                                 <div class="tree-actions">
                                                     <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
