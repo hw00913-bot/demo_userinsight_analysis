@@ -331,7 +331,7 @@
                 <li><a href="#section-faq" class="nav-link"><i class="fa-solid fa-circle-question"></i><span>常见标签页签</span></a></li>
                 <li><a href="#section-resistance" class="nav-link"><i class="fa-solid fa-hand"></i><span>抗拒点页签</span></a></li>
                 <li><a href="#section-insight-modal" class="nav-link"><i class="fa-solid fa-tag"></i><span>洞察标签弹窗</span></a></li>
-                <li><a href="#section-download" class="nav-link"><i class="fa-solid fa-download"></i><span>下载 &amp; 生成 MD</span></a></li>
+                <li><a href="#section-download" class="nav-link"><i class="fa-solid fa-download"></i><span>下载明细数据</span></a></li>
                 <li><a href="#section-review-flow" class="nav-link"><i class="fa-solid fa-list-check"></i><span>人工复核流程</span></a></li>
             </ul>
         </nav>
@@ -340,7 +340,7 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V1.1 · 2026-04-13 · 与最新代码同步</span>
+            <span class="doc-tag">版本 V1.3 · 2026-04-13 · 与最新代码同步</span>
             <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
             <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界。</p>
         </header>
@@ -359,6 +359,17 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td class="ver-num">V1.3</td>
+                        <td>
+                            <ol style="padding-left:1.2em; margin:0; line-height:2;">
+                                <li><strong>删除 MD 生成功能：</strong>移除「生成 MD 提示词」功能说明及相关文档</li>
+                            </ol>
+                        </td>
+                        <td>2026-04-13</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
                     <tr>
                         <td class="ver-num">V1.2</td>
                         <td>
@@ -396,7 +407,7 @@
                                 <li>抗拒点：报表统计（按业务类型/按R渠道）+ 抗拒点排行 + 排序切换</li>
                                 <li>洞察标签管理弹窗（常见标签分类 + 客户抗拒点分类树形结构）</li>
                                 <li>下载明细数据（CSV 导出）</li>
-                                <li>生成 MD 提示词（标签逻辑 + 输出结果双 Tab 切换 + 一键复制）</li>
+                                <li>下载明细数据（CSV 导出）</li>
                                 <li><strong>业务颗粒度升级：</strong>全量常见标签看板向下钻取至「三级分类」</li>
                                 <li><strong>任务中心增强：</strong>新增「通话 ID」精确检索；表头重命名为「AI 标注」以明确数据源</li>
                                 <li><strong>复核详情重构：</strong>引入 Tab 切换流（命中情况 / 历史复核记录）</li>
@@ -772,11 +783,11 @@
             </ul>
         </section>
 
-        <!-- 九、下载与生成 MD -->
+        <!-- 九、下载明细数据 -->
         <section class="section" id="section-download">
-            <h2 class="section-title"><i class="fa-solid fa-download"></i>九、下载明细数据 &amp; 生成 MD</h2>
+            <h2 class="section-title"><i class="fa-solid fa-download"></i>九、下载明细数据</h2>
 
-            <h3 class="sub-title">1. 下载明细数据（downloadFullDetailBtn）</h3>
+            <h3 class="sub-title">下载明细数据（downloadFullDetailBtn）</h3>
             <ul class="item-list">
                 <li>点击后立即在客户端生成 CSV 文件并触发浏览器下载，无需后端接口。</li>
                 <li>文件命名格式：<code>用户洞察明细数据_YYYY-MM-DD.csv</code>（日期取当前日期）。</li>
@@ -801,33 +812,6 @@
                     <tr><td>N+1~M</td><td>涉及抗拒点1~M</td><td>命中的抗拒点（动态多列，标签数不足时该列留空）</td></tr>
                 </tbody>
             </table>
-
-            <h3 class="sub-title">2. 生成 MD 提示词（generateMdBtn）</h3>
-            <ul class="item-list">
-                <li>点击「生成 MD」按钮（<code>generateMdBtn</code>）打开弹窗，ID 为 <code>mdModal</code>。</li>
-                <li>弹窗顶部有两个 Tab（<code>md-tab</code>）：<strong>标签逻辑</strong>（默认激活）和<strong>输出结果</strong>。</li>
-                <li><strong>标签逻辑 Tab：</strong>
-                    <ul>
-                        <li>动态读取洞察标签树中所有底层标签（三级分类）的名称、编码和逻辑说明。</li>
-                        <li>按「常见标签分类」和「客户抗拒点分类」两个分组输出。</li>
-                        <li>每个标签显示完整路径（如「产品咨询 > 价格咨询 > 落地价」）和逻辑定义。</li>
-                    </ul>
-                </li>
-                <li><strong>输出结果 Tab：</strong>
-                    <ul>
-                        <li>展示 AI 通话标签输出结果的 JSON 格式说明。</li>
-                        <li>包含打标规则（逐句分析、精准匹配、多标签支持、编码要求、空值处理）。</li>
-                        <li>提供两个完整的 JSON 示例（命中标签和未命中标签）。</li>
-                    </ul>
-                </li>
-                <li><strong>一健复制功能：</strong>
-                    <ul>
-                        <li>点击「复制到剪贴板」按钮（<code>copyMdBtn</code>），将当前 Tab 的内容复制到剪贴板。</li>
-                        <li>复制成功后按钮文字变为「已复制到剪贴板」，背景变为绿色（<code>success-color</code>），2 秒后恢复原状。</li>
-                    </ul>
-                </li>
-                <li>每次打开弹窗时，内容会自动更新为最新保存的标签数据。</li>
-            </ul>
 
         </section>
 
@@ -974,7 +958,7 @@
 
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V1.2 &nbsp;|&nbsp; 更新于 2026-04-13 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V1.3 &nbsp;|&nbsp; 更新于 2026-04-13 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步</p>
         </div>
     </main>
 
