@@ -1817,32 +1817,57 @@ body {
     margin-bottom: 32px;
 }
 
-.tag-analysis-layout .distribution-column {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
+/* 双环分布图 */
 .tag-analysis-layout .distribution-column .content-card {
     flex: 1;
-}
-
-.tag-analysis-layout .ranking-card {
     display: flex;
     flex-direction: column;
 }
 
-.tag-analysis-layout .ranking-card-body {
+.tag-analysis-layout .distribution-column .card-body {
     flex: 1;
-    overflow-y: auto;
-    max-height: 500px;
 }
 
+/* 卡片头部环图图例提示 */
+.tag-analysis-layout .card-legend-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.tag-analysis-layout .ring-hint {
+    font-size: 10px;
+    line-height: 1;
+}
+
+.tag-analysis-layout .ring-hint-inner {
+    color: #aaa;
+}
+
+.tag-analysis-layout .ring-hint-outer {
+    color: #ccc;
+    font-size: 12px;
+}
+
+.tag-analysis-layout .ring-hint-text {
+    margin-right: 4px;
+}
+
+/* 双环图布局 */
 .tag-analysis-layout .pie-chart-container {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    padding: 20px 16px;
+    padding: 16px 12px;
+    flex: 1;
+    gap: 16px;
+}
+
+.tag-analysis-layout .double-ring-wrapper {
+    position: relative;
+    flex-shrink: 0;
 }
 
 .tag-analysis-layout .pie-chart-svg {
@@ -1850,17 +1875,31 @@ body {
     flex-shrink: 0;
 }
 
+/* 双环图图例 */
 .tag-analysis-layout .pie-legend {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.tag-analysis-layout .legend-group {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 4px 0 2px 0;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 2px;
 }
 
 .tag-analysis-layout .legend-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     font-size: 12px;
+    padding: 2px 0;
 }
 
 .tag-analysis-layout .legend-color {
@@ -1868,6 +1907,19 @@ body {
     height: 10px;
     border-radius: 2px;
     flex-shrink: 0;
+}
+
+.tag-analysis-layout .legend-ring-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.tag-analysis-layout .legend-ring-dot.outer {
+    width: 8px;
+    height: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .tag-analysis-layout .legend-label {
@@ -1884,6 +1936,17 @@ body {
     color: var(--text-main);
     min-width: 36px;
     text-align: right;
+}
+
+.tag-analysis-layout .ranking-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.tag-analysis-layout .ranking-card-body {
+    flex: 1;
+    overflow-y: auto;
+    max-height: 500px;
 }
 
 /* 排序切换按钮组 */

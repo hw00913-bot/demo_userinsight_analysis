@@ -445,9 +445,8 @@ const chartColors = [
 ];
 
 function initCommonTagCharts() {
-    const l1Container = document.getElementById('commonTagL1Chart');
-    const l2Container = document.getElementById('commonTagL2Chart');
-    if (!l1Container || !l2Container) return;
+    const container = document.getElementById('commonTagChart');
+    if (!container) return;
 
     // 读取 common-issues-modal 树数据
     const modal = document.getElementById('common-issues-modal');
@@ -460,7 +459,6 @@ function initCommonTagCharts() {
         const labelEl = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
         if (labelEl) {
             const name = labelEl.textContent.replace(/\s*\([^)]*\)$/, '');
-            // 统计该一级分类下的二级节点数量
             const l2Count = node.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-2').length;
             l1Data.push({ name, count: l2Count });
         }
@@ -471,13 +469,11 @@ function initCommonTagCharts() {
     l1Nodes.forEach(node => {
         const l1LabelEl = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
         const l1Name = l1LabelEl ? l1LabelEl.textContent.replace(/\s*\([^)]*\)$/, '') : '';
-        
         const l2Nodes = node.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-2');
         l2Nodes.forEach(l2 => {
             const labelEl = l2.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
             if (labelEl) {
                 const name = labelEl.textContent.replace(/\s*\([^)]*\)$/, '');
-                // 统计该二级分类下的三级节点数量
                 const l3Count = l2.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-3').length;
                 l2Data.push({ name, count: l3Count, l1Name });
             }
@@ -488,37 +484,55 @@ function initCommonTagCharts() {
     const totalL1 = l1Data.reduce((sum, item) => sum + item.count, 0) || 1;
     const totalL2 = l2Data.reduce((sum, item) => sum + item.count, 0) || 1;
 
-    // 生成一级分类饼图
-    let l1Svg = '<svg width="120" height="120" viewBox="0 0 40 40" class="pie-chart-svg">';
-    let l1Legend = '<div class="pie-legend">';
+    // 双环SVG：内环(L1) r=11 圆周≈69.12，外环(L2) r=17 圆周≈106.82
+    const L1_R = 11, L1_C = 2 * Math.PI * L1_R;       // 69.115
+    const L2_R = 17, L2_C = 2 * Math.PI * L2_R;       // 106.814
+
+    let svg = `<svg width="160" height="160" viewBox="0 0 44 44" class="pie-chart-svg">`;
+
+    // 内环：一级分类
     let l1Offset = 0;
     l1Data.forEach((item, i) => {
         const percent = Math.round((item.count / totalL1) * 100);
-        const dashLen = (percent / 100) * 100.53; // 圆周长约100.53
+        const dashLen = (percent / 100) * L1_C;
         const color = chartColors[i % chartColors.length];
-        l1Svg += `<circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="${color}" stroke-width="7" stroke-dasharray="${dashLen.toFixed(2)} ${(100.53 - dashLen).toFixed(2)}" stroke-dashoffset="${-l1Offset.toFixed(2)}"></circle>`;
-        l1Legend += `<div class="legend-item"><span class="legend-color" style="background: ${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count} (${percent}%)</span></div>`;
+        svg += `<circle cx="22" cy="22" r="${L1_R}" fill="transparent" stroke="${color}" stroke-width="5" stroke-dasharray="${dashLen.toFixed(2)} ${(L1_C - dashLen).toFixed(2)}" stroke-dashoffset="${(-l1Offset).toFixed(2)}"></circle>`;
         l1Offset += dashLen;
     });
-    l1Svg += '</svg>';
-    l1Legend += '</div>';
-    l1Container.innerHTML = '<div class="pie-chart-container">' + l1Svg + l1Legend + '</div>';
 
-    // 生成二级分类饼图
-    let l2Svg = '<svg width="120" height="120" viewBox="0 0 40 40" class="pie-chart-svg">';
-    let l2Legend = '<div class="pie-legend">';
+    // 外环：二级分类
     let l2Offset = 0;
     l2Data.forEach((item, i) => {
         const percent = Math.round((item.count / totalL2) * 100);
-        const dashLen = (percent / 100) * 100.53;
+        const dashLen = (percent / 100) * L2_C;
         const color = chartColors[i % chartColors.length];
-        l2Svg += `<circle cx="20" cy="20" r="15.91549430918954" fill="transparent" stroke="${color}" stroke-width="7" stroke-dasharray="${dashLen.toFixed(2)} ${(100.53 - dashLen).toFixed(2)}" stroke-dashoffset="${-l2Offset.toFixed(2)}"></circle>`;
-        l2Legend += `<div class="legend-item"><span class="legend-color" style="background: ${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count} (${percent}%)</span></div>`;
+        svg += `<circle cx="22" cy="22" r="${L2_R}" fill="transparent" stroke="${color}" stroke-width="4" stroke-dasharray="${dashLen.toFixed(2)} ${(L2_C - dashLen).toFixed(2)}" stroke-dashoffset="${(-l2Offset).toFixed(2)}"></circle>`;
         l2Offset += dashLen;
     });
-    l2Svg += '</svg>';
-    l2Legend += '</div>';
-    l2Container.innerHTML = '<div class="pie-chart-container">' + l2Svg + l2Legend + '</div>';
+
+    svg += '</svg>';
+
+    // 图例：先一级后二级，带环层级指示
+    let legend = '<div class="pie-legend">';
+    if (l1Data.length > 0) {
+        legend += '<div class="legend-group">一级分类</div>';
+        l1Data.forEach((item, i) => {
+            const percent = Math.round((item.count / totalL1) * 100);
+            const color = chartColors[i % chartColors.length];
+            legend += `<div class="legend-item"><span class="legend-ring-dot" style="background:${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count} (${percent}%)</span></div>`;
+        });
+    }
+    if (l2Data.length > 0) {
+        legend += '<div class="legend-group">二级分类</div>';
+        l2Data.forEach((item, i) => {
+            const percent = Math.round((item.count / totalL2) * 100);
+            const color = chartColors[i % chartColors.length];
+            legend += `<div class="legend-item"><span class="legend-ring-dot outer" style="background:${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count} (${percent}%)</span></div>`;
+        });
+    }
+    legend += '</div>';
+
+    container.innerHTML = '<div class="pie-chart-container"><div class="double-ring-wrapper">' + svg + '</div>' + legend + '</div>';
 }
 
 // 监听标签树变化，更新饼图

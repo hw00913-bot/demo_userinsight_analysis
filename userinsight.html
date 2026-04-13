@@ -496,29 +496,21 @@
                             <div class="tag-analysis-layout">
                                 <!-- 左侧：标签分类内容 -->
                                 <div class="distribution-column">
-                                    <!-- 一级分类分布 -->
+                                    <!-- 常见标签分类分布（双环图） -->
                                     <div class="content-card">
                                         <div class="card-header">
-                                            <h3 class="card-title">常见标签一级分类分布</h3>
+                                            <h3 class="card-title">常见标签分类分布</h3>
+                                            <div class="card-legend-hint">
+                                                <span class="ring-hint ring-hint-inner">●</span><span class="ring-hint-text">一级分类</span>
+                                                <span class="ring-hint ring-hint-outer">●</span><span class="ring-hint-text">二级分类</span>
+                                            </div>
                                         </div>
                                         <div class="card-body">
-                                            <div class="pie-chart-container" id="commonTagL1Chart">
+                                            <div class="pie-chart-container" id="commonTagChart">
                                                 <!-- 动态生成 -->
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- 二级分类分布 -->
-                                    <div class="content-card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">常见标签二级分类分布</h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="pie-chart-container" id="commonTagL2Chart">
-                                                <!-- 动态生成 -->
-                                            </div>
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <!-- 右侧：常见标签排行 -->
                                 <div class="content-card ranking-card">
