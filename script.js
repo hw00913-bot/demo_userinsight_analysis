@@ -1925,57 +1925,57 @@ function initReportTableFilter() {
 // 常见标签三级分类数据（用于趋势分析模拟）
 const commonTagsTreeData = {
     l1: [
-        { name: '核心标签', count: 1250 },
-        { name: '补充标签', count: 680 }
+        { name: '核心标签 (A7ED8A)', count: 1250 },
+        { name: '补充标签 (6542E7)', count: 680 }
     ],
     l2: [
-        { name: '计划购车时间', l1Name: '核心标签', count: 580 },
-        { name: '预计到店时间', l1Name: '核心标签', count: 420 },
-        { name: '购车意向', l1Name: '补充标签', count: 380 },
-        { name: '首购/换购', l1Name: '补充标签', count: 180 },
-        { name: '到店情况', l1Name: '补充标签', count: 120 }
+        { name: '计划购车时间 (CDA824)', l1Name: '核心标签 (A7ED8A)', count: 580 },
+        { name: '预计到店时间 (F109A8)', l1Name: '核心标签 (A7ED8A)', count: 420 },
+        { name: '购车意向 (1B0E51)', l1Name: '补充标签 (6542E7)', count: 380 },
+        { name: '首购/换购 (1C2FE5)', l1Name: '补充标签 (6542E7)', count: 180 },
+        { name: '到店情况 (49AEA6)', l1Name: '补充标签 (6542E7)', count: 120 }
     ],
     l3: [
-        { name: '计划7天', l1Name: '核心标签', l2Name: '计划购车时间', count: 98 },
-        { name: '计划一个月内买车', l1Name: '核心标签', l2Name: '计划购车时间', count: 245 },
-        { name: '计划三个月内买车', l1Name: '核心标签', l2Name: '计划购车时间', count: 428 },
-        { name: '计划三个月后买车', l1Name: '核心标签', l2Name: '计划购车时间', count: 156 },
-        { name: '7天内', l1Name: '核心标签', l2Name: '预计到店时间', count: 128 },
-        { name: '14天内', l1Name: '核心标签', l2Name: '预计到店时间', count: 356 },
-        { name: '30天内', l1Name: '核心标签', l2Name: '预计到店时间', count: 89 },
-        { name: '有意向未确定', l1Name: '核心标签', l2Name: '预计到店时间', count: 186 },
-        { name: '明确购车意向', l1Name: '补充标签', l2Name: '购车意向', count: 298 },
-        { name: '有意向未确定', l1Name: '补充标签', l2Name: '购车意向', count: 82 },
-        { name: '首购', l1Name: '补充标签', l2Name: '首购/换购', count: 142 },
-        { name: '换购', l1Name: '补充标签', l2Name: '首购/换购', count: 86 },
-        { name: '已到店-是', l1Name: '补充标签', l2Name: '到店情况', count: 76 },
-        { name: '同意', l1Name: '补充标签', l2Name: '到店情况', count: 44 }
+        { name: '计划7天 (D1E2F4)', l1Name: '核心标签 (A7ED8A)', l2Name: '计划购车时间 (CDA824)', count: 98 },
+        { name: '计划一个月内买车 (37F6E4)', l1Name: '核心标签 (A7ED8A)', l2Name: '计划购车时间 (CDA824)', count: 245 },
+        { name: '计划三个月内买车 (2DE44A)', l1Name: '核心标签 (A7ED8A)', l2Name: '计划购车时间 (CDA824)', count: 428 },
+        { name: '计划三个月后买车 (E1850F)', l1Name: '核心标签 (A7ED8A)', l2Name: '计划购车时间 (CDA824)', count: 156 },
+        { name: '7天内 (C76485)', l1Name: '核心标签 (A7ED8A)', l2Name: '预计到店时间 (F109A8)', count: 128 },
+        { name: '14天内 (000FA3)', l1Name: '核心标签 (A7ED8A)', l2Name: '预计到店时间 (F109A8)', count: 356 },
+        { name: '30天内 (C10710)', l1Name: '核心标签 (A7ED8A)', l2Name: '预计到店时间 (F109A8)', count: 89 },
+        { name: '有意向未确定 (105666)', l1Name: '核心标签 (A7ED8A)', l2Name: '预计到店时间 (F109A8)', count: 186 },
+        { name: '明确购车意向 (0BB120)', l1Name: '补充标签 (6542E7)', l2Name: '购车意向 (1B0E51)', count: 298 },
+        { name: '有意向未确定 (105666)', l1Name: '补充标签 (6542E7)', l2Name: '购车意向 (1B0E51)', count: 82 },
+        { name: '首购 (FC3D71)', l1Name: '补充标签 (6542E7)', l2Name: '首购/换购 (1C2FE5)', count: 142 },
+        { name: '换购 (1687B1)', l1Name: '补充标签 (6542E7)', l2Name: '首购/换购 (1C2FE5)', count: 86 },
+        { name: '已到店-是 (B8B9C5)', l1Name: '补充标签 (6542E7)', l2Name: '到店情况 (49AEA6)', count: 76 },
+        { name: '同意 (E61F2C)', l1Name: '补充标签 (6542E7)', l2Name: '到店情况 (49AEA6)', count: 44 }
     ]
 };
 
 // 抗拒点三级分类数据（用于趋势分析模拟）
 const resistanceTagsTreeData = {
     l1: [
-        { name: '强抗拒', count: 890 },
-        { name: '弱抗拒', count: 567 }
+        { name: '强抗拒 (3E097F)', count: 890 },
+        { name: '弱抗拒 (FE772A)', count: 567 }
     ],
     l2: [
-        { name: '需求终止', l1Name: '强抗拒', count: 445 },
-        { name: '意愿拒绝', l1Name: '强抗拒', count: 320 },
-        { name: '产品方案', l1Name: '弱抗拒', count: 189 },
-        { name: '价格方案', l1Name: '弱抗拒', count: 234 },
-        { name: '资金障碍', l1Name: '弱抗拒', count: 144 }
+        { name: '需求终止 (763D53)', l1Name: '强抗拒 (3E097F)', count: 445 },
+        { name: '意愿拒绝 (3A1D15)', l1Name: '强抗拒 (3E097F)', count: 320 },
+        { name: '产品方案 (AD4E6D)', l1Name: '弱抗拒 (FE772A)', count: 189 },
+        { name: '价格方案 (D27120)', l1Name: '弱抗拒 (FE772A)', count: 234 },
+        { name: '资金障碍 (AE7F71)', l1Name: '弱抗拒 (FE772A)', count: 144 }
     ],
     l3: [
-        { name: '无购车需求', l1Name: '强抗拒', l2Name: '需求终止', count: 278 },
-        { name: '已买车', l1Name: '强抗拒', l2Name: '需求终止', count: 167 },
-        { name: '拒绝被联系', l1Name: '强抗拒', l2Name: '意愿拒绝', count: 78 },
-        { name: '优惠不满意', l1Name: '弱抗拒', l2Name: '价格方案', count: 189 },
-        { name: '价格不满意', l1Name: '弱抗拒', l2Name: '价格方案', count: 312 },
-        { name: '分期费用高', l1Name: '弱抗拒', l2Name: '价格方案', count: 123 },
-        { name: '配置不满意', l1Name: '弱抗拒', l2Name: '产品方案', count: 112 },
-        { name: '无现车', l1Name: '弱抗拒', l2Name: '产品方案', count: 98 },
-        { name: '首付不够', l1Name: '弱抗拒', l2Name: '资金障碍', count: 89 }
+        { name: '无购车需求 (0806E4)', l1Name: '强抗拒 (3E097F)', l2Name: '需求终止 (763D53)', count: 278 },
+        { name: '已买车 (F572FE)', l1Name: '强抗拒 (3E097F)', l2Name: '需求终止 (763D53)', count: 167 },
+        { name: '拒绝被联系 (84D150)', l1Name: '强抗拒 (3E097F)', l2Name: '意愿拒绝 (3A1D15)', count: 78 },
+        { name: '优惠不满意 (619D48)', l1Name: '弱抗拒 (FE772A)', l2Name: '价格方案 (D27120)', count: 189 },
+        { name: '价格不满意 (5A05F3)', l1Name: '弱抗拒 (FE772A)', l2Name: '价格方案 (D27120)', count: 312 },
+        { name: '分期费用高 (D78729)', l1Name: '弱抗拒 (FE772A)', l2Name: '价格方案 (D27120)', count: 123 },
+        { name: '配置不满意 (C9A1AB)', l1Name: '弱抗拒 (FE772A)', l2Name: '产品方案 (AD4E6D)', count: 112 },
+        { name: '无现车 (1C9A8C)', l1Name: '弱抗拒 (FE772A)', l2Name: '产品方案 (AD4E6D)', count: 98 },
+        { name: '首付不够 (E400AD)', l1Name: '弱抗拒 (FE772A)', l2Name: '资金障碍 (AE7F71)', count: 89 }
     ]
 };
 
