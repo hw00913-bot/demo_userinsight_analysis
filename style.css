@@ -756,7 +756,7 @@ body {
     flex-shrink: 0;
 }
 
-.btn-export, .btn-import {
+.btn-export, .btn-import, .btn-template {
     display: inline-flex;
     align-items: center;
     gap: 5px;
@@ -784,7 +784,13 @@ body {
     background: rgba(82, 196, 26, 0.04);
 }
 
-.btn-export i, .btn-import i {
+.btn-template:hover {
+    border-color: #faad14;
+    color: #faad14;
+    background: rgba(250, 173, 20, 0.04);
+}
+
+.btn-export i, .btn-import i, .btn-template i {
     font-size: 12px;
 }
 

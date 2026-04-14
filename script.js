@@ -588,6 +588,28 @@ function initImportExport() {
     document.getElementById('importResistancePoints')?.addEventListener('click', () => {
         importTreeData('resistance-points-modal');
     });
+
+    // 模板下载逻辑
+    const downloadTemplate = (headers, filename) => {
+        const csvContent = '\ufeff' + headers.join(',');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+    document.getElementById('templateCommonIssues')?.addEventListener('click', () => {
+        downloadTemplate(['一级名称', '一级编码', '二级名称', '二级编码', '三级名称', '三级编码', '标签逻辑说明'], '常见问题标签导入模板.csv');
+    });
+
+    document.getElementById('templateResistancePoints')?.addEventListener('click', () => {
+        downloadTemplate(['一级名称', '一级编码', '二级名称', '二级编码', '标签逻辑说明'], '客户抗拒点标签导入模板.csv');
+    });
 }
 window.addEventListener('DOMContentLoaded', initImportExport);
 
