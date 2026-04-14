@@ -941,14 +941,32 @@ function initNodeFormModal() {
                 return;
             }
 
+            const formTitle = document.getElementById('nodeFormTitle').textContent;
+            const isEditMode = formTitle.includes('编辑');
+
+            // 新增模式下校验编码唯一性
+            if (!isEditMode) {
+                const allLabels = document.querySelectorAll('.tree-label');
+                const isDuplicate = Array.from(allLabels).some(el => {
+                    const text = el.textContent;
+                    const match = text.match(/\(([^)]+)\)$/);
+                    return match && match[1] === nodeCode;
+                });
+
+                if (isDuplicate) {
+                    alert(`编码 "${nodeCode}" 已被使用，请更换一个唯一的编码`);
+                    return;
+                }
+            }
+
             const isLogicDescRequired = formModal.dataset.isLogicDescRequired === 'true';
             if (isLogicDescRequired && !logicDesc) {
                 alert('请输入标签逻辑说明');
                 return;
             }
 
-            const formTitle = document.getElementById('nodeFormTitle').textContent;
-            const isEditMode = formTitle.includes('编辑');
+            // const formTitle = document.getElementById('nodeFormTitle').textContent;
+            // const isEditMode = formTitle.includes('编辑');
 
             if (isEditMode) {
                 if (currentEditLabelElement) {
@@ -1112,7 +1130,7 @@ function initNodeFormModal() {
 
         document.getElementById('nodeName').value = '';
         document.getElementById('nodeCode').value = generatedCode;
-        // document.getElementById('nodeCode').setAttribute('readonly', 'readonly');
+        document.getElementById('nodeCode').removeAttribute('readonly');
         document.getElementById('nodeLogicDesc').value = '';
 
         formModal.dataset.isLogicDescRequired = String(isBottomLevel);
@@ -1146,7 +1164,7 @@ function initNodeFormModal() {
 
         document.getElementById('nodeName').value = nodeName;
         document.getElementById('nodeCode').value = nodeCode;
-        // document.getElementById('nodeCode').setAttribute('readonly', 'readonly');
+        document.getElementById('nodeCode').setAttribute('readonly', 'readonly');
         document.getElementById('nodeLogicDesc').value = treeNode.dataset.logicDesc || '';
 
         currentEditLabelElement = labelElement;
