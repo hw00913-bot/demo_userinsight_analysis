@@ -1112,7 +1112,7 @@ function initNodeFormModal() {
 
         document.getElementById('nodeName').value = '';
         document.getElementById('nodeCode').value = generatedCode;
-        document.getElementById('nodeCode').setAttribute('readonly', 'readonly');
+        // document.getElementById('nodeCode').setAttribute('readonly', 'readonly');
         document.getElementById('nodeLogicDesc').value = '';
 
         formModal.dataset.isLogicDescRequired = String(isBottomLevel);
@@ -1146,7 +1146,7 @@ function initNodeFormModal() {
 
         document.getElementById('nodeName').value = nodeName;
         document.getElementById('nodeCode').value = nodeCode;
-        document.getElementById('nodeCode').setAttribute('readonly', 'readonly');
+        // document.getElementById('nodeCode').setAttribute('readonly', 'readonly');
         document.getElementById('nodeLogicDesc').value = treeNode.dataset.logicDesc || '';
 
         currentEditLabelElement = labelElement;
