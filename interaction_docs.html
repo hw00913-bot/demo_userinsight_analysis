@@ -333,7 +333,7 @@
                 <li><a href="#section-resistance" class="nav-link"><i class="fa-solid fa-hand"></i><span>抗拒点页签</span></a></li>
                 <li><a href="#section-insight-modal" class="nav-link"><i class="fa-solid fa-tag"></i><span>洞察标签弹窗</span></a></li>
                 <li><a href="#section-download" class="nav-link"><i class="fa-solid fa-download"></i><span>下载明细数据</span></a></li>
-                <li><a href="#section-review-flow" class="nav-link"><i class="fa-solid fa-list-check"></i><span>人工复核流程</span></a></li>
+                <li><a href="#section-export-all" class="nav-link"><i class="fa-solid fa-file-csv"></i><span>数据导出全览</span></a></li>
             </ul>
         </nav>
     </aside>
@@ -341,7 +341,7 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V1.0 · 与最新代码同步</span>
+            <span class="doc-tag">版本 V1.1 · 与最新代码同步（2026-04-13 更新）</span>
             <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
             <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界。</p>
         </header>
@@ -364,23 +364,34 @@
                         <td class="ver-num">V1.0</td>
                         <td>
                             <ol style="padding-left:1.2em; margin:0; line-height:2;">
-                                <li>筛选栏：统计日期区间、呼叫类型、业务类型、R渠道（模拟数据，按业务需求配置）、大项目名称（输入框关键字查询）五维筛选</li>
-                                <li>4 个核心 KPI 指标卡片（通话总数、接通总数等）</li>
-                                <li><strong>标签趋势分析：</strong>支持选择标签并以折线图展示其在时间维度上的数量变化趋势，最多同时分析 8 个标签</li>
-                                <li>两大主页签：常见标签、抗拒点</li>
-                                <li>常见标签：报表统计（按业务类型/按R渠道）+ 双环分布图（一级/二级分类）+ 标签排行 + 排序切换</li>
-                                <li>抗拒点：报表统计（按业务类型/按R渠道）+ 抗拒点排行 + 排序切换</li>
-                                <li>洞察标签管理弹窗（常见标签分类 + 客户抗拒点分类树形结构）</li>
-                                <li>下载明细数据（CSV 导出，含 R渠道、大项目、sc值 字段；多标签拆分为多列显示）</li>
-                                <li><strong>业务颗粒度升级：</strong>全量常见标签看板向下钻取至「三级分类」</li>
-                                <li><strong>任务中心增强：</strong>新增「通话 ID」精确检索；表头重命名为「AI 标注」以明确数据源</li>
-                                <li><strong>复核详情重构：</strong>引入 Tab 切换流（命中情况 / 历史复核记录）</li>
-                                <li><strong>可疑溯源增强：</strong>历史记录新增「复核流水 ID」展示；提交后显示包含流水号的成功反馈</li>
-                                <li><strong>导航优化：</strong>复核页面「关闭」按钮逻辑优化，支持单页面平滑返回看板</li>
-                                <li><strong>编码生成规则：</strong>新增标签时自动生成 6 位英文数字随机码（A-Z/a-z/0-9），保证全局唯一，无类别前缀</li>
+                                <li>全局筛选栏（日期区间、呼叫类型、业务类型、R渠道、大项目名称）</li>
+                                <li>4 个核心 KPI 指标卡片</li>
+                                <li>标签趋势分析（折线图，最多 8 个标签）</li>
+                                <li>常见标签 Tab：报表统计 + 双环分布图 + 排行</li>
+                                <li>抗拒点 Tab：报表统计 + 排行</li>
+                                <li>洞察标签管理弹窗（三级树形结构，支持增删改查）</li>
+                                <li>下载明细数据（客户端 CSV 导出）</li>
                             </ol>
                         </td>
                         <td>2026-04-03</td>
+                        <td><a class="btn-jump" href="https://www.processon.com/embed/69c23c7917c24b344c66b891" target="_blank"><i class="fa-solid fa-diagram-project"></i>查看</a></td>
+                        <td><a class="btn-jump" href="userinsight.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>查看页面</a></td>
+                    </tr>
+                    <tr>
+                        <td class="ver-num">V1.1</td>
+                        <td>
+                            <ol style="padding-left:1.2em; margin:0; line-height:2;">
+                                <li><strong>筛选栏优化：</strong>「呼叫类型」更名为「呼叫渠道」；日期区间新增 Tooltip（基于通话开始时间），限制最大 3 个月范围，最远可选 2 年</li>
+                                <li><strong>查询联动：</strong>点击「查询」触发指标卡浮动刷新 + 趋势图重新渲染 + 顶部操作通知</li>
+                                <li><strong>移除人工复核：</strong>下线操作栏「人工复核」按钮及全部相关逻辑</li>
+                                <li><strong>趋势图日/周自适应：</strong>统计区间 ≤ 31 天显示日视图（MM-DD），> 31 天自动切换自然周视图（YYYY-Wxx）</li>
+                                <li><strong>趋势分析导出：</strong>常见标签趋势图 + 抗拒趋势图各新增「导出数据」按钮，结构为横轴时间 × 纵轴一/二/三级分类</li>
+                                <li><strong>排行导出：</strong>常见标签排行 + 抗拒点排行各新增「导出报表」按钮，按当前排序结果导出</li>
+                                <li><strong>报表导出：</strong>按业务类型统计 + 按R渠道统计均支持异步导出，数量与环比分为独立两列</li>
+                                <li><strong>双环图合理化：</strong>内环数值严格等于外环子项之和</li>
+                            </ol>
+                        </td>
+                        <td>2026-04-13</td>
                         <td><a class="btn-jump" href="https://www.processon.com/embed/69c23c7917c24b344c66b891" target="_blank"><i class="fa-solid fa-diagram-project"></i>查看</a></td>
                         <td><a class="btn-jump" href="userinsight.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>查看页面</a></td>
                     </tr>
@@ -407,12 +418,15 @@
                 <li>包含「开始日期」和「结束日期」两个日期输入框，中间以「至」连接。</li>
                 <li>页面初始化时，日期区间自动设置为<strong>最近 30 天</strong>（结束日期为今天，开始日期为今天往前 30 天）。</li>
                 <li>日期格式为 <code>YYYY-MM-DD</code>，使用原生日期选择器。</li>
+                <li><strong>统计口径 Tooltip：</strong>标签旁展示问号图标，悬停后提示「基于智能体记录的"通话开始时间"进行统计」，明确数据取值来源。</li>
+                <li><strong>范围限制：</strong>最大可选范围 <strong>3 个月（92 天）</strong>，超出时弹窗提示并自动修正；最远可向前追溯 <strong>2 年</strong>。</li>
             </ul>
 
-            <h3 class="sub-title">2. 呼叫类型</h3>
+            <h3 class="sub-title">2. 呼叫渠道</h3>
             <ul class="item-list">
                 <li>下拉单选，可选项：全部、人工外呼、预外呼、AI 外呼。</li>
                 <li>默认选中「全部」。</li>
+                <li><strong>注意：</strong>V1.1 已将「呼叫类型」更名为「呼叫渠道」。</li>
             </ul>
 
             <h3 class="sub-title">3. 业务类型</h3>
@@ -439,8 +453,8 @@
 
             <h3 class="sub-title">6. 查询与重置</h3>
             <ul class="item-list">
-                <li><strong>查询按钮：</strong>点击后触发全页数据刷新（原型中为静态展示，无实际接口调用）。</li>
-                <li><strong>重置按钮：</strong>点击后将所有筛选项恢复为默认值（日期恢复为最近 30 天，其他恢复「全部」）。</li>
+                <li><strong>查询按钮：</strong>点击后弹出「正在根据通话开始时间聚合统计数据...」通知；约 800ms 后核心指标卡数值小幅浮动刷新，并同步触发趋势分析图重新渲染。</li>
+                <li><strong>重置按钮：</strong>将所有筛选项恢复为默认值（日期恢复最近 30 天，下拉框恢复「全部」，文本框清空），并显示「筛选条件已重置」通知。</li>
             </ul>
         </section>
 
@@ -453,10 +467,10 @@
                 <thead><tr><th>按钮名称</th><th>ID</th><th>样式类</th><th>功能说明</th></tr></thead>
                 <tbody>
                     <tr><td>新增洞察标签</td><td><code>addInsightBtn</code></td><td><code>btn-primary</code>（蓝色实心）</td><td>点击打开「洞察标签管理」弹窗（见第八节）</td></tr>
-                    <tr><td>下载明细数据</td><td><code>downloadFullDetailBtn</code></td><td><code>btn-secondary</code>（白底边框）</td><td>点击生成并下载 CSV 明细文件（见第九节）</td></tr>
-                    <tr><td>人工复核</td><td><code>manualReviewBtn</code></td><td><code>btn-secondary</code>（白底边框）</td><td>点击在新窗口打开「人工复核任务列表」（见第十一节）</td></tr>
+                    <tr><td>下载明细数据</td><td><code>downloadFullDetailBtn</code></td><td><code>btn-secondary</code>（白底边框）</td><td>点击异步生成并下载通话级 CSV 明细文件（含 R渠道/大项目/sc值/呼叫渠道/命中标签等字段）</td></tr>
                 </tbody>
             </table>
+            <div class="highlight-box"><strong>注意（V1.1）：</strong>「人工复核」按钮已下线，操作栏现仅保留以上两个入口。各模块数据导出功能已下沉至各卡片右上角就近放置（见第十节）。</div>
         </section>
 
         <!-- 四、核心指标卡片 -->
@@ -832,151 +846,63 @@
 
         </section>
 
-        <!-- 十、人工复核流程详细逻辑说明 -->
-        <section class="section" id="section-review-flow">
-            <h2 class="section-title"><i class="fa-solid fa-list-check"></i>十、人工复核流程完整说明</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:0.5rem;">该功能模块负责对由「AI 智能体」初步打标的通话记录进行人工质量校验与标签修正，是确保用户洞察看板数据准确性的最终关卡。整个复核链路由两个独立页面构成。</p>
-            <div class="highlight-box" style="margin-bottom: 1.5rem;">
-                <strong>业务闭环路径：</strong>AI 外呼标注 → 进入复核队列 → 人工抽检复核 → 生成流水存档 → 看板数据更新
-            </div>
+        <!-- 十、数据导出全览 -->
+        <section class="section" id="section-export-all">
+            <h2 class="section-title"><i class="fa-solid fa-file-csv"></i>十、数据导出全览</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:0.5rem;">用户洞察看板提供多个层级的数据导出功能，以下为各入口的汇总说明。所有导出操作均为异步模拟（约 800ms），导出期间按钮进入 Loading 状态，完成后触发浏览器下载并显示顶部成功通知。</p>
 
-            <!-- ① 任务中心 -->
-            <h3 class="sub-title">① 复核任务中心页面 (manual_review.html)</h3>
-
-            <p style="font-size:0.9rem; color:#64748b; margin: 0.5rem 0 0.75rem;">
-                <strong>页面头部：</strong>左侧显示页面标题「人工复核任务中心」+ 副标题说明「对已由 AI 智能体初筛并标记标签的通话记录进行人工抽检与复核修正」。右侧固定一个「关闭」按钮（<code>btn-secondary</code>），点击后执行 <code>location.href='userinsight.html'</code>，在当前窗口平滑返回用户洞察主看板（不关闭窗口）。
-            </p>
-
-            <h3 class="sub-title" style="margin-top: 0.5rem;">1.1 双 Tab 主结构</h3>
             <table class="flow-table">
-                <thead><tr><th>Tab 名称</th><th>触发元素</th><th>内容面板 ID</th><th>默认激活</th><th>功能定位</th></tr></thead>
+                <thead><tr><th>导出入口</th><th>位置</th><th>文件命名</th><th>CSV 结构说明</th></tr></thead>
                 <tbody>
-                    <tr><td><strong>复核任务</strong></td><td><code>.tab-item[data-target="task-list"]</code></td><td><code>#task-list</code></td><td>✅ 是</td><td>展示待复核/已复核的通话记录队列，供复核员认领并进入详情处理</td></tr>
-                    <tr><td><strong>复核日志</strong></td><td><code>.tab-item[data-target="log-list"]</code></td><td><code>#log-list</code></td><td>❌ 否</td><td>以审计视角查阅历史所有复核操作记录，含统计汇总、修正类型及原始意见</td></tr>
-                </tbody>
-            </table>
-            <div class="highlight-box">
-                <strong>Tab 切换逻辑：</strong>点击任意 Tab 项时，遍历移除所有 Tab 和内容面板的 active 类，再对点击项及其对应的内容面板添加 active 类，实现无刷新切换。
-            </div>
-
-            <h3 class="sub-title">1.2 复核任务 Tab — 筛选栏</h3>
-            <table class="flow-table">
-                <thead><tr><th>筛选项</th><th>控件类型</th><th>默认值</th><th>选项/格式</th><th>筛选逻辑说明</th></tr></thead>
-                <tbody>
-                    <tr><td>外呼日期</td><td>双日期输入框（<code>input[type=date]</code>）</td><td>空</td><td><code>YYYY-MM-DD</code></td><td>圈取特定外呼时间段内的通话记录</td></tr>
-                    <tr><td>包含常见问题</td><td>下拉单选（<code>select</code>）</td><td>全部</td><td>全包落地含保险总价 / 置换旧车现金补贴细节 / 目前订单交付具体周期 / 360度影像等细节配置</td><td>筛选 AI 至少命中该三级分类标签的记录</td></tr>
-                    <tr><td>包含抗拒点</td><td>下拉单选（<code>select</code>）</td><td>全部</td><td>忙于工作等私人事务 / 落地价高出预期 / 暂无购车计划 / 隔壁品牌横向对比</td><td>筛选 AI 至少命中该二级抗拒点的记录</td></tr>
-                    <tr><td>通话 ID</td><td>文本输入框（<code>input[type=text]</code>）</td><td>空</td><td>数字型 ID（如 <code>1029384756</code>）</td><td>精确检索特定通话记录，用于目标性复核场景</td></tr>
-                    <tr><td>查询按钮</td><td><code>btn-primary</code>（蓝色实心）</td><td>-</td><td>-</td><td>触发筛选条件提交（原型为静态展示，生产环境调用列表 API）</td></tr>
-                </tbody>
-            </table>
-
-            <h3 class="sub-title">1.3 复核任务 Tab — 数据表格</h3>
-            <table class="flow-table">
-                <thead><tr><th>列名</th><th>数据说明</th><th>样式特征</th></tr></thead>
-                <tbody>
-                    <tr><td>通话 ID</td><td>10 位数字型通话唯一标识</td><td><code>font-family: monospace</code> 等宽字体显示</td></tr>
-                    <tr><td>外呼时间</td><td>格式 <code>YYYY-MM-DD HH:mm:ss</code></td><td>-</td></tr>
-                    <tr><td>通话时长</td><td>格式 <code>mm:ss</code>，如 <code>02:45</code></td><td>-</td></tr>
-                    <tr><td>业务类型</td><td>NEV 新线索 / NEV 冷线索 / NEV 留资未满</td><td>-</td></tr>
-                    <tr><td>AI 标注常见问题</td><td>AI 命中的三级分类，可能多个</td><td>每个标签以 <code>.tag-pill</code>（浅灰圆角胶囊）展示</td></tr>
-                    <tr><td>AI 标注抗拒点</td><td>AI 命中的抗拒点，可能多个</td><td>同上 <code>.tag-pill</code> 样式</td></tr>
-                    <tr><td>状态</td><td>待复核 / 已复核</td><td>待复核：黄底黄字（<code>.status-badge.pending</code>）；已复核：绿底绿字（<code>.status-badge.reviewed</code>）</td></tr>
-                    <tr><td>操作</td><td>「復核审核」链接</td><td><code>.review-link</code> 蓝色带放大镜图标，点击跳转至详情页 <code>manual_review_detail.html</code></td></tr>
+                    <tr>
+                        <td>下载明细数据</td>
+                        <td>顶部操作按钮栏（<code>#downloadFullDetailBtn</code>）</td>
+                        <td><code>用户洞察明细数据_YYYY-M-D.csv</code></td>
+                        <td>通话级明细：callid / 通话时间 / 业务类型 / R渠道 / 大项目 / sc值 / 呼叫渠道 / 命中常见标签(动态多列) / 命中抗拒点(动态多列)</td>
+                    </tr>
+                    <tr>
+                        <td>按业务类型/R渠道统计导出</td>
+                        <td>常见标签页签 &amp; 抗拒点页签 — 报表筛选栏右侧「导出报表」按钮</td>
+                        <td><code>按业务类型统计_YYYY-M-D.csv</code><br><code>按R渠道统计_YYYY-M-D.csv</code></td>
+                        <td>行：标签层级（一/二/三级名称）；列：业务类型或R渠道 × 数量列 + 业务类型或R渠道 × 环比列（量与比独立两列）</td>
+                    </tr>
+                    <tr>
+                        <td>标签趋势分析导出</td>
+                        <td>常见标签页签 — 趋势分析卡片右上角（<code>#exportTrendBtn</code>）</td>
+                        <td><code>按日趋势分析_YYYY-M-D.csv</code> 或 <code>按周趋势分析_YYYY-M-D.csv</code></td>
+                        <td>前3列：一级分类 / 二级分类 / 三级标签；后续列：各时间点数值（日视图 MM-DD，周视图 YYYY-Wxx）</td>
+                    </tr>
+                    <tr>
+                        <td>抗拒趋势分析导出</td>
+                        <td>抗拒点页签 — 趋势分析卡片右上角（<code>#exportTrendBtn2</code>）</td>
+                        <td>同上</td>
+                        <td>结构与标签趋势分析一致</td>
+                    </tr>
+                    <tr>
+                        <td>常见标签排行导出</td>
+                        <td>常见标签页签 — 排行卡片右上角「导出报表」按钮</td>
+                        <td><code>常见标签排行_YYYY-M-D.csv</code></td>
+                        <td>按当前排序结果：排名 / 一级分类 / 二级分类 / 三级标签 / 提及次数 / 占比 / 环比 / 热度</td>
+                    </tr>
+                    <tr>
+                        <td>抗拒点排行导出</td>
+                        <td>抗拒点页签 — 排行卡片右上角「导出报表」按钮</td>
+                        <td><code>抗拒点排行_YYYY-M-D.csv</code></td>
+                        <td>按当前排序结果：排名 / 一级分类 / 二级分类 / 三级标签 / 提及次数 / 占比 / 环比 / 热度</td>
+                    </tr>
                 </tbody>
             </table>
 
-            <h3 class="sub-title">1.4 复核日志 Tab — 统计汇总卡片</h3>
-            <p style="font-size:0.9rem; color:#64748b; margin: 0.5rem 0 0.75rem;">日志页签顶部以 4 列网格展示全局 KPI 汇总，左侧蓝色边框线为各卡片主题色。</p>
-            <table class="flow-table">
-                <thead><tr><th>指标名称</th><th>模拟数值</th><th>边框颜色</th><th>业务意义</th></tr></thead>
-                <tbody>
-                    <tr><td>累计复核通话</td><td>1,284</td><td>蓝色 <code>#0081ff</code></td><td>该系统上线以来已完成的复核总量</td></tr>
-                    <tr><td>标签准确率</td><td>94.2%</td><td>绿色 <code>#52c41a</code></td><td>AI 初次标注与人工最终确认吻合的比率</td></tr>
-                    <tr><td>人工干预修正数</td><td>156</td><td>橙黄色 <code>#faad14</code></td><td>复核员主动修改标签的次数，反映 AI 误判量</td></tr>
-                    <tr><td>复核平均耗时</td><td>45s</td><td>紫色 <code>#722ed1</code></td><td>单条通话从打开到提交的平均时间，衡量复核效率</td></tr>
-                </tbody>
-            </table>
-
-            <h3 class="sub-title">1.5 复核日志 Tab — 筛选栏与日志表格</h3>
-            <ul class="item-list">
-                <li><strong>筛选项：</strong>「复核日期区间」（双日期输入框）、「复核人」（文本输入，支持姓名或工号）、「通话 ID」（文本输入，精确定位单条记录），并配有「检索日志」按钮。</li>
-                <li><strong>日志表格列结构：</strong>复核流水 ID（如 <code>LOG1000234</code>）、通话 ID（等宽字体）、复核时间（精确到秒）、复核人（姓名+角色）、修正动作（文字标注颜色区分）、复核意见（自由文本摘要）、操作（「详情」链接跳至详情页）。</li>
-                <li><strong>修正动作颜色规则：</strong>「修正了标签/抗拒点」→ 橙黄色 <code>#faad14</code>；「维持原样」→ 绿色 <code>#52c41a</code>，直观区分是否发生了人工干预。</li>
-            </ul>
-
-            <!-- ② 详情页 -->
-            <h3 class="sub-title" style="margin-top: 2rem;">② 复核详情页面 (manual_review_detail.html)</h3>
-
-            <div class="highlight-box">
-                <strong>页面布局：</strong>采用 CSS Grid <code>grid-template-columns: 1fr 380px</code> 的左宽右窄黄金分割。左侧为「通话内容区（音频 + 转写文本）」，右侧为「业务标注区（Tab 化操作面板）」，右侧面板使用 <code>position: sticky; top: 24px</code> 固定，确保复核员滚动转写文本时标注区始终可见。
-            </div>
-
-            <h3 class="sub-title">2.1 页面头部</h3>
-            <ul class="item-list">
-                <li>标题显示当前正在处理的通话记录：「人工复核 - 通话 ID: 123456789」，其中通话 ID 动态填充自列表传参。</li>
-                <li>右上角「返回列表」按钮（<code>btn-secondary</code>），点击调用 <code>history.back()</code> 回到任务中心列表。</li>
-            </ul>
-
-            <h3 class="sub-title">2.2 左侧内容区 — 通话录音与转写文本</h3>
-            <table class="flow-table">
-                <thead><tr><th>功能块</th><th>DOM 结构</th><th>交互说明</th></tr></thead>
-                <tbody>
-                    <tr><td>通话录音播放</td><td>原生 <code>&lt;audio controls&gt;</code></td><td>支持快进/快退/暂停/音量/倍速。当前原型 <code>src="#"</code> 为占位，生产环境替换为实际录音 URL。</td></tr>
-                    <tr><td>通话转写文本</td><td><code>.transcript-container</code>（固定高度 600px，纵向可滚动）</td><td>以聊天气泡形式呈现 AI 坐席（左侧蓝泡）与客户（右侧白泡）的逐句对话，每句附时间戳（如 <code>00:01</code> / <code>00:25</code>）。</td></tr>
-                    <tr><td>气泡样式区分</td><td>AI：<code>.chat-bubble.ai</code>；客户：<code>.chat-bubble.customer</code></td><td>AI 气泡背景 <code>#e6f7ff</code> 蓝系；客户气泡白底带浅灰边框。气泡左右对齐体现发言方向。</td></tr>
-                </tbody>
-            </table>
-
-            <h3 class="sub-title">2.3 右侧标注区 — Tab 切换结构</h3>
-            <p style="font-size:0.9rem; color:#64748b; margin: 0.5rem 0 0.75rem;">右侧面板顶部有两个 Tab（<code>.card-tab</code>），底部有蓝色 2px 下划线高亮激活状态（通过 <code>::after</code> 伪元素实现）。</p>
-            <table class="flow-table">
-                <thead><tr><th>Tab 名称</th><th>点击触发函数</th><th>内容面板 ID</th><th>默认激活</th></tr></thead>
-                <tbody>
-                    <tr><td><strong>命中情况</strong></td><td><code>switchDetailTab('hit-status')</code></td><td><code>#hit-status</code></td><td>✅ 是</td></tr>
-                    <tr><td><strong>历史复核记录</strong></td><td><code>switchDetailTab('history-records')</code></td><td><code>#history-records</code></td><td>❌ 否</td></tr>
-                </tbody>
-            </table>
-            <div class="highlight-box">
-                <strong>Tab 切换逻辑：</strong>点击 Tab 时，遍历所有 Tab 项和内容面板，根据点击目标切换 active 类的显示/隐藏状态。
-            </div>
-
-            <h3 class="sub-title">2.4 命中情况 Tab（<code>#hit-status</code>）</h3>
-            <ul class="item-list">
-                <li><strong>命中的常见问题：</strong>展示 AI 从通话中识别出的三级分类常见问题标签（如「全包落地含保险总价」、「置换旧车现金补贴细节」）。已命中项显示为 <code>.review-tag.selected</code>（蓝底蓝字蓝边框），未命中项为灰底灰字。</li>
-                <li><strong>命中的抗拒点：</strong>同样以标签形式展示，如「忙于工作私事」、「落地价高出预期」。</li>
-                <li><strong>标签点击交互：</strong>每个标签可点击切换「命中/不命中」状态，允许复核员直接在界面上实现精准纠错。</li>
-                <li><strong>复核意见：</strong>一个 <code>height: 120px</code> 的多行文本域，placeholder 提示「请输入复核意见...」，供复核员填写本次审核的判断依据。</li>
-            </ul>
-
-            <h3 class="sub-title">2.5 历史复核记录 Tab（<code>#history-records</code>）</h3>
-            <ul class="item-list">
-                <li>标题栏右侧以「共 N 条」小字标注历史记录总数。</li>
-                <li>每条记录内部结构依次为：<strong>复核人姓名 + 角色</strong>（如「张三 (Admin)」，粗体深色）、<strong>复核日期时间</strong>（如 <code>2024-04-02 15:30</code>，右对齐灰色）、<strong>复核流水 ID</strong>（如 <code>LOG1000234</code>，11px 极小字灰色，实际生产中可点击跳转至全局日志查询）、<strong>操作摘要 + 备注</strong>（如「操作：修正标签 / 备注：修正了抗拒点细分项」，多行 1.6 行距）。</li>
-                <li>多条记录之间以 <code>1px dashed #e2e8f0</code>（虚线）分隔，视觉上形成时间轴效果。</li>
-            </ul>
-
-            <h3 class="sub-title">2.6 底部提交栏（<code>.submit-bar</code>）</h3>
-            <ul class="item-list">
-                <li>固定在标注区底部，通过 <code>margin-top: auto</code> + Flex 布局实现自动下推定位，不受内容高度影响。</li>
-                <li><strong>「提交复核」按钮：</strong><code>btn-primary</code> 蓝色实心，<code>flex: 1</code> 等宽，点击触发 <code>submitReview()</code> 函数。</li>
-                <li><strong>「下条通话」按钮：</strong><code>btn-secondary</code> 白底边框，<code>flex: 1</code> 等宽，用于快速跳至队列中下一条记录，无需返回列表页，实现高效线性复核流程。</li>
-            </ul>
-
-            <h3 class="sub-title">2.7 提交复核反馈机制</h3>
-            <div class="highlight-box">
-                <strong>提交复核：</strong>点击「提交复核」按钮后，系统弹出成功提示并生成复核流水记录。生产环境此处应替换为 API 调用：将修正后的标签列表、复核意见、操作员信息推送至服务端，并触发看板数据重算。
-            </div>
-
-            <div class="warn-box">
-                <strong>数据优先级规则（生产规划）：</strong>人工复核提交后，该通话记录的标签数据优先级高于 AI 初始标注。看板「常见问题 Top 10」、「热门问题排行」、「抗拒点分布饼图」等所有模块的数据计算，应优先以经人工确认的标签为准。若一条通话被多次复核，以最新一次的流水记录为最终有效标注。
+            <div class="highlight-box" style="margin-top:1.5rem">
+                <strong>通用技术规范：</strong>① 所有 CSV 文件以 UTF-8 with BOM 编码输出，确保 Excel 打开中文不乱码；② 文件通过客户端 Blob 生成后直接触发浏览器下载，无需后端接口；③ 生产环境建议替换为后端流式下载接口，以支持大数据量场景。
             </div>
         </section>
 
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V1.0 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V1.1 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-04-13</p>
         </div>
+
     </main>
 
     <script>
