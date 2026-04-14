@@ -137,13 +137,15 @@ function initGlobalFilters() {
 
 // 通用报表表格导出逻辑
 function initReportTableExport() {
-    const exportBtns = document.querySelectorAll('.report-section .export-btn');
+    const exportBtns = document.querySelectorAll('.export-btn:not(.trend-export-btn):not(#downloadFullDetailBtn)');
     
     exportBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            const section = btn.closest('.report-section');
-            const title = section.querySelector('.report-title').textContent;
-            const table = section.querySelector('.report-table');
+            // 支持 .report-section 或 .content-card
+            const section = btn.closest('.report-section') || btn.closest('.content-card');
+            const titleEl = section.querySelector('.report-title') || section.querySelector('.card-title');
+            const title = titleEl ? titleEl.textContent : '报表导出';
+            const table = section.querySelector('table');
             if (!table) return;
 
             // 模拟异步体验
@@ -2040,6 +2042,83 @@ class TrendAnalyzer {
         }
 
         this.setDefaultSelection();
+
+        // 绑定导出按钮
+        const exportBtn = document.getElementById(this.config.exportBtnId);
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => this.exportCsv());
+        }
+    }
+
+    exportCsv() {
+        if (this.selectedTags.length === 0) {
+            showNotification('请先选择至少一个标签后再导出', 'info');
+            return;
+        }
+
+        const exportBtn = document.getElementById(this.config.exportBtnId);
+        const originalHtml = exportBtn?.innerHTML;
+        if (exportBtn) {
+            exportBtn.disabled = true;
+            exportBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 导出中...';
+        }
+
+        showNotification('正在生成趋势分析报表...', 'info');
+
+        setTimeout(() => {
+            const { dates, isWeekly } = this.getDatesAndGranularity();
+            const treeData = this.config.treeDataGetter();
+
+            // ---- 构建表头：一级分类 | 二级分类 | 三级标签 | 日期1 | 日期2 | ...
+            const headerCols = ['一级分类', '二级分类', '三级标签'];
+            const dateCols = dates.map(d => isWeekly ? d : d.substring(5)); // 周保留全名，日截短为 MM-DD
+            const headers = [...headerCols, ...dateCols];
+
+            const csvRows = [headers.map(h => `"${h}"`).join(',')];
+
+            // ---- 为每个选中标签生成一行数据
+            this.selectedTags.forEach((tag, idx) => {
+                // 从 treeData 中找到对应的层级信息
+                let l1Name = '', l2Name = '', l3Name = '';
+                if (tag.level === 1) {
+                    l1Name = tag.name;
+                } else if (tag.level === 2) {
+                    l1Name = tag.l1Name || '';
+                    l2Name = tag.name;
+                } else {
+                    l1Name = tag.l1Name || '';
+                    l2Name = tag.l2Name || '';
+                    l3Name = tag.name;
+                }
+
+                // 生成该标签在各个时间点的模拟数值
+                const values = this.getValues(tag.count, dates.length);
+                const dataRow = [
+                    `"${l1Name}"`,
+                    `"${l2Name}"`,
+                    `"${l3Name}"`,
+                    ...values.map(v => `"${v}"`)
+                ];
+                csvRows.push(dataRow.join(','));
+            });
+
+            const blob = new Blob(['\ufeff' + csvRows.join('\n')], { type: 'text/csv;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const title = isWeekly ? '按周趋势分析' : '按日趋势分析';
+            a.download = `${title}_${new Date().toLocaleDateString().replace(/\//g, '-')}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            if (exportBtn) {
+                exportBtn.disabled = false;
+                exportBtn.innerHTML = originalHtml;
+            }
+            showNotification('趋势分析报表导出完成', 'success');
+        }, 800);
     }
 
     setDefaultSelection() {
@@ -2270,6 +2349,7 @@ function initAnalyzers() {
         selectorBtnId: 'openTagSelector', dropdownId: 'tagDropdown', tagListId: 'tagListForSelection',
         chartSvgId: 'lineChartSvg', emptyStateId: 'chartEmptyState', legendId: 'chartLegend',
         searchInputId: 'tagSearchInput', clearBtnId: 'clearAllTags', countElId: 'selectedTagCount',
+        exportBtnId: 'exportTrendBtn',
         treeDataGetter: () => commonTagsTreeData
     });
 
@@ -2277,6 +2357,7 @@ function initAnalyzers() {
         selectorBtnId: 'openTagSelector2', dropdownId: 'tagDropdown2', tagListId: 'tagListForSelection2',
         chartSvgId: 'lineChartSvg2', emptyStateId: 'chartEmptyState2', legendId: 'chartLegend2',
         searchInputId: 'tagSearchInput2', clearBtnId: 'clearAllTags2', countElId: 'selectedTagCount2',
+        exportBtnId: 'exportTrendBtn2',
         treeDataGetter: () => resistanceTagsTreeData
     });
 }
