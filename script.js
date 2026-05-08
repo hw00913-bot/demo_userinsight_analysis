@@ -10,7 +10,7 @@ document.querySelectorAll('.nav-group-header').forEach(header => {
 document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
     btn.addEventListener('click', () => {
         const tabId = btn.getAttribute('data-tab');
-        
+
         // 只针对主 Tab 进行状态重置
         document.querySelectorAll('.tab-btn[data-tab]').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
@@ -19,12 +19,6 @@ document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
         const targetPane = document.getElementById(tabId);
         if (targetPane) {
             targetPane.classList.add('active');
-            
-            // 逻辑：点击培育运营默认显示第一个分页 (用户基础属性)
-            if (tabId === 'cultivation-op') {
-                const firstSubTab = targetPane.querySelector('.tab-btn');
-                if (firstSubTab) firstSubTab.click();
-            }
         }
     });
 });
@@ -138,7 +132,6 @@ window.addEventListener('DOMContentLoaded', () => {
     initProjectRankInteraction(); // 初始化大项目排名交互
     initScheduleRankInteraction(); // 初始化排期排名交互
     // initAllRankModal();          // 初始化全量排名弹窗 (已通过 openFullRanking 动态触发)
-    initCultivationTabs();       // 初始化培育运营二级 Tab
 });
 
 // 全局筛选器交互逻辑
@@ -198,7 +191,7 @@ function initGlobalFilters() {
 // 通用报表表格导出逻辑
 function initReportTableExport() {
     const exportBtns = document.querySelectorAll('.export-btn:not(.trend-export-btn):not(#downloadFullDetailBtn)');
-    
+
     exportBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             // 支持 .report-section 或 .content-card
@@ -217,7 +210,7 @@ function initReportTableExport() {
             setTimeout(() => {
                 const headerRow = table.querySelector('thead tr');
                 const bodyRows = Array.from(table.querySelectorAll('tbody tr'));
-                
+
                 // 1. 处理表头：如果表头下方数据包含 count/trend，则拆分表头
                 const headers = [];
                 const headerCells = Array.from(headerRow.querySelectorAll('th'));
@@ -242,7 +235,7 @@ function initReportTableExport() {
                 bodyRows.forEach(tr => {
                     const rowData = [];
                     const cells = Array.from(tr.querySelectorAll('td, th'));
-                    
+
                     cells.forEach((td, idx) => {
                         if (columnMap[idx] === 'split') {
                             const count = td.querySelector('.count')?.textContent.trim() || '0';
@@ -301,7 +294,7 @@ function initMdGeneration() {
             leafNodes.forEach(node => {
                 const label = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label')?.textContent || '';
                 const logic = node.dataset.logicDesc || '无逻辑说明';
-                
+
                 // 溯源路径
                 let path = [];
                 let parent = node.closest('.tree-children')?.parentElement;
@@ -310,7 +303,7 @@ function initMdGeneration() {
                     path.unshift(pLabel.replace(/\s*\(.*?\)$/, '')); // 移除编码
                     parent = parent.closest('.tree-children')?.parentElement;
                 }
-                
+
                 const pathStr = path.join(' > ');
                 md += `### ${pathStr} > ${label}\n`;
                 md += `**逻辑定义**：${logic}\n\n`;
@@ -327,7 +320,7 @@ function initMdGeneration() {
             leafNodes.forEach(node => {
                 const label = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label')?.textContent || '';
                 const logic = node.dataset.logicDesc || '无逻辑说明';
-                
+
                 // 溯源路径
                 let path = [];
                 let parent = node.closest('.tree-children')?.parentElement;
@@ -336,7 +329,7 @@ function initMdGeneration() {
                     path.unshift(pLabel.replace(/\s*\(.*?\)$/, ''));
                     parent = parent.closest('.tree-children')?.parentElement;
                 }
-                
+
                 const pathStr = path.join(' > ');
                 md += `### ${pathStr} > ${label}\n`;
                 md += `**逻辑定义**：${logic}\n\n`;
@@ -376,7 +369,7 @@ function initMdGeneration() {
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             currentMdType = tab.dataset.mdType;
-            
+
             // 根据类型生成对应的 MD
             content.textContent = currentMdType === 'logic' ? generateLogicMd() : generateOutputMd();
         });
@@ -681,7 +674,7 @@ const DISTRIBUTION_MOCKS = {
     // 常见问题 L2
     '购车时间': 2800, '购车意向': 3700,
     '到店行为': 1500, '购买形态': 1200, '客服意愿': 1500,
-    
+
     // 抗拒点 L2
     '价格因素': 2200, '产品力': 1500, '品牌逻辑': 800,
     '政策抗拒': 1200, '交付时间': 600
@@ -702,10 +695,10 @@ function renderDoubleRingChart(containerId, modalId) {
         const l1LabelEl = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
         if (!l1LabelEl) return;
         const l1Name = l1LabelEl.textContent.trim().replace(/\s*\(.*?\)$/, '');
-        
+
         let l1Sum = 0;
         const l2Nodes = node.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-2');
-        
+
         l2Nodes.forEach(l2 => {
             const labelEl = l2.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
             if (labelEl) {
@@ -713,7 +706,7 @@ function renderDoubleRingChart(containerId, modalId) {
                 // 如果字典没定义，则根据该节点是否有子节点(L3)给一个默认权值
                 const l3Count = l2.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-3').length;
                 const mockVal = DISTRIBUTION_MOCKS[name] || (l3Count > 0 ? l3Count * 200 : 300);
-                
+
                 l2Data.push({ name, count: mockVal, l1Name });
                 l1Sum += mockVal;
             }
@@ -1284,7 +1277,7 @@ function initNodeFormModal() {
         }
 
         treeNode.remove();
-        
+
         // 更新饼图
         clearTimeout(window.tagChartUpdateTimer);
         window.tagChartUpdateTimer = setTimeout(() => {
@@ -1368,13 +1361,13 @@ function initFullDetailExport() {
         const originalHtml = downloadBtn.innerHTML;
         downloadBtn.disabled = true;
         downloadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 任务处理中...';
-        
+
         showNotification('导出任务已提交，系统正在后台生成全量数据报表，请稍候...', 'info');
 
         setTimeout(() => {
             downloadBtn.disabled = false;
             downloadBtn.innerHTML = originalHtml;
-            
+
             const rawData = [
                 { base: ['CALL_20240520_001', '2024-05-20 10:30:15', '2024-05-20 10:32:40', '075588881234', '13800138001', '新车新线索', 'R1', '大项目A', '85', '呼出-手动'], common: ['落地价', '购置税'], resistance: ['价格无优惠'] },
                 { base: ['CALL_20240520_002', '2024-05-20 11:15:20', '2024-05-20 11:16:46', '075588885678', '13911122223', '新车新线索', 'R2', '大项目B', '72', '呼出-预测'], common: ['样车到店', '提车周期'], resistance: ['交付周期长'] },
@@ -1388,7 +1381,7 @@ function initFullDetailExport() {
             const maxResistance = Math.max(...rawData.map(d => d.resistance.length));
             const commonHeaders = Array.from({ length: maxCommon }, (_, i) => `涉及常见标签${i + 1}`);
             const resHeaders = Array.from({ length: maxResistance }, (_, i) => `涉及抗拒点标签${i + 1}`);
-            
+
             const fullHeaders = [...baseHeaders, ...commonHeaders, ...resHeaders];
             const csvRows = [fullHeaders.join(',')];
 
@@ -1580,7 +1573,7 @@ function initHotRankingModal() {
             const rankClass = index < 3 ? `top-${index + 1}` : '';
             const trendClass = item.trend >= 0 ? 'rise' : 'fall';
             const trendIcon = item.trend >= 0 ? 'fa-arrow-up' : 'fa-arrow-down';
-            
+
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td><div class="rank-badge ${rankClass}">${index + 1}</div></td>
@@ -1636,7 +1629,7 @@ function initHotTrendsModal() {
         `;
 
         const rises = [
-            { name: '咨询落地价', val: 15.0 }, { name: '权益咨询', val: 12.4 }, 
+            { name: '咨询落地价', val: 15.0 }, { name: '权益咨询', val: 12.4 },
             { name: '新车交付', val: 9.8 }, { name: '配置咨询', val: 8.2 },
             { name: '试驾预约', val: 7.8 }, { name: '金融政策', val: 6.5 },
             { name: '活动权益', val: 5.2 }, { name: '提车周期', val: 4.2 }
@@ -1696,7 +1689,7 @@ function initCommonTagSort() {
     if (!tableBody) return;
 
     sortBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             sortBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
@@ -1707,7 +1700,7 @@ function initCommonTagSort() {
                 const cells = row.querySelectorAll('td');
                 // 索引：0rank, 1L1, 2L2, 3L3, 4Count, 5Prop, 6Trend, 7Hot
                 const count = parseInt(cells[4]?.textContent?.replace(/,/g, '')?.trim()) || 0;
-                
+
                 // 环比提取
                 const trendEl = cells[6]?.querySelector('.trend-up, .trend-down, .rise, .fall, .trend');
                 const trendText = trendEl?.textContent?.trim() || '0%';
@@ -1752,7 +1745,7 @@ function initResistanceSort() {
     if (!tableBody) return;
 
     sortBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
             sortBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
 
@@ -1763,7 +1756,7 @@ function initResistanceSort() {
                 const cells = row.querySelectorAll('td');
                 // 索引同上：4Count, 6Trend, 7Hot
                 const count = parseInt(cells[4]?.textContent?.replace(/,/g, '')?.trim()) || 0;
-                
+
                 const trendEl = cells[6]?.querySelector('.trend-up, .trend-down, .rise, .fall, .trend');
                 const trendText = trendEl?.textContent?.trim() || '0%';
                 const trendVal = parseFloat(trendText.replace(/[^0-9.-]/g, '')) || 0;
@@ -1846,7 +1839,7 @@ function fixTableHierarchy(tbody) {
             l1Count = 1;
         }
 
-        const isSameL1 = (i > 0 && rows[i-1].dataset.l1 === v1);
+        const isSameL1 = (i > 0 && rows[i - 1].dataset.l1 === v1);
         if (prevL2Cell && prevL2Cell.textContent === v2 && isSameL1) {
             l2.style.display = 'none';
             l2Count++;
@@ -1989,9 +1982,9 @@ function initReportTableFilter() {
 
         const apply = () => {
             const v1 = l1Select.value, v2 = l2Select.value, v3 = l3Select.value;
-            const matches = originalRows.filter(r => 
-                (!v1 || r.dataset.l1 === v1) && 
-                (!v2 || r.dataset.l2 === v2) && 
+            const matches = originalRows.filter(r =>
+                (!v1 || r.dataset.l1 === v1) &&
+                (!v2 || r.dataset.l2 === v2) &&
                 (!v3 || r.dataset.l3 === v3)
             );
             tbody.innerHTML = '';
@@ -2261,23 +2254,23 @@ class TrendAnalyzer {
                     <span class="tag-item-color" style="background:${trendChartColors[l1Idx % 10]}"></span>
                     <span class="tag-level-badge">一级</span>
                 </div><div class="tag-tree-children" style="display:none">`;
-            
+
             treeData.l2.filter(l2 => l2.l1Name === l1.name).forEach((l2, l2Idx) => {
                 html += `<div class="tag-tree-level tag-tree-l2" data-level="2" data-name="${l2.name}" data-l1name="${l1.name}">
                     <div class="tag-tree-row">
                         <i class="fa-solid fa-chevron-right tag-tree-toggle"></i>
                         <div class="tag-checkbox"><i class="fa-solid fa-check"></i></div>
                         <span class="tag-item-name">${l2.name}</span>
-                        <span class="tag-item-color" style="background:${trendChartColors[(l1Idx*3+l2Idx)%10]}"></span>
+                        <span class="tag-item-color" style="background:${trendChartColors[(l1Idx * 3 + l2Idx) % 10]}"></span>
                         <span class="tag-level-badge">二级</span>
                     </div><div class="tag-tree-children" style="display:none">`;
-                
+
                 treeData.l3.filter(l3 => l3.l2Name === l2.name).forEach((l3, l3Idx) => {
                     html += `<div class="tag-tree-level tag-tree-l3" data-level="3" data-name="${l3.name}" data-l1name="${l1.name}" data-l2name="${l2.name}">
                         <div class="tag-tree-row">
                             <div class="tag-checkbox"><i class="fa-solid fa-check"></i></div>
                             <span class="tag-item-name">${l3.name}</span>
-                            <span class="tag-item-color" style="background:${trendChartColors[(l1Idx*5+l2Idx*2+l3Idx)%10]}"></span>
+                            <span class="tag-item-color" style="background:${trendChartColors[(l1Idx * 5 + l2Idx * 2 + l3Idx) % 10]}"></span>
                             <span class="tag-level-badge">三级</span>
                         </div></div>`;
                 });
@@ -2305,7 +2298,7 @@ class TrendAnalyzer {
             if (idx >= 0) this.selectedTags.splice(idx, 1);
             else if (this.selectedTags.length < 8) {
                 const data = treeData[`l${level}`].find(d => d.name === name && (level < 2 || d.l1Name === l1Name) && (level < 3 || d.l2Name === l2Name));
-                this.selectedTags.push({ name, level, l1Name, l2Name, count: data?data.count:50, color: trendChartColors[this.selectedTags.length % 10] });
+                this.selectedTags.push({ name, level, l1Name, l2Name, count: data ? data.count : 50, color: trendChartColors[this.selectedTags.length % 10] });
             } else alert('最多选择8个标签');
             this.updateUI();
         });
@@ -2352,37 +2345,37 @@ class TrendAnalyzer {
         const pointCount = dates.length;
 
         const allData = this.selectedTags.map(tag => ({ ...tag, dates: dates, values: this.getValues(tag.count, pointCount) }));
-        const w = svg.parentElement.clientWidth - 32, h = 260, pad = { t: 30, b:40, l:60, r:20 }, plotW = w-pad.l-pad.r, plotH = h-pad.t-pad.b;
-        
+        const w = svg.parentElement.clientWidth - 32, h = 260, pad = { t: 30, b: 40, l: 60, r: 20 }, plotW = w - pad.l - pad.r, plotH = h - pad.t - pad.b;
+
         const allVal = allData.flatMap(d => d.values);
         const maxVal = Math.ceil(Math.max(...allVal, 10) * 1.1);
         const minVal = Math.floor(Math.min(...allVal, 0) * 0.9);
-        
+
         // 动态计算横轴步长
         const xStep = plotW / Math.max(pointCount - 1, 1);
 
         let svgHtml = '';
         // 绘制 Y 轴
-        for(let i=0; i<=5; i++) {
-            const y = pad.t + (plotH/5)*i;
-            svgHtml += `<line x1="${pad.l}" y1="${y}" x2="${w-pad.r}" y2="${y}" stroke="#f0f0f0" stroke-dasharray="4,2"/>`;
-            svgHtml += `<text x="${pad.l-10}" y="${y+4}" text-anchor="end" font-size="11" fill="#999">${Math.round(maxVal - (maxVal-minVal)*i/5)}</text>`;
+        for (let i = 0; i <= 5; i++) {
+            const y = pad.t + (plotH / 5) * i;
+            svgHtml += `<line x1="${pad.l}" y1="${y}" x2="${w - pad.r}" y2="${y}" stroke="#f0f0f0" stroke-dasharray="4,2"/>`;
+            svgHtml += `<text x="${pad.l - 10}" y="${y + 4}" text-anchor="end" font-size="11" fill="#999">${Math.round(maxVal - (maxVal - minVal) * i / 5)}</text>`;
         }
 
         // 绘制 X 轴日期标签
         const labelInterval = isWeekly ? 1 : (pointCount > 15 ? 5 : 2);
-        for(let i=0; i < pointCount; i += labelInterval) {
+        for (let i = 0; i < pointCount; i += labelInterval) {
             const x = pad.l + i * xStep;
             const fullDate = dates[i];
             const displayDate = isWeekly ? fullDate : fullDate.substring(5); // 周展示全名/日期截取
-            svgHtml += `<text x="${x}" y="${h-15}" text-anchor="middle" font-size="10" fill="#999">${displayDate}</text>`;
+            svgHtml += `<text x="${x}" y="${h - 15}" text-anchor="middle" font-size="10" fill="#999">${displayDate}</text>`;
         }
 
         allData.forEach((s, sIdx) => {
-            const points = s.values.map((v, i) => `${pad.l+i*xStep},${pad.t+plotH-((v-minVal)/(maxVal-minVal || 1))*plotH}`).join(' ');
+            const points = s.values.map((v, i) => `${pad.l + i * xStep},${pad.t + plotH - ((v - minVal) / (maxVal - minVal || 1)) * plotH}`).join(' ');
             svgHtml += `<polyline points="${points}" fill="none" stroke="${s.color}" stroke-width="2.5" />`;
             s.values.forEach((v, i) => {
-                const x = pad.l+i*xStep, y = pad.t+plotH-((v-minVal)/(maxVal-minVal || 1))*plotH;
+                const x = pad.l + i * xStep, y = pad.t + plotH - ((v - minVal) / (maxVal - minVal || 1)) * plotH;
                 svgHtml += `<circle cx="${x}" cy="${y}" r="12" fill="transparent" class="data-point" data-idx="${i}" data-v="${v}" data-date="${s.dates[i]}" data-sidx="${sIdx}"/>`;
                 svgHtml += `<circle cx="${x}" cy="${y}" r="4" fill="${s.color}" stroke="white" stroke-width="2"/>`;
             });
@@ -2400,11 +2393,11 @@ class TrendAnalyzer {
             tip.style.display = 'block';
             dateEl.textContent = p.dataset.date;
             dateEl.setAttribute('x', 70); dateEl.setAttribute('y', 20);
-            cont.innerHTML = allData.map((s, i) => `<text x="12" y="${38+i*16}" fill="${s.color}" font-size="11">${s.name}: ${s.values[p.dataset.idx]}</text>`).join('');
-            bg.setAttribute('width', 140); bg.setAttribute('height', 45+allData.length*16);
+            cont.innerHTML = allData.map((s, i) => `<text x="12" y="${38 + i * 16}" fill="${s.color}" font-size="11">${s.name}: ${s.values[p.dataset.idx]}</text>`).join('');
+            bg.setAttribute('width', 140); bg.setAttribute('height', 45 + allData.length * 16);
             const r = svg.getBoundingClientRect();
-            let x = e.clientX-r.left+15, y = e.clientY-r.top-40;
-            if (x+150 > r.width) x -= 170;
+            let x = e.clientX - r.left + 15, y = e.clientY - r.top - 40;
+            if (x + 150 > r.width) x -= 170;
             tip.setAttribute('transform', `translate(${x},${y})`);
         };
         svg.onmouseleave = () => tip.style.display = 'none';
@@ -2416,7 +2409,7 @@ class TrendAnalyzer {
         const endInput = document.getElementById('endDate');
         const start = new Date(startInput?.value || '2024-05-01');
         const end = new Date(endInput?.value || '2024-05-30');
-        
+
         const diffDays = Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) + 1;
         const isWeekly = diffDays > 31;
         const dates = [];
@@ -2433,7 +2426,7 @@ class TrendAnalyzer {
         } else {
             // 按日生成
             let current = new Date(start);
-            for(let i=0; i < diffDays; i++) {
+            for (let i = 0; i < diffDays; i++) {
                 dates.push(formatDate(current));
                 current.setDate(current.getDate() + 1);
             }
@@ -2451,7 +2444,7 @@ class TrendAnalyzer {
 
     getValues(base, count) {
         const v = [];
-        for(let i=0; i < count; i++) v.push(Math.round(base * (0.8 + Math.random()*0.4)));
+        for (let i = 0; i < count; i++) v.push(Math.round(base * (0.8 + Math.random() * 0.4)));
         return v;
     }
 }
@@ -2604,12 +2597,12 @@ function initProjectRankInteraction() {
 
     function renderRankList(data, labelText, metric) {
         listContainer.style.opacity = '0';
-        
+
         setTimeout(() => {
             let html = '';
             data.forEach((item, index) => {
                 const rankClass = index < 3 ? 'top3' : '';
-                
+
                 let barHtml = '';
                 if (metric === 'hab') {
                     // 堆叠模式
@@ -2731,12 +2724,12 @@ function initScheduleRankInteraction() {
 
     function renderRankList(data, labelText, metric) {
         listContainer.style.opacity = '0';
-        
+
         setTimeout(() => {
             let html = '';
             data.forEach((item, index) => {
                 const rankClass = index < 3 ? 'top3' : '';
-                
+
                 let barHtml = '';
                 if (metric === 'hab') {
                     barHtml = `
@@ -2774,40 +2767,7 @@ function initScheduleRankInteraction() {
     }
 }
 
-// 培育运营二级 Tab 交互逻辑
 
-// 培育运营二级 Tab 交互逻辑
-function initCultivationTabs() {
-    const subTabsWrapper = document.querySelector('#cultivation-op .sub-tabs');
-    if (!subTabsWrapper) return;
-
-    const btns = subTabsWrapper.querySelectorAll('.tab-btn');
-    const panes = subTabsWrapper.querySelectorAll('.sub-pane');
-
-    btns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetId = btn.dataset.sub;
-            
-            // 切换按钮状态
-            btns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            // 切换面板显示
-            panes.forEach(pane => {
-                if (pane.id === targetId) {
-                    pane.style.display = 'block';
-                    pane.classList.add('active');
-                } else {
-                    pane.style.display = 'none';
-                    pane.classList.remove('active');
-                }
-            });
-            
-            // 这里可以触发对应面板图表的重新渲染
-            console.log(`切换到子页签: ${targetId}`);
-        });
-    });
-}
 
 // === 培育运营：关注点下钻逻辑 ===
 
@@ -2858,16 +2818,16 @@ function openFocusDrillDown(category) {
     const modal = document.getElementById('focusDrillDownModal');
     const title = document.getElementById('focusDrillDownTitle');
     const content = document.getElementById('focusDrillDownContent');
-    
+
     if (!modal || !content) return;
 
     // 设置标题
     title.innerText = `[${category}] 二级分布 - 提及率排名`;
-    
+
     // 获取数据并渲染
     const subTags = focusSubTagsData[category] || [];
     let html = '';
-    
+
     subTags.forEach(item => {
         const userCount = Math.floor(TOTAL_CULTIVATION_USERS * (item.rate / 100));
         html += `
@@ -2880,7 +2840,7 @@ function openFocusDrillDown(category) {
             </div>
         `;
     });
-    
+
     if (subTags.length === 0) {
         html = '<div style="padding: 20px; text-align: center; color: #9ca3af;">暂无二级数据</div>';
     }
@@ -2939,7 +2899,7 @@ function openFullRanking(type) {
     if (!modal || !tbody) return;
 
     tbody.innerHTML = '';
-    
+
     if (type === 'quality') {
         title.innerText = '质量标签全量排行榜';
         thead.innerHTML = `
@@ -3000,8 +2960,8 @@ function openFullRanking(type) {
                 <th style="width: 100px; text-align: right;">锁单率</th>
             </tr>
         `;
-        
-        const names = type === 'project' ? 
+
+        const names = type === 'project' ?
             ["2024夏季大促-R4核心运营项目", "品牌焕新周-R2区域联动", "天籁专项补贴-R1渠道专场", "轩逸超混版上市推广-R5", "618全民购车节-全渠道", "售后维系老带新活动"] :
             ["抖音信息流-0501-R4核心排期", "懂车帝CPS-0428-R4效果通", "百度搜索竞价-0502-R2品牌专区", "快手短视频-0505-R3核心排期", "小红书种草-0425-R1专项排期", "朋友圈广告-0501-R4"];
 
