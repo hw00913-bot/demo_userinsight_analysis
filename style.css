@@ -48,6 +48,7 @@ body {
     top: 0;
     transition: width 0.3s ease;
     z-index: 100;
+    flex-shrink: 0;
 }
 
 .sidebar-header {
@@ -188,6 +189,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    min-width: 0;
 }
 
 .top-header {
