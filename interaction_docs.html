@@ -621,38 +621,42 @@
         <!-- ===================== 四、核心指标说明 ===================== -->
         <section class="section" id="section-metrics">
             <h2 class="section-title"><i class="fa-solid fa-gauge-high"></i>四、核心指标说明</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">位于筛选栏下方，以 4 张分组卡片并排展示 9 个核心 KPI，覆盖「线索量 → 接通量 → 有效用户 → 高意向」全链路转化指标。</p>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">位于筛选栏下方，以 4 张分组卡片并排展示全链路的 11 个核心 KPI，覆盖「触达 → 线索 → 用户分级 → 业务转化」。</p>
 
             <div class="highlight-box">
-                <strong>卡片分组：</strong>9 个指标归为 4 组，每组一张卡片（<code>.metric-card-group</code>），卡片内指标以「标签 | 数值 | 环比趋势」横排展示。<br>
-                四张卡片等宽并排（<code>.metrics-section</code>，4 列 grid），顺序为：通话概况 → 新增线索 → 接通有效 → H/A/B。
+                <strong>卡片分组：</strong>全部指标整合成单行 Ribbon 视图展示，分为四组：通话统计、线索统计、用户分级、行为转化。单行横铺（<code>.kpi-cards-section</code>），无多余视觉干扰。卡片内数值支持主指标及辅助百分比（占比）展示，并自带环比趋势。
             </div>
 
             <table class="flow-table">
-                <thead><tr><th>卡片名称</th><th>指标名称</th><th>图标颜色</th><th>业务含义</th><th>聚合维度</th></tr></thead>
+                <thead><tr><th>卡片名称</th><th>指标名称</th><th>业务含义</th></tr></thead>
                 <tbody>
-                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">通话概况</td><td>通话总数</td><td>蓝色</td><td>统计周期内所有外呼通话记录总条数</td><td>按 CallID 聚合</td></tr>
-                    <tr><td>接通总数</td><td>绿色</td><td>通话记录中状态为「接通」的数量</td><td>按 CallID 聚合</td></tr>
-                    <tr><td>平均时长</td><td>橙色</td><td>所有接通通话的总时长合计（秒） / 接通总数</td><td>按 CallID 聚合</td></tr>
-                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">新增线索</td><td>新增线索量</td><td>蓝色</td><td>统计周期内新进入系统的线索数（含各渠道）</td><td>按线索编码聚合</td></tr>
-                    <tr><td>新增线索用户</td><td>蓝色</td><td>去重后的新增线索用户数（一个用户多条线索计 1 人）</td><td>按线索编码聚合</td></tr>
-                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">接通有效</td><td>接通有效用户</td><td>绿色</td><td>接通后触发至少一条洞察标签打点的去重用户数</td><td>按线索编码聚合</td></tr>
-                    <tr><td>接通有效占比</td><td>绿色</td><td>接通有效用户 / 新增线索用户 × 100%</td><td>—</td></tr>
-                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">H/A/B</td><td>H/A/B 用户</td><td>橙色</td><td>线索等级为 H、A、B 的去重用户数（高意向人群）</td><td>按手机号聚合</td></tr>
-                    <tr><td>H/A/B 占比</td><td>橙色</td><td>线索等级∈{H、A、B}的线索量 / 新增线索用户 × 100%</td><td>—</td></tr>
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">通话统计</td><td>通话总数</td><td>统计周期内所有外呼通话记录总条数（单位：通）</td></tr>
+                    <tr><td>接通总数</td><td>通话记录中状态为「接通」的数量（单位：通）</td></tr>
+                    <tr><td>平均时长</td><td>所有接通通话的总时长合计 / 接通总数（单位：s）</td></tr>
+                    
+                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">线索统计</td><td>新增线索</td><td>统计周期内新进入系统的线索总数（单位：条）</td></tr>
+                    <tr><td>新增用户</td><td>去重后的新增线索用户数（单位：人，一个用户多条线索计 1 人）</td></tr>
+                    
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">用户分级 (含占比)</td><td>有效用户</td><td>系统判定为有效的潜在购车人群及其占新增用户的比率</td></tr>
+                    <tr><td>无效用户</td><td>各类无效号码、无意向等无效用户数及占比</td></tr>
+                    <tr><td>H/A/B用户</td><td>高意向等级（H、A、B）的核心潜客群体数及占比</td></tr>
+                    
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">行为转化 (含占比)</td><td>到店用户</td><td>产生到店行为的去重用户数及转化占比</td></tr>
+                    <tr><td>试驾用户</td><td>产生试驾行为的去重用户数及转化占比</td></tr>
+                    <tr><td>锁单用户</td><td>最终成功锁单购车的去重用户数及转化占比</td></tr>
                 </tbody>
             </table>
 
             <div class="highlight-box" style="margin-top:1.5rem">
-                <strong>环比基准：</strong>所有指标的环比趋势均与<strong>前一个等长周期</strong>对比。例如选中「最近 30 天」时，对比前 30 天（T-30 ~ T-1）；选中「最近 7 天」时，对比前 7 天（T-7 ~ T-1）。不固定为 7 天。
+                <strong>环比基准：</strong>所有指标的环比趋势均与<strong>前一个等长周期</strong>对比。例如选中「近 30 天」时，对比前 30 天（T-30 ~ T-1）；选中「近 7 天」时，对比前 7 天（T-7 ~ T-1）。不固定为 7 天。
             </div>
 
             <div class="highlight-box" style="margin-top:1.5rem">
                 <strong>颜色规则：</strong>指标卡底部环比趋势中，<strong style="color:#ef4444">上升（▲）→ 红色</strong>，<strong style="color:#10b981">下降（▼）→ 绿色</strong>（符合国内汽车行业销售类指标惯例）。平均时长指标下降为优，业务含义相反时可通过样式反转规则配置。
             </div>
-
-            <div class="highlight-box">
-                <strong>已下线功能：</strong>原「新增洞察标签」按钮和「下载明细数据」按钮已隐藏，操作按钮栏整栏不展示。标签不再提供前端维护功能。
+            
+            <div class="highlight-box" style="margin-top:1.5rem">
+                <strong>已下线功能：</strong>原「新增洞察标签」按钮和「下载明细数据」等分散的操作按钮已从核心指标区剔除，确保专注展示全链路转化数据。
             </div>
         </section>
 
