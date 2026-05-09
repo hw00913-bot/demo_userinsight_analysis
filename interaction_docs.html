@@ -79,6 +79,22 @@
         .nav-link:hover { color: var(--primary); background: var(--primary-light); }
         .nav-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
 
+        .nav-sub-list { list-style: none; padding-left: 1rem; }
+        .nav-sub-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.4rem 0.8rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            margin-bottom: 1px;
+            transition: all 0.15s ease;
+        }
+        .nav-sub-link:hover { color: var(--primary); background: var(--primary-light); }
+        .nav-sub-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
+
         /* ===== Main Content ===== */
         .doc-main {
             margin-left: var(--sidebar-width);
@@ -129,6 +145,23 @@
             border-bottom: 1px solid var(--border);
         }
         .section-title i { color: var(--primary); font-size: 1.15rem; }
+
+        /* 子看板卡片标题 */
+        .sub-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.75rem 1rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        .sub-section-title i { color: var(--primary); font-size: 1rem; }
+        .sub-section-title:first-child { margin-top: 0; }
 
         h3.sub-title {
             font-size: 1rem;
@@ -288,6 +321,45 @@
         }
         .btn-jump:hover { background: #0070dd; transform: translateY(-1px); }
 
+        /* 图表说明卡片 */
+        .chart-card {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.2rem 1.4rem;
+            margin-bottom: 1.2rem;
+            background: #fafbff;
+        }
+        .chart-card-title {
+            font-size: 0.97rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .chart-card-title i { color: var(--primary); }
+        .chart-card-meta {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin-bottom: 0.75rem;
+        }
+        .chart-card ul { margin-bottom: 0; }
+
+        /* 下钻标记 */
+        .drill-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: #e0f2fe;
+            color: #0369a1;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
         /* ===== Footer ===== */
         .doc-footer {
             margin-top: 4rem;
@@ -300,7 +372,7 @@
 
         @media (max-width: 992px) {
             .doc-sidebar { width: 72px; padding: 10px; }
-            .doc-sidebar .doc-logo span, .nav-link span, .nav-section-label { display: none; }
+            .doc-sidebar .doc-logo span, .nav-link span, .nav-sub-link span, .nav-section-label { display: none; }
             .doc-main { margin-left: 72px; padding: 2rem; }
         }
     </style>
@@ -316,24 +388,27 @@
         <div class="nav-section-label">概览</div>
         <nav>
             <ul class="nav-list">
-                <li><a href="#version-table" class="nav-link"><i class="fa-solid fa-code-branch"></i><span>版本说明</span></a></li>
+                <li><a href="#section-version" class="nav-link"><i class="fa-solid fa-code-branch"></i><span>版本说明</span></a></li>
             </ul>
         </nav>
 
-        <div class="nav-section-label">用户洞察</div>
+        <div class="nav-section-label">全局</div>
         <nav>
             <ul class="nav-list">
-                <li><a href="#section-overview" class="nav-link"><i class="fa-solid fa-gauge"></i><span>页面概览</span></a></li>
+                <li><a href="#section-datasource" class="nav-link"><i class="fa-solid fa-database"></i><span>数据源说明</span></a></li>
                 <li><a href="#section-filter" class="nav-link"><i class="fa-solid fa-filter"></i><span>筛选栏说明</span></a></li>
-                <li><a href="#section-actionbar" class="nav-link"><i class="fa-solid fa-toolbox"></i><span>操作按钮栏</span></a></li>
-                <li><a href="#section-metrics" class="nav-link"><i class="fa-solid fa-chart-pie"></i><span>核心指标卡片</span></a></li>
-                <li><a href="#section-trend-chart" class="nav-link"><i class="fa-solid fa-chart-line"></i><span>标签趋势分析</span></a></li>
-                <li><a href="#section-tabs" class="nav-link"><i class="fa-solid fa-table-columns"></i><span>标签页切换</span></a></li>
-                <li><a href="#section-faq" class="nav-link"><i class="fa-solid fa-circle-question"></i><span>常见标签页签</span></a></li>
-                <li><a href="#section-resistance" class="nav-link"><i class="fa-solid fa-hand"></i><span>抗拒点页签</span></a></li>
-                <li><a href="#section-insight-modal" class="nav-link"><i class="fa-solid fa-tag"></i><span>洞察标签弹窗</span></a></li>
-                <li><a href="#section-download" class="nav-link"><i class="fa-solid fa-download"></i><span>下载明细数据</span></a></li>
-                <li><a href="#section-export-all" class="nav-link"><i class="fa-solid fa-file-csv"></i><span>数据导出全览</span></a></li>
+                <li><a href="#section-metrics" class="nav-link"><i class="fa-solid fa-gauge-high"></i><span>核心指标说明</span></a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-section-label">洞察看板</div>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="#section-dashboards" class="nav-link"><i class="fa-solid fa-layer-group"></i><span>洞察看板说明</span></a></li>
+            </ul>
+            <ul class="nav-sub-list">
+                <li><a href="#board-channel" class="nav-sub-link"><i class="fa-solid fa-chart-pie"></i><span>渠道效果</span></a></li>
+                <li><a href="#board-cultivation" class="nav-sub-link"><i class="fa-solid fa-seedling"></i><span>培育运营</span></a></li>
             </ul>
         </nav>
     </aside>
@@ -341,487 +416,366 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V1.1 · 与最新代码同步（2026-04-13 更新）</span>
+            <span class="doc-tag">版本 V2.0 · 与最新代码同步（2026-04-30 更新）</span>
             <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
-            <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界。</p>
+            <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界，包括五阶段深度洞察叙事流的完整交互说明。</p>
         </header>
 
-        <!-- 版本说明 -->
-        <section class="section" id="version-table">
-            <h2 class="section-title"><i class="fa-solid fa-code-branch"></i>版本说明</h2>
-            <table class="version-table">
-                <thead>
-                    <tr>
-                        <th>版本号</th>
-                        <th>版本概要</th>
-                        <th>创建时间</th>
-                        <th>流程说明</th>
-                        <th>页面跳转</th>
-                    </tr>
-                </thead>
+        <!-- ===================== 一、版本说明 ===================== -->
+        <section class="section" id="section-version">
+            <h2 class="section-title"><i class="fa-solid fa-code-branch"></i>一、版本说明</h2>
+            <!-- 待全量补充 -->
+            <p class="placeholder-text">版本变更记录将在所有说明完善后统一填写。</p>
+        </section>
+
+        <!-- ===================== 二、数据源说明 ===================== -->
+        <section class="section" id="section-datasource">
+            <h2 class="section-title"><i class="fa-solid fa-database"></i>二、数据源说明</h2>
+
+            <h3 class="sub-title">1. 数据来源</h3>
+            <ul class="item-list">
+                <li>页面所有数据来源于 <strong>NEV 培育线索</strong>中经过<strong>智能体打标</strong>的客户线索表。</li>
+                <li><strong>统计口径：</strong>基于<strong>线索创建时间</strong>进行聚合。</li>
+                <li>由数据组提供<strong>按日维度的扎帐宽表</strong>，必须包含以下关键字段：</li>
+            </ul>
+            <table class="flow-table">
+                <thead><tr><th>字段名</th><th>说明</th></tr></thead>
+                <tbody>
+                    <tr><td>线索编码</td><td>线索唯一标识</td></tr>
+                    <tr><td>手机号</td><td>客户手机号码</td></tr>
+                    <tr><td>CallID</td><td>通话记录唯一标识，通话概况类指标的聚合维度</td></tr>
+                    <tr><td>通话开始时间</td><td>通话起始时间</td></tr>
+                    <tr><td>通话结束时间</td><td>通话结束时间</td></tr>
+                    <tr><td>线索创建时间</td><td>线索录入/创建时间，统计口径基准字段</td></tr>
+                    <tr><td>意向门店</td><td>客户意向归属门店</td></tr>
+                    <tr><td>业务类型</td><td>NEV 新线索 / NEV 冷线索 / NEV 留资未满</td></tr>
+                    <tr><td>意向车系</td><td>N7 / N6 / NX8 等</td></tr>
+                    <tr><td>R 渠道</td><td>R1 ~ R11 渠道来源编码</td></tr>
+                    <tr><td>大项目名称</td><td>所属大项目</td></tr>
+                    <tr><td>线索等级</td><td>H / A / B / C / F / L / E / 无效号码</td></tr>
+                    <tr><td>人群分类</td><td>线索 / 到店 / 试驾 / 锁单</td></tr>
+                    <tr><td>用户类型</td><td>保客 / 潜客</td></tr>
+                    <tr><td>客户标签集合</td><td>智能体打标输出的客户标签（C 系列、R 系列）</td></tr>
+                    <tr><td>通话时长</td><td>本次通话持续时长（秒）</td></tr>
+                    <tr><td>通话状态</td><td>接通 / 未接通</td></tr>
+                    <tr><td>未接通原因</td><td>关机 / 停机 / 无人接听 / 拒接 等</td></tr>
+                    <tr><td>线索状态</td><td>当前线索流转状态</td></tr>
+                </tbody>
+            </table>
+                <li>当前版本为 <strong>原型演示数据</strong>（Mock Data），所有数值为模拟数据，用于展示页面交互与可视化效果。</li>
+                <li>生产环境须接入后端实时数据接口，替换各图表初始化函数中的 Mock 数据。</li>
+            </ul>
+
+            <h3 class="sub-title">2. 数据粒度</h3>
+            <table class="flow-table">
+                <thead><tr><th>看板</th><th>数据粒度</th><th>核心数据实体</th></tr></thead>
+                <tbody>
+                    <tr><td>线索体检</td><td>渠道级 / 城市级 / 日级</td><td>线索量、意向等级分布、无效成本</td></tr>
+                    <tr><td>画像定性</td><td>用户级（聚合）</td><td>年龄、性别、家庭结构、收入、城市、品牌认知</td></tr>
+                    <tr><td>意向剖析</td><td>用户级（聚合）</td><td>购车意向、购车时机、购买类型、到店状态</td></tr>
+                    <tr><td>购车关注剖析</td><td>标签级 / 渠道级</td><td>关注点标签（C 系列），三级分类树</td></tr>
+                    <tr><td>卡点归因</td><td>通话级（聚合）</td><td>沟通障碍、战败原因、触达失败类型</td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="sub-title">3. 标签体系</h3>
+            <ul class="item-list">
+                <li>标签体系以<strong>智能体打标输出的客户标签集合</strong>为准，标签数据通过宽表中「客户标签集合」字段获取。</li>
+                <li>智能体会根据通话内容自动为客户打标，涵盖客户基础信息、车辆与用车背景、购车意向与决策、购车关注点、抗拒点等多个维度。</li>
+            </ul>
+
+            <h3 class="sub-title">4. 渠道编码</h3>
+            <ul class="item-list">
+                <li>渠道来源使用 <code>R1</code> ~ <code>R11</code> 编码，代表 11 个不同投放来源渠道。</li>
+                <li>意向等级使用 <code>H</code>（最高）、<code>A</code>、<code>B</code>、<code>C</code>、<code>F</code>、<code>L</code>、<code>E</code>、<code>无效</code> 八档分级。</li>
+            </ul>
+
+            <h3 class="sub-title">5. 有效用户定义</h3>
+            <ul class="item-list">
+                <li><strong>接通有效用户：</strong>原因类型为「接通有效」或「意向不明」的用户，排除打了无效标签的无效用户。</li>
+                <li><strong>无法接通用户：</strong>原因类型为「无法接通用户」的用户。</li>
+            </ul>
+
+            <h3 class="sub-title">6. 客户关注点二级分类映射</h3>
+            <p style="color:#475569; font-size:0.93rem;">智能体打标输出的原始标签，按以下规则归并为 4 个二级分类维度。每个客户对每个维度的判定逻辑为：该维度下<strong>至少有一个</strong>相关标签被标记为"是"或有值，即算该维度关注（有值）。</p>
+            <table class="flow-table">
+                <thead><tr><th style="width:120px;">来源二级分类</th><th>包含的原始标签</th></tr></thead>
                 <tbody>
                     <tr>
-                        <td class="ver-num">V1.0</td>
-                        <td>
-                            <ol style="padding-left:1.2em; margin:0; line-height:2;">
-                                <li>全局筛选栏（日期区间、呼叫类型、业务类型、R渠道、大项目名称）</li>
-                                <li>4 个核心 KPI 指标卡片</li>
-                                <li>标签趋势分析（折线图，最多 8 个标签）</li>
-                                <li>常见标签 Tab：报表统计 + 双环分布图 + 排行</li>
-                                <li>抗拒点 Tab：报表统计 + 排行</li>
-                                <li>洞察标签管理弹窗（三级树形结构，支持增删改查）</li>
-                                <li>下载明细数据（客户端 CSV 导出）</li>
-                            </ol>
-                        </td>
-                        <td>2026-04-03</td>
-                        <td><a class="btn-jump" href="https://www.processon.com/embed/69c23c7917c24b344c66b891" target="_blank"><i class="fa-solid fa-diagram-project"></i>查看</a></td>
-                        <td><a class="btn-jump" href="userinsight.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>查看页面</a></td>
+                        <td style="font-weight:600; vertical-align:top;">价格与优惠</td>
+                        <td>关注店活动=是、关注补贴价格=是、关注贷款内容=是、关注车辆价格=是、关注店内优惠=是、关注金融优惠=是、关注互数服务=是、询问活动期限=是、询问活动覆盖范围=空、询问其他优惠=是、询问活动参与方式=是、询问参与活动车型=是、金蛋因子=是、询问车关注点包含"价格"</td>
                     </tr>
                     <tr>
-                        <td class="ver-num">V1.1</td>
-                        <td>
-                            <ol style="padding-left:1.2em; margin:0; line-height:2;">
-                                <li><strong>筛选栏优化：</strong>「呼叫类型」更名为「呼叫渠道」；日期区间新增 Tooltip（基于通话开始时间），限制最大 3 个月范围，最远可选 2 年</li>
-                                <li><strong>查询联动：</strong>点击「查询」触发指标卡浮动刷新 + 趋势图重新渲染 + 顶部操作通知</li>
-                                <li><strong>移除人工复核：</strong>下线操作栏「人工复核」按钮及全部相关逻辑</li>
-                                <li><strong>趋势图日/周自适应：</strong>统计区间 ≤ 31 天显示日视图（MM-DD），> 31 天自动切换自然周视图（YYYY-Wxx）</li>
-                                <li><strong>趋势分析导出：</strong>常见标签趋势图 + 抗拒趋势图各新增「导出数据」按钮，结构为横轴时间 × 纵轴一/二/三级分类</li>
-                                <li><strong>排行导出：</strong>常见标签排行 + 抗拒点排行各新增「导出报表」按钮，按当前排序结果导出</li>
-                                <li><strong>报表导出：</strong>按业务类型统计 + 按R渠道统计均支持异步导出，数量与环比分为独立两列</li>
-                                <li><strong>双环图合理化：</strong>内环数值严格等于外环子项之和</li>
-                            </ol>
-                        </td>
-                        <td>2026-04-13</td>
-                        <td><a class="btn-jump" href="https://www.processon.com/embed/69c23c7917c24b344c66b891" target="_blank"><i class="fa-solid fa-diagram-project"></i>查看</a></td>
-                        <td><a class="btn-jump" href="userinsight.html" target="_blank"><i class="fa-solid fa-arrow-up-right-from-square"></i>查看页面</a></td>
+                        <td style="font-weight:600; vertical-align:top;">产品与配置</td>
+                        <td>关注本品牌新车配置（智能化 / 舒适性 / 动力 / 辅助驾驶任一）= 是、关注新能源车型=是、购车关注点包含（安全性 / 保值性 / 品牌能耗 / 环保 / 保养）</td>
                     </tr>
+                    <tr>
+                        <td style="font-weight:600; vertical-align:top;">服务与售后</td>
+                        <td>关注评估内容=是、关注上牌政策=是、关注保养服务=是、关注售后服务=是、关注保险/参数=是、询问置换服务=是、购车关注点包含"服务"</td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight:600; vertical-align:top;">竞品对比</td>
+                        <td>关注竞品≠空</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box" style="margin-top:1rem;">
+                <strong>计算规则：</strong>
+                <ol style="margin:8px 0 0 18px; padding:0;">
+                    <li style="margin-bottom:6px;">每个客户对每个维度只判断「是否关注」，依据为：该维度下至少有一个相关标签被标记为「是」（有值）。</li>
+                    <li style="margin-bottom:6px;"><strong>样本中某维度的关注占比 = 关注该维度的客户数 / 有效客户总数。</strong></li>
+                    <li style="margin-bottom:6px;">各维度的关注度排名仅从高到低对比占比值，不受标签数量影响。</li>
+                    <li>例如：<strong>价格与优惠关注占比 = 价格与关注的客户数 / 接通有效用户</strong>。</li>
+                </ol>
+            </div>
+
+            <h3 class="sub-title">7. 无效标签与有效标签对照</h3>
+            <p style="color:#475569; font-size:0.93rem;">智能体打标输出的标签按「原因类型」划分为无效标签和有效标签（下发）两大类，用于区分线索质量。</p>
+            <table class="flow-table">
+                <thead><tr><th style="width:100px;">类型</th><th style="width:120px;">原因类型</th><th>原因说明</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="8" style="font-weight:600; vertical-align:top; color:#ef4444;">无效标签</td>
+                        <td>空号/停机</td>
+                        <td>空号/停机</td>
+                    </tr>
+                    <tr><td>拦截/黑名单</td><td>黑名单过滤/线路拦截</td></tr>
+                    <tr><td>已接无效</td><td>秘书台号码/语音信箱号码/手机助理号码</td></tr>
+                    <tr><td>休眠失联</td><td>休眠失联</td></tr>
+                    <tr><td>休眠未购</td><td>休眠未购</td></tr>
+                    <tr><td>再次联系</td><td>信号差/无有效交互/处于考虑/纠结期/正在开车/忙碌/其他琐碎沟通/未触达核心/接通后挂断</td></tr>
+                    <tr><td>接通秒挂</td><td>转秘书台/语音信箱/手机助理</td></tr>
+                    <tr><td>接通暂败</td><td>已购车/无购车意向/强烈抗议</td></tr>
+                    <tr>
+                        <td rowspan="3" style="font-weight:600; vertical-align:top; color:#10b981;">有效标签（下发）</td>
+                        <td>接通有效</td>
+                        <td>确认有购车意向/购车意愿明确/购车意愿不明确</td>
+                    </tr>
+                    <tr><td>意向不明</td><td>意向不明</td></tr>
+                    <tr><td>无法打通</td><td>关机/忙线（占线）/无人接听/不在服务区/无法接通/拒接/欠费</td></tr>
                 </tbody>
             </table>
         </section>
 
-        <!-- 一、页面概览 -->
-        <section class="section" id="section-overview">
-            <h2 class="section-title"><i class="fa-solid fa-gauge"></i>一、页面概览</h2>
-            <ul class="item-list">
-                <li>页面路径：<code>user_insight v1.0/userinsight.html</code>，从侧边栏「统计报表 → 用户洞察」进入。</li>
-                <li>侧边栏「统计报表」分组默认展开，当前子菜单项「用户洞察」显示高亮激活状态（蓝色背景 + 右侧蓝色边框）。</li>
-                <li>整体布局：左侧固定侧边栏（220px） + 右侧主内容区。主内容区从上到下依次为：顶部页头、筛选区、操作按钮栏、KPI 指标卡片、标签页内容。</li>
-            </ul>
-        </section>
-
-        <!-- 二、筛选栏说明 -->
+        <!-- ===================== 三、筛选栏说明 ===================== -->
         <section class="section" id="section-filter">
-            <h2 class="section-title"><i class="fa-solid fa-filter"></i>二、筛选栏说明</h2>
+            <h2 class="section-title"><i class="fa-solid fa-filter"></i>三、筛选栏说明</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">筛选栏位于页面顶部，分两行放置筛选条件，底部右对齐放置查询/重置按钮。所有图表数据随筛选条件联动刷新。</p>
 
-            <h3 class="sub-title">1. 统计日期区间</h3>
+            <div class="highlight-box">
+                <strong>查询逻辑：</strong>多个筛选条件之间为<strong>且（AND）</strong>关系，即同时满足所有已选条件的记录才会被纳入统计。下拉选项为「全国」或「全部」时，表示不对该维度做过滤。
+            </div>
+
+            <h3 class="sub-title">默认值</h3>
             <ul class="item-list">
-                <li>包含「开始日期」和「结束日期」两个日期输入框，中间以「至」连接。</li>
-                <li>页面初始化时，日期区间自动设置为<strong>最近 30 天</strong>（结束日期为今天，开始日期为今天往前 30 天）。</li>
-                <li>日期格式为 <code>YYYY-MM-DD</code>，使用原生日期选择器。</li>
-                <li><strong>统计口径 Tooltip：</strong>标签旁展示问号图标，悬停后提示「基于智能体记录的"通话开始时间"进行统计」，明确数据取值来源。</li>
-                <li><strong>范围限制：</strong>最大可选范围 <strong>3 个月（92 天）</strong>，超出时弹窗提示并自动修正；最远可向前追溯 <strong>2 年</strong>。</li>
+                <li><strong>时间范围：</strong>默认选中「最近 30 天」</li>
+                <li><strong>其余所有筛选项：</strong>默认选中「全国」或「全部」（即不限制该维度）</li>
             </ul>
 
-            <h3 class="sub-title">2. 呼叫渠道</h3>
-            <ul class="item-list">
-                <li>下拉单选，可选项：全部、人工外呼、预外呼、AI 外呼。</li>
-                <li>默认选中「全部」。</li>
-                <li><strong>注意：</strong>V1.1 已将「呼叫类型」更名为「呼叫渠道」。</li>
-            </ul>
-
-            <h3 class="sub-title">3. 业务类型</h3>
-            <ul class="item-list">
-                <li>下拉单选，可选项：全部、NEV新线索、NEV 冷线索、NEV 留资未满。</li>
-                <li>默认选中「全部」。</li>
-            </ul>
-
-            <h3 class="sub-title">4. R渠道</h3>
-            <ul class="item-list">
-                <li>下拉单选，可选项：全部、R1、R2、R3、R4。</li>
-                <li>默认选中「全部」。</li>
-                <li>用于按客户意向等级进行数据筛选。</li>
-                <li><strong>注意：</strong>当前选项为模拟数据，实际选项将根据业务需求配置。</li>
-            </ul>
-
-            <h3 class="sub-title">5. 大项目名称</h3>
-            <ul class="item-list">
-                <li>文本输入框，支持关键字模糊匹配查询。</li>
-                <li>输入提示文字：「输入关键字查询」。</li>
-                <li>默认值为空（查询全部）。</li>
-                <li>输入关键字后点击「查询」按钮进行筛选。</li>
-            </ul>
-
-            <h3 class="sub-title">6. 查询与重置</h3>
-            <ul class="item-list">
-                <li><strong>查询按钮：</strong>点击后弹出「正在根据通话开始时间聚合统计数据...」通知；约 800ms 后核心指标卡数值小幅浮动刷新，并同步触发趋势分析图重新渲染。</li>
-                <li><strong>重置按钮：</strong>将所有筛选项恢复为默认值（日期恢复最近 30 天，下拉框恢复「全部」，文本框清空），并显示「筛选条件已重置」通知。</li>
-            </ul>
-        </section>
-
-        <!-- 三、操作按钮栏 -->
-        <section class="section" id="section-actionbar">
-            <h2 class="section-title"><i class="fa-solid fa-toolbox"></i>三、操作按钮栏</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">位于筛选区下方的白色操作栏，包含多个功能按钮，左对齐排列。</p>
-
+            <h3 class="sub-title">第一行筛选项</h3>
             <table class="flow-table">
-                <thead><tr><th>按钮名称</th><th>ID</th><th>样式类</th><th>功能说明</th></tr></thead>
+                <thead><tr><th>字段名</th><th>控件类型</th><th>ID</th><th>可选项 / 说明</th></tr></thead>
                 <tbody>
-                    <tr><td>新增洞察标签</td><td><code>addInsightBtn</code></td><td><code>btn-primary</code>（蓝色实心）</td><td>点击打开「洞察标签管理」弹窗（见第八节）</td></tr>
-                    <tr><td>下载明细数据</td><td><code>downloadFullDetailBtn</code></td><td><code>btn-secondary</code>（白底边框）</td><td>点击异步生成并下载通话级 CSV 明细文件（含 R渠道/大项目/sc值/呼叫渠道/命中标签等字段）</td></tr>
+                    <tr>
+                        <td>时间范围</td>
+                        <td>快捷按钮 + 自定义日期</td>
+                        <td><code>dateQuickPicker</code></td>
+                        <td>最近 7 天 / 最近 30 天 / 最近 90 天 / 自定义；选「自定义」时展示开始日期和结束日期输入框（<code>startDate</code>、<code>endDate</code>）</td>
+                    </tr>
+                    <tr>
+                        <td>区域层级</td>
+                        <td>下拉单选</td>
+                        <td><code>regionLevel</code></td>
+                        <td>全国 / 大区 / 小区 / 门店</td>
+                    </tr>
+                    <tr>
+                        <td>业务类型</td>
+                        <td>下拉单选</td>
+                        <td><code>businessType</code></td>
+                        <td>全部 / NEV新线索 / NEV冷线索 / NEV留资未满</td>
+                    </tr>
+                    <tr>
+                        <td>意向车系</td>
+                        <td>下拉单选</td>
+                        <td><code>carSeries</code></td>
+                        <td>全部 / N7 / N6 / NX8</td>
+                    </tr>
+                    <tr>
+                        <td>线索等级</td>
+                        <td>下拉多选</td>
+                        <td><code>leadLevelMulti</code></td>
+                        <td>默认全选 (8项)。支持多选：H / A / B / C / F / L / E / 无效号码</td>
+                    </tr>
+                    <tr>
+                        <td>渠道来源</td>
+                        <td>下拉单选</td>
+                        <td><code>rChannel</code></td>
+                        <td>全部 / R1 ~ R11</td>
+                    </tr>
                 </tbody>
             </table>
-            <div class="highlight-box"><strong>注意（V1.1）：</strong>「人工复核」按钮已下线，操作栏现仅保留以上两个入口。各模块数据导出功能已下沉至各卡片右上角就近放置（见第十节）。</div>
+
+            <h3 class="sub-title">第二行筛选项</h3>
+            <table class="flow-table">
+                <thead><tr><th>字段名</th><th>控件类型</th><th>ID</th><th>可选项 / 说明</th></tr></thead>
+                <tbody>
+                    <tr>
+                        <td>大项目</td>
+                        <td>文本输入框</td>
+                        <td><code>projectName</code></td>
+                        <td>支持关键字模糊匹配，placeholder「输入关键字查询」</td>
+                    </tr>
+                    <tr>
+                        <td>人群分类</td>
+                        <td>下拉单选</td>
+                        <td><code>crowdType</code></td>
+                        <td>全部 / 线索 / 到店 / 试驾 / 锁单</td>
+                    </tr>
+                    <tr>
+                        <td>用户类型</td>
+                        <td>下拉单选</td>
+                        <td><code>userType</code></td>
+                        <td>全部 / 保客 / 潜客</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="sub-title">查询 / 重置按钮</h3>
+            <p style="color:#475569; font-size:0.95rem;">按钮位于筛选栏底部，右对齐显示，与上方筛选项以分隔线隔开。</p>
+            <ul class="item-list">
+                <li><strong>查询（<span style="color:var(--primary-color);">蓝色</span>）：</strong>点击后触发全局数据联动刷新，各看板图表根据当前筛选条件重新渲染。</li>
+                <li><strong>重置（白底）：</strong>将所有筛选项恢复为默认值（时间范围 → 最近 30 天，其余 → 全国/全部），并自动触发一次全量查询。</li>
+            </ul>
         </section>
 
-        <!-- 四、核心指标卡片 -->
+        <!-- ===================== 四、核心指标说明 ===================== -->
         <section class="section" id="section-metrics">
-            <h2 class="section-title"><i class="fa-solid fa-chart-pie"></i>四、核心指标卡片</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">位于操作按钮栏下方，以 4 列网格（<code>metrics-grid</code>）排列，当屏幕较小时自动换行（minmax 280px）。</p>
+            <h2 class="section-title"><i class="fa-solid fa-gauge-high"></i>四、核心指标说明</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">位于筛选栏下方，以 4 张分组卡片并排展示 9 个核心 KPI，覆盖「线索量 → 接通量 → 有效用户 → 高意向」全链路转化指标。</p>
 
-            <h3 class="sub-title">环比的定义</h3>
             <div class="highlight-box">
-                <strong>环比 = 与当前筛选日期区间等长的前一个时间窗口进行对比，非固定自然月。</strong><br><br>
-                例如：当筛选区间为 <code>2026-03-03 至 2026-04-02</code>（共 30 天），则对比基准期为 <code>2026-02-01 至 2026-03-02</code>（前 30 天）。<br><br>
-                计算公式：<code>环比变化率 = (当期值 - 基准期值) ÷ 基准期值 × 100%</code><br>
-                当基准期值为 0 时，环比显示为「—」（持平/无法计算）。
+                <strong>卡片分组：</strong>9 个指标归为 4 组，每组一张卡片（<code>.metric-card-group</code>），卡片内指标以「标签 | 数值 | 环比趋势」横排展示。<br>
+                四张卡片等宽并排（<code>.metrics-section</code>，4 列 grid），顺序为：通话概况 → 新增线索 → 接通有效 → H/A/B。
             </div>
 
             <table class="flow-table">
-                <thead><tr><th>指标名称</th><th>图标颜色</th><th>环比趋势</th><th>说明</th></tr></thead>
+                <thead><tr><th>卡片名称</th><th>指标名称</th><th>图标颜色</th><th>业务含义</th><th>聚合维度</th></tr></thead>
                 <tbody>
-                    <tr><td>通话总数</td><td>蓝色 (blue)</td><td>↑ 12.5%</td><td>统计周期内的全部通话量</td></tr>
-                    <tr><td>接通总数</td><td>绿色 (green)</td><td>↑ 8.3%</td><td>有效接通（通话时长 &gt; 5s）的通话量</td></tr>
-                    <tr><td>含常见问题通话数量</td><td>橙色 (orange)</td><td>↓ 5.2%</td><td>通话内容命中至少一个常见问题标签的数量</td></tr>
-                    <tr><td>含抗拒点通话数量</td><td>红色 (red)</td><td>— 0.0%</td><td>通话内容命中至少一个抗拒点标签的数量</td></tr>
-                </tbody>
-            </table>
-
-            <div class="highlight-box">
-                <strong>趋势图标规则：</strong>↑ 上升显示绿色（<code>metric-trend up</code>），↓ 下降显示红色（<code>metric-trend down</code>），— 持平显示灰色（<code>metric-trend equal</code>）。
-            </div>
-
-            <h3 class="sub-title">hover 效果</h3>
-            <ul class="item-list">
-                <li>每张指标卡鼠标悬停时：向上位移 2px，阴影从 <code>0 1px 3px</code> 增强至 <code>0 4px 12px</code>。</li>
-            </ul>
-        </section>
-
-        <!-- 标签趋势分析 -->
-        <section class="section" id="section-trend-chart">
-            <h2 class="section-title"><i class="fa-solid fa-chart-line"></i>五、标签趋势分析</h2>
-
-            <h3 class="sub-title">1. 功能概述</h3>
-            <ul class="item-list">
-                <li>位于核心指标卡片下方，用于展示选中标签在指定时间范围内的数量变化趋势。</li>
-                <li><strong>横轴（X轴）：</strong>时间维度，默认显示最近 30 天的日期。</li>
-                <li><strong>纵轴（Y轴）：</strong>选中的标签数量。</li>
-                <li>支持多标签同时对比分析，最多可选择 8 个标签。</li>
-            </ul>
-
-            <h3 class="sub-title">2. 标签选择器</h3>
-            <ul class="item-list">
-                <li>卡片右上角有「选择标签」按钮（<code>#openTagSelector</code>）。</li>
-                <li>点击按钮展开下拉框（<code>#tagDropdown</code>），显示当前 Tab 对应的标签列表。</li>
-                <li>标签列表内容随主页签切换：常见标签页签显示常见标签列表，抗拒点页签显示抗拒点列表。</li>
-                <li>支持搜索过滤，输入关键字实时筛选标签列表。</li>
-                <li>点击标签可切换选中状态，最多选择 8 个标签。</li>
-                <li>已选标签数量显示在按钮上（红色圆角标签样式）。</li>
-                <li>「清空」按钮可一键取消所有已选标签。</li>
-            </ul>
-
-            <h3 class="sub-title">3. 折线图渲染</h3>
-            <ul class="item-list">
-                <li>基于 SVG 实现的折线图，由 JS 函数 <code>renderLineChart()</code> 渲染。</li>
-                <li>每条折线使用不同的颜色（16 色循环配色方案）。</li>
-                <li>数据点（圆点）悬停时显示 tooltip，列出所有选中标签在该日期的数量。</li>
-                <li>X 轴每隔 5 天显示一个日期标签，格式为 MM-DD。</li>
-                <li>Y 轴根据数据范围自动计算，最大值向上取整 10%，最小值向下取整 10%。</li>
-                <li>图表下方显示选中标签的图例（颜色圆点 + 标签名称）。</li>
-            </ul>
-
-            <h3 class="sub-title">4. 数据联动</h3>
-            <ul class="item-list">
-                <li>切换主页签时，自动清空已选标签和图表，重新加载对应 Tab 的标签列表。</li>
-                <li>数据为模拟数据，用于演示趋势图效果。</li>
-                <li>生产环境需接入实际数据接口，根据选中的标签和日期范围请求数据。</li>
-            </ul>
-
-            <h3 class="sub-title">5. 核心函数</h3>
-            <table class="flow-table">
-                <thead><tr><th>函数名</th><th>功能说明</th></tr></thead>
-                <tbody>
-                    <tr><td><code>initTagTrendChart()</code></td><td>初始化标签趋势图，绑定选择器按钮和下拉框事件</td></tr>
-                    <tr><td><code>getCurrentTabTags()</code></td><td>获取当前 Tab 对应的标签数据</td></tr>
-                    <tr><td><code>renderTagList()</code></td><td>渲染标签选择列表</td></tr>
-                    <tr><td><code>renderLineChart()</code></td><td>渲染 SVG 折线图</td></tr>
-                    <tr><td><code>generateTrendData()</code></td><td>生成模拟时间序列数据</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- 六、标签页切换 -->
-        <section class="section" id="section-tabs">
-            <h2 class="section-title"><i class="fa-solid fa-table-columns"></i>五、标签页切换逻辑</h2>
-            <ul class="item-list">
-                <li>共两个主页签：<strong>常见标签</strong>（默认激活）、<strong>抗拒点</strong>。</li>
-                <li>点击任意页签时：取消当前激活页签的 <code>active</code> 类，为点击的页签添加 <code>active</code> 类；对应的内容面板同步切换显示/隐藏。</li>
-            </ul>
-
-            <table class="flow-table">
-                <thead><tr><th>页签</th><th>data-tab</th><th>内容面板 ID</th><th>功能定位</th></tr></thead>
-                <tbody>
-                    <tr><td>常见标签</td><td><code>common-issues</code></td><td><code>#common-issues</code></td><td>展示常见标签的分布统计、排行榜及报表数据</td></tr>
-                    <tr><td>抗拒点</td><td><code>resistance-points</code></td><td><code>#resistance-points</code></td><td>展示客户抗拒点的分布统计及报表数据</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <!-- 六、常见标签页签 -->
-        <section class="section" id="section-faq">
-            <h2 class="section-title"><i class="fa-solid fa-circle-question"></i>六、常见标签页签详细说明</h2>
-
-            <h3 class="sub-title">1. 报表统计区域</h3>
-            <ul class="item-list">
-                <li>位于页签顶部，以 2 列网格布局展示两个报表表格。</li>
-                <li><strong>按业务类型统计：</strong>展示不同三级标签在各业务类型（NEV新线索、NEV冷线索、NEV留资未满）下的通话数量和环比变化。</li>
-                <li><strong>按R渠道统计：</strong>展示不同三级标签在各R渠道（R1~R4）下的通话数量和环比变化。</li>
-                <li>每张报表第一列为行标签（三级标签名称），单元格内显示绝对值 + 环比趋势图标。</li>
-                <li><strong>颜色规则：</strong>上升趋势（<code>trend up</code>）使用红色，下降趋势（<code>trend down</code>）使用绿色。</li>
-                <li>报表支持纵向滚动（<code>max-height: 280px</code>）。</li>
-            </ul>
-
-            <h3 class="sub-title">2. 标签分类分布（双环分布图）</h3>
-            <ul class="item-list">
-                <li>左侧列布局展示一个双环分布图，内环表示一级分类，外环表示二级分类。</li>
-                <li>双环图数据从洞察标签树（<code>common-issues-modal</code>）动态读取，根据树结构中的一级/二级分类节点数量计算占比。</li>
-                <li>由 JS 函数 <code>initCommonTagCharts()</code> 在弹窗打开时自动渲染。</li>
-                <li>使用 SVG <code>stroke-dasharray</code> 技术实现，内环 r=11 stroke-width=5，外环 r=17 stroke-width=4。</li>
-                <li>图例分为两组（「一级分类」/「二级分类」），带环层级指示点（内环实心点 / 外环空心点），显示名称、数量和占比百分比。</li>
-            </ul>
-
-            <h3 class="sub-title">3. 常见标签排行表格</h3>
-            <ul class="item-list">
-                <li>位于右侧卡片，展示所有三级标签的排名数据。</li>
-                <li>列字段：排名（角标）、常见标签名称、提及次数、占比（含进度条）、环比、热度。</li>
-                <li>前三名排名角标（<code>rank-badge</code>）使用不同渐变色：第1名红色、第2名橙色、第3名黄色。</li>
-                <li>占比列使用内嵌进度条可视化展示。</li>
-                <li>热度值以橙色标签样式展示。</li>
-            </ul>
-
-            <h3 class="sub-title">4. 排行排序切换功能</h3>
-            <ul class="item-list">
-                <li>卡片头部有排序切换按钮组（<code>sort-switch-group</code>），提供三种排序方式：</li>
-                <li>按提及次数（默认激活）、按环比、按热度。</li>
-                <li>由 JS 函数 <code>initCommonTagSort()</code> 处理排序逻辑。</li>
-                <li>切换排序后，表格数据重新排序，前三名角标同步更新。</li>
-                <li>问号图标悬停显示热度计算口径 tooltip：「热门问题是提及占比×100×60%+环比×100×40%得出热度得分」。</li>
-            </ul>
-        </section>
-
-        
-        <!-- 七、抗拒点页签 -->
-        <section class="section" id="section-resistance">
-            <h2 class="section-title"><i class="fa-solid fa-hand"></i>七、抗拒点页签详细说明</h2>
-
-            <h3 class="sub-title">1. 隐性阻力综合诊断报告</h3>
-            <ul class="item-list">
-                <li><strong>雷达图</strong>：展示人/货/场 6 大维度的阻力分值。悬停维度名称可查看具体匹配标签。</li>
-                <li><strong>Health Score</strong>：根据 6 大维度阻力量级加权生成的门店经营健康度得分。</li>
-                <li><strong>由于人/货/场构成的构成分析</strong>：通过堆叠条形图直观展示三大维度的阻力分布占比。</li>
-                <li><strong>诊断建议建议卡片</strong>：AI 自动生成的风险预警（如：货 风险）与话术策略建议（如：人 策略），并关联具体标签编码（如 [R02-02-01]）。</li>
-            </ul>
-
-            <h3 class="sub-title">2. 隐性阻力分项排行</h3>
-            <ul class="item-list">
-                <li>展示具体抗拒点（三级标签）的排名。</li>
-                <li><strong>报表导出</strong>：支持将当前排行表格导出为 CSV 文件。</li>
-                
-            </ul>
-        </section>
-        <!-- 八、洞察标签管理弹窗 -->
-        <section class="section" id="section-insight-modal">
-            <h2 class="section-title"><i class="fa-solid fa-tag"></i>八、洞察标签管理弹窗</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">点击顶部操作栏「新增洞察标签」按钮（<code>addInsightBtn</code>）打开弹窗，ID 为 <code>insightModal</code>，宽度最大 1000px，最大高度 85vh。</p>
-
-            <h3 class="sub-title">1. 弹窗打开与关闭</h3>
-            <ul class="item-list">
-                <li>打开：点击「新增洞察标签」按钮，弹窗叠加层（<code>modal-overlay</code>）添加 <code>active</code> 类显示。</li>
-                <li>关闭方式：① 点击右上角 ✕ 按钮；② 点击弹窗背景遮罩区域。</li>
-            </ul>
-
-            <h3 class="sub-title">2. 主页签体系</h3>
-            <ul class="item-list">
-                <li>弹窗顶部有两个页签（<code>modal-tab</code>）：<strong>常见标签分类</strong>（<code>common-issues-modal</code>）和<strong>客户抗拒点分类</strong>（<code>resistance-points-modal</code>）。</li>
-                <li>点击页签时：取消所有 <code>modal-tab</code> 的 <code>active</code> 类，激活点击的页签并显示对应内容面板（<code>modal-content</code>）。</li>
-            </ul>
-
-            <h3 class="sub-title">3. 树形分类结构</h3>
-            <table class="flow-table">
-                <thead><tr><th>分类</th><th>层级</th><th>底层节点类型</th></tr></thead>
-                <tbody>
-                    <tr><td>常见标签分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td></tr>
-                    <tr><td>客户抗拒点分类</td><td>三级（一级分类 → 二级分类 → 三级标签）</td><td>tree-level-3</td></tr>
-                </tbody>
-            </table>
-
-            <h3 class="sub-title">4. 树节点展开/收起</h3>
-            <ul class="item-list">
-                <li>点击「树节点头部」（非操作按钮区域）可切换展开/收起状态：添加/移除节点的 <code>open</code> 类，子节点区域（<code>tree-children</code>）切换 <code>display: block/none</code>。</li>
-                <li>展开时，左侧箭头图标（<code>tree-icon</code>）旋转 90°；收起时恢复 0°。</li>
-                <li>使用<strong>全局事件委托</strong>处理，仅在 <code>insightModal</code> 处于 <code>active</code> 状态时生效。</li>
-            </ul>
-
-            <h3 class="sub-title">5. 节点操作按钮（hover 显示）</h3>
-            <ul class="item-list">
-                <li>鼠标悬停于任意节点时，操作按钮（<code>tree-actions</code>）从透明渐变显示（<code>opacity: 0 → 1</code>）。</li>
-            </ul>
-
-            <table class="flow-table">
-                <thead><tr><th>按钮</th><th>图标</th><th>作用</th><th>显示条件</th></tr></thead>
-                <tbody>
-                    <tr><td>查看</td><td>fa-eye</td><td>打开「节点详情」弹窗，展示一/二/三级路径和标签逻辑说明</td><td>底层节点（无子节点）</td></tr>
-                    <tr><td>新增下级节点</td><td>fa-plus</td><td>打开「新增节点」表单弹窗</td><td>非底层节点</td></tr>
-                    <tr><td>编辑</td><td>fa-pen</td><td>打开「编辑节点」表单弹窗，预填当前数据</td><td>所有节点</td></tr>
-                    <tr><td>删除</td><td>fa-trash（红色）</td><td>弹出确认框，若有子节点则二次确认，确认后删除节点</td><td>所有节点</td></tr>
-                </tbody>
-            </table>
-
-            <h3 class="sub-title">6. 新增/编辑节点表单弹窗</h3>
-            <ul class="item-list">
-                <li>弹窗 ID：<code>nodeFormModal</code>，z-index 高于主弹窗（1100），保证层叠正确。</li>
-                <li>表单字段：标签名（必填）、标签编码（必填，新增时自动生成随机编码且支持手动修改；**入库后编辑时为只读状态，不可修改**）、标签逻辑说明（底层节点时显示且必填）。</li>
-                <li><strong>自动编码生成逻辑：</strong>
-                    <ul>
-                        <li>点击新增操作时，系统会自动基于 <code>[A-Z, a-z, 0-9]</code> 的大小写同字字符集随机抽取产生 <strong>6 位字母或数字组合</strong>。</li>
-                        <li><strong>编码修改与唯一性：</strong>系统推荐生成的 6 位随机码仅作为辅助，新增时支持手动调整。**提交时系统会执行全局唯一性校验**，若编码已存在则拦截保存。</li>
-                    </ul>
-                </li>
-                <li>标题根据操作类型动态显示：「新增X级分类」或「编辑X级分类」。</li>
-                <li><strong>保存逻辑：</strong>新增时创建新 DOM 节点插入父级 <code>tree-children</code> 头部，编辑时更新对应 <code>tree-label</code> 文本内容和 <code>data-logic-desc</code> 属性。</li>
-                <li><strong>新增后自动展开：</strong>若父节点处于收起状态，新增子节点后父节点自动展开。</li>
-            </ul>
-
-            <h3 class="sub-title">7. 节点详情弹窗</h3>
-            <ul class="item-list">
-                <li>弹窗 ID：<code>nodeViewModal</code>，展示字段：一级分类、二级分类、三级分类（客户抗拒点分类中隐藏）、标签逻辑说明。</li>
-                <li>空值字段显示「-」并附 <code>empty</code> 样式。</li>
-            </ul>
-
-            <h3 class="sub-title">8. 底部操作区（导入 / 导出 / 下载模板 / 新增一级分类）</h3>
-            <ul class="item-list">
-                <li><strong>导入：</strong>点击弹出文件选择框，支持 CSV 格式。系统将解析文件中的二级/三级编码，并与当前树节点进行增量更新。</li>
-                <li><strong>下载模板：</strong>点击下载符合导入规范的 CSV 空模板文件，包含正确的表头字段，指引用户按格式填写。</li>
-                <li><strong>导出：</strong>将当前完整的树形结构（包含名称、编码、逻辑说明）导出为 CSV 文件，可作为备份或二次编辑。</li>
-                <li><strong>新增一级分类：</strong>在树结构最外层（根部）插入一个新的分类节点。</li>
-            </ul>
-            <ul class="item-list">
-                <li>「新增一级分类」：打开表单弹窗，新建的节点插入到树的顶部。</li>
-                <li>「导入」（<code>importCommonIssues</code> / <code>importResistancePoints</code>）：弹出文件选择器，支持 <code>.csv</code> 文件。解析 CSV 后按编码匹配并更新现有节点的名称和逻辑说明，完成后弹出更新数量提示。</li>
-                <li>「导出」（<code>exportCommonIssues</code> / <code>exportResistancePoints</code>）：将当前树结构序列化为 CSV 文件并下载。常见标签导出含七列（一/二/三级名称+编码+逻辑说明），抗拒点导出含五列（一/二级名称+编码+逻辑说明）。</li>
-            </ul>
-
-            <h3 class="sub-title">9. 动态饼图联动</h3>
-            <ul class="item-list">
-                <li>当标签树数据发生变化（新增/编辑/删除节点）时，常见标签页签中的一级/二级分类饼图会自动重新渲染。</li>
-                <li>由 <code>initCommonTagCharts()</code> 函数配合 MutationObserver 实现。</li>
-                <li>弹窗关闭后重新打开时，饼图数据会更新为最新状态。</li>
-            </ul>
-        </section>
-
-        <!-- 九、下载明细数据 -->
-        <section class="section" id="section-download">
-            <h2 class="section-title"><i class="fa-solid fa-download"></i>九、下载明细数据</h2>
-
-            <h3 class="sub-title">下载明细数据（downloadFullDetailBtn）</h3>
-            <ul class="item-list">
-                <li>点击后立即在客户端生成 CSV 文件并触发浏览器下载，无需后端接口。</li>
-                <li>文件命名格式：<code>用户洞察明细数据_YYYY-MM-DD.csv</code>（日期取当前日期）。</li>
-                <li>文件编码：UTF-8 with BOM，确保 Excel 打开中文不乱码。</li>
-                <li><strong>多标签处理规则：</strong>一条通话记录可能命中多个常见标签或抗拒点。导出时，同一行的多个标签会拆分为多列显示，而非拆分为多行。例如：命中「落地价」「购置税」两个常见标签，则在同一行显示为「涉及常见标签1=落地价」「涉及常见标签2=购置税」。</li>
-            </ul>
-
-            <table class="flow-table">
-                <thead><tr><th>列序</th><th>字段名</th><th>说明</th></tr></thead>
-                <tbody>
-                    <tr><td>1</td><td>callid</td><td>通话唯一标识</td></tr>
-                    <tr><td>2</td><td>外呼开始时间</td><td>格式：YYYY-MM-DD HH:mm:ss</td></tr>
-                    <tr><td>3</td><td>外呼结束时间</td><td>格式：YYYY-MM-DD HH:mm:ss</td></tr>
-                    <tr><td>4</td><td>主叫号码</td><td>不脱敏，完整号码</td></tr>
-                    <tr><td>5</td><td>被叫号码</td><td>不脱敏，完整手机号</td></tr>
-                    <tr><td>6</td><td>业务类型</td><td>如：新车新线索、冷线索培育、留资未满培育</td></tr>
-                    <tr><td>7</td><td>R渠道</td><td>R1 / R2 / R3 / R4</td></tr>
-                    <tr><td>8</td><td>大项目</td><td>大项目分类标识</td></tr>
-                    <tr><td>9</td><td>sc值</td><td>得分值（数值型）</td></tr>
-                    <tr><td>10</td><td>呼叫类型</td><td>如：呼出-手动、呼出-预测、呼出-AI、呼入</td></tr>
-                    <tr><td>11~N</td><td>涉及常见标签1~N</td><td>命中的常见标签（动态多列，标签数不足时该列留空）</td></tr>
-                    <tr><td>N+1~M</td><td>涉及抗拒点1~M</td><td>命中的抗拒点（动态多列，标签数不足时该列留空）</td></tr>
-                </tbody>
-            </table>
-
-        </section>
-
-        <!-- 十、数据导出全览 -->
-        <section class="section" id="section-export-all">
-            <h2 class="section-title"><i class="fa-solid fa-file-csv"></i>十、数据导出全览</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:0.5rem;">用户洞察看板提供多个层级的数据导出功能，以下为各入口的汇总说明。所有导出操作均为异步模拟（约 800ms），导出期间按钮进入 Loading 状态，完成后触发浏览器下载并显示顶部成功通知。</p>
-
-            <table class="flow-table">
-                <thead><tr><th>导出入口</th><th>位置</th><th>文件命名</th><th>CSV 结构说明</th></tr></thead>
-                <tbody>
-                    <tr>
-                        <td>下载明细数据</td>
-                        <td>顶部操作按钮栏（<code>#downloadFullDetailBtn</code>）</td>
-                        <td><code>用户洞察明细数据_YYYY-M-D.csv</code></td>
-                        <td>通话级明细：callid / 通话时间 / 业务类型 / R渠道 / 大项目 / sc值 / 呼叫渠道 / 命中常见标签(动态多列) / 命中抗拒点(动态多列)</td>
-                    </tr>
-                    <tr>
-                        <td>按业务类型/R渠道统计导出</td>
-                        <td>常见标签页签 &amp; 抗拒点页签 — 报表筛选栏右侧「导出报表」按钮</td>
-                        <td><code>按业务类型统计_YYYY-M-D.csv</code><br><code>按R渠道统计_YYYY-M-D.csv</code></td>
-                        <td>行：标签层级（一/二/三级名称）；列：业务类型或R渠道 × 数量列 + 业务类型或R渠道 × 环比列（量与比独立两列）</td>
-                    </tr>
-                    <tr>
-                        <td>标签趋势分析导出</td>
-                        <td>常见标签页签 — 趋势分析卡片右上角（<code>#exportTrendBtn</code>）</td>
-                        <td><code>按日趋势分析_YYYY-M-D.csv</code> 或 <code>按周趋势分析_YYYY-M-D.csv</code></td>
-                        <td>前3列：一级分类 / 二级分类 / 三级标签；后续列：各时间点数值（日视图 MM-DD，周视图 YYYY-Wxx）</td>
-                    </tr>
-                    <tr>
-                        <td>抗拒趋势分析导出</td>
-                        <td>抗拒点页签 — 趋势分析卡片右上角（<code>#exportTrendBtn2</code>）</td>
-                        <td>同上</td>
-                        <td>结构与标签趋势分析一致</td>
-                    </tr>
-                    <tr>
-                        <td>常见标签排行导出</td>
-                        <td>常见标签页签 — 排行卡片右上角「导出报表」按钮</td>
-                        <td><code>常见标签排行_YYYY-M-D.csv</code></td>
-                        <td>按当前排序结果：排名 / 一级分类 / 二级分类 / 三级标签 / 提及次数 / 占比 / 环比 / 热度</td>
-                    </tr>
-                    <tr>
-                        <td>抗拒点排行导出</td>
-                        <td>抗拒点页签 — 排行卡片右上角「导出报表」按钮</td>
-                        <td><code>抗拒点排行_YYYY-M-D.csv</code></td>
-                        <td>按当前排序结果：排名 / 一级分类 / 二级分类 / 三级标签 / 提及次数 / 占比 / 环比 / 热度</td>
-                    </tr>
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">通话概况</td><td>通话总数</td><td>蓝色</td><td>统计周期内所有外呼通话记录总条数</td><td>按 CallID 聚合</td></tr>
+                    <tr><td>接通总数</td><td>绿色</td><td>通话记录中状态为「接通」的数量</td><td>按 CallID 聚合</td></tr>
+                    <tr><td>平均时长</td><td>橙色</td><td>所有接通通话的总时长合计（秒） / 接通总数</td><td>按 CallID 聚合</td></tr>
+                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">新增线索</td><td>新增线索量</td><td>蓝色</td><td>统计周期内新进入系统的线索数（含各渠道）</td><td>按线索编码聚合</td></tr>
+                    <tr><td>新增线索用户</td><td>蓝色</td><td>去重后的新增线索用户数（一个用户多条线索计 1 人）</td><td>按线索编码聚合</td></tr>
+                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">接通有效</td><td>接通有效用户</td><td>绿色</td><td>接通后触发至少一条洞察标签打点的去重用户数</td><td>按线索编码聚合</td></tr>
+                    <tr><td>接通有效占比</td><td>绿色</td><td>接通有效用户 / 新增线索用户 × 100%</td><td>—</td></tr>
+                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">H/A/B</td><td>H/A/B 用户</td><td>橙色</td><td>线索等级为 H、A、B 的去重用户数（高意向人群）</td><td>按手机号聚合</td></tr>
+                    <tr><td>H/A/B 占比</td><td>橙色</td><td>线索等级∈{H、A、B}的线索量 / 新增线索用户 × 100%</td><td>—</td></tr>
                 </tbody>
             </table>
 
             <div class="highlight-box" style="margin-top:1.5rem">
-                <strong>通用技术规范：</strong>① 所有 CSV 文件以 UTF-8 with BOM 编码输出，确保 Excel 打开中文不乱码；② 文件通过客户端 Blob 生成后直接触发浏览器下载，无需后端接口；③ 生产环境建议替换为后端流式下载接口，以支持大数据量场景。
+                <strong>环比基准：</strong>所有指标的环比趋势均与<strong>前一个等长周期</strong>对比。例如选中「最近 30 天」时，对比前 30 天（T-30 ~ T-1）；选中「最近 7 天」时，对比前 7 天（T-7 ~ T-1）。不固定为 7 天。
+            </div>
+
+            <div class="highlight-box" style="margin-top:1.5rem">
+                <strong>颜色规则：</strong>指标卡底部环比趋势中，<strong style="color:#ef4444">上升（▲）→ 红色</strong>，<strong style="color:#10b981">下降（▼）→ 绿色</strong>（符合国内汽车行业销售类指标惯例）。平均时长指标下降为优，业务含义相反时可通过样式反转规则配置。
+            </div>
+
+            <div class="highlight-box">
+                <strong>已下线功能：</strong>原「新增洞察标签」按钮和「下载明细数据」按钮已隐藏，操作按钮栏整栏不展示。标签不再提供前端维护功能。
             </div>
         </section>
 
+        <!-- ===================== 五、洞察看板说明 ===================== -->
+        <section class="section" id="section-dashboards">
+            <h2 class="section-title"><i class="fa-solid fa-layer-group"></i>五、洞察看板说明</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:0.5rem;">新版看板整合为两大核心分页，分别聚焦漏斗前端的拉新效果与中后端的精细化运营转化：</p>
+
+            <div class="highlight-box">
+                <strong>两大模块：</strong>渠道效果（关注获客规模与ROI） vs 培育运营（关注高意向转化、用户画像及触达卡点诊断）
+            </div>
+
+            <h3 class="sub-title">导航切换</h3>
+            <ul class="item-list">
+                <li>顶部设有大板块切换 Tab（<code>渠道效果</code> / <code>培育运营</code>）。</li>
+                <li>点击 Tab 后切换对应板块的全局视图，无繁杂的内嵌子级页面，采用直观的瀑布流向下浏览方式。</li>
+            </ul>
+        </section>
+
+        <!-- ===================== 5-1 渠道效果 ===================== -->
+        <section class="section" id="board-channel">
+            <h2 class="section-title"><i class="fa-solid fa-chart-pie"></i>五 · 1 渠道效果（channel-effect）</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1.5rem;">核心评估前端投放的进线质量、渠道分布及各地区获客成本。</p>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-chart-column"></i> 核心构成与趋势</div>
+                <ul class="item-list">
+                    <li><strong>意向车系、有效占比、线索级别：</strong> 采用环形图/饼图呈现大盘各分类比重，直观对比主力车系与潜客意向层级。</li>
+                    <li><strong>区域投放效果：</strong> 采用横向双向条形图，左侧统计进线量，右侧统计建卡率，对比不同区域的转化效率。</li>
+                    <li><strong>渠道线索质量：</strong> 采用多维度堆叠柱状图，直观展示每个子渠道在 H/A/B/C 等级的线索产出贡献。</li>
+                    <li><strong>大项目 & 排期线索质量排名：</strong> 采用双列表布局并排展示，包含排名标签、项目名、总进线量及各意向级别的人数堆叠进度条，支持全量展开和导出。</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===================== 5-2 培育运营 ===================== -->
+        <section class="section" id="board-cultivation">
+            <h2 class="section-title"><i class="fa-solid fa-seedling"></i>五 · 2 培育运营（cultivation-op）</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1.5rem;">页面采用<strong>单页垂直扁平化展开</strong>结构，取消了早期的阶段性子 Tab，全景式展示培育转化漏斗详情。</p>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-id-card"></i> 模块 1：用户基本面 (Persona)</div>
+                <ul class="item-list">
+                    <li><strong>构成：</strong> 包含 年龄、收入、家庭、用车场景、品牌认知基础 5 张图表并排。</li>
+                    <li><strong>交互：</strong> 各卡片高度自适应，图表数据紧密关联用户自然属性，为后续沟通策略提供精准画像指引。</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-car-side"></i> 模块 2：购车意向分布 (Intent)</div>
+                <ul class="item-list">
+                    <li><strong>构成：</strong> 购车意向分布、购买类型分布、计划购车分布。</li>
+                    <li><strong>视觉优化：</strong> 图表卡片统一优化为 <strong>160px 的精简高度</strong>，减少底部留白，提升信息密度。</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-fire"></i> 模块 3：关注点热度 (Concern)</div>
+                <ul class="item-list">
+                    <li><strong>整体关注排序：</strong> 横向条形图显示如外观、价格、空间等因素的提及率。</li>
+                    <li><strong>渠道关注点热度分布：</strong> 采用 ECharts 热力图 (Heatmap) 展示矩阵式交叉洞察，透视不同来源用户在不同关注点上的聚集程度。</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-ranking-star"></i> 模块 4：意向与阻力榜单 (Ranking)</div>
+                <ul class="item-list">
+                    <li><strong>结构布局：</strong> 「质量标签排行榜」与「抗拒点标签排行榜」两张数据表采用左右 <strong>1:1 并排高密度布局</strong>。</li>
+                    <li><strong>列设计：</strong> 
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li><strong>具体原因：</strong> 限制列宽，溢出文本自动应用 <code>.ellipsis</code> 省略号。</li>
+                            <li><strong>占比列：</strong> 取消了之前的图形化进度条，全线统一为严谨对齐的纯文本百分比，提升商务专业度。</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box" style="margin-top: 1rem;">
+                <strong>版本演进备注：</strong> 新版去除了旧版的五阶段叙事切换点击负担，升级为统一筛选、全局联动、垂直下拉浏览的全景洞察模式，同时将线索等级筛选器从第二排升级为第一排的多选结构，体验更原生流畅。
+            </div>
+        </section>
+        
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V1.1 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-04-13</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V2.0 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-05-09</p>
         </div>
 
     </main>
 
     <script>
         // 侧边栏高亮当前锚点
-        const links = document.querySelectorAll('.nav-link');
+        const links = document.querySelectorAll('.nav-link, .nav-sub-link');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -831,7 +785,7 @@
                     });
                 }
             });
-        }, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+        }, { threshold: 0.15, rootMargin: '-80px 0px -60% 0px' });
 
         document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
 
