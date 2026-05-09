@@ -135,6 +135,41 @@
                             </select>
                         </div>
                         <div class="filter-item">
+                            <label class="filter-label">线索等级:</label>
+                            <div class="custom-multi-select" id="leadLevelMulti">
+                                <div class="select-header" onclick="document.getElementById('leadLevelDropdown').style.display = document.getElementById('leadLevelDropdown').style.display === 'none' ? 'block' : 'none'">
+                                    <span id="leadLevelText">全选 (8项)</span>
+                                    <i class="fa-solid fa-chevron-down"></i>
+                                </div>
+                                <div class="select-dropdown" id="leadLevelDropdown" style="display: none;">
+                                    <label class="dropdown-item"><input type="checkbox" id="selectAllLevels" value="all" checked onclick="const cbs = document.querySelectorAll('.level-cb'); cbs.forEach(cb => cb.checked = this.checked); document.getElementById('leadLevelText').innerText = this.checked ? '全选 (8项)' : '已选 0 项'"> 全选</label>
+                                    <label class="dropdown-item"><input type="checkbox" class="level-cb" value="H" checked onchange="updateLevelText()"> H</label>
+                                    <label class="dropdown-item"><input type="checkbox" class="level-cb" value="A" checked onchange="updateLevelText()"> A</label>
+                                    <label class="dropdown-item"><input type="checkbox" class="level-cb" value="B" checked onchange="updateLevelText()"> B</label>
+                                    <label class="dropdown-item"><input type="checkbox" class="level-cb" value="C" checked onchange="updateLevelText()"> C</label>
+                                    <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked onchange="updateLevelText()"> F</label>
+                                    <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked onchange="updateLevelText()"> L</label>
+                                    <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked onchange="updateLevelText()"> E</label>
+                                    <label class="dropdown-item"><input type="checkbox" class="level-cb" value="invalid" checked onchange="updateLevelText()"> 无效号码</label>
+                                </div>
+                            </div>
+                            <script>
+                                function updateLevelText() {
+                                    const cbs = document.querySelectorAll('.level-cb:checked');
+                                    const total = document.querySelectorAll('.level-cb').length;
+                                    document.getElementById('selectAllLevels').checked = (cbs.length === total);
+                                    document.getElementById('leadLevelText').innerText = cbs.length === total ? '全选 (' + total + '项)' : '已选 ' + cbs.length + ' 项';
+                                }
+                                document.addEventListener('click', function(e) {
+                                    const dropdown = document.getElementById('leadLevelDropdown');
+                                    const header = document.querySelector('#leadLevelMulti .select-header');
+                                    if(dropdown && dropdown.style.display === 'block' && !dropdown.contains(e.target) && !header.contains(e.target)) {
+                                        dropdown.style.display = 'none';
+                                    }
+                                });
+                            </script>
+                        </div>
+                        <div class="filter-item">
                             <label class="filter-label">渠道名称:</label>
                             <select class="filter-select" id="rChannel">
                                 <option value="all">全部</option>
@@ -155,20 +190,6 @@
                             <label class="filter-label">大项目:</label>
                             <input type="text" class="filter-input" id="projectName" placeholder="输入关键字搜索"
                                 style="min-width: 160px;">
-                        </div>
-                        <div class="filter-item">
-                            <label class="filter-label">线索等级:</label>
-                            <select class="filter-select" id="leadLevel">
-                                <option value="all">全部</option>
-                                <option value="H">H</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
-                                <option value="F">F</option>
-                                <option value="L">L</option>
-                                <option value="E">E</option>
-                                <option value="invalid">无效号码</option>
-                            </select>
                         </div>
                         <div class="filter-item filter-actions">
                             <button class="icon-btn query-btn" id="queryBtn">
