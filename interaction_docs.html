@@ -573,7 +573,7 @@
                 <li><strong>其余所有筛选项：</strong>默认选中「全国」或「全部」（即不限制该维度）</li>
             </ul>
 
-            <h3 class="sub-title">第一行筛选项</h3>
+            <h3 class="sub-title">当前筛选项（单行平铺）</h3>
             <table class="flow-table">
                 <thead><tr><th>字段名</th><th>控件类型</th><th>ID</th><th>可选项 / 说明</th></tr></thead>
                 <tbody>
@@ -581,62 +581,31 @@
                         <td>时间范围</td>
                         <td>快捷按钮 + 自定义日期</td>
                         <td><code>dateQuickPicker</code></td>
-                        <td>最近 7 天 / 最近 30 天 / 最近 90 天 / 自定义；选「自定义」时展示开始日期和结束日期输入框（<code>startDate</code>、<code>endDate</code>）</td>
-                    </tr>
-                    <tr>
-                        <td>区域层级</td>
-                        <td>下拉单选</td>
-                        <td><code>regionLevel</code></td>
-                        <td>全国 / 大区 / 小区 / 门店</td>
-                    </tr>
-                    <tr>
-                        <td>业务类型</td>
-                        <td>下拉单选</td>
-                        <td><code>businessType</code></td>
-                        <td>全部 / NEV新线索 / NEV冷线索 / NEV留资未满</td>
+                        <td>近 7 天 / 近 30 天 / 近 90 天 / 自定义；选「自定义」时展示开始日期和结束日期输入框（<code>startDate</code>、<code>endDate</code>）</td>
                     </tr>
                     <tr>
                         <td>意向车系</td>
                         <td>下拉单选</td>
                         <td><code>carSeries</code></td>
-                        <td>全部 / N7 / N6 / NX8</td>
+                        <td>全部 / N7 / N6 / NX8 / 天籁鸿蒙</td>
                     </tr>
                     <tr>
                         <td>线索等级</td>
                         <td>下拉多选</td>
                         <td><code>leadLevelMulti</code></td>
-                        <td>默认全选 (8项)。支持多选：H / A / B / C / F / L / E / 无效号码</td>
+                        <td>默认全选 (8项)。下拉面板包含：全选 / H / A / B / C / F / L / E / 无效号码。自带统计勾选项数量逻辑。</td>
                     </tr>
                     <tr>
-                        <td>渠道来源</td>
+                        <td>渠道名称</td>
                         <td>下拉单选</td>
                         <td><code>rChannel</code></td>
                         <td>全部 / R1 ~ R11</td>
                     </tr>
-                </tbody>
-            </table>
-
-            <h3 class="sub-title">第二行筛选项</h3>
-            <table class="flow-table">
-                <thead><tr><th>字段名</th><th>控件类型</th><th>ID</th><th>可选项 / 说明</th></tr></thead>
-                <tbody>
                     <tr>
                         <td>大项目</td>
                         <td>文本输入框</td>
                         <td><code>projectName</code></td>
-                        <td>支持关键字模糊匹配，placeholder「输入关键字查询」</td>
-                    </tr>
-                    <tr>
-                        <td>人群分类</td>
-                        <td>下拉单选</td>
-                        <td><code>crowdType</code></td>
-                        <td>全部 / 线索 / 到店 / 试驾 / 锁单</td>
-                    </tr>
-                    <tr>
-                        <td>用户类型</td>
-                        <td>下拉单选</td>
-                        <td><code>userType</code></td>
-                        <td>全部 / 保客 / 潜客</td>
+                        <td>支持关键字模糊匹配，placeholder「输入关键字搜索」，最小宽度 160px</td>
                     </tr>
                 </tbody>
             </table>
