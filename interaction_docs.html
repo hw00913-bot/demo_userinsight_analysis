@@ -146,7 +146,6 @@
         }
         .section-title i { color: var(--primary); font-size: 1.15rem; }
 
-        /* 子看板卡片标题 */
         .sub-section-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -321,7 +320,6 @@
         }
         .btn-jump:hover { background: #0070dd; transform: translateY(-1px); }
 
-        /* 图表说明卡片 */
         .chart-card {
             border: 1px solid var(--border);
             border-radius: 10px;
@@ -346,7 +344,6 @@
         }
         .chart-card ul { margin-bottom: 0; }
 
-        /* 下钻标记 */
         .drill-tag {
             display: inline-flex;
             align-items: center;
@@ -416,7 +413,7 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V2.0 · 与最新代码同步（2026-04-30 更新）</span>
+            <span class="doc-tag">版本 V2.2 · 与最新代码同步（2026-05-14 更新）</span>
             <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
             <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界，包括五阶段深度洞察叙事流的完整交互说明。</p>
         </header>
@@ -424,8 +421,31 @@
         <!-- ===================== 一、版本说明 ===================== -->
         <section class="section" id="section-version">
             <h2 class="section-title"><i class="fa-solid fa-code-branch"></i>一、版本说明</h2>
-            <!-- 待全量补充 -->
-            <p class="placeholder-text">版本变更记录将在所有说明完善后统一填写。</p>
+            <table class="version-table">
+                <thead>
+                    <tr><th style="width:100px;">版本号</th><th>更新日期</th><th>变更内容</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="ver-num">V2.2</td>
+                        <td>2026-05-14</td>
+                        <td>筛选栏重构为 5 项（时间范围快捷按钮 + 意向车系 + 线索等级多选 + 渠道名称 + 大项目）；线索等级升级为自定义多选下拉组件，支持全选/逐项勾选；KPI 指标区升级为单行横向 Ribbon 视图（4 组紧凑展示），含内联占比标注；移除「新增洞察标签」「下载明细数据」操作按钮及原 4 卡片指标区；清理遗留死代码（faqModal / trendModal / hotRankingModal / hotTrendsModal / mdModal 及相关导出功能），不影响现有弹窗（focusDrillDownModal / insightModal / rankingModal）</td>
+                    </tr>
+                    <tr>
+                        <td class="ver-num">V2.0</td>
+                        <td>2026-05-09</td>
+                        <td>看板重构为两大核心模块（渠道效果 + 培育运营），取消阶段性子 Tab，采用垂直扁平化展开结构；线索等级筛选器升级为多选结构；优化图表卡片高度；新增 KPI 单行 Ribbon 视图</td>
+                    </tr>
+                    <tr>
+                        <td class="ver-num">V1.0</td>
+                        <td>2026-04 之前</td>
+                        <td>初始版本，五阶段叙事切换模式（线索体检 → 画像定性 → 意向剖析 → 购车关注剖析 → 卡点归因）</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="highlight-box" style="margin-top:1rem;">
+                <strong>当前状态：</strong>原型演示阶段（Mock Data），所有数值为模拟数据。生产环境须接入后端实时数据接口。
+            </div>
         </section>
 
         <!-- ===================== 二、数据源说明 ===================== -->
@@ -462,6 +482,7 @@
                     <tr><td>线索状态</td><td>当前线索流转状态</td></tr>
                 </tbody>
             </table>
+            <ul class="item-list">
                 <li>当前版本为 <strong>原型演示数据</strong>（Mock Data），所有数值为模拟数据，用于展示页面交互与可视化效果。</li>
                 <li>生产环境须接入后端实时数据接口，替换各图表初始化函数中的 Mock 数据。</li>
             </ul>
@@ -561,16 +582,28 @@
         <!-- ===================== 三、筛选栏说明 ===================== -->
         <section class="section" id="section-filter">
             <h2 class="section-title"><i class="fa-solid fa-filter"></i>三、筛选栏说明</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">筛选栏位于页面顶部，分两行放置筛选条件，底部右对齐放置查询/重置按钮。所有图表数据随筛选条件联动刷新。</p>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">筛选栏位于页面顶部，单行放置 5 个筛选条件，右侧对齐「查询/重置」按钮。所有图表数据随筛选条件联动刷新。</p>
 
             <div class="highlight-box">
-                <strong>查询逻辑：</strong>多个筛选条件之间为<strong>且（AND）</strong>关系，即同时满足所有已选条件的记录才会被纳入统计。下拉选项为「全国」或「全部」时，表示不对该维度做过滤。
+                <strong>查询逻辑：</strong>多个筛选条件之间为<strong>且（AND）</strong>关系，即同时满足所有已选条件的记录才会被纳入统计。下拉选项为「全部」时，表示不对该维度做过滤。
             </div>
+
+            <h3 class="sub-title">交互行为</h3>
+            <ul class="item-list">
+                <li><strong>时间快捷按钮（<code>#dateShortcuts</code>）：</strong>点击「近 7 天」「近 30 天」「近 90 天」任一按钮，高亮选中态并自动更新内部日期区间。点击「自定义」展示开始/结束日期输入框（<code>#customDateInputs</code>）。</li>
+                <li><strong>线索等级多选下拉（<code>#leadLevelMulti</code>）：</strong>展开面板默认全选 8 项，可逐项勾选/取消。面板内包含「全选」快捷选项，支持一次全选/全清。面板外点击自动关闭。</li>
+                <li><strong>意向车系（<code>#carSeries</code>）：</strong>单选下拉，全部 / N7 / N6 / NX8 / 天籁鸿蒙。</li>
+                <li><strong>渠道名称（<code>#rChannel</code>）：</strong>单选下拉，全部 / R1 ~ R11。</li>
+                <li><strong>大项目输入框（<code>#projectName</code>）：</strong>支持键盘输入关键字模糊匹配，实时筛选候选项目名。</li>
+                <li><strong>查询按钮（蓝色 <code>#queryBtn</code>）：</strong>点击后触发全局数据联动刷新，所有看板图表根据当前筛选条件重新渲染。</li>
+                <li><strong>重置按钮（白底 <code>#resetBtn</code>）：</strong>将所有筛选项恢复为默认值（时间 → 近 30 天，其余 → 全部），并自动触发一次全量查询。</li>
+            </ul>
 
             <h3 class="sub-title">默认值</h3>
             <ul class="item-list">
-                <li><strong>时间范围：</strong>默认选中「最近 30 天」</li>
-                <li><strong>其余所有筛选项：</strong>默认选中「全国」或「全部」（即不限制该维度）</li>
+                <li><strong>时间范围：</strong>默认选中「近 30 天」快捷按钮</li>
+                <li><strong>线索等级：</strong>默认全选（8项，显示「全选 (8项)」）</li>
+                <li><strong>其余所有筛选项：</strong>默认「全部」（不限制该维度）</li>
             </ul>
 
             <h3 class="sub-title">当前筛选项（单行平铺）</h3>
@@ -580,8 +613,8 @@
                     <tr>
                         <td>时间范围</td>
                         <td>快捷按钮 + 自定义日期</td>
-                        <td><code>dateQuickPicker</code></td>
-                        <td>近 7 天 / 近 30 天 / 近 90 天 / 自定义；选「自定义」时展示开始日期和结束日期输入框（<code>startDate</code>、<code>endDate</code>）</td>
+                        <td><code>dateShortcuts</code></td>
+                        <td>近 7 天 / 近 30 天 / 近 90 天 / 自定义；选「自定义」时展示 <code>#customDateInputs</code>（开始/结束日期输入框 <code>startDate</code>、<code>endDate</code>）；默认激活「近 30 天」</td>
                     </tr>
                     <tr>
                         <td>意向车系</td>
@@ -591,15 +624,15 @@
                     </tr>
                     <tr>
                         <td>线索等级</td>
-                        <td>下拉多选</td>
+                        <td>自定义多选下拉</td>
                         <td><code>leadLevelMulti</code></td>
-                        <td>默认全选 (8项)。下拉面板包含：全选 / H / A / B / C / F / L / E / 无效号码。自带统计勾选项数量逻辑。</td>
+                        <td>默认全选 8 项，头部显示「全选 (8项)」或「已选 N 项」。下拉面板包含全选复选框 + H / A / B / C / F / L / E / 无效号码。点击面板外部自动关闭。</td>
                     </tr>
                     <tr>
                         <td>渠道名称</td>
                         <td>下拉单选</td>
                         <td><code>rChannel</code></td>
-                        <td>全部 / R1 ~ R11</td>
+                        <td>全部 / R1 ~ R11（共 12 个选项）</td>
                     </tr>
                     <tr>
                         <td>大项目</td>
@@ -611,52 +644,56 @@
             </table>
 
             <h3 class="sub-title">查询 / 重置按钮</h3>
-            <p style="color:#475569; font-size:0.95rem;">按钮位于筛选栏底部，右对齐显示，与上方筛选项以分隔线隔开。</p>
+            <p style="color:#475569; font-size:0.95rem;">按钮位于筛选栏右侧（<code>.filter-actions</code>），内联对齐。</p>
             <ul class="item-list">
-                <li><strong>查询（<span style="color:var(--primary-color);">蓝色</span>）：</strong>点击后触发全局数据联动刷新，各看板图表根据当前筛选条件重新渲染。</li>
-                <li><strong>重置（白底）：</strong>将所有筛选项恢复为默认值（时间范围 → 最近 30 天，其余 → 全国/全部），并自动触发一次全量查询。</li>
+                <li><strong>查询（蓝色，<code>#queryBtn</code>）：</strong>点击后触发全局数据联动刷新，各看板图表根据当前筛选条件重新渲染（指标卡数值浮动 ±5% 模拟更新）。</li>
+                <li><strong>重置（白底，<code>#resetBtn</code>）：</strong>将时间范围恢复至「近 30 天」激活态，关闭自定义日期区域，所有下拉框归「全部」，文本输入框清空。</li>
             </ul>
         </section>
 
         <!-- ===================== 四、核心指标说明 ===================== -->
         <section class="section" id="section-metrics">
             <h2 class="section-title"><i class="fa-solid fa-gauge-high"></i>四、核心指标说明</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">位于筛选栏下方，以 4 张分组卡片并排展示全链路的 11 个核心 KPI，覆盖「触达 → 线索 → 用户分级 → 业务转化」。</p>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">位于筛选栏下方，以<strong>单行横向 Ribbon</strong> 视图展示 4 个分组、11 个核心 KPI，覆盖「触达 → 线索 → 用户分级 → 行为转化」全链路。容器类为 <code>.kpi-cards-section &gt; .kpi-group-row</code>，4 个分组 flex 排列，各组宽度按比例伸缩。</p>
 
             <div class="highlight-box">
-                <strong>卡片分组：</strong>全部指标整合成单行 Ribbon 视图展示，分为四组：通话统计、线索统计、用户分级、行为转化。单行横铺（<code>.kpi-cards-section</code>），无多余视觉干扰。卡片内数值支持主指标及辅助百分比（占比）展示，并自带环比趋势。
+                <strong>布局结构：</strong>4 个 <code>.kpi-group-compact</code> 横向排列，每组有彩色左边框区分（蓝色=通话、紫色=线索、青色=用户分级、绿色=行为转化）。组内各指标以 <code>.kpi-metric-item</code> + 竖线分隔符 <code>.kpi-metric-divider</code> 并排展示，无需换行即可一屏展示全部 11 项指标。
             </div>
 
             <table class="flow-table">
-                <thead><tr><th>卡片名称</th><th>指标名称</th><th>业务含义</th></tr></thead>
+                <thead><tr><th>分组</th><th>指标名称</th><th>业务含义</th><th>展示特殊说明</th></tr></thead>
                 <tbody>
-                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">通话统计</td><td>通话总数</td><td>统计周期内所有外呼通话记录总条数（单位：通）</td></tr>
-                    <tr><td>接通总数</td><td>通话记录中状态为「接通」的数量（单位：通）</td></tr>
-                    <tr><td>平均时长</td><td>所有接通通话的总时长合计 / 接通总数（单位：s）</td></tr>
-                    
-                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">线索统计</td><td>新增线索</td><td>统计周期内新进入系统的线索总数（单位：条）</td></tr>
-                    <tr><td>新增用户</td><td>去重后的新增线索用户数（单位：人，一个用户多条线索计 1 人）</td></tr>
-                    
-                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">用户分级 (含占比)</td><td>有效用户</td><td>系统判定为有效的潜在购车人群及其占新增用户的比率</td></tr>
-                    <tr><td>无效用户</td><td>各类无效号码、无意向等无效用户数及占比</td></tr>
-                    <tr><td>H/A/B用户</td><td>高意向等级（H、A、B）的核心潜客群体数及占比</td></tr>
-                    
-                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">行为转化 (含占比)</td><td>到店用户</td><td>产生到店行为的去重用户数及转化占比</td></tr>
-                    <tr><td>试驾用户</td><td>产生试驾行为的去重用户数及转化占比</td></tr>
-                    <tr><td>锁单用户</td><td>最终成功锁单购车的去重用户数及转化占比</td></tr>
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">通话统计<br><span style="font-size:11px;color:#3b82f6;">kpi-border-blue</span></td><td>通话总数</td><td>统计周期内所有外呼通话记录总条数</td><td>单位：通</td></tr>
+                    <tr><td>接通总数</td><td>通话记录中状态为「接通」的数量</td><td>单位：通</td></tr>
+                    <tr><td>平均时长</td><td>所有接通通话总时长 / 接通总数</td><td>单位：s</td></tr>
+
+                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">线索统计<br><span style="font-size:11px;color:#7c3aed;">kpi-border-purple</span></td><td>新增线索</td><td>统计周期内新进入系统的线索总数</td><td>单位：条</td></tr>
+                    <tr><td>新增用户</td><td>去重后的新增线索用户数（手机号去重）</td><td>单位：人</td></tr>
+
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">用户分级<br><span style="font-size:11px;color:#0891b2;">kpi-border-cyan</span></td><td>有效用户</td><td>线索级别 ≠ 无效号码的用户数</td><td>主值（人）+ 内联蓝色占比标注如 <code>(68%)</code></td></tr>
+                    <tr><td>无效用户</td><td>线索级别 = 无效号码的用户数</td><td>主值（人）+ 内联灰色占比标注</td></tr>
+                    <tr><td>H/A/B用户</td><td>线索等级 H、A、B 的核心潜客</td><td>主值（人）+ 内联红色占比标注</td></tr>
+
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">行为转化<br><span style="font-size:11px;color:#059669;">kpi-border-green</span></td><td>到店用户</td><td>产生到店行为的去重用户数</td><td>主值（人）+ 内联绿色到店率</td></tr>
+                    <tr><td>试驾用户</td><td>产生试驾行为的去重用户数</td><td>主值（人）+ 内联绿色试驾率</td></tr>
+                    <tr><td>锁单用户</td><td>最终锁单购车的去重用户数</td><td>主值（人）+ 内联绿色锁单率</td></tr>
                 </tbody>
             </table>
 
             <div class="highlight-box" style="margin-top:1.5rem">
-                <strong>环比基准：</strong>所有指标的环比趋势均与<strong>前一个等长周期</strong>对比。例如选中「近 30 天」时，对比前 30 天（T-30 ~ T-1）；选中「近 7 天」时，对比前 7 天（T-7 ~ T-1）。不固定为 7 天。
+                <strong>内联占比标注：</strong>用户分级和行为转化各指标的主值右侧以 <code>&lt;span style="font-size:10px"&gt;</code> 行内展示对应占比（如 <code>(68%)</code>），颜色编码：有效=蓝色、无效=灰色、H/A/B=红色、行为转化=绿色。
             </div>
 
-            <div class="highlight-box" style="margin-top:1.5rem">
-                <strong>颜色规则：</strong>指标卡底部环比趋势中，<strong style="color:#ef4444">上升（▲）→ 红色</strong>，<strong style="color:#10b981">下降（▼）→ 绿色</strong>（符合国内汽车行业销售类指标惯例）。平均时长指标下降为优，业务含义相反时可通过样式反转规则配置。
+            <div class="highlight-box" style="margin-top:1rem">
+                <strong>环比基准：</strong>所有指标的环比趋势均与<strong>前一个等长周期</strong>对比。例如选中「近 30 天」时，对比前 30 天（T-30 ~ T-1）；选中「近 7 天」时，对比前 7 天（T-7 ~ T-1）。
             </div>
-            
-            <div class="highlight-box" style="margin-top:1.5rem">
-                <strong>已下线功能：</strong>原「新增洞察标签」按钮和「下载明细数据」等分散的操作按钮已从核心指标区剔除，确保专注展示全链路转化数据。
+
+            <div class="highlight-box" style="margin-top:1rem">
+                <strong>颜色规则：</strong>指标卡环比趋势中，<strong style="color:#ef4444">上升（▲）→ 红色</strong>，<strong style="color:#10b981">下降（▼）→ 绿色</strong>（符合国内汽车行业销售类指标惯例）。
+            </div>
+
+            <div class="highlight-box" style="margin-top:1rem">
+                <strong>已下线功能：</strong>原「新增洞察标签」按钮、「下载明细数据」操作按钮及原 4 卡片指标区（通话总数/接通总数/含常见问题通话数量/含抗拒点通话数量）已从此区域移除。
             </div>
         </section>
 
@@ -685,11 +722,26 @@
                 <div class="chart-card-title"><i class="fa-solid fa-chart-column"></i> 核心构成与趋势</div>
                 <ul class="item-list">
                     <li><strong>意向车系、有效占比、线索级别：</strong> 采用环形图/饼图呈现大盘各分类比重，直观对比主力车系与潜客意向层级。</li>
-                    <li><strong>区域投放效果：</strong> 采用横向双向条形图，左侧统计进线量，右侧统计建卡率，对比不同区域的转化效率。</li>
+                    <li><strong>区域投放效果：</strong> 采用横向双向条形图，左侧统计进线量，右侧统计建卡率，对比不同区域的转化效率。支持 Top 10 / Top 20 切换按钮。</li>
                     <li><strong>渠道线索质量：</strong> 采用多维度堆叠柱状图，直观展示每个子渠道在 H/A/B/C 等级的线索产出贡献。</li>
-                    <li><strong>大项目 & 排期线索质量排名：</strong> 采用双列表布局并排展示，包含排名标签、项目名、总进线量及各意向级别的人数堆叠进度条，支持全量展开和导出。</li>
+                    <li><strong>大项目 & 排期线索质量排名：</strong> 采用双列表布局并排展示，包含排名标签、项目名、总进线量及各意向级别的人数堆叠进度条。</li>
                 </ul>
             </div>
+
+            <h3 class="sub-title">区域投放效果 Top N 切换</h3>
+            <ul class="item-list">
+                <li>控制按钮位于区域投放图表右上角（<code>#regionTopTabs</code>），提供「Top 10」和「Top 20」两个切换选项。</li>
+                <li>默认展示 Top 10；点击「Top 20」后，隐藏的 10 条额外数据行（<code>.ce-v-bar-extra</code>）展开显示。</li>
+                <li>切换仅改变可见行数，不重新请求数据。</li>
+            </ul>
+
+            <h3 class="sub-title">大项目 / 排期排名指标切换</h3>
+            <ul class="item-list">
+                <li>两个排名组件各有一组维度切换按钮（<code>#rankMetricTabs</code> / <code>#scheduleMetricTabs</code>），支持切换：<strong>HAB 占比</strong> / <strong>到店率</strong> / <strong>试驾率</strong> / <strong>锁单率</strong>。</li>
+                <li>切换时 HAB 维度采用 H/A/B/Other 堆叠进度条展示，其余维度采用单色进度条。</li>
+                <li>切换时列表先 opacity 归零 → 渲染新数据 → opacity 恢复，实现 300ms 过渡动画。</li>
+                <li>每个列表展示 Top 10。</li>
+            </ul>
         </section>
 
         <!-- ===================== 5-2 培育运营 ===================== -->
@@ -700,24 +752,26 @@
             <div class="chart-card">
                 <div class="chart-card-title"><i class="fa-solid fa-id-card"></i> 模块 1：用户基本面 (Persona)</div>
                 <ul class="item-list">
-                    <li><strong>构成：</strong> 包含 年龄、收入、家庭、用车场景、品牌认知基础 5 张图表并排。</li>
+                    <li><strong>构成：</strong> 包含 年龄、收入、家庭、用车场景、品牌认知基础 5 张图表卡片并排展示。</li>
                     <li><strong>交互：</strong> 各卡片高度自适应，图表数据紧密关联用户自然属性，为后续沟通策略提供精准画像指引。</li>
+                    <li><strong>数据展示：</strong> 年龄分布（柱状图）、家庭月收入（柱状图）、家庭结构（环形图）、用车场景（横向条形图）、品牌认知（饼图/环形图），均为静态 Mock 数据渲染。</li>
                 </ul>
             </div>
 
             <div class="chart-card">
                 <div class="chart-card-title"><i class="fa-solid fa-car-side"></i> 模块 2：购车意向分布 (Intent)</div>
                 <ul class="item-list">
-                    <li><strong>构成：</strong> 购车意向分布、购买类型分布、计划购车分布。</li>
+                    <li><strong>构成：</strong> 购车意向分布、购买类型分布、计划购车时间分布，三张图表卡片并排展示。</li>
                     <li><strong>视觉优化：</strong> 图表卡片统一优化为 <strong>160px 的精简高度</strong>，减少底部留白，提升信息密度。</li>
+                    <li><strong>交互：</strong> 无下钻或弹窗，纯静态信息展示。意向分布展示「明确购车」「考虑中」「暂无计划」等分类；购买类型展示「增购」「换购」「首购」等；计划购车时间展示「1个月内」「1-3个月」「3-6个月」「半年以上」。</li>
                 </ul>
             </div>
 
             <div class="chart-card">
                 <div class="chart-card-title"><i class="fa-solid fa-fire"></i> 模块 3：关注点热度 (Concern)</div>
                 <ul class="item-list">
-                    <li><strong>整体关注排序：</strong> 横向条形图显示如外观、价格、空间等因素的提及率。</li>
-                    <li><strong>渠道关注点热度分布：</strong> 采用 ECharts 热力图 (Heatmap) 展示矩阵式交叉洞察，透视不同来源用户在不同关注点上的聚集程度。</li>
+                    <li><strong>整体关注排序：</strong> 横向条形图显示如价格与优惠、产品与配置、服务与售后、竞品对比等因素的提及率，条形高度与提及率正相关。</li>
+                    <li><strong>渠道关注点热度分布（热力图）：</strong> 采用 ECharts 热力图 (Heatmap) 展示矩阵式交叉洞察。X 轴为关注维度（价格与优惠 / 产品与配置 / 服务与售后 / 竞品对比），Y 轴为 R1~R7 渠道来源。每个格子颜色深浅表示该渠道用户对该关注点的提及率高低。</li>
                 </ul>
             </div>
 
@@ -725,23 +779,28 @@
                 <div class="chart-card-title"><i class="fa-solid fa-ranking-star"></i> 模块 4：意向与阻力榜单 (Ranking)</div>
                 <ul class="item-list">
                     <li><strong>结构布局：</strong> 「质量标签排行榜」与「抗拒点标签排行榜」两张数据表采用左右 <strong>1:1 并排高密度布局</strong>。</li>
-                    <li><strong>列设计：</strong> 
+                    <li><strong>质量标签排行榜：</strong> 展示原因类型（休眠失联/接通有效/再次联系/已接无效/空号停机等）、具体原因标签（如「处于考虑/纠结期」「确认有购车意向」）、用户数、占比、环比。默认展示 Top 10。</li>
+                    <li><strong>抗拒点标签排行榜：</strong> 展示回访结果（战败/休眠未购/其他）、具体原因（如「价格因素」「资金不足」「半年内不购车」）、用户数、占比、环比。默认展示 Top 10。</li>
+                    <li><strong>列设计：</strong>
                         <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li><strong>排名列：</strong> 前 3 名使用金色（rank-1）/银色（rank-2）/铜色（rank-3）徽章样式，其余为灰色。</li>
+                            <li><strong>原因类型/回访结果列：</strong> 使用色块标签区分（如休眠失联=蓝色、接通有效=绿色、已接无效=粉色、战败=红色等）。</li>
                             <li><strong>具体原因：</strong> 限制列宽，溢出文本自动应用 <code>.ellipsis</code> 省略号。</li>
                             <li><strong>占比列：</strong> 取消了之前的图形化进度条，全线统一为严谨对齐的纯文本百分比，提升商务专业度。</li>
+                            <li><strong>环比列：</strong> 上升=红色 ▲、下降=绿色 ▼、持平=灰色 —。</li>
                         </ul>
                     </li>
                 </ul>
             </div>
-            
+
             <div class="highlight-box" style="margin-top: 1rem;">
                 <strong>版本演进备注：</strong> 新版去除了旧版的五阶段叙事切换点击负担，升级为统一筛选、全局联动、垂直下拉浏览的全景洞察模式，同时将线索等级筛选器从第二排升级为第一排的多选结构，体验更原生流畅。
             </div>
         </section>
-        
+
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V2.0 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-05-09</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V2.2 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-05-14</p>
         </div>
 
     </main>
