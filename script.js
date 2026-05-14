@@ -1020,38 +1020,9 @@ function initNodeFormModal() {
         } else {
             if (!confirm(`确定要删除"${label}"吗?`)) return;
         }
-        // 下载文件
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-        a.download = `常见问题Top10明细_${timestamp}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-                        ${isPos ? `
-                <td class="col-name">${item.name}</td>
-            row.className = 'extreme-item';
-            row.style.height = '32px';
-            row.innerHTML = `
-                <span class="extreme-label" style="width: 100px;">${item.name}</span>
-                <div class="extreme-bar-wrap"><div class="extreme-bar fall" style="width: ${Math.abs(item.val) * 5}%"></div></div>
-                <span class="extreme-val fall" style="width: 60px;">${item.val}%</span>
-            `;
-            fallList.appendChild(row);
-        });
-
-        modal.style.display = 'flex';
-    });
-
-    closeBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) modal.style.display = 'none';
-    });
+        // 更新 DOM
+        treeNode.remove();
+    }
 }
 
 // 常见标签排行排序功能
