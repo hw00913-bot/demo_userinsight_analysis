@@ -413,7 +413,7 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V2.2 · 与最新代码同步（2026-05-14 更新）</span>
+            <span class="doc-tag">版本 V2.3 · 与最新代码同步（2026-05-14 更新）</span>
             <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
             <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界，包括五阶段深度洞察叙事流的完整交互说明。</p>
         </header>
@@ -426,6 +426,11 @@
                     <tr><th style="width:100px;">版本号</th><th>更新日期</th><th>变更内容</th></tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td class="ver-num">V2.3</td>
+                        <td>2026-05-14</td>
+                        <td>补充培育运营看板详细功能说明：完善模块 1-4 的详细描述（卡片构成、数据展示格式、颜色编码规则），新增弹窗系统说明（focusDrillDownModal 关注点二级下钻 / rankingModal 全量排行榜 / insightModal 洞察标签配置），补充完整的触发方式、弹窗结构、数据来源、关闭方式等交互细节。</td>
+                    </tr>
                     <tr>
                         <td class="ver-num">V2.2</td>
                         <td>2026-05-14</td>
@@ -750,46 +755,125 @@
             <p style="color:#475569; font-size:0.95rem; margin-bottom:1.5rem;">页面采用<strong>单页垂直扁平化展开</strong>结构，取消了早期的阶段性子 Tab，全景式展示培育转化漏斗详情。</p>
 
             <div class="chart-card">
-                <div class="chart-card-title"><i class="fa-solid fa-id-card"></i> 模块 1：用户基本面 (Persona)</div>
+                <div class="chart-card-title"><i class="fa-solid fa-user-gear"></i> 模块 1：用户基础属性</div>
                 <ul class="item-list">
-                    <li><strong>构成：</strong> 包含 年龄、收入、家庭、用车场景、品牌认知基础 5 张图表卡片并排展示。</li>
-                    <li><strong>交互：</strong> 各卡片高度自适应，图表数据紧密关联用户自然属性，为后续沟通策略提供精准画像指引。</li>
-                    <li><strong>数据展示：</strong> 年龄分布（柱状图）、家庭月收入（柱状图）、家庭结构（环形图）、用车场景（横向条形图）、品牌认知（饼图/环形图），均为静态 Mock 数据渲染。</li>
+                    <li><strong>卡片构成：</strong> 第一行 4 张卡片（年龄购车分布 / 收入水平构成 / 家庭构成分布 / 用车场景分布），第二行 2 张卡片（用车场景分布补充 / 品牌认知基础），采用 <code>.kpi-row</code> 横向弹性布局。</li>
+                    <li><strong>年龄购车分布：</strong> 堆叠柱状图，X 轴为年龄段（18-25岁 / 25-35岁 / 35岁+），Y 轴为高度代表人数。每组柱子内分段显示男（蓝色 #3b82f6）/ 女（浅蓝 #93c5fd）/ 未知（灰色 #d1d5db）占比。悬停显示 Tooltip 展示具体数值和人数。</li>
+                    <li><strong>收入水平构成：</strong> 环形饼图，中心显示用户总数，环形分段展示「富裕 25%」「一般 45%」「未提及 30%」三类，下方图例列出颜色标识和人数。</li>
+                    <li><strong>家庭构成分布：</strong> 环形饼图，中心显示用户总数，环形分段展示「1至3人 55%」「4至5人 30%」「5人以上 15%」三类。</li>
+                    <li><strong>用车场景分布：</strong> 横向进度条图，按用户数降序排列（城市通勤 85% / 家庭出行 72% / 自驾旅行 58% / 商务接待 42% / 亲子出行 35% / 物流运输 15%），每条左侧标签 + 中间进度条 + 右侧百分比和人数。</li>
+                    <li><strong>品牌认知基础：</strong> 梯形漏斗图，从上到下递减展示「日产粉丝 15%」「基本了解 35%」「知道但不太了解 30%」「完全不了解 20%」，体现品牌认知深度递进关系。</li>
+                    <li><strong>交互说明：</strong> 各卡片高度自适应，图表数据紧密关联用户自然属性，为后续沟通策略提供精准画像指引。年龄分布图悬停显示 Tooltip。</li>
                 </ul>
             </div>
 
             <div class="chart-card">
                 <div class="chart-card-title"><i class="fa-solid fa-car-side"></i> 模块 2：购车意向分布 (Intent)</div>
                 <ul class="item-list">
-                    <li><strong>构成：</strong> 购车意向分布、购买类型分布、计划购车时间分布，三张图表卡片并排展示。</li>
-                    <li><strong>视觉优化：</strong> 图表卡片统一优化为 <strong>160px 的精简高度</strong>，减少底部留白，提升信息密度。</li>
-                    <li><strong>交互：</strong> 无下钻或弹窗，纯静态信息展示。意向分布展示「明确购车」「考虑中」「暂无计划」等分类；购买类型展示「增购」「换购」「首购」等；计划购车时间展示「1个月内」「1-3个月」「3-6个月」「半年以上」。</li>
+                    <li><strong>卡片构成：</strong> 3 张卡片横向并排展示（购车意向分布 / 购买类型分布 / 计划购车分布），统一高度 160px。</li>
+                    <li><strong>购车意向分布：</strong> 横向进度条，3 个分类：考虑中 45% / 明确 42% / 无意向 13%。考虑中和明确使用蓝色系，无意向使用浅蓝色区分。</li>
+                    <li><strong>购买类型分布：</strong> 横向进度条，4 个分类：首购 52% / 换购 28% / 增购 15% / 未知 5%，按购买意愿从强到弱排列。</li>
+                    <li><strong>计划购车分布：</strong> 横向进度条，5 个时间维度：一月内 35% / 三个月内 30% / 三月后 20% / 计划7天 10% / 未知 5%，按购车紧迫度从高到低排列。</li>
                 </ul>
             </div>
 
             <div class="chart-card">
                 <div class="chart-card-title"><i class="fa-solid fa-fire"></i> 模块 3：关注点热度 (Concern)</div>
                 <ul class="item-list">
-                    <li><strong>整体关注排序：</strong> 横向条形图显示如价格与优惠、产品与配置、服务与售后、竞品对比等因素的提及率，条形高度与提及率正相关。</li>
-                    <li><strong>渠道关注点热度分布（热力图）：</strong> 采用 ECharts 热力图 (Heatmap) 展示矩阵式交叉洞察。X 轴为关注维度（价格与优惠 / 产品与配置 / 服务与售后 / 竞品对比），Y 轴为 R1~R7 渠道来源。每个格子颜色深浅表示该渠道用户对该关注点的提及率高低。</li>
+                    <li><strong>整体关注排序：</strong> 横向条形图，4 个维度按提及率降序排列：产品与配置 78% / 价格与优惠 65% / 竞品对比 42% / 服务与售后 28%。<strong>点击任一条形触发 <code>openFocusDrillDown(category)</code>，打开关注点二级下钻弹窗。</strong></li>
+                    <li><strong>渠道关注点热度分布（Heatmap）：</strong> 5行×7列矩阵热力图。
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li><strong>Y 轴（行）：</strong> 4 个关注维度（产品与配置 / 价格与优惠 / 竞品对比 / 服务与售后）</li>
+                            <li><strong>X 轴（列）：</strong> 7 个渠道来源（R1 ~ R7）</li>
+                            <li><strong>颜色编码：</strong> 深蓝色（#1e3a8a）= 高提及率，浅蓝/白色 = 低提及率</li>
+                            <li><strong>悬停交互：</strong> 显示 Tooltip 展示「提及率: XX%」</li>
+                            <li><strong>点击交互：</strong> 点击任一格子触发 <code>openFocusDrillDown(category)</code>，传入当前关注维度 category 参数</li>
+                        </ul>
+                    </li>
+                    <li><strong>热力图图例：</strong> 右上角显示渐变色条（低 → 高），标注「关注热度：低」和「高」文字说明。</li>
                 </ul>
             </div>
 
             <div class="chart-card">
                 <div class="chart-card-title"><i class="fa-solid fa-ranking-star"></i> 模块 4：意向与阻力榜单 (Ranking)</div>
                 <ul class="item-list">
-                    <li><strong>结构布局：</strong> 「质量标签排行榜」与「抗拒点标签排行榜」两张数据表采用左右 <strong>1:1 并排高密度布局</strong>。</li>
-                    <li><strong>质量标签排行榜：</strong> 展示原因类型（休眠失联/接通有效/再次联系/已接无效/空号停机等）、具体原因标签（如「处于考虑/纠结期」「确认有购车意向」）、用户数、占比、环比。默认展示 Top 10。</li>
+                    <li><strong>结构布局：</strong> 左右 1:1 并排展示，每张卡片右上角有「查看全部」按钮，点击后打开全量排行榜弹窗。</li>
+                    <li><strong>质量标签排行榜：</strong> 展示原因类型（休眠失联/接通有效/再次联系/已接无效/空号停机等）、具体原因标签、用户数、占比、环比。默认展示 Top 10。</li>
                     <li><strong>抗拒点标签排行榜：</strong> 展示回访结果（战败/休眠未购/其他）、具体原因（如「价格因素」「资金不足」「半年内不购车」）、用户数、占比、环比。默认展示 Top 10。</li>
-                    <li><strong>列设计：</strong>
+                    <li><strong>排名列样式：</strong> 前 3 名使用金银铜色徽章（<code>.rank-1</code> 金色 / <code>.rank-2</code> 银色 / <code>.rank-3</code> 铜色），其余灰色。</li>
+                    <li><strong>原因类型/回访结果标签样式：</strong>
                         <ul style="margin-left: 1rem; margin-top: 0.5rem;">
-                            <li><strong>排名列：</strong> 前 3 名使用金色（rank-1）/银色（rank-2）/铜色（rank-3）徽章样式，其余为灰色。</li>
-                            <li><strong>原因类型/回访结果列：</strong> 使用色块标签区分（如休眠失联=蓝色、接通有效=绿色、已接无效=粉色、战败=红色等）。</li>
-                            <li><strong>具体原因：</strong> 限制列宽，溢出文本自动应用 <code>.ellipsis</code> 省略号。</li>
-                            <li><strong>占比列：</strong> 取消了之前的图形化进度条，全线统一为严谨对齐的纯文本百分比，提升商务专业度。</li>
-                            <li><strong>环比列：</strong> 上升=红色 ▲、下降=绿色 ▼、持平=灰色 —。</li>
+                            <li>休眠失联 = 蓝色（#eff6ff / #1e40af）</li>
+                            <li>接通有效 = 绿色（#f0fdf4 / #166534）</li>
+                            <li>再次联系 = 橙色（#fff7ed / #9a3412）</li>
+                            <li>已接无效 = 粉色（#fdf2f8 / #9d174d）</li>
+                            <li>空号/停机 = 灰色（#f3f4f6 / #374151）</li>
+                            <li>战败 = 红色（#fef2f2 / #dc2626）</li>
+                            <li>休眠未购 = 紫色（#f5f3ff / #7c3aed）</li>
                         </ul>
                     </li>
+                    <li><strong>具体原因列：</strong> 限制列宽，溢出文本自动省略号（<code>.ellipsis</code>）。</li>
+                    <li><strong>环比列：</strong> 上升 ▲ + 红色 / 下降 ▼ + 绿色 / 持平 — + 灰色。</li>
+                    <li><strong>「查看全部」按钮：</strong> 位于卡片头部右侧，文字按钮（<code>.text-link-btn</code>），点击触发 <code>openFullRanking('quality')</code> 或 <code>openFullRanking('resistance')</code>。</li>
+                </ul>
+            </div>
+
+            <h3 class="sub-title">弹窗系统说明</h3>
+
+            <!-- 关注点二级下钻弹窗 -->
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-magnifying-glass-chart"></i> 关注点二级下钻弹窗（focusDrillDownModal）</div>
+                <ul class="item-list">
+                    <li><strong>触发方式：</strong> 点击「整体关注排序」任意条形 或 「渠道关注点热力图」任意单元格，调用 <code>openFocusDrillDown(category)</code>，传入关注维度名称。</li>
+                    <li><strong>弹窗结构：</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li>标题：<code>[维度名] 二级分布 - 提及率排名</code>（如「[产品与配置] 二级分布 - 提及率排名」）</li>
+                            <li>内容区：动态渲染该维度下的二级标签列表，每行显示标签名 + 进度条 + 提及率和人数</li>
+                        </ul>
+                    </li>
+                    <li><strong>数据来源：</strong> <code>focusSubTagsData[category]</code> 对象，存储各维度二级标签的提及率数据。</li>
+                    <li><strong>关闭方式：</strong> 点击 × 按钮 或 点击弹窗遮罩层，调用 <code>closeFocusModal()</code>。</li>
+                </ul>
+            </div>
+
+            <!-- 全量排行榜弹窗 -->
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-list-ol"></i> 全量排行榜弹窗（rankingModal）</div>
+                <ul class="item-list">
+                    <li><strong>触发方式：</strong> 点击质量标签排行榜或抗拒点标签排行榜卡片右上角的「查看全部」按钮，调用 <code>openFullRanking('quality')</code> 或 <code>openFullRanking('resistance')</code>。</li>
+                    <li><strong>弹窗结构：</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li>标题：<code>质量标签全量排行榜</code> 或 <code>抗拒点标签全量排行榜</code></li>
+                            <li>表头行（<code>rankingModalThead</code>）：排名 / 原因类型 / 具体原因标签 / 用户数 / 占比 / 环比</li>
+                            <li>表体（<code>rankingModalTableBody</code>）：动态渲染全量数据行</li>
+                        </ul>
+                    </li>
+                    <li><strong>数据来源：</strong> <code>qualityFullData</code>（15 条完整数据）和 <code>resistanceFullData</code>（12 条完整数据）。</li>
+                    <li><strong>关闭方式：</strong> 点击 × 按钮 或 点击弹窗遮罩层，调用 <code>closeRankingModal()</code>。</li>
+                </ul>
+            </div>
+
+            <!-- 洞察标签配置弹窗 -->
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-tags"></i> 洞察标签配置弹窗（insightModal）</div>
+                <ul class="item-list">
+                    <li><strong>触发方式：</strong> 点击「洞察标签配置」按钮（<code>#insightBtn</code>），调用 <code>initModal()</code> 初始化弹窗内容。</li>
+                    <li><strong>弹窗结构：</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li>Tab 切换：「常见问题分类」/「客户抗拒点分类」</li>
+                            <li>左侧分类树：三级树形结构（1级展开/收起，2级展开/收起，3级叶子节点）</li>
+                            <li>右侧配置面板：显示当前选中节点的详情</li>
+                        </ul>
+                    </li>
+                    <li><strong>分类树节点操作：</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li><strong>新增下级：</strong> 点击 + 按钮，展开表单填写节点名称和编码</li>
+                            <li><strong>编辑：</strong> 点击编辑图标，修改节点名称和编码</li>
+                            <li><strong>删除：</strong> 点击删除图标，二次确认后删除（含子节点一并删除）</li>
+                        </ul>
+                    </li>
+                    <li><strong>表单字段：</strong> 节点名称、节点编码、标签逻辑说明（三级节点专属）</li>
+                    <li><strong>关闭方式：</strong> 点击 × 按钮 或 点击弹窗遮罩层，弹窗隐藏（不移除 DOM）</li>
                 </ul>
             </div>
 
@@ -800,7 +884,7 @@
 
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V2.2 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-05-14</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V2.3 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-05-14</p>
         </div>
 
     </main>
