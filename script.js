@@ -1467,6 +1467,7 @@ function openFullRanking(type) {
 
     if (type === 'quality') {
         title.innerText = '质量标签全量排行榜';
+        modal.querySelector('.drawer-body').style.padding = '0 60px';
         thead.innerHTML = `
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
@@ -1491,6 +1492,7 @@ function openFullRanking(type) {
         });
     } else if (type === 'resistance') {
         title.innerText = '抗拒点标签全量排行榜';
+        modal.querySelector('.drawer-body').style.padding = '0 60px';
         thead.innerHTML = `
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
