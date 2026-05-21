@@ -119,7 +119,6 @@ function initDateRange() {
 // 页面加载时初始化
 window.addEventListener('DOMContentLoaded', () => {
     initDateRange();
-    initModal();
     initGlobalFilters();    // 新增：全局筛选器逻辑
     initProjectRankInteraction(); // 初始化大项目排名交互
     initScheduleRankInteraction(); // 初始化排期排名交互
@@ -167,32 +166,7 @@ function initGlobalFilters() {
     }
 }
 
-// 全局事件委托处理树节点展开/收起
-document.addEventListener('click', (e) => {
-    const modal = document.getElementById('insightModal');
-    if (!modal || !modal.classList.contains('active')) {
-        return;
-    }
 
-    const treeHeader = e.target.closest('.tree-header');
-    if (!treeHeader) return;
-
-    if (e.target.closest('.tree-actions')) return;
-
-    const treeNode = treeHeader.parentElement;
-    if (treeNode && treeNode.classList.contains('tree-node')) {
-        const treeChildren = treeNode.querySelector(':scope > .tree-children');
-        if (treeChildren) {
-            const isOpen = treeNode.classList.toggle('open');
-            treeChildren.style.display = isOpen ? 'block' : 'none';
-            const icon = treeNode.querySelector(':scope > .tree-header > .tree-header-left > .tree-icon');
-            if (icon) {
-                icon.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
-            }
-            e.stopPropagation();
-        }
-    }
-});
 
 // 初始化：设置所有tree-children的display，同步open节点状态
 function initTreeState() {
@@ -210,210 +184,7 @@ function initTreeState() {
 }
 window.addEventListener('DOMContentLoaded', initTreeState);
 
-// 导入/导出功能
-function initImportExport() {
-    function exportTreeData(modalId, fileName) {
-        const modal = document.getElementById(modalId);
-        if (!modal) return;
 
-        const hasLevel3 = true;
-        const rows = [];
-        const level1Nodes = modal.querySelectorAll('.tree-level-1');
-
-        level1Nodes.forEach(l1 => {
-            const l1Header = l1.querySelector('.tree-header-left');
-            const l1Name = l1Header?.querySelector('.tree-label')?.textContent?.trim() || '';
-            const l1Code = l1Header?.querySelector('.tree-code')?.textContent?.trim()?.replace(/[\[\]]/g, '') || '';
-
-            const l2Nodes = l1.querySelectorAll('.tree-level-2');
-            l2Nodes.forEach(l2 => {
-                const l2Header = l2.querySelector('.tree-header-left');
-                const l2Name = l2Header?.querySelector('.tree-label')?.textContent?.trim() || '';
-                const l2Code = l2Header?.querySelector('.tree-code')?.textContent?.trim()?.replace(/[\[\]]/g, '') || '';
-
-                const l3Nodes = l2.querySelectorAll('.tree-level-3');
-                if (l3Nodes.length > 0) {
-                    l3Nodes.forEach(l3 => {
-                        const l3Header = l3.querySelector('.tree-header-left');
-                        const l3Name = l3Header?.querySelector('.tree-label')?.textContent?.trim() || '';
-                        const l3Code = l3Header?.querySelector('.tree-code')?.textContent?.trim()?.replace(/[\[\]]/g, '') || '';
-                        const logicDesc = l3.dataset.logicDesc || '';
-                        rows.push([l1Name, l1Code, l2Name, l2Code, l3Name, l3Code, logicDesc]);
-                    });
-                } else {
-                    // 如果没有三级，则导出二级信息，三级列留空
-                    const logicDesc = l2.dataset.logicDesc || '';
-                    rows.push([l1Name, l1Code, l2Name, l2Code, '-', '-', logicDesc]);
-                }
-            });
-        });
-
-        const headers = ['一级分类名称', '一级分类编码', '二级分类名称', '二级分类编码', '三级分类名称', '三级分类编码', '标签逻辑说明'];
-
-        const csvContent = '\uFEFF' + [headers, ...rows]
-            .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
-            .join('\n');
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${fileName}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-
-    function importTreeData(modalId) {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.csv';
-        input.onchange = (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-                try {
-                    const text = evt.target.result;
-                    // 解析CSV（处理带引号和逗号的情况）
-                    const lines = text.split('\n').filter(line => line.trim());
-                    if (lines.length < 2) {
-                        alert('导入文件为空或格式不正确');
-                        return;
-                    }
-
-                    const modal = document.getElementById(modalId);
-                    if (!modal) return;
-
-                    const hasLevel3 = modalId === 'common-issues-modal';
-
-                    // 用于存储去重后的数据（重复编码只保留最后一个）
-                    const importDataMap = new Map();
-
-                    // 解析CSV数据，跳过表头
-                    for (let i = 1; i < lines.length; i++) {
-                        const line = lines[i];
-                        // 简单解析CSV（处理引号内的逗号）
-                        const row = [];
-                        let current = '';
-                        let inQuote = false;
-                        for (let j = 0; j < line.length; j++) {
-                            const char = line[j];
-                            if (char === '"') {
-                                inQuote = !inQuote;
-                            } else if (char === ',' && !inQuote) {
-                                row.push(current.trim());
-                                current = '';
-                            } else {
-                                current += char;
-                            }
-                        }
-                        row.push(current.trim());
-
-                        if (hasLevel3) {
-                            // 三级分类: 一级名称, 一级编码, 二级名称, 二级编码, 三级名称, 三级编码, 标签逻辑说明
-                            const [l1Name, l1Code, l2Name, l2Code, l3Name, l3Code, logicDesc] = row;
-                            // 编码为空则跳过
-                            if (!l3Code) continue;
-                            // 使用编码作为key，保留最后一个
-                            importDataMap.set(l3Code, { l1Name, l1Code, l2Name, l2Code, l3Name, l3Code, logicDesc });
-                        } else {
-                            // 二级分类: 一级名称, 一级编码, 二级名称, 二级编码, 标签逻辑说明
-                            const [l1Name, l1Code, l2Name, l2Code, logicDesc] = row;
-                            // 编码为空则跳过
-                            if (!l2Code) continue;
-                            importDataMap.set(l2Code, { l1Name, l1Code, l2Name, l2Code, logicDesc });
-                        }
-                    }
-
-                    // 遍历页面现有节点，匹配并更新
-                    let updateCount = 0;
-                    if (hasLevel3) {
-                        // 常见问题分类 - 匹配三级节点
-                        modal.querySelectorAll('.tree-node.tree-level-3').forEach(l3Node => {
-                            const label = l3Node.querySelector('.tree-label');
-                            if (!label) return;
-                            const text = label.textContent;
-                            const codeMatch = text.match(/\(([^)]+)\)$/);
-                            if (!codeMatch) return;
-                            const code = codeMatch[1];
-
-                            if (importDataMap.has(code)) {
-                                const data = importDataMap.get(code);
-                                label.textContent = `${data.l3Name} (${data.l3Code})`;
-                                l3Node.dataset.logicDesc = data.logicDesc || '';
-                                updateCount++;
-                            }
-                        });
-                    } else {
-                        // 客户抗拒点分类 - 匹配二级节点
-                        modal.querySelectorAll('.tree-node.tree-level-2').forEach(l2Node => {
-                            const label = l2Node.querySelector('.tree-label');
-                            if (!label) return;
-                            const text = label.textContent;
-                            const codeMatch = text.match(/\(([^)]+)\)$/);
-                            if (!codeMatch) return;
-                            const code = codeMatch[1];
-
-                            if (importDataMap.has(code)) {
-                                const data = importDataMap.get(code);
-                                label.textContent = `${data.l2Name} (${data.l2Code})`;
-                                l2Node.dataset.logicDesc = data.logicDesc || '';
-                                updateCount++;
-                            }
-                        });
-                    }
-
-                    alert(`导入完成！共更新 ${updateCount} 条数据。`);
-                } catch (err) {
-                    console.error(err);
-                    alert('导入失败，请检查文件格式是否正确。');
-                }
-            };
-            reader.readAsText(file);
-        };
-        input.click();
-    }
-
-    document.getElementById('exportCommonIssues')?.addEventListener('click', () => {
-        exportTreeData('common-issues-modal', '常见问题分类');
-    });
-    document.getElementById('importCommonIssues')?.addEventListener('click', () => {
-        importTreeData('common-issues-modal');
-    });
-
-    document.getElementById('exportResistancePoints')?.addEventListener('click', () => {
-        exportTreeData('resistance-points-modal', '客户抗拒点分类');
-    });
-    document.getElementById('importResistancePoints')?.addEventListener('click', () => {
-        importTreeData('resistance-points-modal');
-    });
-
-    // 模板下载逻辑
-    const downloadTemplate = (headers, filename) => {
-        const csvContent = '\ufeff' + headers.join(',');
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    };
-
-    document.getElementById('templateCommonIssues')?.addEventListener('click', () => {
-        downloadTemplate(['一级名称', '一级编码', '二级名称', '二级编码', '三级名称', '三级编码', '标签逻辑说明'], '常见问题标签导入模板.csv');
-    });
-
-    document.getElementById('templateResistancePoints')?.addEventListener('click', () => {
-        downloadTemplate(['一级名称', '一级编码', '二级名称', '二级编码', '标签逻辑说明'], '客户抗拒点标签导入模板.csv');
-    });
-}
-window.addEventListener('DOMContentLoaded', initImportExport);
 
 // 动态读取标签树数据并更新饼图
 const chartColors = [
@@ -525,513 +296,9 @@ function renderDoubleRingChart(containerId, modalId) {
     container.innerHTML = '<div class="pie-chart-container"><div class="double-ring-wrapper">' + svg + '</div>' + legend + '</div>';
 }
 
-function initCommonTagCharts() {
-    renderDoubleRingChart('commonTagChart', 'common-issues-modal');
-    renderDoubleRingChart('resistanceTagChart', 'resistance-points-modal');
-}
 
-// 监听标签树变化，更新饼图
-function initTagTreeObserver() {
-    const modal = document.getElementById('insightModal');
-    if (!modal) return;
 
-    // 初始化饼图
-    initCommonTagCharts();
 
-    // 监听弹窗内容变化
-    const observer = new MutationObserver((mutations) => {
-        mutations.forEach(mutation => {
-            if (mutation.type === 'childList' || mutation.type === 'subtree') {
-                // 防抖更新
-                clearTimeout(window.tagChartUpdateTimer);
-                window.tagChartUpdateTimer = setTimeout(() => {
-                    initCommonTagCharts();
-                }, 100);
-            }
-        });
-    });
-
-    const commonIssuesModal = document.getElementById('common-issues-modal');
-    if (commonIssuesModal) {
-        observer.observe(commonIssuesModal, { childList: true, subtree: true });
-    }
-
-    // 监听弹窗打开/关闭事件
-    const modalObserver = new MutationObserver((mutations) => {
-        mutations.forEach(mutation => {
-            if (mutation.attributeName === 'class') {
-                const isActive = modal.classList.contains('active');
-                if (isActive) {
-                    // 弹窗打开时更新饼图
-                    clearTimeout(window.tagChartUpdateTimer);
-                    window.tagChartUpdateTimer = setTimeout(() => {
-                        initCommonTagCharts();
-                    }, 50);
-                }
-            }
-        });
-    });
-    modalObserver.observe(modal, { attributes: true });
-}
-
-// 为底层节点动态添加查看按钮
-function initViewButtons() {
-    document.querySelectorAll('#common-issues-modal .tree-node.tree-level-3').forEach(node => {
-        const actions = node.querySelector(':scope > .tree-header > .tree-actions');
-        if (actions && !actions.querySelector('[title="查看"]')) {
-            const viewBtn = document.createElement('button');
-            viewBtn.className = 'tree-action-btn';
-            viewBtn.title = '查看';
-            viewBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
-            actions.insertBefore(viewBtn, actions.firstChild);
-        }
-    });
-
-    document.querySelectorAll('#resistance-points-modal .tree-node.tree-level-2').forEach(node => {
-        const actions = node.querySelector(':scope > .tree-header > .tree-actions');
-        if (actions && !actions.querySelector('[title="查看"]')) {
-            const viewBtn = document.createElement('button');
-            viewBtn.className = 'tree-action-btn';
-            viewBtn.title = '查看';
-            viewBtn.innerHTML = '<i class="fa-solid fa-eye"></i>';
-            actions.insertBefore(viewBtn, actions.firstChild);
-        }
-    });
-}
-
-window.addEventListener('DOMContentLoaded', initTagTreeObserver);
-window.addEventListener('DOMContentLoaded', initViewButtons);
-
-// 显示节点详情
-function showNodeDetail(node) {
-    let level1 = '-', level2 = '-', level3 = '-';
-
-    const currentLabel = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
-    const currentName = currentLabel ? currentLabel.textContent : '-';
-
-    if (node.classList.contains('tree-level-3')) {
-        level3 = currentName;
-    } else if (node.classList.contains('tree-level-2')) {
-        level2 = currentName;
-    }
-
-    const parentTreeChildren = node.parentElement;
-    if (parentTreeChildren && parentTreeChildren.classList.contains('tree-children')) {
-        const parentNode = parentTreeChildren.parentElement;
-        if (parentNode) {
-            const parentLabel = parentNode.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
-            const parentName = parentLabel ? parentLabel.textContent : '-';
-
-            if (parentNode.classList.contains('tree-level-2')) {
-                level2 = parentName;
-            } else if (parentNode.classList.contains('tree-level-1')) {
-                level1 = parentName;
-            }
-
-            if (parentNode.classList.contains('tree-level-2')) {
-                const grandTreeChildren = parentNode.parentElement;
-                if (grandTreeChildren && grandTreeChildren.classList.contains('tree-children')) {
-                    const grandNode = grandTreeChildren.parentElement;
-                    if (grandNode) {
-                        const grandLabel = grandNode.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
-                        level1 = grandLabel ? grandLabel.textContent : '-';
-                    }
-                }
-            }
-        }
-    }
-
-    const isResistancePoints = node.closest('#resistance-points-modal') !== null;
-    const level3Item = document.getElementById('viewLevel3Item');
-    if (isResistancePoints) {
-        level3Item.style.display = 'none';
-    } else {
-        level3Item.style.display = '';
-        document.getElementById('viewLevel3').textContent = level3;
-        document.getElementById('viewLevel3').classList.toggle('empty', level3 === '-');
-    }
-
-    const logicDesc = node.dataset.logicDesc || '-';
-    document.getElementById('viewLogicDesc').textContent = logicDesc;
-    document.getElementById('viewLogicDesc').classList.toggle('empty', logicDesc === '-');
-
-    document.getElementById('viewLevel1').textContent = level1;
-    document.getElementById('viewLevel1').classList.toggle('empty', level1 === '-');
-    document.getElementById('viewLevel2').textContent = level2;
-    document.getElementById('viewLevel2').classList.toggle('empty', level2 === '-');
-
-    document.getElementById('nodeViewModal').classList.add('active');
-}
-
-window.addEventListener('DOMContentLoaded', initViewButtons);
-
-// 弹窗功能
-function initModal() {
-    const addBtn = document.getElementById('addInsightBtn');
-    const modal = document.getElementById('insightModal');
-    const closeBtn = document.querySelector('.modal-close');
-
-    if (addBtn) {
-        addBtn.addEventListener('click', () => {
-            modal.classList.add('active');
-        });
-    }
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-    }
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
-
-    document.querySelectorAll('.modal-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.modal-content').forEach(c => c.classList.remove('active'));
-
-            tab.classList.add('active');
-            const tabId = tab.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
-        });
-    });
-
-    const viewModal = document.getElementById('nodeViewModal');
-    if (viewModal) {
-        viewModal.addEventListener('click', (e) => {
-            if (e.target === viewModal) {
-                viewModal.classList.remove('active');
-            }
-        });
-    }
-
-    initNodeFormModal();
-}
-
-// 节点表单弹窗功能
-function initNodeFormModal() {
-    const formModal = document.getElementById('nodeFormModal');
-    const formCloseBtn = formModal.querySelector('.form-modal-close');
-    const cancelBtn = formModal.querySelector('.btn-cancel');
-    const confirmBtn = formModal.querySelector('.btn-confirm');
-
-    let currentEditLabelElement = null;
-    let currentEditTreeNode = null;
-    let addNodeContext = null;
-
-    function closeFormModal() {
-        formModal.classList.remove('active');
-        document.getElementById('nodeName').value = '';
-        document.getElementById('nodeCode').value = '';
-        document.getElementById('nodeLogicDesc').value = '';
-        document.getElementById('logicDescGroup').style.display = 'none';
-        currentEditLabelElement = null;
-        currentEditTreeNode = null;
-        addNodeContext = null;
-        document.getElementById('nodeCode').removeAttribute('readonly');
-    }
-
-    if (formCloseBtn) {
-        formCloseBtn.addEventListener('click', closeFormModal);
-    }
-
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', closeFormModal);
-    }
-
-    formModal.addEventListener('click', (e) => {
-        if (e.target === formModal) {
-            closeFormModal();
-        }
-    });
-
-    if (confirmBtn) {
-        confirmBtn.addEventListener('click', () => {
-            const nodeName = document.getElementById('nodeName').value.trim();
-            const nodeCode = document.getElementById('nodeCode').value.trim();
-            const logicDesc = document.getElementById('nodeLogicDesc').value.trim();
-
-            if (!nodeName) {
-                alert('请输入标签名称');
-                return;
-            }
-
-            if (!nodeCode) {
-                alert('请输入标签编码');
-                return;
-            }
-
-            const formTitle = document.getElementById('nodeFormTitle').textContent;
-            const isEditMode = formTitle.includes('编辑');
-
-            // 新增模式下校验编码唯一性
-            if (!isEditMode) {
-                const allLabels = document.querySelectorAll('.tree-label');
-                const isDuplicate = Array.from(allLabels).some(el => {
-                    const text = el.textContent;
-                    const match = text.match(/\(([^)]+)\)$/);
-                    return match && match[1] === nodeCode;
-                });
-
-                if (isDuplicate) {
-                    alert(`编码 "${nodeCode}" 已被使用，请更换一个唯一的编码`);
-                    return;
-                }
-            }
-
-            const isLogicDescRequired = formModal.dataset.isLogicDescRequired === 'true';
-            if (isLogicDescRequired && !logicDesc) {
-                alert('请输入标签逻辑说明');
-                return;
-            }
-
-            // const formTitle = document.getElementById('nodeFormTitle').textContent;
-            // const isEditMode = formTitle.includes('编辑');
-
-            if (isEditMode) {
-                if (currentEditLabelElement) {
-                    currentEditLabelElement.textContent = `${nodeName} (${nodeCode})`;
-                }
-                if (currentEditTreeNode) {
-                    currentEditTreeNode.dataset.logicDesc = logicDesc;
-                }
-            } else if (addNodeContext) {
-                const { parentNode: addParentNode, level: addLevel, modalId: addModalId } = addNodeContext;
-                const newNode = document.createElement('div');
-                newNode.className = `tree-node tree-level-${addLevel}`;
-                if (logicDesc) newNode.dataset.logicDesc = logicDesc;
-
-                const hasChildren = (addModalId === 'common-issues-modal' && addLevel < 3)
-                    || (addModalId === 'resistance-points-modal' && addLevel < 2);
-
-                newNode.innerHTML = `
-                    <div class="tree-header">
-                        <div class="tree-header-left">
-                            ${hasChildren ? '<i class="fa-solid fa-chevron-right tree-icon"></i>' : ''}
-                            <span class="tree-label">${nodeName} (${nodeCode})</span>
-                        </div>
-                        <div class="tree-actions">
-                            ${!hasChildren ? '<button class="tree-action-btn" title="查看"><i class="fa-solid fa-eye"></i></button>' : ''}
-                            ${hasChildren ? '<button class="tree-action-btn" title="新增下级节点"><i class="fa-solid fa-plus"></i></button>' : ''}
-                            <button class="tree-action-btn" title="编辑"><i class="fa-solid fa-pen"></i></button>
-                            <button class="tree-action-btn delete" title="删除"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                    ${hasChildren ? '<div class="tree-children"></div>' : ''}
-                `;
-
-                if (addParentNode) {
-                    let treeChildren = addParentNode.querySelector(':scope > .tree-children');
-                    if (!treeChildren) {
-                        treeChildren = document.createElement('div');
-                        treeChildren.className = 'tree-children';
-                        addParentNode.appendChild(treeChildren);
-                    }
-                    treeChildren.insertBefore(newNode, treeChildren.firstElementChild);
-                } else {
-                    const categoryTree = document.querySelector(`#${addModalId} > .category-tree`);
-                    if (categoryTree) categoryTree.insertBefore(newNode, categoryTree.firstElementChild);
-                }
-
-                if (addParentNode) {
-                    addParentNode.classList.add('open');
-                    const tc = addParentNode.querySelector(':scope > .tree-children');
-                    if (tc) tc.style.display = 'block';
-                    const icon = addParentNode.querySelector(':scope > .tree-header > .tree-header-left > .tree-icon');
-                    if (icon) icon.style.transform = 'rotate(90deg)';
-                }
-
-                // 更新饼图
-                clearTimeout(window.tagChartUpdateTimer);
-                window.tagChartUpdateTimer = setTimeout(() => {
-                    initCommonTagCharts();
-                }, 100);
-            }
-
-            closeFormModal();
-        });
-    }
-
-    // 使用事件委托处理所有树操作按钮
-    const insightModal = document.getElementById('insightModal');
-    if (insightModal) {
-        insightModal.addEventListener('click', (e) => {
-            const addBtn = e.target.closest('.tree-action-btn[title="新增下级节点"]');
-            if (addBtn) {
-                e.stopPropagation();
-                handleAddNode(addBtn);
-                return;
-            }
-
-            const rootAddBtn = e.target.closest('.btn-add-root');
-            if (rootAddBtn) {
-                e.stopPropagation();
-                handleAddNode(rootAddBtn);
-                return;
-            }
-
-            const editBtn = e.target.closest('.tree-action-btn[title="编辑"]');
-            if (editBtn) {
-                e.stopPropagation();
-                handleEditNode(editBtn);
-                return;
-            }
-
-            const deleteBtn = e.target.closest('.tree-action-btn.delete');
-            if (deleteBtn) {
-                e.stopPropagation();
-                handleDeleteNode(deleteBtn);
-                return;
-            }
-
-            const viewBtn = e.target.closest('.tree-action-btn[title="查看"]');
-            if (viewBtn) {
-                e.stopPropagation();
-                const treeNode = viewBtn.closest('.tree-node');
-                if (treeNode) showNodeDetail(treeNode);
-                return;
-            }
-        });
-    }
-
-    function handleAddNode(btn) {
-        const treeNode = btn.closest('.tree-node');
-        const isRootNode = btn.classList.contains('btn-add-root');
-
-        let level = 1;
-        if (isRootNode) {
-            level = 1;
-        } else if (treeNode) {
-            if (treeNode.classList.contains('tree-level-1')) {
-                level = 2;
-            } else if (treeNode.classList.contains('tree-level-2')) {
-                level = 3;
-            }
-        }
-
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let randomCode = '';
-        for (let i = 0; i < 6; i++) {
-            randomCode += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        const generatedCode = randomCode;
-
-        const modalContent = btn.closest('.modal-content');
-        document.getElementById('nodeFormTitle').textContent = `新增${level}级分类`;
-
-        let isBottomLevel = false;
-        if (modalContent && modalContent.id === 'resistance-points-modal') {
-            isBottomLevel = level >= 2;
-        } else if (modalContent && modalContent.id === 'common-issues-modal') {
-            isBottomLevel = level >= 3;
-        }
-
-        if (isBottomLevel) {
-            document.getElementById('logicDescGroup').style.display = 'block';
-            const logicDescLabel = document.querySelector('#logicDescGroup .form-label');
-            if (logicDescLabel) {
-                logicDescLabel.classList.add('required');
-                logicDescLabel.textContent = '标签逻辑说明';
-            }
-        } else {
-            document.getElementById('logicDescGroup').style.display = 'none';
-            const logicDescLabel = document.querySelector('#logicDescGroup .form-label');
-            if (logicDescLabel) {
-                logicDescLabel.classList.remove('required');
-                logicDescLabel.textContent = '标签逻辑说明';
-            }
-        }
-
-        addNodeContext = {
-            parentNode: isRootNode ? null : treeNode,
-            level: level,
-            modalId: modalContent ? modalContent.id : ''
-        };
-
-        document.getElementById('nodeName').value = '';
-        document.getElementById('nodeCode').value = generatedCode;
-        document.getElementById('nodeCode').removeAttribute('readonly');
-        document.getElementById('nodeLogicDesc').value = '';
-
-        formModal.dataset.isLogicDescRequired = String(isBottomLevel);
-        formModal.classList.add('active');
-    }
-
-    function handleEditNode(btn) {
-        const treeNode = btn.closest('.tree-node');
-        const labelElement = treeNode.querySelector('.tree-label');
-        const label = labelElement.textContent;
-        const isBottomLevel = isBottomLevelNode(treeNode);
-
-        let level = 1;
-        if (treeNode.classList.contains('tree-level-1')) {
-            level = 1;
-        } else if (treeNode.classList.contains('tree-level-2')) {
-            level = 2;
-        } else if (treeNode.classList.contains('tree-level-3')) {
-            level = 3;
-        }
-
-        let nodeName = label;
-        let nodeCode = '';
-        const codeMatch = label.match(/\(([^)]+)\)$/);
-        if (codeMatch) {
-            nodeName = label.replace(/\s*\([^)]+\)$/, '');
-            nodeCode = codeMatch[1];
-        }
-
-        document.getElementById('nodeFormTitle').textContent = `编辑${level}级分类`;
-
-        document.getElementById('nodeName').value = nodeName;
-        document.getElementById('nodeCode').value = nodeCode;
-        document.getElementById('nodeCode').setAttribute('readonly', 'readonly');
-        document.getElementById('nodeLogicDesc').value = treeNode.dataset.logicDesc || '';
-
-        currentEditLabelElement = labelElement;
-        currentEditTreeNode = treeNode;
-
-        if (isBottomLevel) {
-            document.getElementById('logicDescGroup').style.display = 'block';
-            const logicDescLabel = document.querySelector('#logicDescGroup .form-label');
-            if (logicDescLabel) {
-                logicDescLabel.classList.add('required');
-                logicDescLabel.textContent = '标签逻辑说明';
-            }
-            formModal.dataset.isLogicDescRequired = 'true';
-        } else {
-            document.getElementById('logicDescGroup').style.display = 'none';
-            const logicDescLabel = document.querySelector('#logicDescGroup .form-label');
-            if (logicDescLabel) {
-                logicDescLabel.classList.remove('required');
-                logicDescLabel.textContent = '标签逻辑说明';
-            }
-            formModal.dataset.isLogicDescRequired = 'false';
-        }
-
-        formModal.classList.add('active');
-    }
-
-    function handleDeleteNode(btn) {
-        const treeNode = btn.closest('.tree-node');
-        const label = treeNode.querySelector('.tree-label').textContent;
-
-        const treeChildren = treeNode.querySelector(':scope > .tree-children');
-        const hasChildren = treeChildren && treeChildren.children.length > 0;
-
-        if (hasChildren) {
-            if (!confirm(`确定要删除"${label}"吗?`)) return;
-            if (!confirm('当前分类有子分类，如果删除所有子分类一并删除')) return;
-        } else {
-            if (!confirm(`确定要删除"${label}"吗?`)) return;
-        }
-        // 更新 DOM
-        treeNode.remove();
-    }
-}
 
 // 常见标签排行排序功能
 function initCommonTagSort() {
@@ -1799,11 +1066,11 @@ function initProjectRankInteraction() {
     // 模拟不同维度的 Top 10 数据
     const RANK_DATA = {
         hab: [
-            { name: "2024夏季大促-R4核心运营项目", h: 15, a: 12, b: 18, other: 55, val: "45%" },
-            { name: "品牌焕新周-R2区域联动", h: 12, a: 15, b: 15, other: 58, val: "42%" },
-            { name: "天籁专项补贴-R1渠道专场", h: 10, a: 12, b: 18, other: 60, val: "40%" },
-            { name: "轩逸超混版上市推广-R5", h: 8, a: 12, b: 18, other: 62, val: "38%" },
-            { name: "618全民购车节-全渠道", h: 9, a: 10, b: 16, other: 65, val: "35%" },
+            { name: "2024夏季大促-R4核心运营项目", projectCode: "夏季大促", h: 15, a: 12, b: 18, other: 55, val: "45%" },
+            { name: "品牌焕新周-R2区域联动", projectCode: "品牌焕新", h: 12, a: 15, b: 15, other: 58, val: "42%" },
+            { name: "天籁专项补贴-R1渠道专场", projectCode: "天籁补贴", h: 10, a: 12, b: 18, other: 60, val: "40%" },
+            { name: "轩逸超混版上市推广-R5", projectCode: "轩逸混动", h: 8, a: 12, b: 18, other: 62, val: "38%" },
+            { name: "618全民购车节-全渠道", projectCode: "618购车", h: 9, a: 10, b: 16, other: 65, val: "35%" },
             { name: "售后维系老带新活动", h: 8, a: 10, b: 15, other: 67, val: "33%" },
             { name: "东风日产探陆预售项目", h: 7, a: 11, b: 14, other: 68, val: "32%" },
             { name: "春季自驾游专项线索清洗", h: 6, a: 10, b: 14, other: 70, val: "30%" },
@@ -1811,40 +1078,40 @@ function initProjectRankInteraction() {
             { name: "懂车帝效果通投放-R6", h: 4, a: 8, b: 14, other: 74, val: "26%" }
         ],
         arrival: [
-            { name: "探陆预售-到店留存专项", val: "28.5%" },
-            { name: "夏季大促-到店领取礼包", val: "26.2%" },
-            { name: "品牌周-进店试驾有礼", val: "25.0%" },
-            { name: "R1 渠道到店优化项目", val: "23.4%" },
-            { name: "老带新-回店保养转介绍", val: "21.8%" },
-            { name: "抖音本地生活-到店核销", val: "20.5%" },
-            { name: "快手探店-引流到店", val: "19.2%" },
-            { name: "线下商超展位-引流", val: "18.5%" },
-            { name: "电销组-邀约到店竞赛", val: "17.6%" },
-            { name: "区域车展-邀约到场", val: "16.8%" }
+            { name: "探陆预售-到店留存专项", projectCode: "探陆预售", val: "28.5%" },
+            { name: "夏季大促-到店领取礼包", projectCode: "夏季大促", val: "26.2%" },
+            { name: "品牌周-进店试驾有礼", projectCode: "品牌焕新", val: "25.0%" },
+            { name: "R1 渠道到店优化项目", projectCode: "天籁补贴", val: "23.4%" },
+            { name: "老带新-回店保养转介绍", projectCode: "老带新活动", val: "21.8%" },
+            { name: "抖音本地生活-到店核销", projectCode: "抖音直播", val: "20.5%" },
+            { name: "快手探店-引流到店", projectCode: "快手探店", val: "19.2%" },
+            { name: "线下商超展位-引流", projectCode: "商超展位", val: "18.5%" },
+            { name: "电销组-邀约到店竞赛", projectCode: "电销邀约", val: "17.6%" },
+            { name: "区域车展-邀约到场", projectCode: "区域车展", val: "16.8%" }
         ],
         testdrive: [
-            { name: "轩逸超混-全城试驾会", val: "18.3%" },
-            { name: "探陆-深度体验营", val: "16.5%" },
-            { name: "夏季促-周末试驾专场", val: "15.2%" },
-            { name: "天籁-静谧性试驾体验", val: "14.8%" },
-            { name: "品牌焕新-试驾礼遇", val: "13.9%" },
-            { name: "上门试驾-服务升级项目", val: "12.5%" },
-            { name: "竞品对比试驾-专项", val: "11.2%" },
-            { name: "夜间试驾-关怀活动", val: "10.8%" },
-            { name: "女性车主-试驾下午茶", val: "9.5%" },
-            { name: "高校行-首台车试驾", val: "8.2%" }
+            { name: "轩逸超混-全城试驾会", projectCode: "轩逸混动", val: "18.3%" },
+            { name: "探陆-深度体验营", projectCode: "探陆预售", val: "16.5%" },
+            { name: "夏季促-周末试驾专场", projectCode: "夏季大促", val: "15.2%" },
+            { name: "天籁-静谧性试驾体验", projectCode: "天籁补贴", val: "14.8%" },
+            { name: "品牌焕新-试驾礼遇", projectCode: "品牌焕新", val: "13.9%" },
+            { name: "上门试驾-服务升级项目", projectCode: "上门试驾", val: "12.5%" },
+            { name: "竞品对比试驾-专项", projectCode: "竞品对比", val: "11.2%" },
+            { name: "夜间试驾-关怀活动", projectCode: "夜间试驾", val: "10.8%" },
+            { name: "女性车主-试驾下午茶", projectCode: "女性试驾", val: "9.5%" },
+            { name: "高校行-首台车试驾", projectCode: "高校试驾", val: "8.2%" }
         ],
         order: [
-            { name: "618-锁单现金返现活动", val: "8.5%" },
-            { name: "大促-最后48小时抢订", val: "7.8%" },
-            { name: "探陆-首批预订锁单", val: "7.2%" },
-            { name: "品牌周-订车抽大奖", val: "6.5%" },
-            { name: "渠道专享-限时锁单补贴", val: "5.8%" },
-            { name: "轩逸-锁单送保养包", val: "5.2%" },
-            { name: "老客户增换购-锁单礼", val: "4.8%" },
-            { name: "区域联动-万人订车会", val: "4.2%" },
-            { name: "电商平台-9.9元锁单", val: "3.5%" },
-            { name: "车展现场-即时锁单奖", val: "2.8%" }
+            { name: "618-锁单现金返现活动", projectCode: "618购车", val: "8.5%" },
+            { name: "大促-最后48小时抢订", projectCode: "夏季大促", val: "7.8%" },
+            { name: "探陆-首批预订锁单", projectCode: "探陆预售", val: "7.2%" },
+            { name: "品牌周-订车抽大奖", projectCode: "品牌焕新", val: "6.5%" },
+            { name: "渠道专享-限时锁单补贴", projectCode: "渠道锁单", val: "5.8%" },
+            { name: "轩逸-锁单送保养包", projectCode: "轩逸混动", val: "5.2%" },
+            { name: "老客户增换购-锁单礼", projectCode: "老带新活动", val: "4.8%" },
+            { name: "区域联动-万人订车会", projectCode: "区域车展", val: "4.2%" },
+            { name: "电商平台-9.9元锁单", projectCode: "电商锁单", val: "3.5%" },
+            { name: "车展现场-即时锁单奖", projectCode: "车展锁单", val: "2.8%" }
         ]
     };
 
@@ -1854,22 +1121,6 @@ function initProjectRankInteraction() {
         testdrive: "试驾率",
         order: "锁单率"
     };
-
-    tabs.addEventListener('click', (e) => {
-        const btn = e.target.closest('.ce-dim-btn');
-        if (!btn) return;
-
-        // 切换 active 状态
-        tabs.querySelectorAll('.ce-dim-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const metric = btn.dataset.metric;
-        const data = RANK_DATA[metric];
-        const labelText = metricLabels[metric];
-
-        // 渲染列表
-        renderRankList(data, labelText, metric);
-    });
 
     function renderRankList(data, labelText, metric) {
         listContainer.style.opacity = '0';
@@ -1900,7 +1151,7 @@ function initProjectRankInteraction() {
                 }
 
                 html += `
-                    <div class="ce-h-bar-item">
+                    <div class="ce-h-bar-item ${item.projectCode ? 'project-bar-item' : ''}" ${item.projectCode ? `data-project="${item.projectCode}"` : ''}>
                         <div class="ce-h-info">
                             <span class="ce-h-rank ${rankClass}">${index + 1}</span>
                             <span class="ce-h-name">${item.name}</span>
@@ -1916,7 +1167,40 @@ function initProjectRankInteraction() {
             listContainer.style.opacity = '1';
         }, 300);
     }
+
+    // 页面加载时渲染默认 HAB 数据
+    renderRankList(RANK_DATA.hab, metricLabels.hab, 'hab');
+
+    tabs.addEventListener('click', (e) => {
+        const btn = e.target.closest('.ce-dim-btn');
+        if (!btn) return;
+
+        // 切换 active 状态
+        tabs.querySelectorAll('.ce-dim-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const metric = btn.dataset.metric;
+        const data = RANK_DATA[metric];
+        const labelText = metricLabels[metric];
+
+        // 渲染列表
+        renderRankList(data, labelText, metric);
+    });
 }
+
+// 大项目线索质量排名点击事件（事件委托）
+document.addEventListener('click', (e) => {
+    const projectItem = e.target.closest('.project-bar-item');
+    if (!projectItem) return;
+    
+    const projectCode = projectItem.dataset.project;
+    const scheduleCode = projectItem.dataset.schedule;
+    if (projectCode) {
+        showProjectDrillModal(projectCode);
+    } else if (scheduleCode) {
+        showScheduleDrillModal(scheduleCode);
+    }
+});
 
 // 线索质量排名切换交互逻辑
 
@@ -1928,11 +1212,11 @@ function initScheduleRankInteraction() {
 
     const RANK_DATA = {
         hab: [
-            { name: "抖音信息流-0501-R4核心排期", h: 18, a: 14, b: 15, other: 53, val: "47%" },
-            { name: "懂车帝CPS-0428-R4效果通", h: 15, a: 12, b: 16, other: 57, val: "43%" },
-            { name: "百度搜索竞价-0502-R2品牌专区", h: 12, a: 10, b: 18, other: 60, val: "40%" },
-            { name: "快手短视频-0505-R3核心排期", h: 10, a: 12, b: 15, other: 63, val: "37%" },
-            { name: "小红书种草-0425-R1专项排期", h: 8, a: 10, b: 16, other: 66, val: "34%" },
+            { name: "抖音信息流-0501-R4核心排期", scheduleCode: "douyin0501", h: 18, a: 14, b: 15, other: 53, val: "47%" },
+            { name: "懂车帝CPS-0428-R4效果通", scheduleCode: "chekong0428", h: 15, a: 12, b: 16, other: 57, val: "43%" },
+            { name: "百度搜索竞价-0502-R2品牌专区", scheduleCode: "baidu0502", h: 12, a: 10, b: 18, other: 60, val: "40%" },
+            { name: "快手短视频-0505-R3核心排期", scheduleCode: "kuaishou0505", h: 10, a: 12, b: 15, other: 63, val: "37%" },
+            { name: "小红书种草-0425-R1专项排期", scheduleCode: "xiaohongshu0425", h: 8, a: 10, b: 16, other: 66, val: "34%" },
             { name: "朋友圈广告-0501-R4核心排期", h: 7, a: 11, b: 15, other: 67, val: "33%" },
             { name: "今日头条-0503-R4品牌联动", h: 6, a: 10, b: 16, other: 68, val: "32%" },
             { name: "优酷视频插播-0430-R2专项", h: 6, a: 9, b: 15, other: 70, val: "30%" },
@@ -1940,40 +1224,40 @@ function initScheduleRankInteraction() {
             { name: "哔哩哔哩动态-0504-R5新品上市", h: 5, a: 8, b: 15, other: 72, val: "28%" }
         ],
         arrival: [
-            { name: "抖音信息流-0501-R4核心排期", val: "22.5%" },
-            { name: "百度搜索竞价-0502-R2品牌专区", val: "20.1%" },
-            { name: "懂车帝CPS-0428-R4效果通", val: "18.8%" },
-            { name: "快手短视频-0505-R3核心排期", val: "16.5%" },
-            { name: "小红书种草-0425-R1专项排期", val: "15.2%" },
-            { name: "朋友圈广告-0501-R4核心排期", val: "14.8%" },
-            { name: "今日头条-0503-R4品牌联动", val: "13.5%" },
-            { name: "优酷视频插播-0430-R2专项", val: "12.2%" },
-            { name: "知乎内容直投-0502-R3核心", val: "11.5%" },
-            { name: "哔哩哔哩动态-0504-R5新品上市", val: "10.8%" }
+            { name: "抖音信息流-0501-R4核心排期", scheduleCode: "douyin0501", val: "22.5%" },
+            { name: "百度搜索竞价-0502-R2品牌专区", scheduleCode: "baidu0502", val: "20.1%" },
+            { name: "懂车帝CPS-0428-R4效果通", scheduleCode: "chekong0428", val: "18.8%" },
+            { name: "快手短视频-0505-R3核心排期", scheduleCode: "kuaishou0505", val: "16.5%" },
+            { name: "小红书种草-0425-R1专项排期", scheduleCode: "xiaohongshu0425", val: "15.2%" },
+            { name: "朋友圈广告-0501-R4核心排期", scheduleCode: "pengyouquan0501", val: "14.8%" },
+            { name: "今日头条-0503-R4品牌联动", scheduleCode: "toutiao0503", val: "13.5%" },
+            { name: "优酷视频插播-0430-R2专项", scheduleCode: "youku0430", val: "12.2%" },
+            { name: "知乎内容直投-0502-R3核心", scheduleCode: "zhihu0502", val: "11.5%" },
+            { name: "哔哩哔哩动态-0504-R5新品上市", scheduleCode: "bilibili0504", val: "10.8%" }
         ],
         testdrive: [
-            { name: "抖音信息流-0501-R4核心排期", val: "15.3%" },
-            { name: "百度搜索竞价-0502-R2品牌专区", val: "13.8%" },
-            { name: "懂车帝CPS-0428-R4效果通", val: "12.5%" },
-            { name: "快手短视频-0505-R3核心排期", val: "11.2%" },
-            { name: "小红书种草-0425-R1专项排期", val: "9.8%" },
-            { name: "朋友圈广告-0501-R4核心排期", val: "8.5%" },
-            { name: "今日头条-0503-R4品牌联动", val: "7.8%" },
-            { name: "优酷视频插播-0430-R2专项", val: "7.2%" },
-            { name: "知乎内容直投-0502-R3核心", val: "6.5%" },
-            { name: "哔哩哔哩动态-0504-R5新品上市", val: "5.8%" }
+            { name: "抖音信息流-0501-R4核心排期", scheduleCode: "douyin0501", val: "15.3%" },
+            { name: "百度搜索竞价-0502-R2品牌专区", scheduleCode: "baidu0502", val: "13.8%" },
+            { name: "懂车帝CPS-0428-R4效果通", scheduleCode: "chekong0428", val: "12.5%" },
+            { name: "快手短视频-0505-R3核心排期", scheduleCode: "kuaishou0505", val: "11.2%" },
+            { name: "小红书种草-0425-R1专项排期", scheduleCode: "xiaohongshu0425", val: "9.8%" },
+            { name: "朋友圈广告-0501-R4核心排期", scheduleCode: "pengyouquan0501", val: "8.5%" },
+            { name: "今日头条-0503-R4品牌联动", scheduleCode: "toutiao0503", val: "7.8%" },
+            { name: "优酷视频插播-0430-R2专项", scheduleCode: "youku0430", val: "7.2%" },
+            { name: "知乎内容直投-0502-R3核心", scheduleCode: "zhihu0502", val: "6.5%" },
+            { name: "哔哩哔哩动态-0504-R5新品上市", scheduleCode: "bilibili0504", val: "5.8%" }
         ],
         order: [
-            { name: "抖音信息流-0501-R4核心排期", val: "5.5%" },
-            { name: "百度搜索竞价-0502-R2品牌专区", val: "4.8%" },
-            { name: "懂车帝CPS-0428-R4效果通", val: "4.2%" },
-            { name: "快手短视频-0505-R3核心排期", val: "3.5%" },
-            { name: "小红书种草-0425-R1专项排期", val: "2.8%" },
-            { name: "朋友圈广告-0501-R4核心排期", val: "2.5%" },
-            { name: "今日头条-0503-R4品牌联动", val: "2.2%" },
-            { name: "优酷视频插播-0430-R2专项", val: "1.8%" },
-            { name: "知乎内容直投-0502-R3核心", val: "1.5%" },
-            { name: "哔哩哔哩动态-0504-R5新品上市", val: "1.2%" }
+            { name: "抖音信息流-0501-R4核心排期", scheduleCode: "douyin0501", val: "5.5%" },
+            { name: "百度搜索竞价-0502-R2品牌专区", scheduleCode: "baidu0502", val: "4.8%" },
+            { name: "懂车帝CPS-0428-R4效果通", scheduleCode: "chekong0428", val: "4.2%" },
+            { name: "快手短视频-0505-R3核心排期", scheduleCode: "kuaishou0505", val: "3.5%" },
+            { name: "小红书种草-0425-R1专项排期", scheduleCode: "xiaohongshu0425", val: "2.8%" },
+            { name: "朋友圈广告-0501-R4核心排期", scheduleCode: "pengyouquan0501", val: "2.5%" },
+            { name: "今日头条-0503-R4品牌联动", scheduleCode: "toutiao0503", val: "2.2%" },
+            { name: "优酷视频插播-0430-R2专项", scheduleCode: "youku0430", val: "1.8%" },
+            { name: "知乎内容直投-0502-R3核心", scheduleCode: "zhihu0502", val: "1.5%" },
+            { name: "哔哩哔哩动态-0504-R5新品上市", scheduleCode: "bilibili0504", val: "1.2%" }
         ]
     };
 
@@ -1983,20 +1267,6 @@ function initScheduleRankInteraction() {
         testdrive: "试驾率",
         order: "锁单率"
     };
-
-    tabs.addEventListener('click', (e) => {
-        const btn = e.target.closest('.ce-dim-btn');
-        if (!btn) return;
-
-        tabs.querySelectorAll('.ce-dim-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const metric = btn.dataset.metric;
-        const data = RANK_DATA[metric];
-        const labelText = metricLabels[metric];
-
-        renderRankList(data, labelText, metric);
-    });
 
     function renderRankList(data, labelText, metric) {
         listContainer.style.opacity = '0';
@@ -2025,7 +1295,7 @@ function initScheduleRankInteraction() {
                 }
 
                 html += `
-                    <div class="ce-h-bar-item">
+                    <div class="ce-h-bar-item ${item.scheduleCode ? 'project-bar-item' : ''}" ${item.scheduleCode ? `data-schedule="${item.scheduleCode}"` : ''}>
                         <div class="ce-h-info">
                             <span class="ce-h-rank ${rankClass}">${index + 1}</span>
                             <span class="ce-h-name">${item.name}</span>
@@ -2041,7 +1311,25 @@ function initScheduleRankInteraction() {
             listContainer.style.opacity = '1';
         }, 300);
     }
+
+    // 页面加载时渲染默认 HAB 数据
+    renderRankList(RANK_DATA.hab, metricLabels.hab, 'hab');
+
+    tabs.addEventListener('click', (e) => {
+        const btn = e.target.closest('.ce-dim-btn');
+        if (!btn) return;
+
+        tabs.querySelectorAll('.ce-dim-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const metric = btn.dataset.metric;
+        const data = RANK_DATA[metric];
+        const labelText = metricLabels[metric];
+
+        renderRankList(data, labelText, metric);
+    });
 }
+
 
 
 
@@ -2175,6 +1463,7 @@ function openFullRanking(type) {
     if (!modal || !tbody) return;
 
     tbody.innerHTML = '';
+    modal.querySelector('.drawer-body').style.padding = '';
 
     if (type === 'quality') {
         title.innerText = '质量标签全量排行榜';
@@ -2224,8 +1513,9 @@ function openFullRanking(type) {
             `;
             tbody.appendChild(row);
         });
-    } else if (type === 'project' || type === 'schedule') {
+    } else     if (type === 'project' || type === 'schedule') {
         title.innerText = type === 'project' ? '全量大项目线索质量排名' : '全量排期线索质量排名';
+        modal.querySelector('.drawer-body').style.padding = '0 60px';
         thead.innerHTML = `
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
@@ -2241,14 +1531,47 @@ function openFullRanking(type) {
             ["2024夏季大促-R4核心运营项目", "品牌焕新周-R2区域联动", "天籁专项补贴-R1渠道专场", "轩逸超混版上市推广-R5", "618全民购车节-全渠道", "售后维系老带新活动"] :
             ["抖音信息流-0501-R4核心排期", "懂车帝CPS-0428-R4效果通", "百度搜索竞价-0502-R2品牌专区", "快手短视频-0505-R3核心排期", "小红书种草-0425-R1专项排期", "朋友圈广告-0501-R4"];
 
+        // 项目名称 → projectCode 映射（用于下钻弹窗）
+        const projectCodeMap = {
+            '2024夏季大促-R4核心运营项目': '夏季大促',
+            '品牌焕新周-R2区域联动': '品牌焕新',
+            '天籁专项补贴-R1渠道专场': '天籁补贴',
+            '轩逸超混版上市推广-R5': '轩逸混动',
+            '618全民购车节-全渠道': '618购车',
+            '售后维系老带新活动': '老带新活动'
+        };
+
+        // 排期名称 → scheduleCode 映射（用于下钻弹窗）
+        const scheduleCodeMap = {
+            '抖音信息流-0501-R4核心排期': 'douyin0501',
+            '懂车帝CPS-0428-R4效果通': 'chekong0428',
+            '百度搜索竞价-0502-R2品牌专区': 'baidu0502',
+            '快手短视频-0505-R3核心排期': 'kuaishou0505',
+            '小红书种草-0425-R1专项排期': 'xiaohongshu0425',
+            '朋友圈广告-0501-R4': 'pengyouquan0501'
+        };
+
         for (let i = 1; i <= 30; i++) {
-            const name = names[(i - 1) % names.length] + (i > names.length ? ` #${i}` : '');
+            const nameIdx = (i - 1) % names.length;
+            const baseName = names[nameIdx];
+            const name = baseName + (i > names.length ? ` #${i}` : '');
             const hab = (45 - i * 0.5).toFixed(1) + '%';
             const arrival = (28 - i * 0.4).toFixed(1) + '%';
             const testdrive = (18 - i * 0.3).toFixed(1) + '%';
             const order = (8 - i * 0.1).toFixed(1) + '%';
+            const projectCode = type === 'project' ? projectCodeMap[baseName] : undefined;
+            const scheduleCode = type === 'schedule' ? scheduleCodeMap[baseName] : undefined;
 
             const row = document.createElement('tr');
+            if (projectCode) {
+                row.classList.add('project-bar-item');
+                row.dataset.project = projectCode;
+                row.style.cursor = 'pointer';
+            } else if (scheduleCode) {
+                row.classList.add('project-bar-item');
+                row.dataset.schedule = scheduleCode;
+                row.style.cursor = 'pointer';
+            }
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${i <= 3 ? 'rank-' + i : ''}">${i}</span></td>
                 <td style="font-weight: 500;">${name}</td>
@@ -2286,3 +1609,2286 @@ function getTrendIcon(trend) {
     if (trend === 'down') return '<i class="fa-solid fa-caret-down"></i>';
     return '<i class="fa-solid fa-minus"></i>';
 }
+
+// ============================================
+// 城市专营店意向等级详情弹窗功能
+// ============================================
+
+// 城市专营店 Mock 数据（包含大区、小区）
+const cityStoreData = {
+    '上海': [
+        { name: '上海东风南方专营店', region: '华东大区', area: '上海一区', h: 85, a: 142, b: 198, other: 145, total: 570 },
+        { name: '上海日产特约店', region: '华东大区', area: '上海一区', h: 72, a: 125, b: 180, other: 128, total: 505 },
+        { name: '上海华新专营店', region: '华东大区', area: '上海二区', h: 68, a: 118, b: 165, other: 112, total: 463 },
+        { name: '上海松江专营店', region: '华东大区', area: '上海三区', h: 58, a: 102, b: 142, other: 98, total: 400 },
+        { name: '上海嘉定专营店', region: '华东大区', area: '上海三区', h: 45, a: 78, b: 105, other: 72, total: 300 },
+        { name: '上海宝山专营店', region: '华东大区', area: '上海四区', h: 22, a: 35, b: 42, other: 25, total: 124 }
+    ],
+    '广州': [
+        { name: '广州天河专营店', region: '华南大区', area: '广州一区', h: 78, a: 135, b: 195, other: 132, total: 540 },
+        { name: '广州白云专营店', region: '华南大区', area: '广州一区', h: 65, a: 112, b: 158, other: 105, total: 440 },
+        { name: '广州番禺专营店', region: '华南大区', area: '广州二区', h: 55, a: 98, b: 135, other: 92, total: 380 },
+        { name: '广州东风南方店', region: '华南大区', area: '广州二区', h: 48, a: 85, b: 120, other: 82, total: 335 },
+        { name: '广州黄埔专营店', region: '华南大区', area: '广州三区', h: 32, a: 58, b: 82, other: 55, total: 227 },
+        { name: '广州花都专营店', region: '华南大区', area: '广州三区', h: 20, a: 35, b: 55, other: 38, total: 148 }
+    ],
+    '深圳': [
+        { name: '深圳南山专营店', region: '华南大区', area: '深圳一区', h: 68, a: 128, b: 175, other: 109, total: 480 },
+        { name: '深圳福田专营店', region: '华南大区', area: '深圳一区', h: 58, a: 105, b: 148, other: 94, total: 405 },
+        { name: '深圳宝安专营店', region: '华南大区', area: '深圳二区', h: 48, a: 88, b: 125, other: 78, total: 339 },
+        { name: '深圳龙岗专营店', region: '华南大区', area: '深圳二区', h: 38, a: 72, b: 102, other: 65, total: 277 },
+        { name: '深圳罗湖专营店', region: '华南大区', area: '深圳三区', h: 28, a: 52, b: 72, other: 48, total: 200 },
+        { name: '深圳东风南方店', region: '华南大区', area: '深圳三区', h: 15, a: 28, b: 42, other: 32, total: 117 }
+    ],
+    '北京': [
+        { name: '北京朝阳专营店', region: '华北大区', area: '北京一区', h: 62, a: 118, b: 165, other: 105, total: 450 },
+        { name: '北京海淀专营店', region: '华北大区', area: '北京一区', h: 52, a: 98, b: 142, other: 88, total: 380 },
+        { name: '北京丰台专营店', region: '华北大区', area: '北京二区', h: 42, a: 82, b: 118, other: 72, total: 314 },
+        { name: '北京亦庄专营店', region: '华北大区', area: '北京二区', h: 28, a: 58, b: 88, other: 52, total: 226 },
+        { name: '北京通州专营店', region: '华北大区', area: '北京三区', h: 14, a: 28, b: 42, other: 32, total: 116 }
+    ],
+    '杭州': [
+        { name: '杭州城西专营店', region: '华东大区', area: '杭州一区', h: 52, a: 95, b: 138, other: 85, total: 370 },
+        { name: '杭州城东专营店', region: '华东大区', area: '杭州一区', h: 45, a: 82, b: 120, other: 72, total: 319 },
+        { name: '杭州滨江专营店', region: '华东大区', area: '杭州二区', h: 38, a: 68, b: 98, other: 62, total: 266 },
+        { name: '杭州萧山专营店', region: '华东大区', area: '杭州二区', h: 28, a: 52, b: 78, other: 48, total: 206 },
+        { name: '杭州下沙专营店', region: '华东大区', area: '杭州三区', h: 12, a: 25, b: 42, other: 32, total: 111 }
+    ],
+    '天津': [
+        { name: '天津河西专营店', region: '华北大区', area: '天津一区', h: 45, a: 88, b: 128, other: 82, total: 343 },
+        { name: '天津南开专营店', region: '华北大区', area: '天津一区', h: 38, a: 72, b: 105, other: 68, total: 283 },
+        { name: '天津河东专营店', region: '华北大区', area: '天津二区', h: 32, a: 62, b: 92, other: 58, total: 244 },
+        { name: '天津西青专营店', region: '华北大区', area: '天津二区', h: 22, a: 42, b: 65, other: 42, total: 171 },
+        { name: '天津武清专营店', region: '华北大区', area: '天津三区', h: 15, a: 28, b: 45, other: 32, total: 120 }
+    ],
+    '南京': [
+        { name: '南京鼓楼专营店', region: '华东大区', area: '南京一区', h: 42, a: 82, b: 118, other: 78, total: 320 },
+        { name: '南京玄武专营店', region: '华东大区', area: '南京一区', h: 35, a: 68, b: 98, other: 62, total: 263 },
+        { name: '南京江宁专营店', region: '华东大区', area: '南京二区', h: 28, a: 55, b: 82, other: 52, total: 217 },
+        { name: '南京浦口专营店', region: '华东大区', area: '南京二区', h: 20, a: 38, b: 58, other: 38, total: 154 },
+        { name: '南京栖霞专营店', region: '华东大区', area: '南京三区', h: 13, a: 25, b: 38, other: 28, total: 104 }
+    ],
+    '成都': [
+        { name: '成都武侯专营店', region: '西部大区', area: '成都一区', h: 38, a: 72, b: 108, other: 72, total: 290 },
+        { name: '成都锦江专营店', region: '西部大区', area: '成都一区', h: 32, a: 62, b: 92, other: 58, total: 244 },
+        { name: '成都成华专营店', region: '西部大区', area: '成都二区', h: 25, a: 48, b: 72, other: 48, total: 193 },
+        { name: '成都金牛专营店', region: '西部大区', area: '成都二区', h: 18, a: 35, b: 52, other: 35, total: 140 },
+        { name: '成都高新专营店', region: '西部大区', area: '成都三区', h: 12, a: 22, b: 35, other: 25, total: 94 }
+    ],
+    '武汉': [
+        { name: '武汉武昌专营店', region: '华中大区', area: '武汉一区', h: 35, a: 58, b: 115, other: 65, total: 273 },
+        { name: '武汉汉口专营店', region: '华中大区', area: '武汉一区', h: 28, a: 48, b: 88, other: 52, total: 216 },
+        { name: '武汉汉阳专营店', region: '华中大区', area: '武汉二区', h: 22, a: 38, b: 68, other: 42, total: 170 },
+        { name: '武汉洪山专营店', region: '华中大区', area: '武汉二区', h: 18, a: 32, b: 52, other: 35, total: 137 },
+        { name: '武汉青山专营店', region: '华中大区', area: '武汉三区', h: 12, a: 22, b: 38, other: 25, total: 97 }
+    ],
+    '苏州': [
+        { name: '苏州园区专营店', region: '华东大区', area: '苏州一区', h: 32, a: 55, b: 88, other: 52, total: 227 },
+        { name: '苏州姑苏专营店', region: '华东大区', area: '苏州一区', h: 28, a: 48, b: 75, other: 45, total: 196 },
+        { name: '苏州吴中专营店', region: '华东大区', area: '苏州二区', h: 22, a: 38, b: 58, other: 38, total: 156 },
+        { name: '苏州相城专营店', region: '华东大区', area: '苏州二区', h: 18, a: 32, b: 48, other: 32, total: 130 },
+        { name: '苏州新区专营店', region: '华东大区', area: '苏州三区', h: 10, a: 18, b: 28, other: 20, total: 76 }
+    ],
+    '重庆': [
+        { name: '重庆渝北专营店', region: '西部大区', area: '重庆一区', h: 32, a: 65, b: 112, other: 68, total: 277 },
+        { name: '重庆江北专营店', region: '西部大区', area: '重庆一区', h: 28, a: 55, b: 95, other: 58, total: 236 },
+        { name: '重庆沙坪坝专营店', region: '西部大区', area: '重庆二区', h: 22, a: 45, b: 78, other: 48, total: 193 },
+        { name: '重庆南岸专营店', region: '西部大区', area: '重庆二区', h: 15, a: 32, b: 55, other: 35, total: 137 },
+        { name: '重庆九龙坡专营店', region: '西部大区', area: '重庆三区', h: 8, a: 18, b: 32, other: 22, total: 80 }
+    ],
+    '西安': [
+        { name: '西安雁塔专营店', region: '西部大区', area: '西安一区', h: 28, a: 55, b: 98, other: 58, total: 239 },
+        { name: '西安碑林专营店', region: '西部大区', area: '西安一区', h: 24, a: 48, b: 82, other: 48, total: 202 },
+        { name: '西安莲湖专营店', region: '西部大区', area: '西安二区', h: 18, a: 38, b: 65, other: 38, total: 159 },
+        { name: '西安未央专营店', region: '西部大区', area: '西安二区', h: 15, a: 28, b: 48, other: 32, total: 123 },
+        { name: '西安新城专营店', region: '西部大区', area: '西安三区', h: 10, a: 18, b: 32, other: 22, total: 82 }
+    ],
+    '长沙': [
+        { name: '长沙岳麓专营店', region: '华中大区', area: '长沙一区', h: 28, a: 52, b: 95, other: 55, total: 230 },
+        { name: '长沙雨花专营店', region: '华中大区', area: '长沙一区', h: 22, a: 42, b: 75, other: 45, total: 184 },
+        { name: '长沙天心专营店', region: '华中大区', area: '长沙二区', h: 18, a: 35, b: 58, other: 35, total: 146 },
+        { name: '长沙开福专营店', region: '华中大区', area: '长沙二区', h: 12, a: 25, b: 42, other: 28, total: 107 },
+        { name: '长沙芙蓉专营店', region: '华中大区', area: '长沙三区', h: 8, a: 15, b: 25, other: 18, total: 66 }
+    ]
+};
+
+// 按大区+小区分组排序门店
+function groupStoresByRegion(stores) {
+    const groups = {};
+    stores.forEach(store => {
+        const key = store.region + '|' + store.area;
+        if (!groups[key]) {
+            groups[key] = { region: store.region, area: store.area, stores: [] };
+        }
+        groups[key].stores.push(store);
+    });
+    return Object.values(groups).sort((a, b) => a.region.localeCompare(b.region) || a.area.localeCompare(b.area));
+}
+
+/**
+ * 显示城市专营店意向等级详情弹窗
+ * @param {string} cityName - 城市名称
+ */
+function showCityStoreModal(cityName) {
+    const modal = document.getElementById('cityStoreModal');
+    const title = document.getElementById('cityStoreModalTitle');
+    const content = document.getElementById('cityStoreModalContent');
+    
+    if (!modal || !title || !content) return;
+    
+    // 设置标题
+    title.innerText = `${cityName} 专营店意向等级分布`;
+    
+    // 获取城市数据
+    const stores = cityStoreData[cityName] || [];
+    
+    if (stores.length === 0) {
+        content.innerHTML = '<div style="padding: 40px; text-align: center; color: #6b7280;">暂无数据</div>';
+    } else {
+        // 计算总计行
+        const totalRow = {
+            name: '合计',
+            h: stores.reduce((sum, s) => sum + s.h, 0),
+            a: stores.reduce((sum, s) => sum + s.a, 0),
+            b: stores.reduce((sum, s) => sum + s.b, 0),
+            other: stores.reduce((sum, s) => sum + s.other, 0),
+            total: stores.reduce((sum, s) => sum + s.total, 0)
+        };
+        
+        // 计算总占比
+        const habTotalSum = totalRow.h + totalRow.a + totalRow.b;
+        const habPercentTotal = totalRow.total > 0 ? ((habTotalSum / totalRow.total) * 100).toFixed(1) : '0.0';
+        
+        // 按大区+小区分组
+        const regionGroups = groupStoresByRegion(stores);
+        
+        // 生成小区 Tab 和内容 HTML
+        let cardHtml = `
+            <div style="padding: 16px 20px;">
+                <!-- 汇总信息栏 -->
+                <div style="display: flex; align-items: center; gap: 20px; padding: 12px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 11px; color: #6b7280; margin-bottom: 2px;">专营店数量</div>
+                        <div style="font-size: 18px; font-weight: 600; color: #111827;">${stores.length} 家</div>
+                    </div>
+                    <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
+                    <div style="display: flex; gap: 16px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 10px; color: #6b7280;">H级</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #00337c;">${totalRow.h}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 10px; color: #6b7280;">A级</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #0081ff;">${totalRow.a}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 10px; color: #6b7280;">B级</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #6fb8ff;">${totalRow.b}</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 10px; color: #6b7280;">其他</div>
+                            <div style="font-size: 14px; font-weight: 600; color: #9ca3af;">${totalRow.other}</div>
+                        </div>
+                    </div>
+                    <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 11px; color: #6b7280;">合计线索</div>
+                        <div style="font-size: 18px; font-weight: 600; color: #111827;">${totalRow.total}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 11px; color: #6b7280;">H/A/B占比</div>
+                        <div style="font-size: 18px; font-weight: 600; color: #059669;">${habPercentTotal}%</div>
+                    </div>
+                </div>
+                
+                <!-- 全部 + 小区 Tab 切换 -->
+                <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                    <button class="area-tab-btn active" data-area="all" data-region="all">
+                        <span>全部</span>
+                        <span class="area-tab-count">${stores.length}家</span>
+                    </button>
+        `;
+        
+        // 生成 Tab 按钮
+        regionGroups.forEach((group, gi) => {
+            const areaTotal = {
+                h: group.stores.reduce((sum, s) => sum + s.h, 0),
+                a: group.stores.reduce((sum, s) => sum + s.a, 0),
+                b: group.stores.reduce((sum, s) => sum + s.b, 0),
+                other: group.stores.reduce((sum, s) => sum + s.other, 0),
+                total: group.stores.reduce((sum, s) => sum + s.total, 0)
+            };
+            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
+            
+            cardHtml += `
+                    <button class="area-tab-btn" data-area="${group.area}" data-region="${group.region}">
+                        <span>${group.area}</span>
+                        <span class="area-tab-count">${group.stores.length}家</span>
+                    </button>
+            `;
+        });
+        
+        cardHtml += `
+                </div>
+                
+                <!-- Tab 内容区域 -->
+                <div class="area-tab-content">
+                    <!-- 全部内容 -->
+                    <div class="area-panel active" data-area="all">
+                        <!-- 全部汇总 -->
+                        <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #fef3c7; border-radius: 6px; margin-bottom: 12px;">
+                            <span style="font-size: 12px; font-weight: 600; color: #92400e;">${cityName}全部专营店</span>
+                            <span style="margin-left: auto; font-size: 11px; color: #64748b;">${stores.length} 家专营店</span>
+                            <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${habPercentTotal}%</span>
+                        </div>
+                        <!-- 全部门店列表 -->
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+        `;
+        
+        // 生成全部门店列表
+        stores.forEach((store) => {
+            const habTotal = store.h + store.a + store.b;
+            const habPercent = store.total > 0 ? ((habTotal / store.total) * 100).toFixed(1) : '0.0';
+            const hPercent = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
+            const aPercent = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
+            const bPercent = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
+            
+            cardHtml += `
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <div>
+                                            <div style="font-weight: 500; color: #111827; font-size: 13px;">${store.name}</div>
+                                            <div style="font-size: 11px; color: #6b7280;">${store.region} / ${store.area}</div>
+                                        </div>
+                                        <div style="font-weight: 600; color: #059669; font-size: 14px;">${habPercent}%</div>
+                                    </div>
+                                    <div style="height: 6px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 8px;">
+                                        <div style="height: 100%; background: #00337c; width: ${hPercent}%;"></div>
+                                        <div style="height: 100%; background: #0081ff; width: ${aPercent}%;"></div>
+                                        <div style="height: 100%; background: #6fb8ff; width: ${bPercent}%;"></div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 12px; font-size: 11px;">
+                                        <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
+                                        <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
+                                        <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
+                                        <span style="color: #9ca3af;">其他:<span style="font-weight: 600;">${store.other}</span></span>
+                                        <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
+                                    </div>
+                                </div>
+            `;
+        });
+        
+        cardHtml += `
+                        </div>
+                    </div>
+        `;
+        
+        // 生成每个小区的内容
+        regionGroups.forEach((group, gi) => {
+            const areaTotal = {
+                h: group.stores.reduce((sum, s) => sum + s.h, 0),
+                a: group.stores.reduce((sum, s) => sum + s.a, 0),
+                b: group.stores.reduce((sum, s) => sum + s.b, 0),
+                other: group.stores.reduce((sum, s) => sum + s.other, 0),
+                total: group.stores.reduce((sum, s) => sum + s.total, 0)
+            };
+            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
+            
+            cardHtml += `
+                    <div class="area-panel ${gi === 0 ? 'active' : ''}" data-area="${group.area}">
+                        <!-- 小区汇总 -->
+                        <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #e0f2fe; border-radius: 6px; margin-bottom: 12px;">
+                            <span style="font-size: 12px; font-weight: 600; color: #0369a1;">${group.region}</span>
+                            <i class="fa-solid fa-angle-right" style="color: #7dd3fc; font-size: 10px;"></i>
+                            <span style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${group.area}</span>
+                            <span style="margin-left: auto; font-size: 11px; color: #64748b;">${group.stores.length} 家专营店</span>
+                            <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${areaHab}%</span>
+                        </div>
+                        <!-- 门店列表 -->
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+            `;
+            
+            group.stores.forEach((store) => {
+                const habTotal = store.h + store.a + store.b;
+                const habPercent = store.total > 0 ? ((habTotal / store.total) * 100).toFixed(1) : '0.0';
+                const hPercent = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
+                const aPercent = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
+                const bPercent = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
+                
+                cardHtml += `
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <div style="font-weight: 500; color: #111827; font-size: 13px;">${store.name}</div>
+                                        <div style="font-weight: 600; color: #059669; font-size: 14px;">${habPercent}%</div>
+                                    </div>
+                                    <div style="height: 6px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 8px;">
+                                        <div style="height: 100%; background: #00337c; width: ${hPercent}%;"></div>
+                                        <div style="height: 100%; background: #0081ff; width: ${aPercent}%;"></div>
+                                        <div style="height: 100%; background: #6fb8ff; width: ${bPercent}%;"></div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 12px; font-size: 11px;">
+                                        <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
+                                        <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
+                                        <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
+                                        <span style="color: #9ca3af;">其他:<span style="font-weight: 600;">${store.other}</span></span>
+                                        <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
+                                    </div>
+                                </div>
+                `;
+            });
+            
+            cardHtml += `
+                        </div>
+                    </div>
+            `;
+        });
+        
+        cardHtml += `
+                </div>
+            </div>
+        `;
+        
+        cardHtml += `
+                </div>
+            </div>
+        `;
+        
+        content.innerHTML = cardHtml;
+        
+        // 绑定小区 Tab 切换事件
+        initAreaTabSwitch();
+    }
+    
+    // 显示弹窗
+    modal.classList.add('active');
+}
+
+/**
+ * 初始化小区 Tab 切换
+ */
+function initAreaTabSwitch() {
+    const tabBtns = document.querySelectorAll('.area-tab-btn');
+    const tabPanels = document.querySelectorAll('.area-panel');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetArea = btn.dataset.area;
+            
+            // 切换 Tab 按钮状态
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // 切换内容面板
+            tabPanels.forEach(panel => {
+                if (panel.dataset.area === targetArea) {
+                    panel.classList.add('active');
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+        });
+    });
+}
+
+/**
+ * 关闭城市专营店意向等级详情弹窗
+ */
+function closeCityStoreModal() {
+    const modal = document.getElementById('cityStoreModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// 区域投放效果柱状图点击事件（仅限区域投放效果图表）
+document.addEventListener('click', (e) => {
+    // 只响应区域投放效果图表内的点击
+    const chartContainer = e.target.closest('#regionVChart');
+    if (!chartContainer) return;
+    
+    // 查找被点击的柱状图元素
+    const barItem = e.target.closest('.ce-v-bar-item');
+    if (!barItem) return;
+    
+    // 获取城市名称（从 X 轴标签中获取）
+    const labelEl = barItem.querySelector('.ce-v-x-label');
+    if (!labelEl) return;
+    
+    const cityName = labelEl.innerText.trim();
+    
+    // 显示弹窗
+    showCityStoreModal(cityName);
+});
+
+// 点击弹窗/抽屉外部关闭
+document.addEventListener('click', (e) => {
+    // 关闭城市专营店抽屉
+    const cityModal = document.getElementById('cityStoreModal');
+    if (cityModal && e.target === cityModal) {
+        closeCityStoreModal();
+    }
+    // 关闭大区渠道质量抽屉
+    const regionModal = document.getElementById('regionChannelModal');
+    if (regionModal && e.target === regionModal) {
+        closeRegionChannelModal();
+    }
+    // 关闭大项目下钻抽屉
+    const projectModal = document.getElementById('projectDrillModal');
+    if (projectModal && e.target === projectModal) {
+        closeProjectDrillModal();
+    }
+    // 关闭排期下钻抽屉
+    const scheduleModal = document.getElementById('scheduleDrillModal');
+    if (scheduleModal && e.target === scheduleModal) {
+        closeScheduleDrillModal();
+    }
+    // 关闭全量排行榜抽屉
+    const rankingModal = document.getElementById('rankingModal');
+    if (rankingModal && e.target === rankingModal) {
+        closeRankingModal();
+    }
+    // 关闭培育运营下钻抽屉
+    const focusModal = document.getElementById('focusDrillDownModal');
+    if (focusModal && e.target === focusModal) {
+        closeFocusModal();
+    }
+});
+
+// ============================================
+// 大区渠道质量详情弹窗功能
+// ============================================
+
+// 大区渠道质量 Mock 数据（按大区-小区-门店结构）
+const regionChannelData = {
+    'R1': {
+        regionName: '华东大区',
+        areas: {
+            '上海一区': [
+                { name: '上海东风南方专营店', h: 85, a: 142, b: 198, c: 80, f: 35, l: 15, e: 10, invalid: 5, total: 570 },
+                { name: '上海日产特约店', h: 72, a: 125, b: 180, c: 68, f: 30, l: 12, e: 10, invalid: 8, total: 505 },
+                { name: '上海华新专营店', h: 68, a: 118, b: 165, c: 55, f: 28, l: 10, e: 10, invalid: 9, total: 463 }
+            ],
+            '上海二区': [
+                { name: '上海松江专营店', h: 58, a: 102, b: 142, c: 48, f: 22, l: 10, e: 8, invalid: 10, total: 400 },
+                { name: '上海嘉定专营店', h: 45, a: 78, b: 105, c: 35, f: 18, l: 8, e: 6, invalid: 5, total: 300 }
+            ],
+            '上海三区': [
+                { name: '上海宝山专营店', h: 22, a: 35, b: 42, c: 12, f: 6, l: 3, e: 2, invalid: 2, total: 124 }
+            ],
+            '杭州一区': [
+                { name: '杭州城西专营店', h: 52, a: 95, b: 138, c: 45, f: 20, l: 8, e: 6, invalid: 6, total: 370 },
+                { name: '杭州城东专营店', h: 45, a: 82, b: 120, c: 38, f: 18, l: 7, e: 5, invalid: 4, total: 319 }
+            ],
+            '杭州二区': [
+                { name: '杭州滨江专营店', h: 38, a: 68, b: 98, c: 32, f: 15, l: 6, e: 5, invalid: 4, total: 266 },
+                { name: '杭州萧山专营店', h: 28, a: 52, b: 78, c: 25, f: 12, l: 5, e: 3, invalid: 3, total: 206 }
+            ],
+            '南京一区': [
+                { name: '南京鼓楼专营店', h: 42, a: 82, b: 118, c: 40, f: 18, l: 8, e: 6, invalid: 6, total: 320 },
+                { name: '南京玄武专营店', h: 35, a: 68, b: 98, c: 32, f: 15, l: 6, e: 5, invalid: 4, total: 263 }
+            ],
+            '南京二区': [
+                { name: '南京江宁专营店', h: 28, a: 55, b: 82, c: 28, f: 12, l: 5, e: 4, invalid: 3, total: 217 },
+                { name: '南京浦口专营店', h: 20, a: 38, b: 58, c: 20, f: 9, l: 4, e: 3, invalid: 2, total: 154 }
+            ]
+        }
+    },
+    'R2': {
+        regionName: '华南大区',
+        areas: {
+            '广州一区': [
+                { name: '广州天河专营店', h: 78, a: 135, b: 195, c: 68, f: 30, l: 12, e: 10, invalid: 12, total: 540 },
+                { name: '广州白云专营店', h: 65, a: 112, b: 158, c: 52, f: 25, l: 10, e: 8, invalid: 10, total: 440 }
+            ],
+            '广州二区': [
+                { name: '广州番禺专营店', h: 55, a: 98, b: 135, c: 48, f: 22, l: 9, e: 7, invalid: 6, total: 380 },
+                { name: '广州东风南方店', h: 48, a: 85, b: 120, c: 42, f: 20, l: 8, e: 6, invalid: 6, total: 335 }
+            ],
+            '广州三区': [
+                { name: '广州黄埔专营店', h: 32, a: 58, b: 82, c: 28, f: 12, l: 6, e: 5, invalid: 4, total: 227 },
+                { name: '广州花都专营店', h: 20, a: 35, b: 55, c: 18, f: 9, l: 4, e: 4, invalid: 3, total: 148 }
+            ],
+            '深圳一区': [
+                { name: '深圳南山专营店', h: 68, a: 128, b: 175, c: 58, f: 25, l: 10, e: 8, invalid: 8, total: 480 },
+                { name: '深圳福田专营店', h: 58, a: 105, b: 148, c: 48, f: 22, l: 9, e: 7, invalid: 8, total: 405 }
+            ],
+            '深圳二区': [
+                { name: '深圳宝安专营店', h: 48, a: 88, b: 125, c: 42, f: 18, l: 8, e: 6, invalid: 4, total: 339 },
+                { name: '深圳龙岗专营店', h: 38, a: 72, b: 102, c: 35, f: 15, l: 6, e: 5, invalid: 4, total: 277 }
+            ],
+            '深圳三区': [
+                { name: '深圳罗湖专营店', h: 28, a: 52, b: 72, c: 25, f: 11, l: 5, e: 4, invalid: 3, total: 200 },
+                { name: '深圳东风南方店', h: 15, a: 28, b: 42, c: 15, f: 8, l: 4, e: 3, invalid: 2, total: 117 }
+            ]
+        }
+    },
+    'R3': {
+        regionName: '华北大区',
+        areas: {
+            '北京一区': [
+                { name: '北京朝阳专营店', h: 62, a: 118, b: 165, c: 55, f: 25, l: 10, e: 8, invalid: 7, total: 450 },
+                { name: '北京海淀专营店', h: 52, a: 98, b: 142, c: 45, f: 20, l: 8, e: 7, invalid: 8, total: 380 }
+            ],
+            '北京二区': [
+                { name: '北京丰台专营店', h: 42, a: 82, b: 118, c: 38, f: 16, l: 7, e: 6, invalid: 5, total: 314 },
+                { name: '北京亦庄专营店', h: 28, a: 58, b: 88, c: 28, f: 12, l: 6, e: 5, invalid: 1, total: 226 }
+            ],
+            '北京三区': [
+                { name: '北京通州专营店', h: 14, a: 28, b: 42, c: 16, f: 8, l: 3, e: 3, invalid: 2, total: 116 }
+            ],
+            '天津一区': [
+                { name: '天津河西专营店', h: 45, a: 88, b: 128, c: 42, f: 18, l: 8, e: 7, invalid: 7, total: 343 },
+                { name: '天津南开专营店', h: 38, a: 72, b: 105, c: 35, f: 15, l: 7, e: 6, invalid: 5, total: 283 }
+            ],
+            '天津二区': [
+                { name: '天津河东专营店', h: 32, a: 62, b: 92, c: 30, f: 14, l: 6, e: 5, invalid: 3, total: 244 },
+                { name: '天津西青专营店', h: 22, a: 42, b: 65, c: 22, f: 10, l: 4, e: 4, invalid: 2, total: 171 }
+            ]
+        }
+    },
+    'R4': {
+        regionName: '华中大区',
+        areas: {
+            '武汉一区': [
+                { name: '武汉武昌专营店', h: 35, a: 58, b: 115, c: 38, f: 14, l: 6, e: 4, invalid: 3, total: 273 },
+                { name: '武汉汉口专营店', h: 28, a: 48, b: 88, c: 28, f: 12, l: 5, e: 4, invalid: 3, total: 216 }
+            ],
+            '武汉二区': [
+                { name: '武汉汉阳专营店', h: 22, a: 38, b: 68, c: 22, f: 10, l: 4, e: 4, invalid: 2, total: 170 },
+                { name: '武汉洪山专营店', h: 18, a: 32, b: 52, c: 18, f: 8, l: 4, e: 3, invalid: 2, total: 137 }
+            ],
+            '武汉三区': [
+                { name: '武汉青山专营店', h: 12, a: 22, b: 38, c: 12, f: 6, l: 3, e: 2, invalid: 2, total: 97 }
+            ],
+            '长沙一区': [
+                { name: '长沙岳麓专营店', h: 28, a: 52, b: 95, c: 30, f: 12, l: 5, e: 4, invalid: 4, total: 230 },
+                { name: '长沙雨花专营店', h: 22, a: 42, b: 75, c: 24, f: 10, l: 4, e: 4, invalid: 3, total: 184 }
+            ],
+            '长沙二区': [
+                { name: '长沙天心专营店', h: 18, a: 35, b: 58, c: 18, f: 8, l: 4, e: 3, invalid: 2, total: 146 },
+                { name: '长沙开福专营店', h: 12, a: 25, b: 42, c: 14, f: 6, l: 3, e: 3, invalid: 2, total: 107 }
+            ]
+        }
+    },
+    'R5': {
+        regionName: '西部大区',
+        areas: {
+            '成都一区': [
+                { name: '成都武侯专营店', h: 38, a: 72, b: 108, c: 38, f: 16, l: 6, e: 6, invalid: 6, total: 290 },
+                { name: '成都锦江专营店', h: 32, a: 62, b: 92, c: 32, f: 14, l: 5, e: 5, invalid: 2, total: 244 }
+            ],
+            '成都二区': [
+                { name: '成都成华专营店', h: 25, a: 48, b: 72, c: 25, f: 12, l: 5, e: 4, invalid: 2, total: 193 },
+                { name: '成都金牛专营店', h: 18, a: 35, b: 52, c: 18, f: 8, l: 4, e: 3, invalid: 2, total: 140 }
+            ],
+            '成都三区': [
+                { name: '成都高新专营店', h: 12, a: 22, b: 35, c: 12, f: 6, l: 3, e: 2, invalid: 2, total: 94 }
+            ],
+            '重庆一区': [
+                { name: '重庆渝北专营店', h: 32, a: 65, b: 112, c: 38, f: 15, l: 6, e: 5, invalid: 4, total: 277 },
+                { name: '重庆江北专营店', h: 28, a: 55, b: 95, c: 32, f: 13, l: 5, e: 4, invalid: 4, total: 236 }
+            ],
+            '重庆二区': [
+                { name: '重庆沙坪坝专营店', h: 22, a: 45, b: 78, c: 26, f: 11, l: 5, e: 4, invalid: 2, total: 193 },
+                { name: '重庆南岸专营店', h: 15, a: 32, b: 55, c: 18, f: 8, l: 4, e: 3, invalid: 2, total: 137 }
+            ]
+        }
+    },
+    'R6': {
+        regionName: '东北大区',
+        areas: {
+            '沈阳一区': [
+                { name: '沈阳铁西专营店', h: 28, a: 52, b: 85, c: 32, f: 15, l: 6, e: 5, invalid: 4, total: 227 },
+                { name: '沈阳和平专营店', h: 22, a: 42, b: 68, c: 25, f: 12, l: 5, e: 4, invalid: 3, total: 181 }
+            ],
+            '沈阳二区': [
+                { name: '沈阳皇姑专营店', h: 18, a: 35, b: 55, c: 20, f: 10, l: 4, e: 3, invalid: 3, total: 148 },
+                { name: '沈阳大东专营店', h: 15, a: 28, b: 45, c: 16, f: 8, l: 4, e: 3, invalid: 2, total: 121 }
+            ],
+            '大连一区': [
+                { name: '大连甘井子专营店', h: 25, a: 48, b: 78, c: 28, f: 12, l: 5, e: 4, invalid: 3, total: 203 },
+                { name: '大连西岗专营店', h: 20, a: 38, b: 62, c: 22, f: 10, l: 4, e: 3, invalid: 2, total: 161 }
+            ],
+            '大连二区': [
+                { name: '大连中山专营店', h: 16, a: 30, b: 48, c: 18, f: 8, l: 4, e: 3, invalid: 2, total: 129 }
+            ]
+        }
+    },
+    'R7': {
+        regionName: '西南大区',
+        areas: {
+            '昆明一区': [
+                { name: '昆明西山专营店', h: 22, a: 42, b: 72, c: 28, f: 12, l: 5, e: 4, invalid: 3, total: 188 },
+                { name: '昆明五华专营店', h: 18, a: 35, b: 58, c: 22, f: 10, l: 4, e: 3, invalid: 3, total: 153 }
+            ],
+            '昆明二区': [
+                { name: '昆明官渡专营店', h: 15, a: 28, b: 48, c: 18, f: 8, l: 4, e: 3, invalid: 2, total: 126 },
+                { name: '昆明盘龙专营店', h: 12, a: 22, b: 38, c: 14, f: 6, l: 3, e: 2, invalid: 2, total: 99 }
+            ],
+            '贵阳一区': [
+                { name: '贵阳南明专营店', h: 18, a: 35, b: 58, c: 22, f: 10, l: 4, e: 3, invalid: 3, total: 153 },
+                { name: '贵阳云岩专营店', h: 15, a: 28, b: 48, c: 18, f: 8, l: 4, e: 3, invalid: 2, total: 126 }
+            ]
+        }
+    },
+    'R8': {
+        regionName: '西北大区',
+        areas: {
+            '西安一区': [
+                { name: '西安雁塔专营店', h: 28, a: 55, b: 98, c: 32, f: 14, l: 6, e: 5, invalid: 1, total: 239 },
+                { name: '西安碑林专营店', h: 24, a: 48, b: 82, c: 26, f: 12, l: 5, e: 4, invalid: 1, total: 202 }
+            ],
+            '西安二区': [
+                { name: '西安莲湖专营店', h: 18, a: 38, b: 65, c: 20, f: 9, l: 4, e: 3, invalid: 2, total: 159 },
+                { name: '西安未央专营店', h: 15, a: 28, b: 48, c: 16, f: 7, l: 4, e: 3, invalid: 2, total: 123 }
+            ],
+            '西安三区': [
+                { name: '西安新城专营店', h: 10, a: 18, b: 32, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 82 }
+            ]
+        }
+    }
+};
+
+// ============================================
+// 大项目线索质量下钻数据
+// ============================================
+const projectDrillData = {
+    '夏季大促': {
+        projectName: '2024夏季大促-R4核心运营项目',
+        channels: {
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海东风南方专营店', h: 45, a: 78, b: 95, c: 42, f: 18, l: 8, e: 6, invalid: 8, total: 300 },
+                    { name: '上海日产特约店', h: 38, a: 65, b: 82, c: 35, f: 15, l: 6, e: 5, invalid: 6, total: 252 }
+                ],
+                '浙江小区': [
+                    { name: '杭州城西专营店', h: 32, a: 55, b: 72, c: 28, f: 12, l: 5, e: 4, invalid: 5, total: 213 }
+                ]
+            },
+            '华南大区': {
+                '广州小区': [
+                    { name: '广州天河专营店', h: 42, a: 72, b: 88, c: 38, f: 16, l: 7, e: 5, invalid: 7, total: 275 }
+                ],
+                '深圳小区': [
+                    { name: '深圳南山专营店', h: 35, a: 62, b: 78, c: 32, f: 14, l: 6, e: 5, invalid: 6, total: 238 }
+                ]
+            }
+        }
+    },
+    '品牌焕新': {
+        projectName: '品牌焕新周-R2区域联动',
+        channels: {
+            '华中大区': {
+                '武汉小区': [
+                    { name: '武汉汉口专营店', h: 28, a: 48, b: 62, c: 25, f: 12, l: 5, e: 4, invalid: 4, total: 188 },
+                    { name: '武汉武昌专营店', h: 22, a: 38, b: 52, c: 20, f: 10, l: 4, e: 3, invalid: 3, total: 152 }
+                ]
+            },
+            '西部大区': {
+                '成都小区': [
+                    { name: '成都武侯专营店', h: 25, a: 42, b: 55, c: 22, f: 10, l: 4, e: 3, invalid: 3, total: 164 }
+                ],
+                '西安小区': [
+                    { name: '西安雁塔专营店', h: 18, a: 32, b: 45, c: 18, f: 8, l: 3, e: 3, invalid: 2, total: 129 }
+                ]
+            }
+        }
+    },
+    '天籁补贴': {
+        projectName: '天籁专项补贴-R1渠道专场',
+        channels: {
+            '华东大区': {
+                '南京小区': [
+                    { name: '南京鼓楼专营店', h: 32, a: 55, b: 72, c: 30, f: 12, l: 5, e: 4, invalid: 4, total: 214 }
+                ],
+                '苏州小区': [
+                    { name: '苏州园区专营店', h: 28, a: 48, b: 65, c: 26, f: 11, l: 4, e: 3, invalid: 3, total: 188 }
+                ]
+            },
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京海淀专营店', h: 35, a: 58, b: 75, c: 32, f: 14, l: 5, e: 5, invalid: 5, total: 229 }
+                ],
+                '天津小区': [
+                    { name: '天津河西专营店', h: 25, a: 42, b: 58, c: 24, f: 10, l: 4, e: 3, invalid: 3, total: 169 }
+                ]
+            }
+        }
+    },
+    '轩逸混动': {
+        projectName: '轩逸超混版上市推广-R5',
+        channels: {
+            '华南大区': {
+                '广州小区': [
+                    { name: '广州番禺专营店', h: 30, a: 52, b: 68, c: 28, f: 12, l: 5, e: 4, invalid: 4, total: 203 },
+                    { name: '广州白云专营店', h: 25, a: 45, b: 60, c: 24, f: 10, l: 4, e: 3, invalid: 3, total: 174 }
+                ]
+            },
+            '西部大区': {
+                '成都小区': [
+                    { name: '成都成华专营店', h: 20, a: 35, b: 48, c: 20, f: 8, l: 3, e: 3, invalid: 2, total: 139 }
+                ]
+            }
+        }
+    },
+    '618购车': {
+        projectName: '618全民购车节-全渠道',
+        channels: {
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海华新专营店', h: 38, a: 65, b: 82, c: 35, f: 15, l: 6, e: 5, invalid: 6, total: 252 }
+                ],
+                '浙江小区': [
+                    { name: '杭州滨江专营店', h: 30, a: 52, b: 68, c: 28, f: 12, l: 5, e: 4, invalid: 4, total: 203 }
+                ]
+            },
+            '华中大区': {
+                '长沙小区': [
+                    { name: '长沙岳麓专营店', h: 22, a: 38, b: 52, c: 22, f: 10, l: 4, e: 3, invalid: 3, total: 154 }
+                ]
+            }
+        }
+    },
+    '探陆预售': {
+        projectName: '探陆预售-到店留存专项',
+        channels: {
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海浦东专营店', h: 40, a: 68, b: 85, c: 36, f: 14, l: 6, e: 5, invalid: 6, total: 260 }
+                ],
+                '南京小区': [
+                    { name: '南京建邺专营店', h: 28, a: 48, b: 65, c: 25, f: 11, l: 4, e: 3, invalid: 3, total: 187 }
+                ]
+            },
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京朝阳专营店', h: 35, a: 60, b: 78, c: 32, f: 13, l: 5, e: 4, invalid: 5, total: 232 }
+                ],
+                '天津小区': [
+                    { name: '天津南开专营店', h: 22, a: 38, b: 52, c: 20, f: 9, l: 3, e: 3, invalid: 3, total: 150 }
+                ]
+            }
+        }
+    },
+    '老带新活动': {
+        projectName: '售后维系老带新活动',
+        channels: {
+            '华中大区': {
+                '武汉小区': [
+                    { name: '武汉光谷专营店', h: 30, a: 50, b: 68, c: 28, f: 12, l: 5, e: 4, invalid: 4, total: 201 }
+                ],
+                '长沙小区': [
+                    { name: '长沙芙蓉专营店', h: 25, a: 42, b: 58, c: 22, f: 10, l: 4, e: 3, invalid: 3, total: 167 }
+                ]
+            },
+            '华南大区': {
+                '广州小区': [
+                    { name: '广州越秀专营店', h: 28, a: 48, b: 62, c: 25, f: 11, l: 4, e: 3, invalid: 3, total: 184 }
+                ]
+            }
+        }
+    },
+    '抖音直播': {
+        projectName: '抖音直播间获客计划-R3',
+        channels: {
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海静安专营店', h: 18, a: 32, b: 48, c: 20, f: 10, l: 4, e: 3, invalid: 3, total: 138 }
+                ],
+                '浙江小区': [
+                    { name: '杭州西湖专营店', h: 15, a: 28, b: 42, c: 18, f: 8, l: 3, e: 3, invalid: 2, total: 119 }
+                ]
+            },
+            '华南大区': {
+                '深圳小区': [
+                    { name: '深圳福田专营店', h: 20, a: 35, b: 50, c: 22, f: 9, l: 4, e: 3, invalid: 3, total: 146 }
+                ]
+            }
+        }
+    },
+    '快手探店': {
+        projectName: '快手探店-引流到店',
+        channels: {
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京丰台专营店', h: 12, a: 22, b: 38, c: 18, f: 8, l: 3, e: 2, invalid: 2, total: 105 }
+                ],
+                '石家庄小区': [
+                    { name: '石家庄长安专营店', h: 10, a: 20, b: 35, c: 15, f: 7, l: 3, e: 2, invalid: 2, total: 94 }
+                ]
+            },
+            '西部大区': {
+                '成都小区': [
+                    { name: '成都锦江专营店', h: 14, a: 25, b: 40, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 109 }
+                ]
+            }
+        }
+    },
+    '商超展位': {
+        projectName: '线下商超展位-引流',
+        channels: {
+            '华东大区': {
+                '宁波小区': [
+                    { name: '宁波海曙专营店', h: 10, a: 18, b: 32, c: 15, f: 7, l: 3, e: 2, invalid: 2, total: 89 }
+                ],
+                '温州小区': [
+                    { name: '温州鹿城专营店', h: 8, a: 16, b: 28, c: 12, f: 6, l: 2, e: 2, invalid: 1, total: 75 }
+                ]
+            },
+            '华中大区': {
+                '郑州小区': [
+                    { name: '郑州金水专营店', h: 12, a: 20, b: 35, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 97 }
+                ]
+            }
+        }
+    },
+    '电销邀约': {
+        projectName: '电销组-邀约到店竞赛',
+        channels: {
+            '华南大区': {
+                '佛山小区': [
+                    { name: '佛山禅城专营店', h: 15, a: 28, b: 42, c: 18, f: 8, l: 3, e: 2, invalid: 2, total: 118 }
+                ],
+                '东莞小区': [
+                    { name: '东莞南城专营店', h: 12, a: 22, b: 35, c: 15, f: 7, l: 3, e: 2, invalid: 2, total: 98 }
+                ]
+            },
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京顺义专营店', h: 18, a: 30, b: 45, c: 20, f: 9, l: 3, e: 3, invalid: 2, total: 130 }
+                ]
+            }
+        }
+    },
+    '区域车展': {
+        projectName: '区域车展-邀约到场',
+        channels: {
+            '西部大区': {
+                '重庆小区': [
+                    { name: '重庆渝北专营店', h: 10, a: 18, b: 30, c: 14, f: 6, l: 2, e: 2, invalid: 2, total: 84 }
+                ],
+                '昆明小区': [
+                    { name: '昆明盘龙专营店', h: 8, a: 15, b: 25, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 70 }
+                ]
+            },
+            '华中大区': {
+                '合肥小区': [
+                    { name: '合肥包河专营店', h: 12, a: 20, b: 32, c: 15, f: 6, l: 3, e: 2, invalid: 2, total: 92 }
+                ]
+            }
+        }
+    },
+    '上门试驾': {
+        projectName: '上门试驾-服务升级项目',
+        channels: {
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海闵行专营店', h: 20, a: 35, b: 52, c: 22, f: 10, l: 4, e: 3, invalid: 3, total: 149 }
+                ],
+                '无锡小区': [
+                    { name: '无锡新吴专营店', h: 16, a: 28, b: 42, c: 18, f: 8, l: 3, e: 2, invalid: 2, total: 119 }
+                ]
+            },
+            '华南大区': {
+                '珠海小区': [
+                    { name: '珠海香洲专营店', h: 14, a: 25, b: 40, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 109 }
+                ]
+            }
+        }
+    },
+    '竞品对比': {
+        projectName: '竞品对比试驾-专项',
+        channels: {
+            '华北大区': {
+                '青岛小区': [
+                    { name: '青岛市南专营店', h: 14, a: 25, b: 38, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 107 }
+                ],
+                '济南小区': [
+                    { name: '济南历下专营店', h: 12, a: 22, b: 35, c: 15, f: 6, l: 3, e: 2, invalid: 2, total: 97 }
+                ]
+            },
+            '西部大区': {
+                '西安小区': [
+                    { name: '西安未央专营店', h: 10, a: 18, b: 30, c: 14, f: 6, l: 2, e: 2, invalid: 1, total: 83 }
+                ]
+            }
+        }
+    },
+    '夜间试驾': {
+        projectName: '夜间试驾-关怀活动',
+        channels: {
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海徐汇专营店', h: 12, a: 22, b: 35, c: 15, f: 7, l: 3, e: 2, invalid: 2, total: 98 }
+                ],
+                '南京小区': [
+                    { name: '南京江宁专营店', h: 10, a: 18, b: 30, c: 12, f: 6, l: 2, e: 2, invalid: 1, total: 81 }
+                ]
+            },
+            '华南大区': {
+                '厦门小区': [
+                    { name: '厦门湖里专营店', h: 14, a: 24, b: 38, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 106 }
+                ]
+            }
+        }
+    },
+    '女性试驾': {
+        projectName: '女性车主-试驾下午茶',
+        channels: {
+            '华东大区': {
+                '浙江小区': [
+                    { name: '杭州拱墅专营店', h: 10, a: 18, b: 28, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 78 }
+                ],
+                '苏州小区': [
+                    { name: '苏州姑苏专营店', h: 8, a: 15, b: 25, c: 10, f: 5, l: 2, e: 2, invalid: 1, total: 68 }
+                ]
+            },
+            '华中大区': {
+                '武汉小区': [
+                    { name: '武汉洪山专营店', h: 12, a: 20, b: 32, c: 14, f: 6, l: 2, e: 2, invalid: 2, total: 90 }
+                ]
+            }
+        }
+    },
+    '高校试驾': {
+        projectName: '高校行-首台车试驾',
+        channels: {
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京昌平专营店', h: 8, a: 14, b: 24, c: 10, f: 5, l: 2, e: 1, invalid: 1, total: 65 }
+                ],
+                '天津小区': [
+                    { name: '天津滨海专营店', h: 6, a: 12, b: 20, c: 8, f: 4, l: 2, e: 1, invalid: 1, total: 54 }
+                ]
+            },
+            '西部大区': {
+                '成都小区': [
+                    { name: '成都高新专营店', h: 10, a: 16, b: 28, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 76 }
+                ]
+            }
+        }
+    },
+    '渠道锁单': {
+        projectName: '渠道专享-限时锁单补贴',
+        channels: {
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海杨浦专营店', h: 12, a: 20, b: 32, c: 14, f: 6, l: 2, e: 2, invalid: 2, total: 90 }
+                ],
+                '宁波小区': [
+                    { name: '宁波北仑专营店', h: 10, a: 18, b: 28, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 78 }
+                ]
+            },
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京通州专营店', h: 14, a: 24, b: 38, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 106 }
+                ]
+            }
+        }
+    },
+    '电商锁单': {
+        projectName: '电商平台-9.9元锁单',
+        channels: {
+            '华南大区': {
+                '广州小区': [
+                    { name: '广州增城专营店', h: 8, a: 14, b: 24, c: 10, f: 5, l: 2, e: 1, invalid: 1, total: 65 }
+                ],
+                '深圳小区': [
+                    { name: '深圳龙岗专营店', h: 6, a: 12, b: 20, c: 8, f: 4, l: 2, e: 1, invalid: 1, total: 54 }
+                ]
+            },
+            '西部大区': {
+                '重庆小区': [
+                    { name: '重庆江北专营店', h: 10, a: 16, b: 26, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 74 }
+                ]
+            }
+        }
+    },
+    '车展锁单': {
+        projectName: '车展现场-即时锁单奖',
+        channels: {
+            '华中大区': {
+                '郑州小区': [
+                    { name: '郑州二七专营店', h: 6, a: 10, b: 18, c: 8, f: 4, l: 2, e: 1, invalid: 1, total: 50 }
+                ],
+                '武汉小区': [
+                    { name: '武汉江汉专营店', h: 8, a: 12, b: 22, c: 10, f: 4, l: 2, e: 1, invalid: 1, total: 60 }
+                ]
+            },
+            '华东大区': {
+                '常州小区': [
+                    { name: '常州新北专营店', h: 5, a: 10, b: 16, c: 8, f: 3, l: 2, e: 1, invalid: 1, total: 46 }
+                ]
+            }
+        }
+    }
+};
+
+// ============================================
+// 排期线索质量下钻数据
+// ============================================
+const scheduleDrillData = {
+    'douyin0501': {
+        scheduleName: '抖音信息流-0501-R4核心排期',
+        channels: {
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海东风南方专营店', h: 25, a: 42, b: 55, c: 22, f: 10, l: 4, e: 3, invalid: 3, total: 164 }
+                ],
+                '浙江小区': [
+                    { name: '杭州滨江专营店', h: 20, a: 35, b: 48, c: 18, f: 8, l: 3, e: 3, invalid: 2, total: 137 }
+                ]
+            },
+            '华南大区': {
+                '广州小区': [
+                    { name: '广州天河专营店', h: 22, a: 38, b: 50, c: 20, f: 9, l: 4, e: 3, invalid: 3, total: 149 }
+                ],
+                '深圳小区': [
+                    { name: '深圳南山专营店', h: 18, a: 32, b: 45, c: 18, f: 8, l: 3, e: 2, invalid: 2, total: 128 }
+                ]
+            }
+        }
+    },
+    'chekong0428': {
+        scheduleName: '懂车帝CPS-0428-R4效果通',
+        channels: {
+            '华中大区': {
+                '武汉小区': [
+                    { name: '武汉汉口专营店', h: 18, a: 32, b: 45, c: 18, f: 8, l: 3, e: 2, invalid: 2, total: 128 },
+                    { name: '武汉武昌专营店', h: 15, a: 28, b: 40, c: 15, f: 7, l: 3, e: 2, invalid: 2, total: 112 }
+                ]
+            },
+            '西部大区': {
+                '成都小区': [
+                    { name: '成都武侯专营店', h: 16, a: 30, b: 42, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 118 }
+                ]
+            }
+        }
+    },
+    'baidu0502': {
+        scheduleName: '百度搜索竞价-0502-R2品牌专区',
+        channels: {
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京海淀专营店', h: 20, a: 35, b: 48, c: 20, f: 9, l: 4, e: 3, invalid: 3, total: 142 }
+                ],
+                '天津小区': [
+                    { name: '天津河西专营店', h: 15, a: 28, b: 40, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 113 }
+                ]
+            },
+            '华东大区': {
+                '南京小区': [
+                    { name: '南京鼓楼专营店', h: 14, a: 25, b: 38, c: 15, f: 6, l: 3, e: 2, invalid: 2, total: 105 }
+                ]
+            }
+        }
+    },
+    'kuaishou0505': {
+        scheduleName: '快手短视频-0505-R3核心排期',
+        channels: {
+            '西部大区': {
+                '成都小区': [
+                    { name: '成都成华专营店', h: 12, a: 22, b: 35, c: 14, f: 6, l: 2, e: 2, invalid: 1, total: 94 }
+                ],
+                '西安小区': [
+                    { name: '西安雁塔专营店', h: 10, a: 18, b: 30, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 80 }
+                ]
+            },
+            '华南大区': {
+                '广州小区': [
+                    { name: '广州白云专营店', h: 14, a: 25, b: 38, c: 15, f: 6, l: 3, e: 2, invalid: 2, total: 105 }
+                ]
+            }
+        }
+    },
+    'xiaohongshu0425': {
+        scheduleName: '小红书种草-0425-R1专项排期',
+        channels: {
+            '华东大区': {
+                '苏州小区': [
+                    { name: '苏州园区专营店', h: 15, a: 28, b: 40, c: 16, f: 7, l: 3, e: 2, invalid: 2, total: 113 }
+                ],
+                '上海小区': [
+                    { name: '上海华新专营店', h: 18, a: 32, b: 45, c: 18, f: 8, l: 3, e: 3, invalid: 2, total: 129 }
+                ]
+            },
+            '华北大区': {
+                '石家庄小区': [
+                    { name: '石家庄桥西专营店', h: 10, a: 18, b: 28, c: 12, f: 5, l: 2, e: 1, invalid: 1, total: 77 }
+                ]
+            }
+        }
+    },
+    'pengyouquan0501': {
+        scheduleName: '朋友圈广告-0501-R4核心排期',
+        channels: {
+            '华南大区': {
+                '佛山小区': [
+                    { name: '佛山禅城专营店', h: 10, a: 18, b: 30, c: 14, f: 6, l: 2, e: 2, invalid: 2, total: 84 }
+                ],
+                '东莞小区': [
+                    { name: '东莞南城专营店', h: 8, a: 15, b: 25, c: 12, f: 5, l: 2, e: 1, invalid: 1, total: 69 }
+                ]
+            },
+            '华东大区': {
+                '上海小区': [
+                    { name: '上海长宁专营店', h: 12, a: 20, b: 32, c: 14, f: 6, l: 2, e: 2, invalid: 2, total: 90 }
+                ]
+            }
+        }
+    },
+    'toutiao0503': {
+        scheduleName: '今日头条-0503-R4品牌联动',
+        channels: {
+            '华中大区': {
+                '郑州小区': [
+                    { name: '郑州金水专营店', h: 8, a: 14, b: 25, c: 12, f: 5, l: 2, e: 1, invalid: 1, total: 68 }
+                ],
+                '合肥小区': [
+                    { name: '合肥包河专营店', h: 6, a: 12, b: 20, c: 10, f: 4, l: 2, e: 1, invalid: 1, total: 56 }
+                ]
+            },
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京大兴专营店', h: 10, a: 16, b: 28, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 76 }
+                ]
+            }
+        }
+    },
+    'youku0430': {
+        scheduleName: '优酷视频插播-0430-R2专项',
+        channels: {
+            '西部大区': {
+                '昆明小区': [
+                    { name: '昆明盘龙专营店', h: 8, a: 14, b: 24, c: 10, f: 4, l: 2, e: 1, invalid: 1, total: 64 }
+                ],
+                '重庆小区': [
+                    { name: '重庆渝北专营店', h: 10, a: 16, b: 26, c: 12, f: 5, l: 2, e: 2, invalid: 1, total: 74 }
+                ]
+            },
+            '华南大区': {
+                '厦门小区': [
+                    { name: '厦门湖里专营店', h: 6, a: 12, b: 20, c: 8, f: 4, l: 2, e: 1, invalid: 1, total: 54 }
+                ]
+            }
+        }
+    },
+    'zhihu0502': {
+        scheduleName: '知乎内容直投-0502-R3核心',
+        channels: {
+            '华东大区': {
+                '南京小区': [
+                    { name: '南京建邺专营店', h: 6, a: 10, b: 18, c: 8, f: 4, l: 2, e: 1, invalid: 1, total: 50 }
+                ],
+                '上海小区': [
+                    { name: '上海普陀专营店', h: 8, a: 14, b: 22, c: 10, f: 4, l: 2, e: 1, invalid: 1, total: 62 }
+                ]
+            },
+            '华中大区': {
+                '长沙小区': [
+                    { name: '长沙岳麓专营店', h: 5, a: 10, b: 16, c: 8, f: 3, l: 2, e: 1, invalid: 1, total: 46 }
+                ]
+            }
+        }
+    },
+    'bilibili0504': {
+        scheduleName: '哔哩哔哩动态-0504-R5新品上市',
+        channels: {
+            '华北大区': {
+                '北京小区': [
+                    { name: '北京昌平专营店', h: 5, a: 10, b: 16, c: 8, f: 3, l: 2, e: 1, invalid: 1, total: 46 }
+                ],
+                '青岛小区': [
+                    { name: '青岛崂山专营店', h: 6, a: 10, b: 18, c: 8, f: 4, l: 2, e: 1, invalid: 1, total: 50 }
+                ]
+            },
+            '西部大区': {
+                '成都小区': [
+                    { name: '成都高新专营店', h: 4, a: 8, b: 14, c: 6, f: 3, l: 1, e: 1, invalid: 1, total: 38 }
+                ]
+            }
+        }
+    }
+};
+
+// 计算大区总计
+function calculateRegionTotal(regionData) {
+    let total = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    Object.values(regionData.areas).forEach(areaStores => {
+        areaStores.forEach(store => {
+            total.h += store.h;
+            total.a += store.a;
+            total.b += store.b;
+            total.c += store.c;
+            total.f += store.f;
+            total.l += store.l;
+            total.e += store.e;
+            total.invalid += store.invalid;
+            total.total += store.total;
+        });
+    });
+    return total;
+}
+
+/**
+ * 显示大区渠道质量详情弹窗
+ * @param {string} regionCode - 大区代码，如 R1, R2
+ */
+function showRegionChannelModal(regionCode) {
+    const modal = document.getElementById('regionChannelModal');
+    const title = document.getElementById('regionChannelModalTitle');
+    const content = document.getElementById('regionChannelModalContent');
+    
+    if (!modal || !title || !content) return;
+    
+    // 设置标题
+    title.innerText = '各区渠道质量分布';
+    
+    // 计算全局总计
+    const allRegionsTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    const regionCodes = Object.keys(regionChannelData);
+    regionCodes.forEach(code => {
+        const total = calculateRegionTotal(regionChannelData[code]);
+        allRegionsTotal.h += total.h;
+        allRegionsTotal.a += total.a;
+        allRegionsTotal.b += total.b;
+        allRegionsTotal.c += total.c;
+        allRegionsTotal.f += total.f;
+        allRegionsTotal.l += total.l;
+        allRegionsTotal.e += total.e;
+        allRegionsTotal.invalid += total.invalid;
+        allRegionsTotal.total += total.total;
+    });
+    const allHabTotal = allRegionsTotal.h + allRegionsTotal.a + allRegionsTotal.b;
+    const allHabPercent = allRegionsTotal.total > 0 ? ((allHabTotal / allRegionsTotal.total) * 100).toFixed(1) : '0.0';
+    const allStoreCount = regionCodes.reduce((sum, code) => {
+        return sum + Object.values(regionChannelData[code].areas).reduce((s, stores) => s + stores.length, 0);
+    }, 0);
+    
+    // 生成内容 HTML
+    let html = `
+        <div style="padding: 16px 20px;">
+            <!-- 汇总信息栏 -->
+            <div style="display: flex; align-items: center; gap: 20px; padding: 12px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 11px; color: #6b7280;">大区数量</div>
+                    <div style="font-size: 18px; font-weight: 600; color: #111827;">${regionCodes.length} 个</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 11px; color: #6b7280;">专营店数量</div>
+                    <div style="font-size: 18px; font-weight: 600; color: #111827;">${allStoreCount} 家</div>
+                </div>
+                <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
+                <div style="display: flex; gap: 12px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: #6b7280;">H级</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #00337c;">${allRegionsTotal.h}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: #6b7280;">A级</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #0081ff;">${allRegionsTotal.a}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: #6b7280;">B级</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #6fb8ff;">${allRegionsTotal.b}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: #6b7280;">C级</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #22c55e;">${allRegionsTotal.c}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: #6b7280;">F级</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #f97316;">${allRegionsTotal.f}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: #6b7280;">L级</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #a855f7;">${allRegionsTotal.l}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: #6b7280;">E级</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #64748b;">${allRegionsTotal.e}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: #6b7280;">无效</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allRegionsTotal.invalid}</div>
+                    </div>
+                </div>
+                <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
+                <div style="text-align: center;">
+                    <div style="font-size: 11px; color: #6b7280;">合计线索</div>
+                    <div style="font-size: 18px; font-weight: 600; color: #111827;">${allRegionsTotal.total}</div>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 11px; color: #6b7280;">H/A/B占比</div>
+                    <div style="font-size: 18px; font-weight: 600; color: #059669;">${allHabPercent}%</div>
+                </div>
+            </div>
+            
+            <!-- 一级大区 Tab -->
+            <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                <!-- 全部大区 Tab -->
+                <button class="region-tab-btn active" data-region="all">
+                    <span>全部</span>
+                    <span class="region-tab-count">${allHabPercent}%</span>
+                </button>
+    `;
+    
+    // 生成一级大区 Tab
+    regionCodes.forEach((code, idx) => {
+        const region = regionChannelData[code];
+        const regionTotal = calculateRegionTotal(region);
+        const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
+        
+        html += `
+                <button class="region-tab-btn" data-region="${code}">
+                    <span>${region.regionName}</span>
+                    <span class="region-tab-count">${regionHab}%</span>
+                </button>
+        `;
+    });
+    
+    html += `
+            </div>
+            
+            <!-- 大区内容区域 -->
+            <div class="region-tab-content">
+                <!-- 全部内容面板 -->
+                <div class="region-panel active" data-region="all">
+                    <!-- 全部汇总 -->
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #fef3c7; border-radius: 6px; margin-bottom: 12px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #92400e;">全部大区</span>
+                        <span style="font-size: 11px; color: #64748b;">${regionCodes.length} 个大区</span>
+                        <span style="margin-left: auto; font-size: 11px; color: #64748b;">${allStoreCount} 家专营店</span>
+                        <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${allHabPercent}%</span>
+                    </div>
+                    <!-- 二级小区 Tab -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                        <button class="area-tab-btn active" data-area="all" data-parent="all">
+                            <span>全部</span>
+                            <span class="area-tab-count">${allStoreCount}家</span>
+                        </button>
+                    </div>
+                    <!-- 全部门店列表 -->
+                    <div class="area-tab-content">
+                        <div class="area-panel active" data-area="all">
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+    `;
+    
+    // 生成全部门店列表
+    regionCodes.forEach((code) => {
+        const region = regionChannelData[code];
+        Object.values(region.areas).forEach((stores) => {
+            stores.forEach((store) => {
+                const habTotal = store.h + store.a + store.b;
+                const habPercent = store.total > 0 ? ((habTotal / store.total) * 100).toFixed(1) : '0.0';
+                const hPercent = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
+                const aPercent = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
+                const bPercent = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
+                const cPercent = store.total > 0 ? (store.c / store.total * 100).toFixed(1) : 0;
+                const fPercent = store.total > 0 ? (store.f / store.total * 100).toFixed(1) : 0;
+                
+                html += `
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <div>
+                                            <div style="font-weight: 500; color: #111827; font-size: 13px;">${store.name}</div>
+                                            <div style="font-size: 11px; color: #6b7280;">${region.regionName}</div>
+                                        </div>
+                                        <div style="font-weight: 600; color: #059669; font-size: 14px;">${habPercent}%</div>
+                                    </div>
+                                    <div style="height: 6px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 8px;">
+                                        <div style="height: 100%; background: #00337c; width: ${hPercent}%;"></div>
+                                        <div style="height: 100%; background: #0081ff; width: ${aPercent}%;"></div>
+                                        <div style="height: 100%; background: #6fb8ff; width: ${bPercent}%;"></div>
+                                        <div style="height: 100%; background: #22c55e; width: ${cPercent}%;"></div>
+                                        <div style="height: 100%; background: #f97316; width: ${fPercent}%;"></div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 12px; font-size: 11px;">
+                                        <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
+                                        <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
+                                        <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
+                                        <span style="color: #22c55e;">C:<span style="font-weight: 600;">${store.c}</span></span>
+                                        <span style="color: #f97316;">F:<span style="font-weight: 600;">${store.f}</span></span>
+                                        <span style="color: #a855f7;">L:<span style="font-weight: 600;">${store.l}</span></span>
+                                        <span style="color: #64748b;">E:<span style="font-weight: 600;">${store.e}</span></span>
+                                        <span style="color: #ef4444;">无效:<span style="font-weight: 600;">${store.invalid}</span></span>
+                                        <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
+                                    </div>
+                                </div>
+                `;
+            });
+        });
+    });
+    
+    html += `
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    `;
+    
+    // 生成每个大区的内容面板
+    regionCodes.forEach((code, idx) => {
+        const region = regionChannelData[code];
+        const regionTotal = calculateRegionTotal(region);
+        const areaNames = Object.keys(region.areas);
+        
+        html += `
+                <div class="region-panel ${idx === 0 ? 'active' : ''}" data-region="${code}">
+                    <!-- 大区汇总 -->
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #dbeafe; border-radius: 6px; margin-bottom: 12px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #0369a1;">${region.regionName}</span>
+                        <span style="font-size: 11px; color: #64748b;">${areaNames.length} 个小区</span>
+                        <span style="margin-left: auto; font-size: 11px; color: #64748b;">
+                            ${Object.values(region.areas).reduce((sum, stores) => sum + stores.length, 0)} 家专营店
+                        </span>
+                        <span style="font-size: 13px; font-weight: 600; color: #059669;">
+                            H/A/B ${regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0'}%
+                        </span>
+                    </div>
+                    
+                    <!-- 二级小区 Tab -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                        <button class="area-tab-btn active" data-area="all" data-parent="${code}">
+                            <span>全部</span>
+                            <span class="area-tab-count">${Object.values(region.areas).reduce((sum, stores) => sum + stores.length, 0)}家</span>
+                        </button>
+        `;
+
+        // 生成小区 Tab
+        areaNames.forEach((areaName, gi) => {
+            const areaStores = region.areas[areaName];
+            const areaTotal = areaStores.reduce((sum, s) => {
+                sum.h += s.h; sum.a += s.a; sum.b += s.b; sum.total += s.total;
+                return sum;
+            }, { h: 0, a: 0, b: 0, total: 0 });
+            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
+
+            html += `
+                        <button class="area-tab-btn" data-area="${areaName}" data-parent="${code}">
+                            <span>${areaName}</span>
+                            <span class="area-tab-count">${areaStores.length}家</span>
+                        </button>
+            `;
+        });
+        
+        html += `
+                    </div>
+                    
+                    <!-- 门店列表内容 -->
+                    <div class="area-tab-content">
+        `;
+
+        // 生成"全部"面板 - 显示该大区下所有门店
+        const regionAllHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
+        html += `
+                        <div class="area-panel active" data-area="all">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #fef3c7; border-radius: 4px; margin-bottom: 10px;">
+                                <span style="font-size: 12px; font-weight: 600; color: #92400e;">全部小区</span>
+                                <span style="font-size: 11px; color: #64748b;">${areaNames.length} 个小区</span>
+                                <span style="font-size: 11px; color: #64748b;">${Object.values(region.areas).reduce((sum, stores) => sum + stores.length, 0)} 家专营店</span>
+                                <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${regionAllHab}%</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+        `;
+
+        // 遍历所有小区的门店
+        areaNames.forEach((areaName) => {
+            region.areas[areaName].forEach((store) => {
+                const habTotal = store.h + store.a + store.b;
+                const habPercent = store.total > 0 ? ((habTotal / store.total) * 100).toFixed(1) : '0.0';
+                const hPercent = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
+                const aPercent = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
+                const bPercent = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
+                const cPercent = store.total > 0 ? (store.c / store.total * 100).toFixed(1) : 0;
+                const fPercent = store.total > 0 ? (store.f / store.total * 100).toFixed(1) : 0;
+
+                html += `
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 14px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                        <div>
+                                            <div style="font-weight: 500; color: #111827; font-size: 12px;">${store.name}</div>
+                                            <div style="font-size: 10px; color: #9ca3af;">${areaName}</div>
+                                        </div>
+                                        <div style="font-weight: 600; color: #059669; font-size: 13px;">${habPercent}%</div>
+                                    </div>
+                                    <div style="height: 5px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 6px;">
+                                        <div style="height: 100%; background: #00337c; width: ${hPercent}%;"></div>
+                                        <div style="height: 100%; background: #0081ff; width: ${aPercent}%;"></div>
+                                        <div style="height: 100%; background: #6fb8ff; width: ${bPercent}%;"></div>
+                                        <div style="height: 100%; background: #22c55e; width: ${cPercent}%;"></div>
+                                        <div style="height: 100%; background: #f97316; width: ${fPercent}%;"></div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px; font-size: 10px;">
+                                        <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
+                                        <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
+                                        <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
+                                        <span style="color: #22c55e;">C:<span style="font-weight: 600;">${store.c}</span></span>
+                                        <span style="color: #f97316;">F:<span style="font-weight: 600;">${store.f}</span></span>
+                                        <span style="color: #a855f7;">L:<span style="font-weight: 600;">${store.l}</span></span>
+                                        <span style="color: #64748b;">E:<span style="font-weight: 600;">${store.e}</span></span>
+                                        <span style="color: #ef4444;">无效:<span style="font-weight: 600;">${store.invalid}</span></span>
+                                        <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
+                                    </div>
+                                </div>
+                `;
+            });
+        });
+
+        html += `
+                            </div>
+                        </div>
+        `;
+
+        // 生成每个小区的门店列表
+        areaNames.forEach((areaName, gi) => {
+            const areaStores = region.areas[areaName];
+            const areaTotal = areaStores.reduce((sum, s) => {
+                sum.h += s.h; sum.a += s.a; sum.b += s.b; sum.c += s.c;
+                sum.f += s.f; sum.l += s.l; sum.e += s.e; sum.invalid += s.invalid; sum.total += s.total;
+                return sum;
+            }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
+            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
+
+            html += `
+                        <div class="area-panel" data-area="${areaName}">
+                            <!-- 小区汇总 -->
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #f1f5f9; border-radius: 4px; margin-bottom: 10px;">
+                                <span style="font-size: 12px; font-weight: 600; color: #475569;">${areaName}</span>
+                                <span style="font-size: 11px; color: #64748b;">${areaStores.length} 家专营店</span>
+                                <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${areaHab}%</span>
+                            </div>
+                            <!-- 门店列表 -->
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+            `;
+            
+            areaStores.forEach((store) => {
+                const habTotal = store.h + store.a + store.b;
+                const habPercent = store.total > 0 ? ((habTotal / store.total) * 100).toFixed(1) : '0.0';
+                const hPercent = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
+                const aPercent = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
+                const bPercent = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
+                const cPercent = store.total > 0 ? (store.c / store.total * 100).toFixed(1) : 0;
+                const fPercent = store.total > 0 ? (store.f / store.total * 100).toFixed(1) : 0;
+                
+                html += `
+                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 14px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                        <div style="font-weight: 500; color: #111827; font-size: 12px;">${store.name}</div>
+                                        <div style="font-weight: 600; color: #059669; font-size: 13px;">${habPercent}%</div>
+                                    </div>
+                                    <div style="height: 5px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 6px;">
+                                        <div style="height: 100%; background: #00337c; width: ${hPercent}%;" title="H级"></div>
+                                        <div style="height: 100%; background: #0081ff; width: ${aPercent}%;" title="A级"></div>
+                                        <div style="height: 100%; background: #6fb8ff; width: ${bPercent}%;" title="B级"></div>
+                                        <div style="height: 100%; background: #22c55e; width: ${cPercent}%;" title="C级"></div>
+                                        <div style="height: 100%; background: #f97316; width: ${fPercent}%;" title="F级"></div>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 10px; font-size: 10px;">
+                                        <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
+                                        <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
+                                        <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
+                                        <span style="color: #22c55e;">C:<span style="font-weight: 600;">${store.c}</span></span>
+                                        <span style="color: #f97316;">F:<span style="font-weight: 600;">${store.f}</span></span>
+                                        <span style="color: #a855f7;">L:<span style="font-weight: 600;">${store.l}</span></span>
+                                        <span style="color: #64748b;">E:<span style="font-weight: 600;">${store.e}</span></span>
+                                        <span style="color: #ef4444;">无效:<span style="font-weight: 600;">${store.invalid}</span></span>
+                                        <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
+                                    </div>
+                                </div>
+                `;
+            });
+            
+            html += `
+                            </div>
+                        </div>
+            `;
+        });
+        
+        html += `
+                    </div>
+                </div>
+        `;
+    });
+    
+    html += `
+            </div>
+        </div>
+    `;
+    
+    content.innerHTML = html;
+    
+    // 绑定小区 Tab 切换事件
+    initRegionTabSwitch();
+    
+    // 显示弹窗
+    modal.classList.add('active');
+}
+
+/**
+ * 初始化大区 Tab 切换
+ */
+function initRegionTabSwitch() {
+    // 一级大区 Tab 切换
+    const regionTabBtns = document.querySelectorAll('.region-tab-btn');
+    const regionPanels = document.querySelectorAll('.region-panel');
+    
+    regionTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetRegion = btn.dataset.region;
+            
+            // 切换大区 Tab 按钮状态
+            regionTabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // 切换大区内容面板
+            regionPanels.forEach(panel => {
+                if (panel.dataset.region === targetRegion) {
+                    panel.classList.add('active');
+                    // 激活该大区内的第一个小区 Tab
+                    const areaBtns = panel.querySelectorAll('.area-tab-btn');
+                    const areaPanels = panel.querySelectorAll('.area-panel');
+                    if (areaBtns.length > 0) {
+                        areaBtns.forEach(b => b.classList.remove('active'));
+                        areaPanels.forEach(p => p.classList.remove('active'));
+                        areaBtns[0].classList.add('active');
+                        areaPanels[0].classList.add('active');
+                    }
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+        });
+    });
+    
+    // 二级小区 Tab 切换
+    const areaTabBtns = document.querySelectorAll('.area-tab-btn');
+    areaTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetArea = btn.dataset.area;
+            const parentRegion = btn.dataset.parent;
+            
+            // 找到对应的父级大区面板
+            const parentPanel = document.querySelector(`.region-panel[data-region="${parentRegion}"]`);
+            if (!parentPanel) return;
+            
+            // 切换小区 Tab 按钮状态
+            const panelAreaBtns = parentPanel.querySelectorAll('.area-tab-btn');
+            const panelAreaPanels = parentPanel.querySelectorAll('.area-panel');
+            
+            panelAreaBtns.forEach(b => b.classList.remove('active'));
+            panelAreaPanels.forEach(p => p.classList.remove('active'));
+            
+            btn.classList.add('active');
+            const targetPanel = parentPanel.querySelector(`.area-panel[data-area="${targetArea}"]`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+        });
+    });
+}
+
+/**
+ * 关闭大区渠道质量详情弹窗
+ */
+function closeRegionChannelModal() {
+    const modal = document.getElementById('regionChannelModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// ============================================
+// 大项目线索质量下钻功能
+// ============================================
+
+/**
+ * 显示大项目下钻抽屉
+ * @param {string} projectCode - 项目代码
+ */
+function showProjectDrillModal(projectCode) {
+    const modal = document.getElementById('projectDrillModal');
+    const title = document.getElementById('projectDrillModalTitle');
+    const content = document.getElementById('projectDrillModalContent');
+
+    if (!modal || !title || !content) return;
+
+    const project = projectDrillData[projectCode];
+    if (!project) return;
+
+    title.innerText = project.projectName;
+
+    // 计算全局总计
+    const allTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    const regionNames = Object.keys(project.channels);
+    regionNames.forEach(region => {
+        Object.values(project.channels[region]).forEach(stores => {
+            stores.forEach(store => {
+                allTotal.h += store.h; allTotal.a += store.a; allTotal.b += store.b; allTotal.c += store.c;
+                allTotal.f += store.f; allTotal.l += store.l; allTotal.e += store.e; allTotal.invalid += store.invalid; allTotal.total += store.total;
+            });
+        });
+    });
+    const allHab = allTotal.total > 0 ? ((allTotal.h + allTotal.a + allTotal.b) / allTotal.total * 100).toFixed(1) : '0.0';
+    const allStoreCount = regionNames.reduce((sum, r) => {
+        return sum + Object.values(project.channels[r]).reduce((s, stores) => s + stores.length, 0);
+    }, 0);
+
+    let html = `
+        <div style="padding: 16px 20px;">
+            <!-- 汇总信息栏 -->
+            <div style="display: flex; align-items: center; gap: 20px; padding: 12px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 11px; color: #6b7280;">专营店数量</div>
+                    <div style="font-size: 18px; font-weight: 600; color: #111827;">${allStoreCount} 家</div>
+                </div>
+                <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
+                <div style="display: flex; gap: 16px;">
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H级</div><div style="font-size: 14px; font-weight: 600; color: #00337c;">${allTotal.h}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">A级</div><div style="font-size: 14px; font-weight: 600; color: #0081ff;">${allTotal.a}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">B级</div><div style="font-size: 14px; font-weight: 600; color: #6fb8ff;">${allTotal.b}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C级</div><div style="font-size: 14px; font-weight: 600; color: #22c55e;">${allTotal.c}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">F级</div><div style="font-size: 14px; font-weight: 600; color: #f97316;">${allTotal.f}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">L级</div><div style="font-size: 14px; font-weight: 600; color: #a855f7;">${allTotal.l}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">E级</div><div style="font-size: 14px; font-weight: 600; color: #64748b;">${allTotal.e}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">无效</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allTotal.invalid}</div></div>
+                </div>
+                <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
+                <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">合计线索</div><div style="font-size: 18px; font-weight: 600; color: #111827;">${allTotal.total}</div></div>
+                <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">H/A/B占比</div><div style="font-size: 18px; font-weight: 600; color: #059669;">${allHab}%</div></div>
+            </div>
+
+            <!-- 一级大区 Tab -->
+            <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                <button class="region-tab-btn active" data-region="all">
+                    <span>全部</span>
+                    <span class="region-tab-count">${allHab}%</span>
+                </button>
+    `;
+
+    regionNames.forEach(region => {
+        const regionAreas = project.channels[region];
+        const regionTotal = { h: 0, a: 0, b: 0, total: 0 };
+        Object.values(regionAreas).forEach(stores => {
+            stores.forEach(s => { regionTotal.h += s.h; regionTotal.a += s.a; regionTotal.b += s.b; regionTotal.total += s.total; });
+        });
+        const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
+        html += `
+                <button class="region-tab-btn" data-region="${region}">
+                    <span>${region}</span>
+                    <span class="region-tab-count">${regionHab}%</span>
+                </button>
+        `;
+    });
+
+    html += `
+            </div>
+
+            <div class="region-tab-content">
+                <!-- 全部面板 -->
+                <div class="region-panel active" data-region="all">
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #fef3c7; border-radius: 6px; margin-bottom: 12px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #92400e;">全部大区</span>
+                        <span style="font-size: 11px; color: #64748b;">${regionNames.length} 个大区</span>
+                        <span style="margin-left: auto; font-size: 11px; color: #64748b;">${allStoreCount} 家专营店</span>
+                        <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${allHab}%</span>
+                    </div>
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                        <button class="area-tab-btn active" data-area="all" data-parent="all">
+                            <span>全部</span>
+                            <span class="area-tab-count">${allStoreCount}家</span>
+                        </button>
+                    </div>
+                    <div class="area-tab-content">
+                        <div class="area-panel active" data-area="all">
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+    `;
+
+    // 全部门店
+    regionNames.forEach(region => {
+        Object.entries(project.channels[region]).forEach(([areaName, stores]) => {
+            stores.forEach(store => {
+                html += generateStoreCard(store, areaName);
+            });
+        });
+    });
+
+    html += `
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    `;
+
+    // 每个大区面板
+    regionNames.forEach((region, idx) => {
+        const regionAreas = project.channels[region];
+        const areaNames = Object.keys(regionAreas);
+        const regionTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+        Object.values(regionAreas).forEach(stores => {
+            stores.forEach(s => {
+                regionTotal.h += s.h; regionTotal.a += s.a; regionTotal.b += s.b; regionTotal.c += s.c;
+                regionTotal.f += s.f; regionTotal.l += s.l; regionTotal.e += s.e; regionTotal.invalid += s.invalid; regionTotal.total += s.total;
+            });
+        });
+        const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
+        const regionStoreCount = Object.values(regionAreas).reduce((s, st) => s + st.length, 0);
+
+        html += `
+                <div class="region-panel" data-region="${region}">
+                    <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #dbeafe; border-radius: 6px; margin-bottom: 12px;">
+                        <span style="font-size: 12px; font-weight: 600; color: #0369a1;">${region}</span>
+                        <span style="font-size: 11px; color: #64748b;">${areaNames.length} 个小区</span>
+                        <span style="margin-left: auto; font-size: 11px; color: #64748b;">${regionStoreCount} 家专营店</span>
+                        <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${regionHab}%</span>
+                    </div>
+
+                    <!-- 二级小区 Tab -->
+                    <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                        <button class="area-tab-btn active" data-area="all" data-parent="${region}">
+                            <span>全部</span>
+                            <span class="area-tab-count">${regionStoreCount}家</span>
+                        </button>
+        `;
+
+        areaNames.forEach(areaName => {
+            const areaStores = regionAreas[areaName];
+            const areaTotal = areaStores.reduce((s, st) => { s.h += st.h; s.a += st.a; s.b += st.b; s.total += st.total; return s; }, { h: 0, a: 0, b: 0, total: 0 });
+            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
+            html += `
+                        <button class="area-tab-btn" data-area="${areaName}" data-parent="${region}">
+                            <span>${areaName}</span>
+                            <span class="area-tab-count">${areaStores.length}家</span>
+                        </button>
+            `;
+        });
+
+        html += `
+                    </div>
+                    <div class="area-tab-content">
+        `;
+
+        // "全部"面板 - 该大区所有门店
+        html += `
+                        <div class="area-panel active" data-area="all">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #fef3c7; border-radius: 4px; margin-bottom: 10px;">
+                                <span style="font-size: 12px; font-weight: 600; color: #92400e;">全部小区</span>
+                                <span style="font-size: 11px; color: #64748b;">${areaNames.length} 个小区</span>
+                                <span style="font-size: 11px; color: #64748b;">${regionStoreCount} 家专营店</span>
+                                <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${regionHab}%</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+        `;
+        areaNames.forEach(areaName => {
+            regionAreas[areaName].forEach(store => {
+                html += generateStoreCard(store, areaName);
+            });
+        });
+        html += `
+                            </div>
+                        </div>
+        `;
+
+        // 每个小区面板
+        areaNames.forEach(areaName => {
+            const areaStores = regionAreas[areaName];
+            const areaTotal = areaStores.reduce((s, st) => {
+                s.h += st.h; s.a += st.a; s.b += st.b; s.c += st.c; s.f += st.f; s.l += st.l; s.e += st.e; s.invalid += st.invalid; s.total += st.total; return s;
+            }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
+            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
+
+            html += `
+                        <div class="area-panel" data-area="${areaName}">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #f1f5f9; border-radius: 4px; margin-bottom: 10px;">
+                                <span style="font-size: 12px; font-weight: 600; color: #475569;">${areaName}</span>
+                                <span style="font-size: 11px; color: #64748b;">${areaStores.length} 家专营店</span>
+                                <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${areaHab}%</span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+            `;
+            areaStores.forEach(store => {
+                html += generateStoreCard(store);
+            });
+            html += `
+                            </div>
+                        </div>
+            `;
+        });
+
+        html += `
+                    </div>
+                </div>
+        `;
+    });
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    content.innerHTML = html;
+    initProjectTabSwitch();
+    modal.classList.add('active');
+}
+
+/**
+ * 生成门店卡片 HTML
+ */
+function generateStoreCard(store, areaLabel) {
+    const hab = store.h + store.a + store.b;
+    const habPct = store.total > 0 ? ((hab / store.total) * 100).toFixed(1) : '0.0';
+    const hP = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
+    const aP = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
+    const bP = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
+    const cP = store.total > 0 ? (store.c / store.total * 100).toFixed(1) : 0;
+    const fP = store.total > 0 ? (store.f / store.total * 100).toFixed(1) : 0;
+    const subLabel = areaLabel ? `<div style="font-size: 10px; color: #9ca3af;">${areaLabel}</div>` : '';
+
+    return `
+        <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <div>
+                    <div style="font-weight: 500; color: #111827; font-size: 12px;">${store.name}</div>
+                    ${subLabel}
+                </div>
+                <div style="font-weight: 600; color: #059669; font-size: 13px;">${habPct}%</div>
+            </div>
+            <div style="height: 5px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 6px;">
+                <div style="height: 100%; background: #00337c; width: ${hP}%;"></div>
+                <div style="height: 100%; background: #0081ff; width: ${aP}%;"></div>
+                <div style="height: 100%; background: #6fb8ff; width: ${bP}%;"></div>
+                <div style="height: 100%; background: #22c55e; width: ${cP}%;"></div>
+                <div style="height: 100%; background: #f97316; width: ${fP}%;"></div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; font-size: 10px;">
+                <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
+                <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
+                <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
+                <span style="color: #22c55e;">C:<span style="font-weight: 600;">${store.c}</span></span>
+                <span style="color: #f97316;">F:<span style="font-weight: 600;">${store.f}</span></span>
+                <span style="color: #a855f7;">L:<span style="font-weight: 600;">${store.l}</span></span>
+                <span style="color: #64748b;">E:<span style="font-weight: 600;">${store.e}</span></span>
+                <span style="color: #ef4444;">无效:<span style="font-weight: 600;">${store.invalid}</span></span>
+                <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * 初始化大项目 Tab 切换（支持二级小区 Tab）
+ */
+function initProjectTabSwitch() {
+    // 一级大区 Tab
+    const regionTabBtns = document.querySelectorAll('#projectDrillModalContent .region-tab-btn');
+    const regionPanels = document.querySelectorAll('#projectDrillModalContent .region-panel');
+
+    regionTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetRegion = btn.dataset.region;
+            regionTabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            regionPanels.forEach(panel => {
+                if (panel.dataset.region === targetRegion) {
+                    panel.classList.add('active');
+                    const areaBtns = panel.querySelectorAll('.area-tab-btn');
+                    const areaPanels = panel.querySelectorAll('.area-panel');
+                    if (areaBtns.length > 0) {
+                        areaBtns.forEach(b => b.classList.remove('active'));
+                        areaPanels.forEach(p => p.classList.remove('active'));
+                        areaBtns[0].classList.add('active');
+                        areaPanels[0].classList.add('active');
+                    }
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+        });
+    });
+
+    // 二级小区 Tab
+    const areaTabBtns = document.querySelectorAll('#projectDrillModalContent .area-tab-btn');
+    areaTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetArea = btn.dataset.area;
+            const parentRegion = btn.dataset.parent;
+            const parentPanel = document.querySelector(`#projectDrillModalContent .region-panel[data-region="${parentRegion}"]`);
+            if (!parentPanel) return;
+
+            const panelAreaBtns = parentPanel.querySelectorAll('.area-tab-btn');
+            const panelAreaPanels = parentPanel.querySelectorAll('.area-panel');
+            panelAreaBtns.forEach(b => b.classList.remove('active'));
+            panelAreaPanels.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const targetPanel = parentPanel.querySelector(`.area-panel[data-area="${targetArea}"]`);
+            if (targetPanel) targetPanel.classList.add('active');
+        });
+    });
+}
+
+/**
+ * 关闭大项目下钻抽屉
+ */
+function closeProjectDrillModal() {
+    const modal = document.getElementById('projectDrillModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// ============================================
+// 排期线索质量下钻功能
+// ============================================
+
+/**
+ * 显示排期下钻抽屉
+ * @param {string} scheduleCode - 排期代码
+ */
+function showScheduleDrillModal(scheduleCode) {
+    const modal = document.getElementById('scheduleDrillModal');
+    const title = document.getElementById('scheduleDrillModalTitle');
+    const content = document.getElementById('scheduleDrillModalContent');
+
+    if (!modal || !title || !content) return;
+
+    const schedule = scheduleDrillData[scheduleCode];
+    if (!schedule) return;
+
+    title.innerText = schedule.scheduleName;
+
+    // 复用大项目下钻的渲染逻辑（结构一致：大区→小区→门店）
+    let html = renderDrillContent(schedule.channels);
+    content.innerHTML = html;
+    initDrillTabSwitch('#scheduleDrillModalContent');
+    modal.classList.add('active');
+}
+
+/**
+ * 通用下钻内容渲染（大区→小区→门店）
+ */
+function renderDrillContent(channels) {
+    const regionNames = Object.keys(channels);
+    const allTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    const allStoreCount = regionNames.reduce((sum, r) => {
+        return sum + Object.values(channels[r]).reduce((s, stores) => s + stores.length, 0);
+    }, 0);
+    regionNames.forEach(region => {
+        Object.values(channels[region]).forEach(stores => {
+            stores.forEach(store => {
+                allTotal.h += store.h; allTotal.a += store.a; allTotal.b += store.b; allTotal.c += store.c;
+                allTotal.f += store.f; allTotal.l += store.l; allTotal.e += store.e; allTotal.invalid += store.invalid; allTotal.total += store.total;
+            });
+        });
+    });
+    const allHab = allTotal.total > 0 ? ((allTotal.h + allTotal.a + allTotal.b) / allTotal.total * 100).toFixed(1) : '0.0';
+
+    let html = `
+        <div style="padding: 16px 20px;">
+            <div style="display: flex; align-items: center; gap: 20px; padding: 12px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">专营店数量</div><div style="font-size: 18px; font-weight: 600; color: #111827;">${allStoreCount} 家</div></div>
+                <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
+                <div style="display: flex; gap: 16px;">
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H级</div><div style="font-size: 14px; font-weight: 600; color: #00337c;">${allTotal.h}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">A级</div><div style="font-size: 14px; font-weight: 600; color: #0081ff;">${allTotal.a}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">B级</div><div style="font-size: 14px; font-weight: 600; color: #6fb8ff;">${allTotal.b}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C级</div><div style="font-size: 14px; font-weight: 600; color: #22c55e;">${allTotal.c}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">F级</div><div style="font-size: 14px; font-weight: 600; color: #f97316;">${allTotal.f}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">L级</div><div style="font-size: 14px; font-weight: 600; color: #a855f7;">${allTotal.l}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">E级</div><div style="font-size: 14px; font-weight: 600; color: #64748b;">${allTotal.e}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">无效</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allTotal.invalid}</div></div>
+                </div>
+                <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
+                <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">合计线索</div><div style="font-size: 18px; font-weight: 600; color: #111827;">${allTotal.total}</div></div>
+                <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">H/A/B占比</div><div style="font-size: 18px; font-weight: 600; color: #059669;">${allHab}%</div></div>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
+                <button class="region-tab-btn active" data-region="all"><span>全部</span><span class="region-tab-count">${allHab}%</span></button>
+    `;
+
+    regionNames.forEach(region => {
+        const regionAreas = channels[region];
+        const regionTotal = { h: 0, a: 0, b: 0, total: 0 };
+        Object.values(regionAreas).forEach(stores => { stores.forEach(s => { regionTotal.h += s.h; regionTotal.a += s.a; regionTotal.b += s.b; regionTotal.total += s.total; }); });
+        const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
+        html += `<button class="region-tab-btn" data-region="${region}"><span>${region}</span><span class="region-tab-count">${regionHab}%</span></button>`;
+    });
+
+    html += `</div><div class="region-tab-content">`;
+
+    // 全部面板
+    html += `
+        <div class="region-panel active" data-region="all">
+            <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #fef3c7; border-radius: 6px; margin-bottom: 12px;">
+                <span style="font-size: 12px; font-weight: 600; color: #92400e;">全部大区</span>
+                <span style="font-size: 11px; color: #64748b;">${regionNames.length} 个大区</span>
+                <span style="margin-left: auto; font-size: 11px; color: #64748b;">${allStoreCount} 家专营店</span>
+                <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${allHab}%</span>
+            </div>
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                <button class="area-tab-btn active" data-area="all" data-parent="all"><span>全部</span><span class="area-tab-count">${allStoreCount}家</span></button>
+            </div>
+            <div class="area-tab-content"><div class="area-panel active" data-area="all"><div style="display: flex; flex-direction: column; gap: 8px;">
+    `;
+    regionNames.forEach(region => {
+        Object.entries(channels[region]).forEach(([areaName, stores]) => {
+            stores.forEach(store => { html += generateStoreCard(store, areaName); });
+        });
+    });
+    html += `</div></div></div></div>`;
+
+    // 每个大区面板
+    regionNames.forEach((region) => {
+        const regionAreas = channels[region];
+        const areaNames = Object.keys(regionAreas);
+        const regionTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+        Object.values(regionAreas).forEach(stores => { stores.forEach(s => { regionTotal.h += s.h; regionTotal.a += s.a; regionTotal.b += s.b; regionTotal.c += s.c; regionTotal.f += s.f; regionTotal.l += s.l; regionTotal.e += s.e; regionTotal.invalid += s.invalid; regionTotal.total += s.total; }); });
+        const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
+        const regionStoreCount = Object.values(regionAreas).reduce((s, st) => s + st.length, 0);
+
+        html += `
+        <div class="region-panel" data-region="${region}">
+            <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #dbeafe; border-radius: 6px; margin-bottom: 12px;">
+                <span style="font-size: 12px; font-weight: 600; color: #0369a1;">${region}</span>
+                <span style="font-size: 11px; color: #64748b;">${areaNames.length} 个小区</span>
+                <span style="margin-left: auto; font-size: 11px; color: #64748b;">${regionStoreCount} 家专营店</span>
+                <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${regionHab}%</span>
+            </div>
+            <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
+                <button class="area-tab-btn active" data-area="all" data-parent="${region}"><span>全部</span><span class="area-tab-count">${regionStoreCount}家</span></button>
+        `;
+        areaNames.forEach(areaName => {
+            const areaHab = (() => {
+                const t = regionAreas[areaName].reduce((s, st) => { s.h += st.h; s.a += st.a; s.b += st.b; s.total += st.total; return s; }, { h: 0, a: 0, b: 0, total: 0 });
+                return t.total > 0 ? ((t.h + t.a + t.b) / t.total * 100).toFixed(1) : '0.0';
+            })();
+            html += `<button class="area-tab-btn" data-area="${areaName}" data-parent="${region}"><span>${areaName}</span><span class="area-tab-count">${regionAreas[areaName].length}家</span></button>`;
+        });
+        html += `</div><div class="area-tab-content">`;
+
+        // 全部面板
+        html += `<div class="area-panel active" data-area="all">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #fef3c7; border-radius: 4px; margin-bottom: 10px;">
+                <span style="font-size: 12px; font-weight: 600; color: #92400e;">全部小区</span>
+                <span style="font-size: 11px; color: #64748b;">${areaNames.length} 个小区</span>
+                <span style="font-size: 11px; color: #64748b;">${regionStoreCount} 家专营店</span>
+                <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${regionHab}%</span>
+            </div><div style="display: flex; flex-direction: column; gap: 6px;">`;
+        areaNames.forEach(areaName => { regionAreas[areaName].forEach(store => { html += generateStoreCard(store, areaName); }); });
+        html += `</div></div>`;
+
+        // 每个小区面板
+        areaNames.forEach(areaName => {
+            const areaStores = regionAreas[areaName];
+            const areaTotal = areaStores.reduce((s, st) => { s.h += st.h; s.a += st.a; s.b += st.b; s.c += st.c; s.f += st.f; s.l += st.l; s.e += st.e; s.invalid += st.invalid; s.total += st.total; return s; }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
+            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
+            html += `
+            <div class="area-panel" data-area="${areaName}">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #f1f5f9; border-radius: 4px; margin-bottom: 10px;">
+                    <span style="font-size: 12px; font-weight: 600; color: #475569;">${areaName}</span>
+                    <span style="font-size: 11px; color: #64748b;">${areaStores.length} 家专营店</span>
+                    <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${areaHab}%</span>
+                </div><div style="display: flex; flex-direction: column; gap: 6px;">`;
+            areaStores.forEach(store => { html += generateStoreCard(store); });
+            html += `</div></div>`;
+        });
+
+        html += `</div></div>`;
+    });
+
+    html += `</div></div>`;
+    return html;
+}
+
+/**
+ * 通用 Tab 切换初始化
+ */
+function initDrillTabSwitch(containerSelector) {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+
+    const regionTabBtns = container.querySelectorAll('.region-tab-btn');
+    const regionPanels = container.querySelectorAll('.region-panel');
+
+    regionTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetRegion = btn.dataset.region;
+            regionTabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            regionPanels.forEach(panel => {
+                if (panel.dataset.region === targetRegion) {
+                    panel.classList.add('active');
+                    const areaBtns = panel.querySelectorAll('.area-tab-btn');
+                    const areaPanels = panel.querySelectorAll('.area-panel');
+                    if (areaBtns.length > 0) {
+                        areaBtns.forEach(b => b.classList.remove('active'));
+                        areaPanels.forEach(p => p.classList.remove('active'));
+                        areaBtns[0].classList.add('active');
+                        areaPanels[0].classList.add('active');
+                    }
+                } else {
+                    panel.classList.remove('active');
+                }
+            });
+        });
+    });
+
+    container.querySelectorAll('.area-tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetArea = btn.dataset.area;
+            const parentRegion = btn.dataset.parent;
+            const parentPanel = container.querySelector(`.region-panel[data-region="${parentRegion}"]`);
+            if (!parentPanel) return;
+            const panelAreaBtns = parentPanel.querySelectorAll('.area-tab-btn');
+            const panelAreaPanels = parentPanel.querySelectorAll('.area-panel');
+            panelAreaBtns.forEach(b => b.classList.remove('active'));
+            panelAreaPanels.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const targetPanel = parentPanel.querySelector(`.area-panel[data-area="${targetArea}"]`);
+            if (targetPanel) targetPanel.classList.add('active');
+        });
+    });
+}
+
+/**
+ * 关闭排期下钻抽屉
+ */
+function closeScheduleDrillModal() {
+    const modal = document.getElementById('scheduleDrillModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// 点击弹窗外部关闭大区弹窗
+document.addEventListener('click', (e) => {
+    const modal = document.getElementById('regionChannelModal');
+    if (modal && e.target === modal) {
+        closeRegionChannelModal();
+    }
+});
+
+// ============================================
+// 渠道质量柱状图点击事件（仅限渠道质量图表）
+// ============================================
+document.addEventListener('click', (e) => {
+    // 只响应渠道质量图表内的点击
+    const chartContainer = e.target.closest('#channelVChart');
+    if (!chartContainer) return;
+    
+    // 查找被点击的柱状图元素
+    const barItem = e.target.closest('.ce-v-bar-item');
+    if (!barItem) return;
+    
+    // 获取 X 轴标签
+    const labelEl = barItem.querySelector('.ce-v-x-label');
+    if (!labelEl) return;
+    
+    const label = labelEl.innerText.trim();
+    
+    // 检查是否是大区标签 (R1-R11)
+    if (/^R\d+$/.test(label)) {
+        showRegionChannelModal(label);
+    }
+});
