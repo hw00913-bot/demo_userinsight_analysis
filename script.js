@@ -92,7 +92,7 @@ function initDateRange() {
                 return;
             }
 
-            const maxRange = 92 * 24 * 60 * 60 * 1000;
+            const maxRange = 90 * 24 * 60 * 60 * 1000;
             if (end - start > maxRange) {
                 alert('统计日期区间最大可选 90 天范围');
                 if (changedInput === 'start') {
@@ -143,8 +143,8 @@ window.addEventListener('DOMContentLoaded', () => {
     initFilterMultiSelects();
     initGlobalFilters();    // 分页内筛选器逻辑
     initCultivationScaledCharts();
-    initProjectRankInteraction(); // 初始化大项目排名交互
-    initScheduleRankInteraction(); // 初始化媒体质量排名交互
+    initRankInteraction({ tabsId: 'rankMetricTabs', listId: 'projectRankList', dataProp: 'projectCode', dataAttr: 'project', data: projectRankData });
+    initRankInteraction({ tabsId: 'scheduleMetricTabs', listId: 'scheduleRankList', dataProp: 'scheduleCode', dataAttr: 'schedule', data: scheduleRankData });
 });
 
 function parseUserCount(text) {
@@ -152,15 +152,30 @@ function parseUserCount(text) {
     return match ? parseInt(match[1].replace(/,/g, ''), 10) : 0;
 }
 
-function findCultivationCard(title) {
-    const pane = document.getElementById('cultivation-op');
-    if (!pane) return null;
-    const cards = Array.from(pane.querySelectorAll('.content-card'));
-    return cards.find(card => card.querySelector('.card-title')?.textContent.trim() === title) || null;
+// --- 工具函数 ---
+function pctNum(part, total) { return total > 0 ? +(part / total * 100).toFixed(1) : 0; }
+function pctStr(part, total) { return total > 0 ? (part / total * 100).toFixed(1) : '0.0'; }
+
+// --- 等级颜色常量 ---
+const LEVEL_COLORS = {
+    h: '#00337c', a: '#0081ff', b: '#6fb8ff', c: '#22c55e',
+    f: '#f97316', l: '#a855f7', e: '#64748b', invalid: '#ef4444',
+    hab: '#059669', other: '#9ca3af'
+};
+
+const TREND_ICONS = { up: 'fa-caret-up', down: 'fa-caret-down', equal: 'fa-minus' };
+const TREND_COLORS = { up: '#ef4444', down: '#10b981', equal: '#6b7280' };
+
+function findCard(title, options = {}) {
+    const scope = options.scope ? document.getElementById(options.scope) : document;
+    const cards = Array.from(scope.querySelectorAll('.content-card'));
+    const card = cards.find(c => c.querySelector('.card-title')?.textContent.trim() === title);
+    if (!card) return null;
+    return options.returnBody ? card.querySelector('.card-body') : card;
 }
 
 function scaleCultivationHorizontalBars(title) {
-    const card = findCultivationCard(title);
+    const card = findCard(title, { scope: 'cultivation-op' });
     if (!card) return;
 
     const rows = Array.from(card.querySelectorAll('.card-body div'))
@@ -197,7 +212,7 @@ function scaleCultivationHorizontalBars(title) {
 }
 
 function scaleCultivationVerticalChannelChart() {
-    const card = findCultivationCard('渠道线索质量');
+    const card = findCard('渠道线索质量', { scope: 'cultivation-op' });
     if (!card) return;
 
     const totalsByLabel = {
@@ -304,6 +319,28 @@ function initGlobalFilters() {
     });
 }
 
+function resetDateRange(dateRangeGroup) {
+    if (!dateRangeGroup) return;
+    const shortcuts = dateRangeGroup.querySelector('.date-shortcuts');
+    const customInputs = dateRangeGroup.querySelector('.date-custom-inputs');
+    const defaultRange = dateRangeGroup.dataset.defaultRange || '7';
+    if (shortcuts) {
+        shortcuts.querySelectorAll('.shortcut-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.range === defaultRange);
+        });
+    }
+    if (customInputs) customInputs.style.display = 'none';
+    const startInput = dateRangeGroup.querySelector('.date-custom-start');
+    const endInput = dateRangeGroup.querySelector('.date-custom-end');
+    if (startInput && endInput) {
+        const today = new Date();
+        const start = new Date();
+        start.setDate(today.getDate() - (parseInt(defaultRange, 10) || 7));
+        startInput.value = formatDate(start);
+        endInput.value = formatDate(today);
+    }
+}
+
 function resetGlobalFilters(filterSection = document.querySelector('.filter-section')) {
     if (!filterSection) return;
 
@@ -327,26 +364,7 @@ function resetGlobalFilters(filterSection = document.querySelector('.filter-sect
         leadLevelText.innerText = `全选 (${levelCheckboxes.length}项)`;
     }
 
-    const shortcuts = filterSection.querySelector('.date-shortcuts');
-    const customInputs = filterSection.querySelector('.date-custom-inputs');
-    const dateRangeGroup = filterSection.querySelector('.date-range-group');
-    const defaultRange = dateRangeGroup?.dataset.defaultRange || '7';
-    if (shortcuts) {
-        shortcuts.querySelectorAll('.shortcut-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.range === defaultRange);
-        });
-    }
-    if (customInputs) customInputs.style.display = 'none';
-
-    const startInput = filterSection.querySelector('.date-custom-start');
-    const endInput = filterSection.querySelector('.date-custom-end');
-    if (startInput && endInput) {
-        const today = new Date();
-        const start = new Date();
-        start.setDate(today.getDate() - (parseInt(defaultRange, 10) || 7));
-        startInput.value = formatDate(start);
-        endInput.value = formatDate(today);
-    }
+    resetDateRange(filterSection.querySelector('.date-range-group'));
 }
 
 function showNotification(message, type = 'info') {
@@ -374,25 +392,11 @@ function showNotification(message, type = 'info') {
 }
 
 function switchTouchMediaTab(tab) {
-    const channelPanel = document.getElementById('touchMediaPanel_channel');
-    const mediaPanel = document.getElementById('touchMediaPanel_media');
-    const channelTab = document.getElementById('touchMediaTab_channel');
-    const mediaTab = document.getElementById('touchMediaTab_media');
-    if (tab === 'channel') {
-        channelPanel.style.display = '';
-        mediaPanel.style.display = 'none';
-        channelTab.style.color = '#2563eb';
-        channelTab.style.borderBottom = '2px solid #2563eb';
-        mediaTab.style.color = '#94a3b8';
-        mediaTab.style.borderBottom = '2px solid transparent';
-    } else {
-        channelPanel.style.display = 'none';
-        mediaPanel.style.display = '';
-        mediaTab.style.color = '#2563eb';
-        mediaTab.style.borderBottom = '2px solid #2563eb';
-        channelTab.style.color = '#94a3b8';
-        channelTab.style.borderBottom = '2px solid transparent';
-    }
+    document.querySelectorAll('.touch-media-tab').forEach(el => {
+        el.classList.toggle('active', el.dataset.touchTab === tab);
+    });
+    document.getElementById('touchMediaPanel_channel').style.display = tab === 'channel' ? '' : 'none';
+    document.getElementById('touchMediaPanel_media').style.display = tab === 'media' ? '' : 'none';
 }
 
 // 区域投放效果 Top 10/20 切换逻辑
@@ -432,12 +436,10 @@ document.addEventListener('click', (e) => {
 
 
 // 大项目排名切换交互逻辑
-function initProjectRankInteraction() {
-    const tabs = document.getElementById('rankMetricTabs');
-    const listContainer = document.getElementById('projectRankList');
+function initRankInteraction(config) {
+    const tabs = document.getElementById(config.tabsId);
+    const listContainer = document.getElementById(config.listId);
     if (!tabs || !listContainer) return;
-
-    // 模拟不同维度的 Top 10 数据
 
     const metricLabels = {
         hab: "HAB 占比",
@@ -448,7 +450,6 @@ function initProjectRankInteraction() {
 
     function renderRankList(data, labelText, metric) {
         listContainer.style.opacity = '0';
-
         setTimeout(() => {
             const baseMap = { hab: 12345, arrival: 12345, testdrive: 5185, order: 2345 };
             const base = baseMap[metric] || 12345;
@@ -481,8 +482,9 @@ function initProjectRankInteraction() {
                     barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
                 }
 
+                const code = item[config.dataProp];
                 html += `
-                    <div class="ce-h-bar-item ${item.projectCode ? 'project-bar-item' : ''}" ${item.projectCode ? `data-project="${item.projectCode}"` : ''}>
+                    <div class="ce-h-bar-item ${code ? 'project-bar-item' : ''}" ${code ? `data-${config.dataAttr}="${code}"` : ''}>
                         <div class="ce-h-info">
                             <span class="ce-h-rank ${rankClass}">${index + 1}</span>
                             <span class="ce-h-name">${item.name}</span>
@@ -498,127 +500,27 @@ function initProjectRankInteraction() {
         }, 300);
     }
 
-    // 页面加载时渲染默认 HAB 数据
-    renderRankList(projectRankData.hab, metricLabels.hab, 'hab');
+    renderRankList(config.data.hab, metricLabels.hab, 'hab');
 
     tabs.addEventListener('click', (e) => {
         const btn = e.target.closest('.ce-dim-btn');
         if (!btn) return;
-
-        // 切换 active 状态
         tabs.querySelectorAll('.ce-dim-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
         const metric = btn.dataset.metric;
-        const data = projectRankData[metric];
-        const labelText = metricLabels[metric];
-
-        // 渲染列表
-        renderRankList(data, labelText, metric);
+        renderRankList(config.data[metric], metricLabels[metric], metric);
     });
 }
 
-// 大项目线索质量排名点击事件（事件委托）
+// 排名列表点击事件委托（项目/媒体下钻）
 document.addEventListener('click', (e) => {
-    const projectItem = e.target.closest('.project-bar-item');
-    if (!projectItem) return;
-    
-    const projectCode = projectItem.dataset.project;
-    const scheduleCode = projectItem.dataset.schedule;
-    if (projectCode) {
-        showProjectDrillModal(projectCode);
-    } else if (scheduleCode) {
-        showScheduleDrillModal(scheduleCode);
-    }
+    const barItem = e.target.closest('.project-bar-item');
+    if (!barItem) return;
+    const projectCode = barItem.dataset.project;
+    const scheduleCode = barItem.dataset.schedule;
+    if (projectCode) showProjectDrillModal(projectCode);
+    else if (scheduleCode) showScheduleDrillModal(scheduleCode);
 });
-
-// 线索质量排名切换交互逻辑
-
-// 媒体质量排名切换交互逻辑
-function initScheduleRankInteraction() {
-    const tabs = document.getElementById('scheduleMetricTabs');
-    const listContainer = document.getElementById('scheduleRankList');
-    if (!tabs || !listContainer) return;
-
-
-    const metricLabels = {
-        hab: "HAB 占比",
-        arrival: "到店率",
-        testdrive: "试驾率",
-        order: "锁单率"
-    };
-
-    function renderRankList(data, labelText, metric) {
-        listContainer.style.opacity = '0';
-
-        setTimeout(() => {
-            const baseMap = { hab: 12345, arrival: 12345, testdrive: 5185, order: 2345 };
-            const base = baseMap[metric] || 12345;
-            let html = '';
-            data.forEach((item, index) => {
-                const rankClass = index < 3 ? 'top3' : '';
-                const pct = parseFloat(item.val);
-                const count = Math.round(pct * base / 100);
-
-                let barHtml = '';
-                if (metric === 'hab') {
-                    const hCount = Math.round(item.h * base / 100);
-                    const aCount = Math.round(item.a * base / 100);
-                    const bCount = Math.round(item.b * base / 100);
-                    barHtml = `
-                        <div class="ce-h-stack">
-                            <div class="ce-h-seg h" style="width: ${item.h}%;" title="H: ${hCount}人"></div>
-                            <div class="ce-h-seg a" style="width: ${item.a}%;" title="A: ${aCount}人"></div>
-                            <div class="ce-h-seg b" style="width: ${item.b}%;" title="B: ${bCount}人"></div>
-                            <div class="ce-h-seg other" style="width: ${item.other}%;"></div>
-                        </div>
-                    `;
-                    barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
-                } else {
-                    barHtml = `
-                        <div class="ce-h-stack">
-                            <div class="ce-h-seg a" style="width: ${item.val};"></div>
-                        </div>
-                    `;
-                    barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
-                }
-
-                html += `
-                    <div class="ce-h-bar-item ${item.scheduleCode ? 'project-bar-item' : ''}" ${item.scheduleCode ? `data-schedule="${item.scheduleCode}"` : ''}>
-                        <div class="ce-h-info">
-                            <span class="ce-h-rank ${rankClass}">${index + 1}</span>
-                            <span class="ce-h-name">${item.name}</span>
-                        </div>
-                        <div class="ce-h-chart-wrapper">
-                            ${barHtml}
-                        </div>
-                    </div>
-                `;
-            });
-            listContainer.innerHTML = html;
-            listContainer.style.opacity = '1';
-        }, 300);
-    }
-
-    // 页面加载时渲染默认 HAB 数据
-    renderRankList(scheduleRankData.hab, metricLabels.hab, 'hab');
-
-    tabs.addEventListener('click', (e) => {
-        const btn = e.target.closest('.ce-dim-btn');
-        if (!btn) return;
-
-        tabs.querySelectorAll('.ce-dim-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const metric = btn.dataset.metric;
-        const data = scheduleRankData[metric];
-        const labelText = metricLabels[metric];
-
-        renderRankList(data, labelText, metric);
-    });
-}
-
-
 
 
 // === 培育运营：关注点下钻逻辑 ===
@@ -661,7 +563,7 @@ function openFocusDrillDown(category) {
 
 // 通用弹窗关闭
 function closeModal(id) { const m = document.getElementById(id); if (m) m.classList.remove('active'); }
-function closeFocusModal() { closeModal('focusDrillDownModal'); }
+
 
 /**
  * 全量排行榜相关逻辑
@@ -697,13 +599,14 @@ function openFullRanking(type) {
         `;
         qualityFullData.forEach(item => {
             const row = document.createElement('tr');
+            const ti = getTrendInfo(item.trend);
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
                 <td><span class="status-tag" style="${getQualityTypeStyle(item.type)}">${item.type}</span></td>
                 <td style="font-weight: 500;">${item.reason}</td>
                 <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}</td>
                 <td style="text-align: right;">${item.percent}</td>
-                <td style="text-align: right; color: ${getTrendColor(item.trend)}">${getTrendIcon(item.trend)} ${item.trendVal}</td>
+                <td style="text-align: right; color: ${ti.color}">${ti.icon} ${item.trendVal}</td>
             `;
             tbody.appendChild(row);
         });
@@ -722,13 +625,14 @@ function openFullRanking(type) {
         `;
         resistanceFullData.forEach(item => {
             const row = document.createElement('tr');
+            const ti = getTrendInfo(item.trend);
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
                 <td><span class="status-tag" style="background: #f1f5f9; color: #475569; border: none;">${item.result}</span></td>
                 <td style="font-weight: 500;">${item.reason}</td>
                 <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}</td>
                 <td style="text-align: right;">${item.percent}</td>
-                <td style="text-align: right; color: ${getTrendColor(item.trend)}">${getTrendIcon(item.trend)} ${item.trendVal}</td>
+                <td style="text-align: right; color: ${ti.color}">${ti.icon} ${item.trendVal}</td>
             `;
             tbody.appendChild(row);
         });
@@ -929,7 +833,6 @@ function openFullRanking(type) {
     modal.classList.add('active');
 }
 
-function closeRankingModal() { closeModal('rankingModal'); }
 
 function getQualityTypeStyle(type) {
     const styles = {
@@ -940,16 +843,11 @@ function getQualityTypeStyle(type) {
     return styles[type] || 'background: #f1f5f9; color: #475569; border: none;';
 }
 
-function getTrendColor(trend) {
-    if (trend === 'up') return '#ef4444';
-    if (trend === 'down') return '#10b981';
-    return '#6b7280';
-}
-
-function getTrendIcon(trend) {
-    if (trend === 'up') return '<i class="fa-solid fa-caret-up"></i>';
-    if (trend === 'down') return '<i class="fa-solid fa-caret-down"></i>';
-    return '<i class="fa-solid fa-minus"></i>';
+function getTrendInfo(trend) {
+    return {
+        icon: `<i class="fa-solid ${TREND_ICONS[trend] || TREND_ICONS.equal}"></i>`,
+        color: TREND_COLORS[trend] || TREND_COLORS.equal
+    };
 }
 
 // ============================================
@@ -1202,44 +1100,14 @@ function showCityStoreModal(cityName) {
         content.innerHTML = cardHtml;
         
         // 绑定小区 Tab 切换事件
-        initAreaTabSwitch();
+        initDrillTabSwitch('#cityStoreModalContent');
     }
     
     // 显示弹窗
     modal.classList.add('active');
 }
 
-/**
- * 初始化小区 Tab 切换
- */
-function initAreaTabSwitch() {
-    const tabBtns = document.querySelectorAll('.area-tab-btn');
-    const tabPanels = document.querySelectorAll('.area-panel');
-    
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetArea = btn.dataset.area;
-            
-            // 切换 Tab 按钮状态
-            tabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            // 切换内容面板
-            tabPanels.forEach(panel => {
-                if (panel.dataset.area === targetArea) {
-                    panel.classList.add('active');
-                } else {
-                    panel.classList.remove('active');
-                }
-            });
-        });
-    });
-}
 
-/**
- * 关闭城市专营店意向等级详情弹窗
- */
-function closeCityStoreModal() { closeModal('cityStoreModal'); }
 
 // 区域投放效果柱状图点击事件（仅限区域投放效果图表）
 document.addEventListener('click', (e) => {
@@ -1259,6 +1127,12 @@ document.addEventListener('click', (e) => {
     
     // 显示弹窗
     showCityStoreModal(cityName);
+});
+
+// 关闭弹窗按钮委托（通过data-modal-id属性）
+document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-modal-id]');
+    if (btn) closeModal(btn.dataset.modalId);
 });
 
 // 点击弹窗/抽屉外部关闭
@@ -1450,43 +1324,7 @@ function showRegionChannelModal(regionCode) {
         const region = regionChannelData[code];
         Object.values(region.areas).forEach((stores) => {
             stores.forEach((store) => {
-                const habTotal = store.h + store.a + store.b;
-                const habPercent = store.total > 0 ? ((habTotal / store.total) * 100).toFixed(1) : '0.0';
-                const hPercent = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
-                const aPercent = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
-                const bPercent = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
-                const cPercent = store.total > 0 ? (store.c / store.total * 100).toFixed(1) : 0;
-                const fPercent = store.total > 0 ? (store.f / store.total * 100).toFixed(1) : 0;
-                
-                html += `
-                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                        <div>
-                                            <div style="font-weight: 500; color: #111827; font-size: 13px;">${store.name}</div>
-                                            <div style="font-size: 11px; color: #6b7280;">${region.regionName}</div>
-                                        </div>
-                                        <div style="font-weight: 600; color: #059669; font-size: 14px;">${habPercent}%</div>
-                                    </div>
-                                    <div style="height: 6px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 8px;">
-                                        <div style="height: 100%; background: #00337c; width: ${hPercent}%;"></div>
-                                        <div style="height: 100%; background: #0081ff; width: ${aPercent}%;"></div>
-                                        <div style="height: 100%; background: #6fb8ff; width: ${bPercent}%;"></div>
-                                        <div style="height: 100%; background: #22c55e; width: ${cPercent}%;"></div>
-                                        <div style="height: 100%; background: #f97316; width: ${fPercent}%;"></div>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 12px; font-size: 11px;">
-                                        <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
-                                        <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
-                                        <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
-                                        <span style="color: #22c55e;">C:<span style="font-weight: 600;">${store.c}</span></span>
-                                        <span style="color: #f97316;">F:<span style="font-weight: 600;">${store.f}</span></span>
-                                        <span style="color: #a855f7;">L:<span style="font-weight: 600;">${store.l}</span></span>
-                                        <span style="color: #64748b;">E:<span style="font-weight: 600;">${store.e}</span></span>
-                                        <span style="color: #ef4444;">无效:<span style="font-weight: 600;">${store.invalid}</span></span>
-                                        <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
-                                    </div>
-                                </div>
-                `;
+                html += generateStoreCard(store, region.regionName);
             });
         });
     });
@@ -1566,43 +1404,7 @@ function showRegionChannelModal(regionCode) {
         // 遍历所有小区的门店
         areaNames.forEach((areaName) => {
             region.areas[areaName].forEach((store) => {
-                const habTotal = store.h + store.a + store.b;
-                const habPercent = store.total > 0 ? ((habTotal / store.total) * 100).toFixed(1) : '0.0';
-                const hPercent = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
-                const aPercent = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
-                const bPercent = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
-                const cPercent = store.total > 0 ? (store.c / store.total * 100).toFixed(1) : 0;
-                const fPercent = store.total > 0 ? (store.f / store.total * 100).toFixed(1) : 0;
-
-                html += `
-                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 14px;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                        <div>
-                                            <div style="font-weight: 500; color: #111827; font-size: 12px;">${store.name}</div>
-                                            <div style="font-size: 10px; color: #9ca3af;">${areaName}</div>
-                                        </div>
-                                        <div style="font-weight: 600; color: #059669; font-size: 13px;">${habPercent}%</div>
-                                    </div>
-                                    <div style="height: 5px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 6px;">
-                                        <div style="height: 100%; background: #00337c; width: ${hPercent}%;"></div>
-                                        <div style="height: 100%; background: #0081ff; width: ${aPercent}%;"></div>
-                                        <div style="height: 100%; background: #6fb8ff; width: ${bPercent}%;"></div>
-                                        <div style="height: 100%; background: #22c55e; width: ${cPercent}%;"></div>
-                                        <div style="height: 100%; background: #f97316; width: ${fPercent}%;"></div>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 10px; font-size: 10px;">
-                                        <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
-                                        <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
-                                        <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
-                                        <span style="color: #22c55e;">C:<span style="font-weight: 600;">${store.c}</span></span>
-                                        <span style="color: #f97316;">F:<span style="font-weight: 600;">${store.f}</span></span>
-                                        <span style="color: #a855f7;">L:<span style="font-weight: 600;">${store.l}</span></span>
-                                        <span style="color: #64748b;">E:<span style="font-weight: 600;">${store.e}</span></span>
-                                        <span style="color: #ef4444;">无效:<span style="font-weight: 600;">${store.invalid}</span></span>
-                                        <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
-                                    </div>
-                                </div>
-                `;
+                html += generateStoreCard(store, areaName);
             });
         });
 
@@ -1634,40 +1436,7 @@ function showRegionChannelModal(regionCode) {
             `;
             
             areaStores.forEach((store) => {
-                const habTotal = store.h + store.a + store.b;
-                const habPercent = store.total > 0 ? ((habTotal / store.total) * 100).toFixed(1) : '0.0';
-                const hPercent = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
-                const aPercent = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
-                const bPercent = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
-                const cPercent = store.total > 0 ? (store.c / store.total * 100).toFixed(1) : 0;
-                const fPercent = store.total > 0 ? (store.f / store.total * 100).toFixed(1) : 0;
-                
-                html += `
-                                <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 14px;">
-                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                                        <div style="font-weight: 500; color: #111827; font-size: 12px;">${store.name}</div>
-                                        <div style="font-weight: 600; color: #059669; font-size: 13px;">${habPercent}%</div>
-                                    </div>
-                                    <div style="height: 5px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 6px;">
-                                        <div style="height: 100%; background: #00337c; width: ${hPercent}%;" title="H级"></div>
-                                        <div style="height: 100%; background: #0081ff; width: ${aPercent}%;" title="A级"></div>
-                                        <div style="height: 100%; background: #6fb8ff; width: ${bPercent}%;" title="B级"></div>
-                                        <div style="height: 100%; background: #22c55e; width: ${cPercent}%;" title="C级"></div>
-                                        <div style="height: 100%; background: #f97316; width: ${fPercent}%;" title="F级"></div>
-                                    </div>
-                                    <div style="display: flex; align-items: center; gap: 10px; font-size: 10px;">
-                                        <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
-                                        <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
-                                        <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
-                                        <span style="color: #22c55e;">C:<span style="font-weight: 600;">${store.c}</span></span>
-                                        <span style="color: #f97316;">F:<span style="font-weight: 600;">${store.f}</span></span>
-                                        <span style="color: #a855f7;">L:<span style="font-weight: 600;">${store.l}</span></span>
-                                        <span style="color: #64748b;">E:<span style="font-weight: 600;">${store.e}</span></span>
-                                        <span style="color: #ef4444;">无效:<span style="font-weight: 600;">${store.invalid}</span></span>
-                                        <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
-                                    </div>
-                                </div>
-                `;
+                html += generateStoreCard(store);
             });
             
             html += `
@@ -1696,10 +1465,6 @@ function showRegionChannelModal(regionCode) {
     modal.classList.add('active');
 }
 
-/**
- * 关闭大区渠道质量详情弹窗
- */
-function closeRegionChannelModal() { closeModal('regionChannelModal'); }
 
 // ============================================
 // 大项目线索质量下钻功能
@@ -1721,214 +1486,7 @@ function showProjectDrillModal(projectCode) {
 
     title.innerText = project.projectName;
 
-    // 计算全局总计
-    const allTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
-    const regionNames = Object.keys(project.channels);
-    regionNames.forEach(region => {
-        Object.values(project.channels[region]).forEach(stores => {
-            stores.forEach(store => {
-                allTotal.h += store.h; allTotal.a += store.a; allTotal.b += store.b; allTotal.c += store.c;
-                allTotal.f += store.f; allTotal.l += store.l; allTotal.e += store.e; allTotal.invalid += store.invalid; allTotal.total += store.total;
-            });
-        });
-    });
-    const allHab = allTotal.total > 0 ? ((allTotal.h + allTotal.a + allTotal.b) / allTotal.total * 100).toFixed(1) : '0.0';
-    const allStoreCount = regionNames.reduce((sum, r) => {
-        return sum + Object.values(project.channels[r]).reduce((s, stores) => s + stores.length, 0);
-    }, 0);
-
-    let html = `
-        <div style="padding: 16px 20px;">
-            <!-- 汇总信息栏 -->
-            <div style="display: flex; align-items: center; gap: 20px; padding: 12px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-                <div style="text-align: center;">
-                    <div style="font-size: 11px; color: #6b7280;">专营店数量</div>
-                    <div style="font-size: 18px; font-weight: 600; color: #111827;">${allStoreCount} 家</div>
-                </div>
-                <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
-                <div style="display: flex; gap: 16px;">
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H级</div><div style="font-size: 14px; font-weight: 600; color: #00337c;">${allTotal.h}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">A级</div><div style="font-size: 14px; font-weight: 600; color: #0081ff;">${allTotal.a}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">B级</div><div style="font-size: 14px; font-weight: 600; color: #6fb8ff;">${allTotal.b}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C级</div><div style="font-size: 14px; font-weight: 600; color: #22c55e;">${allTotal.c}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">F级</div><div style="font-size: 14px; font-weight: 600; color: #f97316;">${allTotal.f}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">L级</div><div style="font-size: 14px; font-weight: 600; color: #a855f7;">${allTotal.l}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">E级</div><div style="font-size: 14px; font-weight: 600; color: #64748b;">${allTotal.e}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">无效</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allTotal.invalid}</div></div>
-                </div>
-                <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
-                <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">合计线索</div><div style="font-size: 18px; font-weight: 600; color: #111827;">${allTotal.total}</div></div>
-                <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">H/A/B占比</div><div style="font-size: 18px; font-weight: 600; color: #059669;">${allHab}%</div></div>
-            </div>
-
-            <!-- 一级大区 Tab -->
-            <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-                <button class="region-tab-btn active" data-region="all">
-                    <span>全部</span>
-                    <span class="region-tab-count">${allHab}%</span>
-                </button>
-    `;
-
-    regionNames.forEach(region => {
-        const regionAreas = project.channels[region];
-        const regionTotal = { h: 0, a: 0, b: 0, total: 0 };
-        Object.values(regionAreas).forEach(stores => {
-            stores.forEach(s => { regionTotal.h += s.h; regionTotal.a += s.a; regionTotal.b += s.b; regionTotal.total += s.total; });
-        });
-        const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
-        html += `
-                <button class="region-tab-btn" data-region="${region}">
-                    <span>${region}</span>
-                    <span class="region-tab-count">${regionHab}%</span>
-                </button>
-        `;
-    });
-
-    html += `
-            </div>
-
-            <div class="region-tab-content">
-                <!-- 全部面板 -->
-                <div class="region-panel active" data-region="all">
-                    <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #fef3c7; border-radius: 6px; margin-bottom: 12px;">
-                        <span style="font-size: 12px; font-weight: 600; color: #92400e;">全部大区</span>
-                        <span style="font-size: 11px; color: #64748b;">${regionNames.length} 个大区</span>
-                        <span style="margin-left: auto; font-size: 11px; color: #64748b;">${allStoreCount} 家专营店</span>
-                        <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${allHab}%</span>
-                    </div>
-                    <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
-                        <button class="area-tab-btn active" data-area="all" data-parent="all">
-                            <span>全部</span>
-                            <span class="area-tab-count">${allStoreCount}家</span>
-                        </button>
-                    </div>
-                    <div class="area-tab-content">
-                        <div class="area-panel active" data-area="all">
-                            <div style="display: flex; flex-direction: column; gap: 8px;">
-    `;
-
-    // 全部门店
-    regionNames.forEach(region => {
-        Object.entries(project.channels[region]).forEach(([areaName, stores]) => {
-            stores.forEach(store => {
-                html += generateStoreCard(store, areaName);
-            });
-        });
-    });
-
-    html += `
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    `;
-
-    // 每个大区面板
-    regionNames.forEach((region, idx) => {
-        const regionAreas = project.channels[region];
-        const areaNames = Object.keys(regionAreas);
-        const regionTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
-        Object.values(regionAreas).forEach(stores => {
-            stores.forEach(s => {
-                regionTotal.h += s.h; regionTotal.a += s.a; regionTotal.b += s.b; regionTotal.c += s.c;
-                regionTotal.f += s.f; regionTotal.l += s.l; regionTotal.e += s.e; regionTotal.invalid += s.invalid; regionTotal.total += s.total;
-            });
-        });
-        const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
-        const regionStoreCount = Object.values(regionAreas).reduce((s, st) => s + st.length, 0);
-
-        html += `
-                <div class="region-panel" data-region="${region}">
-                    <div style="display: flex; align-items: center; gap: 16px; padding: 10px 14px; background: #dbeafe; border-radius: 6px; margin-bottom: 12px;">
-                        <span style="font-size: 12px; font-weight: 600; color: #0369a1;">${region}</span>
-                        <span style="font-size: 11px; color: #64748b;">${areaNames.length} 个小区</span>
-                        <span style="margin-left: auto; font-size: 11px; color: #64748b;">${regionStoreCount} 家专营店</span>
-                        <span style="font-size: 13px; font-weight: 600; color: #059669;">H/A/B ${regionHab}%</span>
-                    </div>
-
-                    <!-- 二级小区 Tab -->
-                    <div style="display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;">
-                        <button class="area-tab-btn active" data-area="all" data-parent="${region}">
-                            <span>全部</span>
-                            <span class="area-tab-count">${regionStoreCount}家</span>
-                        </button>
-        `;
-
-        areaNames.forEach(areaName => {
-            const areaStores = regionAreas[areaName];
-            const areaTotal = areaStores.reduce((s, st) => { s.h += st.h; s.a += st.a; s.b += st.b; s.total += st.total; return s; }, { h: 0, a: 0, b: 0, total: 0 });
-            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
-            html += `
-                        <button class="area-tab-btn" data-area="${areaName}" data-parent="${region}">
-                            <span>${areaName}</span>
-                            <span class="area-tab-count">${areaStores.length}家</span>
-                        </button>
-            `;
-        });
-
-        html += `
-                    </div>
-                    <div class="area-tab-content">
-        `;
-
-        // "全部"面板 - 该大区所有门店
-        html += `
-                        <div class="area-panel active" data-area="all">
-                            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #fef3c7; border-radius: 4px; margin-bottom: 10px;">
-                                <span style="font-size: 12px; font-weight: 600; color: #92400e;">全部小区</span>
-                                <span style="font-size: 11px; color: #64748b;">${areaNames.length} 个小区</span>
-                                <span style="font-size: 11px; color: #64748b;">${regionStoreCount} 家专营店</span>
-                                <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${regionHab}%</span>
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-        `;
-        areaNames.forEach(areaName => {
-            regionAreas[areaName].forEach(store => {
-                html += generateStoreCard(store, areaName);
-            });
-        });
-        html += `
-                            </div>
-                        </div>
-        `;
-
-        // 每个小区面板
-        areaNames.forEach(areaName => {
-            const areaStores = regionAreas[areaName];
-            const areaTotal = areaStores.reduce((s, st) => {
-                s.h += st.h; s.a += st.a; s.b += st.b; s.c += st.c; s.f += st.f; s.l += st.l; s.e += st.e; s.invalid += st.invalid; s.total += st.total; return s;
-            }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
-            const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
-
-            html += `
-                        <div class="area-panel" data-area="${areaName}">
-                            <div style="display: flex; align-items: center; gap: 12px; padding: 8px 12px; background: #f1f5f9; border-radius: 4px; margin-bottom: 10px;">
-                                <span style="font-size: 12px; font-weight: 600; color: #475569;">${areaName}</span>
-                                <span style="font-size: 11px; color: #64748b;">${areaStores.length} 家专营店</span>
-                                <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${areaHab}%</span>
-                            </div>
-                            <div style="display: flex; flex-direction: column; gap: 6px;">
-            `;
-            areaStores.forEach(store => {
-                html += generateStoreCard(store);
-            });
-            html += `
-                            </div>
-                        </div>
-            `;
-        });
-
-        html += `
-                    </div>
-                </div>
-        `;
-    });
-
-    html += `
-            </div>
-        </div>
-    `;
-
+    let html = renderDrillContent(project.channels);
     content.innerHTML = html;
     initDrillTabSwitch('#projectDrillModalContent');
     modal.classList.add('active');
@@ -1979,10 +1537,6 @@ function generateStoreCard(store, areaLabel) {
 }
 
 
-/**
- * 关闭大项目下钻抽屉
- */
-function closeProjectDrillModal() { closeModal('projectDrillModal'); }
 
 // ============================================
 // 媒体质量下钻功能
@@ -2198,10 +1752,6 @@ function initDrillTabSwitch(containerSelector) {
     });
 }
 
-/**
- * 关闭媒体质量下钻抽屉
- */
-function closeScheduleDrillModal() { closeModal('scheduleDrillModal'); }
 
 /**
  * 切换培育运营跟进过程页签
@@ -2250,22 +1800,9 @@ document.addEventListener('click', (e) => {
 // Plan B 动态渲染 — 不修改HTML，仅替换数据内容
 // ============================================
 
-// 辅助：通过卡片标题找到 .card-body
-function findCardBody(titleText) {
-    const cards = document.querySelectorAll('.content-card');
-    for (const card of cards) {
-        const title = card.querySelector('.card-title');
-        if (title && title.textContent.trim() === titleText) {
-            return card.querySelector('.card-body');
-        }
-    }
-    return null;
-}
-
 // 辅助：渲染趋势图标HTML
 function trendHtml(trend, tv) {
-    const icon = trend === 'up' ? 'fa-caret-up' : (trend === 'down' ? 'fa-caret-down' : 'fa-minus');
-    return `<i class="fa-solid ${icon}"></i> ${tv}`;
+    return `<i class="fa-solid ${TREND_ICONS[trend] || TREND_ICONS.equal}"></i> ${tv}`;
 }
 
 // --- KPI卡片动态渲染 ---
@@ -2298,7 +1835,7 @@ function renderKpiCards() {
 
 // --- 线索级别占比饼图渲染 ---
 function renderLeadLevelPie() {
-    const body = findCardBody('线索级别占比');
+    const body = findCard('线索级别占比', { returnBody: true });
     if (!body) return;
     const data = pieOverrideData['线索级别占比'];
     if (!data) return;

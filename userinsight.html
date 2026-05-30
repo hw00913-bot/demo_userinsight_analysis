@@ -116,7 +116,7 @@
                         <!-- 渠道效果内容区 -->
                         <div class="tab-pane active" id="channel-effect">
                             <!-- 渠道效果筛选栏 -->
-                            <div class="filter-section" data-filter-scope="channel-effect">
+                            <div class="filter-section">
                                 <div class="filter-row">
                                     <div class="filter-item">
                                         <label class="filter-label">时间范围:</label>
@@ -2023,8 +2023,8 @@
                                         <div>
                                             <div style="font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 14px;">触媒习惯</div>
                                             <div style="display: flex; gap: 0; margin-bottom: 14px; border-bottom: 2px solid #e2e8f0;">
-                                                <div id="touchMediaTab_channel" onclick="switchTouchMediaTab('channel')" style="padding: 6px 16px; font-size: 13px; font-weight: 600; color: #2563eb; border-bottom: 2px solid #2563eb; margin-bottom: -2px; cursor: pointer;">渠道分析</div>
-                                                <div id="touchMediaTab_media" onclick="switchTouchMediaTab('media')" style="padding: 6px 16px; font-size: 13px; font-weight: 600; color: #94a3b8; border-bottom: 2px solid transparent; margin-bottom: -2px; cursor: pointer;">媒体分析</div>
+                                                <div id="touchMediaTab_channel" class="touch-media-tab active" data-touch-tab="channel" onclick="switchTouchMediaTab('channel')">渠道分析</div>
+                                                <div id="touchMediaTab_media" class="touch-media-tab" data-touch-tab="media" onclick="switchTouchMediaTab('media')">媒体分析</div>
                                             </div>
                                             <div id="touchMediaPanel_channel">
                                             <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
@@ -2279,7 +2279,7 @@
                         </div>      <!-- 渠道效果内容区 -->
                         <div class="tab-pane" id="user-group-insight">
                             <!-- 用户群体洞察筛选栏 -->
-                            <div class="filter-section" data-filter-scope="user-group-insight">
+                            <div class="filter-section">
                                 <div class="filter-row">
                                     <div class="filter-item">
                                         <label class="filter-label">时间范围:</label>
@@ -2909,7 +2909,7 @@
                         <!-- 培育运营内容区 -->
                         <div class="tab-pane" id="cultivation-op">
                             <!-- 培育运营筛选栏 -->
-                            <div class="filter-section" data-filter-scope="cultivation-op">
+                            <div class="filter-section">
                                 <div class="filter-row">
                                     <div class="filter-item">
                                         <label class="filter-label">时间范围:</label>
@@ -3812,7 +3812,7 @@
             <div class="drawer-container" style="width: 60%;">
                 <div class="drawer-header">
                     <h3 class="drawer-title" id="focusDrillDownTitle">二级关注点分布</h3>
-                    <button class="drawer-close" onclick="closeFocusModal()"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="drawer-close" data-modal-id="focusDrillDownModal"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="drawer-body">
                     <div id="focusDrillDownContent" style="display: flex; flex-direction: column; gap: 15px;">
@@ -3836,7 +3836,7 @@
         <div class="drawer-container">
             <div class="drawer-header">
                 <h3 class="drawer-title" id="cityStoreModalTitle">城市专营店意向等级分布</h3>
-                <button class="drawer-close" onclick="closeCityStoreModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button class="drawer-close" data-modal-id="cityStoreModal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="drawer-body">
                 <div id="cityStoreModalContent">
@@ -3851,7 +3851,7 @@
         <div class="drawer-container">
             <div class="drawer-header">
                 <h3 class="drawer-title" id="regionChannelModalTitle">大区渠道质量分布</h3>
-                <button class="drawer-close" onclick="closeRegionChannelModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button class="drawer-close" data-modal-id="regionChannelModal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="drawer-body">
                 <div id="regionChannelModalContent">
@@ -3866,7 +3866,7 @@
         <div class="drawer-container">
             <div class="drawer-header">
                 <h3 class="drawer-title" id="projectDrillModalTitle">大项目线索质量分布</h3>
-                <button class="drawer-close" onclick="closeProjectDrillModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button class="drawer-close" data-modal-id="projectDrillModal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="drawer-body">
                 <div id="projectDrillModalContent">
@@ -3881,7 +3881,7 @@
         <div class="drawer-container">
             <div class="drawer-header">
                 <h3 class="drawer-title" id="scheduleDrillModalTitle">媒体线索质量分布</h3>
-                <button class="drawer-close" onclick="closeScheduleDrillModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button class="drawer-close" data-modal-id="scheduleDrillModal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="drawer-body">
                 <div id="scheduleDrillModalContent">
@@ -3896,7 +3896,7 @@
         <div class="drawer-container">
             <div class="drawer-header">
                 <h3 class="drawer-title" id="rankingModalTitle">全量排行榜</h3>
-                <button class="drawer-close" onclick="closeRankingModal()"><i class="fa-solid fa-xmark"></i></button>
+                <button class="drawer-close" data-modal-id="rankingModal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="drawer-body">
                 <table class="report-table">

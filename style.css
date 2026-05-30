@@ -1,6 +1,7 @@
 :root {
     --primary-color: #0081ff;
     --primary-hover: #0070e0;
+    --primary-light: #cce8ff;
     --sidebar-bg: #f5f7fa;
     --sidebar-hover: #e0e5ed;
     --sidebar-active-bg: #e1f0ff;
@@ -742,13 +743,6 @@ body {
 
 .kpi-border-green {
     border-top: 3px solid #10b981;
-}
-
-background: var(--card-bg);
-border-radius: 12px;
-padding: 60px 24px;
-text-align: center;
-border: 2px dashed var(--border-color);
 }
 
 /* Action Button */
@@ -4176,4 +4170,19 @@ border: 2px dashed var(--border-color);
     font-style: normal;
     font-weight: 800;
     text-align: right;
+}
+
+/* 触媒/触店 Tab 切换 */
+.touch-media-tab {
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #94a3b8;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+}
+.touch-media-tab.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
 }

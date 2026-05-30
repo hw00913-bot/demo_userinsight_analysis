@@ -1,27 +1,13 @@
 # 用户洞察 (User Insight) - 产品原型
 
-## 项目简介
+> 项目详细文档见 [agent.md](agent.md)
 
-用户洞察是一个用于分析客服通话记录中常见问题、热门问题和客户抗拒点的数据看板系统。
+## 快速开始
 
-## 包含页面
-
-- `index.html` - 密码验证入口
-- `interaction_docs.html` - 交互逻辑说明文档
-- `main.html` - 主容器页面
-- `userinsight.html` - 用户洞察看板
-- `workbench.html` - 独立工作台页面
-
-## 访问密码
-
-`dndc2026`
+- **在线访问:** https://hw00913-bot.github.io/demo_userinsight/
+- **入口密码:** `dndc2026`
+- **本地运行:** `python3 -m http.server 8000` → 打开 `http://localhost:8000/index.html`
 
 ## 技术栈
 
-- HTML5
-- CSS3
-- Vanilla JavaScript
-
-## 在线访问
-
-部署于 GitHub Pages: https://hw00913-bot.github.io/demo_userinsight/
+HTML5 + CSS3 + Vanilla JavaScript（无框架/无构建工具）
