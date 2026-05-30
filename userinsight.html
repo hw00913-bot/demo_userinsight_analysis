@@ -1815,6 +1815,7 @@
                                         <span style="text-align: right;">用户数</span>
                                     </div>
                                     <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 12px;">
+                                        <!-- 无效号码 -->
                                         <div style="display: grid; grid-template-columns: 110px 120px minmax(620px, 1fr) 92px; gap: 12px; align-items: center;">
                                             <span style="font-size: 13px; font-weight: 700; color: #0f172a;">无效号码</span>
                                             <span style="font-size: 12px; color: #475569;">空号/停机</span>
@@ -1841,24 +1842,24 @@
                                             <span style="font-size: 12px; color: #475569;">拦截/黑名单</span>
                                             <div>
                                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
-                                                    <span style="width: 128px; min-width: 128px; font-size: 12px; color: #334155; white-space: nowrap;">黑名单过滤</span>
-                                                    <div style="flex: 1; height: 16px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">
-                                                        <div style="width: 48%; height: 100%; background: #38bdf8;"></div>
-                                                    </div>
-                                                    <span style="width: 96px; min-width: 96px; font-size: 11px; color: #64748b; text-align: right; white-space: nowrap;">320人 · 2.6%</span>
-                                                </div>
-                                                <div style="display: flex; align-items: center; gap: 8px;">
-                                                    <span style="width: 128px; min-width: 128px; font-size: 12px; color: #334155; white-space: nowrap;">线路拦截</span>
+                                                    <span style="width: 128px; min-width: 128px; font-size: 12px; color: #334155; white-space: nowrap;">拦截</span>
                                                     <div style="flex: 1; height: 16px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">
                                                         <div style="width: 39%; height: 100%; background: #7dd3fc;"></div>
                                                     </div>
                                                     <span style="width: 96px; min-width: 96px; font-size: 11px; color: #64748b; text-align: right; white-space: nowrap;">260人 · 2.1%</span>
                                                 </div>
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <span style="width: 128px; min-width: 128px; font-size: 12px; color: #334155; white-space: nowrap;">黑名单</span>
+                                                    <div style="flex: 1; height: 16px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">
+                                                        <div style="width: 48%; height: 100%; background: #38bdf8;"></div>
+                                                    </div>
+                                                    <span style="width: 96px; min-width: 96px; font-size: 11px; color: #64748b; text-align: right; white-space: nowrap;">320人 · 2.6%</span>
+                                                </div>
                                             </div>
                                             <span style="font-size: 12px; color: #475569; text-align: right;">580人</span>
                                         </div>
-                                        <div style="display: grid; grid-template-columns: 110px 120px minmax(620px, 1fr) 92px; gap: 12px; align-items: center; padding-top: 8px; border-top: 1px dashed #e5e7eb;">
-                                            <span style="font-size: 13px; font-weight: 700; color: #0f172a;">无法建联</span>
+                                        <div style="display: grid; grid-template-columns: 110px 120px minmax(620px, 1fr) 92px; gap: 12px; align-items: center;">
+                                            <span></span>
                                             <span style="font-size: 12px; color: #475569;">已接无效</span>
                                             <div>
                                                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px;">
@@ -1885,8 +1886,9 @@
                                             </div>
                                             <span style="font-size: 12px; color: #475569; text-align: right;">670人</span>
                                         </div>
-                                        <div style="display: grid; grid-template-columns: 110px 120px minmax(620px, 1fr) 92px; gap: 12px; align-items: center;">
-                                            <span></span>
+                                        <!-- 无法建联 -->
+                                        <div style="display: grid; grid-template-columns: 110px 120px minmax(620px, 1fr) 92px; gap: 12px; align-items: center; padding-top: 8px; border-top: 1px dashed #e5e7eb;">
+                                            <span style="font-size: 13px; font-weight: 700; color: #0f172a;">无法建联</span>
                                             <span style="font-size: 12px; color: #475569;">休眠失联</span>
                                             <div style="display: flex; align-items: center; gap: 8px;">
                                                 <span style="width: 128px; min-width: 128px; font-size: 12px; color: #334155; white-space: nowrap;">休眠失联</span>
@@ -1908,6 +1910,43 @@
                                                 <span style="width: 96px; min-width: 96px; font-size: 11px; color: #64748b; text-align: right; white-space: nowrap;">198人 · 1.6%</span>
                                             </div>
                                             <span style="font-size: 12px; color: #475569; text-align: right;">198人</span>
+                                        </div>
+                                        <!-- 有效号码 -->
+                                        <div style="display: grid; grid-template-columns: 110px 120px minmax(620px, 1fr) 92px; gap: 12px; align-items: center; padding-top: 8px; border-top: 1px dashed #e5e7eb;">
+                                            <span style="font-size: 13px; font-weight: 700; color: #0f172a;">有效号码</span>
+                                            <span style="font-size: 12px; color: #475569;">接通有效</span>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 128px; min-width: 128px; font-size: 12px; color: #334155; white-space: nowrap;">接通有效</span>
+                                                <div style="flex: 1; height: 16px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">
+                                                    <div style="width: 58%; height: 100%; background: #10b981;"></div>
+                                                </div>
+                                                <span style="width: 96px; min-width: 96px; font-size: 11px; color: #64748b; text-align: right; white-space: nowrap;">720人 · 5.8%</span>
+                                            </div>
+                                            <span style="font-size: 12px; color: #475569; text-align: right;">720人</span>
+                                        </div>
+                                        <div style="display: grid; grid-template-columns: 110px 120px minmax(620px, 1fr) 92px; gap: 12px; align-items: center;">
+                                            <span></span>
+                                            <span style="font-size: 12px; color: #475569;">意向不明</span>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 128px; min-width: 128px; font-size: 12px; color: #334155; white-space: nowrap;">意向不明</span>
+                                                <div style="flex: 1; height: 16px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">
+                                                    <div style="width: 26%; height: 100%; background: #34d399;"></div>
+                                                </div>
+                                                <span style="width: 96px; min-width: 96px; font-size: 11px; color: #64748b; text-align: right; white-space: nowrap;">320人 · 2.6%</span>
+                                            </div>
+                                            <span style="font-size: 12px; color: #475569; text-align: right;">320人</span>
+                                        </div>
+                                        <div style="display: grid; grid-template-columns: 110px 120px minmax(620px, 1fr) 92px; gap: 12px; align-items: center;">
+                                            <span></span>
+                                            <span style="font-size: 12px; color: #475569;">无法打通</span>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 128px; min-width: 128px; font-size: 12px; color: #334155; white-space: nowrap;">无法打通</span>
+                                                <div style="flex: 1; height: 16px; background: #f1f5f9; border-radius: 4px; overflow: hidden;">
+                                                    <div style="width: 15%; height: 100%; background: #6ee7b7;"></div>
+                                                </div>
+                                                <span style="width: 96px; min-width: 96px; font-size: 11px; color: #64748b; text-align: right; white-space: nowrap;">185人 · 1.5%</span>
+                                            </div>
+                                            <span style="font-size: 12px; color: #475569; text-align: right;">185人</span>
                                         </div>
                                     </div>
                                 </div>
