@@ -408,14 +408,28 @@
                 <li><a href="#board-cultivation" class="nav-sub-link"><i class="fa-solid fa-seedling"></i><span>培育运营</span></a></li>
             </ul>
         </nav>
+
+        <div class="nav-section-label">弹窗系统</div>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="#section-modals" class="nav-link"><i class="fa-solid fa-window-restore"></i><span>弹窗总览</span></a></li>
+            </ul>
+            <ul class="nav-sub-list">
+                <li><a href="#modal-focus" class="nav-sub-link"><i class="fa-solid fa-magnifying-glass-chart"></i><span>关注点下钻</span></a></li>
+                <li><a href="#modal-citystore" class="nav-sub-link"><i class="fa-solid fa-store"></i><span>城市专营店</span></a></li>
+                <li><a href="#modal-regionchannel" class="nav-sub-link"><i class="fa-solid fa-map-location-dot"></i><span>渠道质量分布</span></a></li>
+                <li><a href="#modal-projectdrill" class="nav-sub-link"><i class="fa-solid fa-diagram-project"></i><span>项目/媒体下钻</span></a></li>
+                <li><a href="#modal-fullranking" class="nav-sub-link"><i class="fa-solid fa-list-ol"></i><span>全量排行榜</span></a></li>
+            </ul>
+        </nav>
     </aside>
 
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V2.3 · 与最新代码同步（2026-05-14 更新）</span>
+            <span class="doc-tag">版本 V2.4 · 与最新代码同步（2026-05-21 更新）</span>
             <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
-            <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界，包括五阶段深度洞察叙事流的完整交互说明。</p>
+            <p class="doc-subtitle">描述「用户洞察」页面（userinsight.html）的全量 UI 交互规则、数据展示逻辑与功能边界，包括渠道效果与培育运营两大核心模块，以及 6 个下钻弹窗的完整交互说明。</p>
         </header>
 
         <!-- ===================== 一、版本说明 ===================== -->
@@ -426,6 +440,11 @@
                     <tr><th style="width:100px;">版本号</th><th>更新日期</th><th>变更内容</th></tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td class="ver-num">V2.4</td>
+                        <td>2026-05-21</td>
+                        <td>渠道效果模块全面下钻升级：①区域投放效果增加城市专营店下钻弹窗（城市→小区→门店三级结构，H/A/B 意向等级分布）；②渠道线索质量增加大区渠道质量分布弹窗（大区→小区→门店三级 Tab，含"全部"汇总 Tab）；③大项目/媒体质量排名增加行级下钻弹窗（大区→小区→门店三级 Tab），支持 HAB/到店/试驾/锁单四种维度切换后点击下钻；④全量排行榜扩展支持 4 种类型（通话质量标签/抗拒点/大项目/媒体），全量大项目和媒体质量排名的行可点击触发下钻弹窗；⑤四个排名模块统一按 HAB 占比倒序排列；⑥全量排行榜弹窗统一左右页边距 60px；⑦项目/媒体质量下钻弹窗 z-index 提升至 1100 确保叠加正确。</td>
+                    </tr>
                     <tr>
                         <td class="ver-num">V2.3</td>
                         <td>2026-05-14</td>
@@ -602,30 +621,26 @@
                 </ol>
             </div>
 
-            <h3 class="sub-title">7. 无效标签与有效标签对照</h3>
-            <p style="color:#475569; font-size:0.93rem;">智能体打标输出的标签按「原因类型」划分为无效标签和有效标签（下发）两大类，用于区分线索质量。</p>
+            <h3 class="sub-title">7. 通话质量标签对照</h3>
+            <p style="color:#475569; font-size:0.93rem;">智能体打标输出的通话质量标签按「原因类型」划分为无效号码、无法建联、有效号码三类，用于区分线索质量。</p>
             <table class="flow-table">
                 <thead><tr><th style="width:100px;">类型</th><th style="width:120px;">原因类型</th><th>原因说明</th></tr></thead>
                 <tbody>
                     <tr>
-                        <td rowspan="8" style="font-weight:600; vertical-align:top; color:#ef4444;">无效标签</td>
-                        <td>空号/停机</td>
-                        <td>空号/停机</td>
+                        <td style="font-weight:600; vertical-align:top; color:#6b7280;">无效号码</td>
+                        <td>无效号码</td>
+                        <td>空号、停机、黑名单过滤、线路拦截、秘书台号码、语音信箱号、手机助理号码</td>
                     </tr>
-                    <tr><td>拦截/黑名单</td><td>黑名单过滤/线路拦截</td></tr>
-                    <tr><td>已接无效</td><td>秘书台号码/语音信箱号码/手机助理号码</td></tr>
-                    <tr><td>休眠失联</td><td>休眠失联</td></tr>
-                    <tr><td>休眠未购</td><td>休眠未购</td></tr>
-                    <tr><td>再次联系</td><td>信号差/无有效交互/处于考虑/纠结期/正在开车/忙碌/其他琐碎沟通/未触达核心/接通后挂断</td></tr>
-                    <tr><td>接通秒挂</td><td>转秘书台/语音信箱/手机助理</td></tr>
-                    <tr><td>接通暂败</td><td>已购车/无购车意向/强烈抗议</td></tr>
                     <tr>
-                        <td rowspan="3" style="font-weight:600; vertical-align:top; color:#10b981;">有效标签（下发）</td>
-                        <td>接通有效</td>
-                        <td>确认有购车意向/购车意愿明确/购车意愿不明确</td>
+                        <td style="font-weight:600; vertical-align:top; color:#1e40af;">无法建联</td>
+                        <td>无法建联</td>
+                        <td>休眠失联、休眠未购、信号差/无有效交互、处于考虑/纠结期、正在开车/忙碌、其他琐碎沟通/未触达核心、接通后挂断、转秘书台、语音信箱、手机助理、关机、忙线（占线）、无人接听、不在服务区、无法接通、拒接、欠费</td>
                     </tr>
-                    <tr><td>意向不明</td><td>意向不明</td></tr>
-                    <tr><td>无法打通</td><td>关机/忙线（占线）/无人接听/不在服务区/无法接通/拒接/欠费</td></tr>
+                    <tr>
+                        <td style="font-weight:600; vertical-align:top; color:#10b981;">有效号码</td>
+                        <td>有效号码</td>
+                        <td>已购车、强烈抗议、确认有购车意向、购车意愿明确、购车意愿不明确、意向不明</td>
+                    </tr>
                 </tbody>
             </table>
         </section>
@@ -633,7 +648,7 @@
         <!-- ===================== 三、筛选栏说明 ===================== -->
         <section class="section" id="section-filter">
             <h2 class="section-title"><i class="fa-solid fa-filter"></i>三、筛选栏说明</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">筛选栏位于页面顶部，单行放置 5 个筛选条件，右侧对齐「查询/重置」按钮。所有图表数据随筛选条件联动刷新。</p>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">筛选栏位于各主分页内部，渠道效果与培育运营维护各自独立的筛选条件，右侧对齐「查询/重置」按钮。当前为原型交互，查询/重置用于模拟数据刷新反馈。</p>
 
             <div class="highlight-box">
                 <strong>查询逻辑：</strong>多个筛选条件之间为<strong>且（AND）</strong>关系，即同时满足所有已选条件的记录才会被纳入统计。下拉选项为「全部」时，表示不对该维度做过滤。
@@ -641,55 +656,66 @@
 
             <h3 class="sub-title">交互行为</h3>
             <ul class="item-list">
-                <li><strong>时间快捷按钮（<code>#dateShortcuts</code>）：</strong>点击「近 7 天」「近 30 天」「近 90 天」任一按钮，高亮选中态并自动更新内部日期区间。点击「自定义」展示开始/结束日期输入框（<code>#customDateInputs</code>）。</li>
-                <li><strong>线索等级多选下拉（<code>#leadLevelMulti</code>）：</strong>展开面板默认全选 8 项，可逐项勾选/取消。面板内包含「全选」快捷选项，支持一次全选/全清。面板外点击自动关闭。</li>
-                <li><strong>意向车系（<code>#carSeries</code>）：</strong>单选下拉，全部 / N7 / N6 / NX8 / 天籁鸿蒙。</li>
-                <li><strong>渠道名称（<code>#rChannel</code>）：</strong>单选下拉，全部 / R1 ~ R11。</li>
-                <li><strong>大项目输入框（<code>#projectName</code>）：</strong>支持键盘输入关键字模糊匹配，实时筛选候选项目名。</li>
-                <li><strong>查询按钮（蓝色 <code>#queryBtn</code>）：</strong>点击后触发全局数据联动刷新，所有看板图表根据当前筛选条件重新渲染。</li>
-                <li><strong>重置按钮（白底 <code>#resetBtn</code>）：</strong>将所有筛选项恢复为默认值（时间 → 近 30 天，其余 → 全部），并自动触发一次全量查询。</li>
+                <li><strong>时间快捷按钮（<code>.date-shortcuts</code>）：</strong>点击「近 7 天」「近 30 天」「近 90 天」任一按钮，高亮选中态并自动更新本分页筛选栏内的日期区间。点击「自定义」展示开始/结束日期输入框。</li>
+                <li><strong>线索等级多选下拉（<code>.custom-multi-select</code>）：</strong>展开面板默认全选 8 项，可逐项勾选/取消。面板内包含「全选」快捷选项，支持一次全选/全清。面板外点击自动关闭。</li>
+                <li><strong>渠道效果筛选：</strong>时间范围、意向车系、线索等级、渠道名称、大区、小区、门店、大项目。</li>
+                <li><strong>培育运营筛选：</strong>时间范围、意向车系、线索等级、大区、小区、门店、标签来源。</li>
+                <li><strong>查询按钮（蓝色 <code>.query-btn</code>）：</strong>点击后触发当前分页筛选反馈。</li>
+                <li><strong>重置按钮（白底 <code>.reset-btn</code>）：</strong>仅重置当前分页内的筛选栏，不影响另一个分页。</li>
             </ul>
 
             <h3 class="sub-title">默认值</h3>
             <ul class="item-list">
-                <li><strong>时间范围：</strong>默认选中「近 30 天」快捷按钮</li>
+                <li><strong>时间范围：</strong>默认选中「近 7 天」快捷按钮</li>
                 <li><strong>线索等级：</strong>默认全选（8项，显示「全选 (8项)」）</li>
                 <li><strong>其余所有筛选项：</strong>默认「全部」（不限制该维度）</li>
             </ul>
 
-            <h3 class="sub-title">当前筛选项（单行平铺）</h3>
+            <h3 class="sub-title">当前筛选项（按分页）</h3>
             <table class="flow-table">
-                <thead><tr><th>字段名</th><th>控件类型</th><th>ID</th><th>可选项 / 说明</th></tr></thead>
+                <thead><tr><th>分页</th><th>字段名</th><th>控件类型</th><th>可选项 / 说明</th></tr></thead>
                 <tbody>
                     <tr>
+                        <td>渠道效果 / 培育运营</td>
                         <td>时间范围</td>
                         <td>快捷按钮 + 自定义日期</td>
-                        <td><code>dateShortcuts</code></td>
-                        <td>近 7 天 / 近 30 天 / 近 90 天 / 自定义；选「自定义」时展示 <code>#customDateInputs</code>（开始/结束日期输入框 <code>startDate</code>、<code>endDate</code>）；默认激活「近 30 天」</td>
+                        <td>近 7 天 / 近 30 天 / 近 90 天 / 自定义；默认激活「近 7 天」</td>
                     </tr>
                     <tr>
+                        <td>渠道效果 / 培育运营</td>
                         <td>意向车系</td>
                         <td>下拉单选</td>
-                        <td><code>carSeries</code></td>
                         <td>全部 / N7 / N6 / NX8 / 天籁鸿蒙</td>
                     </tr>
                     <tr>
+                        <td>渠道效果 / 培育运营</td>
                         <td>线索等级</td>
                         <td>自定义多选下拉</td>
-                        <td><code>leadLevelMulti</code></td>
                         <td>默认全选 8 项，头部显示「全选 (8项)」或「已选 N 项」。下拉面板包含全选复选框 + H / A / B / C / F / L / E / 无效号码。点击面板外部自动关闭。</td>
                     </tr>
                     <tr>
+                        <td>渠道效果</td>
                         <td>渠道名称</td>
                         <td>下拉单选</td>
-                        <td><code>rChannel</code></td>
                         <td>全部 / R1 ~ R11（共 12 个选项）</td>
                     </tr>
                     <tr>
+                        <td>渠道效果</td>
                         <td>大项目</td>
                         <td>文本输入框</td>
-                        <td><code>projectName</code></td>
                         <td>支持关键字模糊匹配，placeholder「输入关键字搜索」，最小宽度 160px</td>
+                    </tr>
+                    <tr>
+                        <td>培育运营</td>
+                        <td>标签来源</td>
+                        <td>下拉单选</td>
+                        <td>全部 / 阿里标签匹配 / 智能体分析标签</td>
+                    </tr>
+                    <tr>
+                        <td>渠道效果 / 培育运营</td>
+                        <td>大区 / 小区 / 门店</td>
+                        <td>搜索输入框 + datalist</td>
+                        <td>支持按区域或门店名称搜索候选项</td>
                     </tr>
                 </tbody>
             </table>
@@ -697,29 +723,29 @@
             <h3 class="sub-title">查询 / 重置按钮</h3>
             <p style="color:#475569; font-size:0.95rem;">按钮位于筛选栏右侧（<code>.filter-actions</code>），内联对齐。</p>
             <ul class="item-list">
-                <li><strong>查询（蓝色，<code>#queryBtn</code>）：</strong>点击后触发全局数据联动刷新，各看板图表根据当前筛选条件重新渲染（指标卡数值浮动 ±5% 模拟更新）。</li>
-                <li><strong>重置（白底，<code>#resetBtn</code>）：</strong>将时间范围恢复至「近 30 天」激活态，关闭自定义日期区域，所有下拉框归「全部」，文本输入框清空。</li>
+                <li><strong>查询（蓝色，<code>.query-btn</code>）：</strong>点击后触发当前分页筛选反馈。</li>
+                <li><strong>重置（白底，<code>.reset-btn</code>）：</strong>将当前分页内时间范围恢复至「近 7 天」激活态，关闭自定义日期区域，所有下拉框归「全部」，文本输入框清空。</li>
             </ul>
         </section>
 
         <!-- ===================== 四、核心指标说明 ===================== -->
         <section class="section" id="section-metrics">
             <h2 class="section-title"><i class="fa-solid fa-gauge-high"></i>四、核心指标说明</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">位于筛选栏下方，以<strong>单行横向 Ribbon</strong> 视图展示 4 个分组、11 个核心 KPI，覆盖「触达 → 线索 → 用户分级 → 行为转化」全链路。容器类为 <code>.kpi-cards-section &gt; .kpi-group-row</code>，4 个分组 flex 排列，各组宽度按比例伸缩。</p>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">主分页标签位于页面内容顶部。每个分页内部维护独立的核心 KPI Ribbon，渠道效果聚焦拉新、通话和线索质量，培育运营聚焦画像覆盖、购车意向、转化和触达质量。容器类为 <code>.kpi-cards-section &gt; .kpi-group-row</code>，各分组 flex 排列，各组宽度按比例伸缩。</p>
 
             <div class="highlight-box">
-                <strong>布局结构：</strong>4 个 <code>.kpi-group-compact</code> 横向排列，每组有彩色左边框区分（蓝色=通话、紫色=线索、青色=用户分级、绿色=行为转化）。组内各指标以 <code>.kpi-metric-item</code> + 竖线分隔符 <code>.kpi-metric-divider</code> 并排展示，无需换行即可一屏展示全部 11 项指标。
+                <strong>布局结构：</strong>分页 Tab 在最上方；进入任一分页后，先展示该分页自己的 <code>.kpi-cards-section</code>，再展示分页筛选栏和业务图表。组内各指标以 <code>.kpi-metric-item</code> + 竖线分隔符 <code>.kpi-metric-divider</code> 并排展示。
             </div>
 
             <table class="flow-table">
-                <thead><tr><th>分组</th><th>指标名称</th><th>业务含义</th><th>展示特殊说明</th></tr></thead>
+                <thead><tr><th>分页</th><th>分组</th><th>指标名称</th><th>业务含义</th><th>展示特殊说明</th></tr></thead>
                 <tbody>
+                    <tr><td rowspan="11" style="font-weight:700; text-align:center;">渠道效果</td><td rowspan="2" style="font-weight:700; text-align:center;">线索统计<br><span style="font-size:11px;color:#7c3aed;">kpi-border-purple</span></td><td>新增线索</td><td>统计周期内新进入系统的线索总数</td><td>单位：条</td></tr>
+                    <tr><td>新增用户</td><td>去重后的新增线索用户数（手机号去重）</td><td>单位：人</td></tr>
+
                     <tr><td rowspan="3" style="font-weight:700; text-align:center;">通话统计<br><span style="font-size:11px;color:#3b82f6;">kpi-border-blue</span></td><td>通话总数</td><td>统计周期内所有外呼通话记录总条数</td><td>单位：通</td></tr>
                     <tr><td>接通总数</td><td>通话记录中状态为「接通」的数量</td><td>单位：通</td></tr>
                     <tr><td>平均时长</td><td>所有接通通话总时长 / 接通总数</td><td>单位：s</td></tr>
-
-                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">线索统计<br><span style="font-size:11px;color:#7c3aed;">kpi-border-purple</span></td><td>新增线索</td><td>统计周期内新进入系统的线索总数</td><td>单位：条</td></tr>
-                    <tr><td>新增用户</td><td>去重后的新增线索用户数（手机号去重）</td><td>单位：人</td></tr>
 
                     <tr><td rowspan="3" style="font-weight:700; text-align:center;">用户分级<br><span style="font-size:11px;color:#0891b2;">kpi-border-cyan</span></td><td>有效用户</td><td>线索级别 ≠ 无效号码的用户数</td><td>主值（人）+ 内联蓝色占比标注如 <code>(68%)</code></td></tr>
                     <tr><td>无效用户</td><td>线索级别 = 无效号码的用户数</td><td>主值（人）+ 内联灰色占比标注</td></tr>
@@ -728,11 +754,24 @@
                     <tr><td rowspan="3" style="font-weight:700; text-align:center;">行为转化<br><span style="font-size:11px;color:#059669;">kpi-border-green</span></td><td>到店用户</td><td>产生到店行为的去重用户数</td><td>主值（人）+ 内联绿色到店率</td></tr>
                     <tr><td>试驾用户</td><td>产生试驾行为的去重用户数</td><td>主值（人）+ 内联绿色试驾率</td></tr>
                     <tr><td>锁单用户</td><td>最终锁单购车的去重用户数</td><td>主值（人）+ 内联绿色锁单率</td></tr>
+
+                    <tr><td rowspan="9" style="font-weight:700; text-align:center;">培育运营</td><td rowspan="2" style="font-weight:700; text-align:center;">用户画像覆盖<br><span style="font-size:11px;color:#0891b2;">kpi-border-cyan</span></td><td>阿里标签匹配</td><td>具备阿里标签匹配结果的用户数</td><td>单位：人</td></tr>
+                    <tr><td>智能体标签</td><td>具备智能体分析标签的用户数</td><td>单位：人</td></tr>
+
+                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">购车意向<br><span style="font-size:11px;color:#7c3aed;">kpi-border-purple</span></td><td>明确意向</td><td>购车意愿明确的用户数</td><td>主值（人）+ 内联占比</td></tr>
+                    <tr><td>考虑中</td><td>处于考虑/纠结阶段的用户数</td><td>主值（人）+ 内联占比</td></tr>
+
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">培育转化<br><span style="font-size:11px;color:#059669;">kpi-border-green</span></td><td>到店用户</td><td>培育运营口径下产生到店行为的用户数</td><td>主值（人）+ 内联到店率</td></tr>
+                    <tr><td>试驾用户</td><td>培育运营口径下产生试驾行为的用户数</td><td>主值（人）+ 内联试驾率</td></tr>
+                    <tr><td>锁单用户</td><td>培育运营口径下最终锁单购车的用户数</td><td>主值（人）+ 内联锁单率</td></tr>
+
+                    <tr><td rowspan="2" style="font-weight:700; text-align:center;">触达质量<br><span style="font-size:11px;color:#3b82f6;">kpi-border-blue</span></td><td>无法建联</td><td>通话质量标签中无法建联用户数</td><td>单位：人</td></tr>
+                    <tr><td>抗拒点标签</td><td>抗拒点标签提及总量</td><td>单位：条</td></tr>
                 </tbody>
             </table>
 
             <div class="highlight-box" style="margin-top:1.5rem">
-                <strong>内联占比标注：</strong>用户分级和行为转化各指标的主值右侧以 <code>&lt;span style="font-size:10px"&gt;</code> 行内展示对应占比（如 <code>(68%)</code>），颜色编码：有效=蓝色、无效=灰色、H/A/B=红色、行为转化=绿色。
+                <strong>内联占比标注：</strong>用户分级、购车意向和行为转化类指标的主值右侧以 <code>&lt;span style="font-size:10px"&gt;</code> 行内展示对应占比（如 <code>(68%)</code>）。
             </div>
 
             <div class="highlight-box" style="margin-top:1rem">
@@ -773,9 +812,10 @@
                 <div class="chart-card-title"><i class="fa-solid fa-chart-column"></i> 核心构成与趋势</div>
                 <ul class="item-list">
                     <li><strong>意向车系、有效占比、线索级别：</strong> 采用环形图/饼图呈现大盘各分类比重，直观对比主力车系与潜客意向层级。</li>
-                    <li><strong>区域投放效果：</strong> 采用横向双向条形图，左侧统计进线量，右侧统计建卡率，对比不同区域的转化效率。支持 Top 10 / Top 20 切换按钮。</li>
-                    <li><strong>渠道线索质量：</strong> 采用多维度堆叠柱状图，直观展示每个子渠道在 H/A/B/C 等级的线索产出贡献。</li>
-                    <li><strong>大项目 & 排期线索质量排名：</strong> 采用双列表布局并排展示，包含排名标签、项目名、总进线量及各意向级别的人数堆叠进度条。</li>
+                    <li><strong>区域投放效果：</strong> 采用横向双向条形图，左侧统计进线量，右侧统计建卡率，对比不同区域的转化效率。支持 Top 10 / Top 20 切换按钮。<span class="drill-tag"><i class="fa-solid fa-arrow-down"></i> 支持下钻</span> 点击城市行可打开<strong>城市专营店意向等级分布</strong>弹窗。</li>
+                    <li><strong>渠道线索质量：</strong> 采用多维度堆叠柱状图，直观展示每个子渠道在 H/A/B/C 等级的线索产出贡献。<span class="drill-tag"><i class="fa-solid fa-arrow-down"></i> 支持下钻</span> 点击渠道柱状条可打开<strong>大区渠道质量分布</strong>弹窗。</li>
+                    <li><strong>大项目线索质量排名：</strong> 采用排名列表展示 Top 10 项目，支持 HAB 占比/到店率/试驾率/锁单率维度切换。默认按 HAB 占比倒序排列。<span class="drill-tag"><i class="fa-solid fa-arrow-down"></i> 支持行级下钻</span> 点击项目行可打开<strong>大项目线索质量分布</strong>弹窗（大区→小区→门店三级 Tab）。右上角"查看全部"打开全量排行榜。</li>
+                    <li><strong>媒体质量排名：</strong> 采用排名列表展示 Top 10 媒体，支持 HAB 占比/到店率/试驾率/锁单率维度切换。默认按 HAB 占比倒序排列。<span class="drill-tag"><i class="fa-solid fa-arrow-down"></i> 支持行级下钻</span> 点击媒体行可打开<strong>媒体质量分布</strong>弹窗（大区→小区→门店三级 Tab）。右上角"查看全部"打开全量排行榜。</li>
                 </ul>
             </div>
 
@@ -786,12 +826,44 @@
                 <li>切换仅改变可见行数，不重新请求数据。</li>
             </ul>
 
-            <h3 class="sub-title">大项目 / 排期排名指标切换</h3>
+            <h3 class="sub-title">大项目 / 媒体质量排名指标切换</h3>
             <ul class="item-list">
                 <li>两个排名组件各有一组维度切换按钮（<code>#rankMetricTabs</code> / <code>#scheduleMetricTabs</code>），支持切换：<strong>HAB 占比</strong> / <strong>到店率</strong> / <strong>试驾率</strong> / <strong>锁单率</strong>。</li>
                 <li>切换时 HAB 维度采用 H/A/B/Other 堆叠进度条展示，其余维度采用单色进度条。</li>
                 <li>切换时列表先 opacity 归零 → 渲染新数据 → opacity 恢复，实现 300ms 过渡动画。</li>
-                <li>每个列表展示 Top 10。</li>
+                <li>每个列表展示 Top 10，默认按 HAB 占比<strong>倒序排列</strong>（数值最高排最前）。</li>
+                <li><strong>行级下钻交互：</strong> 带 <code>projectCode</code> / <code>scheduleCode</code> 的排名行可点击（光标变为 pointer，hover 时蓝色浅底高亮），点击后打开对应的项目/媒体质量下钻弹窗。<span class="badge green">V2.4 新增</span></li>
+                <li><strong>"查看全部"按钮：</strong> 位于排名组件头部，点击触发 <code>openFullRanking('project')</code> 或 <code>openFullRanking('schedule')</code>，打开全量排行榜抽屉（30 行数据），全量排名中的行同样支持点击下钻。</li>
+            </ul>
+
+            <h3 class="sub-title">区域投放效果 - 城市专营店下钻</h3>
+            <ul class="item-list">
+                <li><strong>触发方式：</strong> 点击区域投放效果柱状图中的城市行，调用 <code>showCityStoreModal(cityName)</code>。</li>
+                <li><strong>弹窗结构（cityStoreModal）：</strong>
+                    <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                        <li>标题：<code>[城市名] 专营店意向等级分布</code></li>
+                        <li>一级 Tab：按小区分组（如「上海一区」「上海二区」「上海三区」等），默认显示第一个小区</li>
+                        <li>门店卡片：每个小区下的各专营店以卡片形式展示，包含店名、H/A/B 各等级人数及进度条、线索总数</li>
+                        <li>颜色编码：H=深蓝（#1e40af）、A=中蓝（#3b82f6）、B=浅蓝（#93c5fd）</li>
+                    </ul>
+                </li>
+                <li><strong>关闭方式：</strong> 点击 × 按钮 或 点击遮罩层，调用 <code>closeCityStoreModal()</code>。</li>
+            </ul>
+
+            <h3 class="sub-title">渠道线索质量 - 大区渠道质量分布下钻</h3>
+            <ul class="item-list">
+                <li><strong>触发方式：</strong> 点击渠道线索质量堆叠柱状图中的渠道柱状条（匹配 <code>/^R\d+$/</code>），调用 <code>showRegionChannelModal(regionCode)</code>。</li>
+                <li><strong>弹窗结构（regionChannelModal）：</strong>
+                    <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                        <li>标题：<code>大区渠道质量分布</code></li>
+                        <li><strong>一级 Tab（大区）：</strong>全部 / R1(华东) / R2(华南) / R3(华北) / R4(华中) / R5(西部) / R6(东北) / R7(西南) / R8(西北)。默认显示触发来源的大区。</li>
+                        <li><strong>二级 Tab（小区）：</strong>每个大区下包含多个小区，Tab 列表最前面有「<strong>全部</strong>」按钮（默认激活），显示该大区所有小区的门店汇总。选择具体小区后仅显示该小区门店。</li>
+                        <li>汇总栏：黄色背景，显示当前大区/小区的门店总数、各等级（H/A/B/C/F/L/E/无效）汇总数及占比。</li>
+                        <li>门店卡片：每张卡片显示门店名称、H/A/B/C/F/L/E/无效各等级的人数及彩色进度条、线索总数、HAB 占比。</li>
+                    </ul>
+                </li>
+                <li><strong>Tab 事件隔离：</strong> 二级小区 Tab 切换事件限定在 <code>#regionChannelModalContent</code> 容器范围内，避免与其他弹窗 Tab 冲突。</li>
+                <li><strong>关闭方式：</strong> 点击 × 按钮 或 点击遮罩层，调用 <code>closeRegionChannelModal()</code>。</li>
             </ul>
         </section>
 
@@ -801,25 +873,25 @@
             <p style="color:#475569; font-size:0.95rem; margin-bottom:1.5rem;">页面采用<strong>单页垂直扁平化展开</strong>结构，取消了早期的阶段性子 Tab，全景式展示培育转化漏斗详情。</p>
 
             <div class="chart-card">
-                <div class="chart-card-title"><i class="fa-solid fa-user-gear"></i> 模块 1：用户基础属性</div>
+                <div class="chart-card-title"><i class="fa-solid fa-user-gear"></i> 模块 1：用户基础属性（阿里标签匹配）</div>
                 <ul class="item-list">
-                    <li><strong>卡片构成：</strong> 第一行 4 张卡片（年龄购车分布 / 收入水平构成 / 家庭构成分布 / 用车场景分布），第二行 2 张卡片（用车场景分布补充 / 品牌认知基础），采用 <code>.kpi-row</code> 横向弹性布局。</li>
+                    <li><strong>卡片构成：</strong> 3 张卡片（年龄购车分布 / 收入水平构成 / 家庭构成分布），采用 <code>.kpi-row</code> 横向弹性布局。</li>
                     <li><strong>年龄购车分布：</strong> 堆叠柱状图，X 轴为年龄段（18-25岁 / 25-35岁 / 35岁+），Y 轴为高度代表人数。每组柱子内分段显示男（蓝色 #3b82f6）/ 女（浅蓝 #93c5fd）/ 未知（灰色 #d1d5db）占比。悬停显示 Tooltip 展示具体数值和人数。</li>
                     <li><strong>收入水平构成：</strong> 环形饼图，中心显示用户总数，环形分段展示「富裕 25%」「一般 45%」「未提及 30%」三类，下方图例列出颜色标识和人数。</li>
                     <li><strong>家庭构成分布：</strong> 环形饼图，中心显示用户总数，环形分段展示「1至3人 55%」「4至5人 30%」「5人以上 15%」三类。</li>
-                    <li><strong>用车场景分布：</strong> 横向进度条图，按用户数降序排列（城市通勤 85% / 家庭出行 72% / 自驾旅行 58% / 商务接待 42% / 亲子出行 35% / 物流运输 15%），每条左侧标签 + 中间进度条 + 右侧百分比和人数。</li>
-                    <li><strong>品牌认知基础：</strong> 梯形漏斗图，从上到下递减展示「日产粉丝 15%」「基本了解 35%」「知道但不太了解 30%」「完全不了解 20%」，体现品牌认知深度递进关系。</li>
                     <li><strong>交互说明：</strong> 各卡片高度自适应，图表数据紧密关联用户自然属性，为后续沟通策略提供精准画像指引。年龄分布图悬停显示 Tooltip。</li>
                 </ul>
             </div>
 
             <div class="chart-card">
-                <div class="chart-card-title"><i class="fa-solid fa-car-side"></i> 模块 2：购车意向分布 (Intent)</div>
+                <div class="chart-card-title"><i class="fa-solid fa-car-side"></i> 模块 2：购车情况分析（智能体分析标签） (Intent)</div>
                 <ul class="item-list">
-                    <li><strong>卡片构成：</strong> 3 张卡片横向并排展示（购车意向分布 / 购买类型分布 / 计划购车分布），统一高度 160px。</li>
-                    <li><strong>购车意向分布：</strong> 横向进度条，3 个分类：考虑中 45% / 明确 42% / 无意向 13%。考虑中和明确使用蓝色系，无意向使用浅蓝色区分。</li>
+                    <li><strong>卡片构成：</strong> 第一行 3 张卡片横向并排展示（购车情况分析（智能体分析标签） / 购买类型分布 / 计划购车分布），统一高度 160px；第二行 2 张卡片展示（用车场景分布 / 品牌认知基础）。</li>
+                    <li><strong>购车情况分析（智能体分析标签）：</strong> 横向进度条，3 个分类：考虑中 45% / 明确 42% / 无意向 13%。考虑中和明确使用蓝色系，无意向使用浅蓝色区分。</li>
                     <li><strong>购买类型分布：</strong> 横向进度条，4 个分类：首购 52% / 换购 28% / 增购 15% / 未知 5%，按购买意愿从强到弱排列。</li>
                     <li><strong>计划购车分布：</strong> 横向进度条，5 个时间维度：一月内 35% / 三个月内 30% / 三月后 20% / 计划7天 10% / 未知 5%，按购车紧迫度从高到低排列。</li>
+                    <li><strong>用车场景分布：</strong> 横向进度条图，按用户数降序排列（城市通勤 85% / 家庭出行 72% / 自驾旅行 58% / 商务接待 42% / 亲子出行 35% / 物流运输 15%），每条左侧标签 + 中间进度条 + 右侧百分比和人数。</li>
+                    <li><strong>品牌认知基础：</strong> 梯形漏斗图，从上到下递减展示「日产粉丝 15%」「基本了解 35%」「知道但不太了解 30%」「完全不了解 20%」，体现品牌认知深度递进关系。</li>
                 </ul>
             </div>
 
@@ -844,16 +916,14 @@
                 <div class="chart-card-title"><i class="fa-solid fa-ranking-star"></i> 模块 4：意向与阻力榜单 (Ranking)</div>
                 <ul class="item-list">
                     <li><strong>结构布局：</strong> 左右 1:1 并排展示，每张卡片右上角有「查看全部」按钮，点击后打开全量排行榜弹窗。</li>
-                    <li><strong>质量标签排行榜：</strong> 展示原因类型（休眠失联/接通有效/再次联系/已接无效/空号停机等）、具体原因标签、用户数、占比、环比。默认展示 Top 10。</li>
+                    <li><strong>通话质量标签排行榜：</strong> 展示原因类型（无效号码 / 无法建联 / 有效号码）、具体原因标签、用户数、占比、环比。具体原因标签覆盖空号、停机、黑名单过滤、线路拦截、秘书台号码、语音信箱号、手机助理号码、休眠失联、休眠未购、信号差/无有效交互、处于考虑/纠结期、正在开车/忙碌、其他琐碎沟通/未触达核心、接通后挂断、转秘书台、语音信箱、手机助理、已购车、强烈抗议、确认有购车意向、购车意愿明确、购车意愿不明确、意向不明、关机、忙线（占线）、无人接听、不在服务区、无法接通、拒接、欠费。默认展示 Top 10。</li>
                     <li><strong>抗拒点标签排行榜：</strong> 展示回访结果（战败/休眠未购/其他）、具体原因（如「价格因素」「资金不足」「半年内不购车」）、用户数、占比、环比。默认展示 Top 10。</li>
                     <li><strong>排名列样式：</strong> 前 3 名使用金银铜色徽章（<code>.rank-1</code> 金色 / <code>.rank-2</code> 银色 / <code>.rank-3</code> 铜色），其余灰色。</li>
                     <li><strong>原因类型/回访结果标签样式：</strong>
                         <ul style="margin-left: 1rem; margin-top: 0.5rem;">
-                            <li>休眠失联 = 蓝色（#eff6ff / #1e40af）</li>
-                            <li>接通有效 = 绿色（#f0fdf4 / #166534）</li>
-                            <li>再次联系 = 橙色（#fff7ed / #9a3412）</li>
-                            <li>已接无效 = 粉色（#fdf2f8 / #9d174d）</li>
-                            <li>空号/停机 = 灰色（#f3f4f6 / #374151）</li>
+                            <li>无法建联 = 蓝色（#eff6ff / #1e40af）</li>
+                            <li>有效号码 = 绿色（#f0fdf4 / #166534）</li>
+                            <li>无效号码 = 灰色（#f3f4f6 / #374151）</li>
                             <li>战败 = 红色（#fef2f2 / #dc2626）</li>
                             <li>休眠未购 = 紫色（#f5f3ff / #7c3aed）</li>
                         </ul>
@@ -864,49 +934,286 @@
                 </ul>
             </div>
 
-            <h3 class="sub-title">弹窗系统说明</h3>
-
-            <!-- 关注点二级下钻弹窗 -->
-            <div class="chart-card">
-                <div class="chart-card-title"><i class="fa-solid fa-magnifying-glass-chart"></i> 关注点二级下钻弹窗（focusDrillDownModal）</div>
-                <ul class="item-list">
-                    <li><strong>触发方式：</strong> 点击「整体关注排序」任意条形 或 「渠道关注点热力图」任意单元格，调用 <code>openFocusDrillDown(category)</code>，传入关注维度名称。</li>
-                    <li><strong>弹窗结构：</strong>
-                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
-                            <li>标题：<code>[维度名] 二级分布 - 提及率排名</code>（如「[产品与配置] 二级分布 - 提及率排名」）</li>
-                            <li>内容区：动态渲染该维度下的二级标签列表，每行显示标签名 + 进度条 + 提及率和人数</li>
-                        </ul>
-                    </li>
-                    <li><strong>数据来源：</strong> <code>focusSubTagsData[category]</code> 对象，存储各维度二级标签的提及率数据。</li>
-                    <li><strong>关闭方式：</strong> 点击 × 按钮 或 点击弹窗遮罩层，调用 <code>closeFocusModal()</code>。</li>
-                </ul>
-            </div>
-
-            <!-- 全量排行榜弹窗 -->
-            <div class="chart-card">
-                <div class="chart-card-title"><i class="fa-solid fa-list-ol"></i> 全量排行榜弹窗（rankingModal）</div>
-                <ul class="item-list">
-                    <li><strong>触发方式：</strong> 点击质量标签排行榜或抗拒点标签排行榜卡片右上角的「查看全部」按钮，调用 <code>openFullRanking('quality')</code> 或 <code>openFullRanking('resistance')</code>。</li>
-                    <li><strong>弹窗结构：</strong>
-                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
-                            <li>标题：<code>质量标签全量排行榜</code> 或 <code>抗拒点标签全量排行榜</code></li>
-                            <li>表头行（<code>rankingModalThead</code>）：排名 / 原因类型 / 具体原因标签 / 用户数 / 占比 / 环比</li>
-                            <li>表体（<code>rankingModalTableBody</code>）：动态渲染全量数据行</li>
-                        </ul>
-                    </li>
-                    <li><strong>数据来源：</strong> <code>qualityFullData</code>（15 条完整数据）和 <code>resistanceFullData</code>（12 条完整数据）。</li>
-                    <li><strong>关闭方式：</strong> 点击 × 按钮 或 点击弹窗遮罩层，调用 <code>closeRankingModal()</code>。</li>
-                </ul>
-            </div>
-
             <div class="highlight-box" style="margin-top: 1rem;">
                 <strong>版本演进备注：</strong> 新版去除了旧版的五阶段叙事切换点击负担，升级为统一筛选、全局联动、垂直下拉浏览的全景洞察模式，同时将线索等级筛选器从第二排升级为第一排的多选结构，体验更原生流畅。
             </div>
         </section>
 
+        <!-- ===================== 六、弹窗系统总览 ===================== -->
+        <section class="section" id="section-modals">
+            <h2 class="section-title"><i class="fa-solid fa-window-restore"></i>六、弹窗系统总览</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1rem;">页面共包含 <strong>6 个抽屉式弹窗</strong>（Drawer Modal），均从页面右侧滑入展示。所有弹窗支持点击遮罩层或 × 按钮关闭。</p>
+
+            <table class="flow-table">
+                <thead><tr><th>弹窗 ID</th><th>名称</th><th>所属模块</th><th>触发方式</th><th>层级(z-index)</th></tr></thead>
+                <tbody>
+                    <tr><td><code>focusDrillDownModal</code></td><td>关注点二级下钻</td><td>培育运营</td><td>点击关注点条形图/热力图</td><td>1000</td></tr>
+                    <tr><td><code>cityStoreModal</code></td><td>城市专营店分布</td><td>渠道效果</td><td>点击区域投放城市行</td><td>1000</td></tr>
+                    <tr><td><code>regionChannelModal</code></td><td>大区渠道质量分布</td><td>渠道效果</td><td>点击渠道质量柱状条</td><td>1000</td></tr>
+                    <tr><td><code>projectDrillModal</code></td><td>大项目线索质量分布</td><td>渠道效果</td><td>点击项目排名行</td><td>1100</td></tr>
+                    <tr><td><code>scheduleDrillModal</code></td><td>媒体质量分布</td><td>渠道效果</td><td>点击媒体质量排名行</td><td>1100</td></tr>
+                    <tr><td><code>rankingModal</code></td><td>全量排行榜</td><td>全局</td><td>点击"查看全部"按钮</td><td>1000</td></tr>
+                </tbody>
+            </table>
+
+            <div class="highlight-box">
+                <strong>层级叠加规则：</strong>项目/媒体质量下钻弹窗（z-index: 1100）可叠加在全量排行榜（z-index: 1000）之上显示，支持从全量排名中直接点击行触发下钻。其余弹窗层级相同（1000），同一时间仅显示一个。
+            </div>
+
+            <div class="highlight-box" style="margin-top:0.5rem;">
+                <strong>通用关闭机制：</strong>所有弹窗均支持两种关闭方式：①点击右上角 × 按钮；②点击弹窗外部遮罩层。遮罩层点击事件通过 document 级事件委托统一处理。
+            </div>
+        </section>
+
+        <!-- ===================== 6-1 关注点二级下钻弹窗 ===================== -->
+        <section class="section" id="modal-focus">
+            <h2 class="section-title"><i class="fa-solid fa-magnifying-glass-chart"></i>六 · 1 关注点二级下钻弹窗（focusDrillDownModal）</h2>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-bullseye"></i> 触发方式</div>
+                <ul class="item-list">
+                    <li>点击「整体关注排序」任意条形 → 调用 <code>openFocusDrillDown(category)</code></li>
+                    <li>点击「渠道关注点热力图」任意单元格 → 调用 <code>openFocusDrillDown(category)</code>，传入当前关注维度</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-sitemap"></i> 弹窗结构</div>
+                <ul class="item-list">
+                    <li><strong>标题：</strong><code>[维度名] 二级分布 - 提及率排名</code>（如「产品与配置 二级分布 - 提及率排名」）</li>
+                    <li><strong>内容区：</strong>动态渲染该维度下的二级标签列表，每行显示标签名 + 进度条 + 提及率和人数</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-database"></i> 数据来源</div>
+                <ul class="item-list">
+                    <li><code>focusSubTagsData[category]</code> 对象，存储各维度二级标签的提及率数据</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-xmark"></i> 关闭方式</div>
+                <ul class="item-list">
+                    <li>点击 × 按钮 或 点击遮罩层，调用 <code>closeFocusModal()</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===================== 6-2 城市专营店弹窗 ===================== -->
+        <section class="section" id="modal-citystore">
+            <h2 class="section-title"><i class="fa-solid fa-store"></i>六 · 2 城市专营店意向等级分布弹窗（cityStoreModal）<span class="badge green">V2.4 新增</span></h2>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-bullseye"></i> 触发方式</div>
+                <ul class="item-list">
+                    <li>点击「区域投放效果」柱状图中的城市行 → 调用 <code>showCityStoreModal(cityName)</code></li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-sitemap"></i> 弹窗结构（城市 → 小区 → 门店）</div>
+                <ul class="item-list">
+                    <li><strong>标题：</strong><code>[城市名] 专营店意向等级分布</code></li>
+                    <li><strong>一级 Tab：</strong>按小区分组（如「上海一区」「上海二区」「上海三区」），默认显示第一个小区</li>
+                    <li><strong>门店卡片：</strong>每个小区下以卡片形式展示各专营店
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li>门店名称</li>
+                            <li>H/A/B 各等级人数及彩色进度条（H=深蓝 #1e40af、A=中蓝 #3b82f6、B=浅蓝 #93c5fd）</li>
+                            <li>线索总数</li>
+                        </ul>
+                    </li>
+                    <li><strong>Tab 切换：</strong>通过 <code>initAreaTabSwitch()</code> 初始化，限定在 <code>#cityStoreModalContent</code> 范围内</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-xmark"></i> 关闭方式</div>
+                <ul class="item-list">
+                    <li>点击 × 按钮 或 点击遮罩层，调用 <code>closeCityStoreModal()</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===================== 6-3 大区渠道质量分布弹窗 ===================== -->
+        <section class="section" id="modal-regionchannel">
+            <h2 class="section-title"><i class="fa-solid fa-map-location-dot"></i>六 · 3 大区渠道质量分布弹窗（regionChannelModal）<span class="badge green">V2.4 新增</span></h2>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-bullseye"></i> 触发方式</div>
+                <ul class="item-list">
+                    <li>点击「渠道线索质量」堆叠柱状图中的渠道柱状条（匹配 <code>/^R\d+$/</code>）→ 调用 <code>showRegionChannelModal(regionCode)</code></li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-sitemap"></i> 弹窗结构（大区 → 小区 → 门店，三级 Tab）</div>
+                <ul class="item-list">
+                    <li><strong>标题：</strong><code>大区渠道质量分布</code></li>
+                    <li><strong>一级 Tab（大区）：</strong>全部 / R1(华东) / R2(华南) / R3(华北) / R4(华中) / R5(西部) / R6(东北) / R7(西南) / R8(西北)。默认激活触发来源的大区。</li>
+                    <li><strong>二级 Tab（小区）：</strong>每个大区下包含多个小区。Tab 列表最前面有「<strong>全部</strong>」按钮（默认激活），显示该大区所有小区的门店。选择具体小区后仅显示该小区门店。<span class="badge">V2.4 新增"全部"Tab</span></li>
+                    <li><strong>汇总栏：</strong>黄色背景，显示当前大区/小区的门店总数、H/A/B/C/F/L/E/无效各等级汇总数、合计线索数及 HAB 占比。</li>
+                    <li><strong>门店卡片：</strong>每张卡片包含门店名称、8 个意向等级（H/A/B/C/F/L/E/无效）的人数及彩色进度条、线索总数、HAB 占比。</li>
+                    <li><strong>颜色编码：</strong>H=深蓝、A=中蓝、B=浅蓝、C=绿、F=橙、L=灰、E=浅灰、无效=红色</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-code"></i> 关键技术实现</div>
+                <ul class="item-list">
+                    <li><strong>Tab 事件隔离：</strong><code>initRegionTabSwitch()</code> 限定在 <code>#regionChannelModalContent</code> 容器范围内，避免与其他弹窗 Tab 冲突</li>
+                    <li><strong>汇总计算：</strong><code>calculateRegionTotal(regionData)</code> 计算指定大区/小区的各等级汇总</li>
+                    <li><strong>门店分组：</strong><code>groupStoresByRegion(stores)</code> 将门店按大区+小区两级分组</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-xmark"></i> 关闭方式</div>
+                <ul class="item-list">
+                    <li>点击 × 按钮 或 点击遮罩层，调用 <code>closeRegionChannelModal()</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===================== 6-4 项目/媒体质量下钻弹窗 ===================== -->
+        <section class="section" id="modal-projectdrill">
+            <h2 class="section-title"><i class="fa-solid fa-diagram-project"></i>六 · 4 大项目/媒体质量分布下钻弹窗<span class="badge green">V2.4 新增</span></h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1.5rem;">项目下钻和媒体质量下钻弹窗采用相同的三级 Tab 结构，分别对应 <code>projectDrillModal</code> 和 <code>scheduleDrillModal</code>，结构一致。</p>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-bullseye"></i> 触发方式</div>
+                <ul class="item-list">
+                    <li><strong>项目下钻：</strong>点击大项目线索质量排名中带 <code>projectCode</code> 的行 → 事件委托匹配 <code>.project-bar-item[data-project]</code> → 调用 <code>showProjectDrillModal(projectCode)</code></li>
+                    <li><strong>媒体质量下钻：</strong>点击媒体质量排名中带 <code>scheduleCode</code> 的行 → 事件委托匹配 <code>.project-bar-item[data-schedule]</code> → 调用 <code>showScheduleDrillModal(scheduleCode)</code></li>
+                    <li><strong>从全量排名触发：</strong>全量大项目/媒体排行榜中的行同样带 <code>project-bar-item</code> 类和对应 data 属性，点击行为一致</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-sitemap"></i> 弹窗结构（大区 → 小区 → 门店，三级 Tab）</div>
+                <ul class="item-list">
+                    <li><strong>标题：</strong>动态显示项目/媒体名称（如「2024夏季大促-R4核心运营项目」或「抖音信息流-0501-R4核心排期」）</li>
+                    <li><strong>全局汇总栏：</strong>弹窗顶部显示该项目/媒体的所有大区门店总数、各等级汇总、合计线索数及 HAB 占比</li>
+                    <li><strong>一级 Tab（大区）：</strong>「全部」+ 各大区名称（如华东大区、华南大区、华中大区等）。默认激活"全部"，展示所有大区门店。选择具体大区后显示该大区数据。</li>
+                    <li><strong>二级 Tab（小区）：</strong>每个大区下包含多个小区，Tab 列表最前面有「<strong>全部</strong>」按钮（默认激活），显示该大区所有小区的门店。选择具体小区后仅显示该小区门店。</li>
+                    <li><strong>门店卡片：</strong>使用 <code>generateStoreCard(store, areaLabel)</code> 统一生成，包含门店名称、H/A/B/C/F/L/E/无效各等级人数及进度条、线索总数、HAB 占比。</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-database"></i> 数据来源</div>
+                <ul class="item-list">
+                    <li><strong>项目下钻：</strong><code>projectDrillData[projectCode]</code> — 19 个项目的下钻数据，结构为 <code>{ projectName, channels: { 大区: { 小区: [门店数组] } } }</code></li>
+                    <li><strong>媒体质量下钻：</strong><code>scheduleDrillData[scheduleCode]</code> — 10 个媒体的下钻数据，结构同上</li>
+                    <li><strong>项目名称映射（全量排名用）：</strong><code>projectCodeMap</code> 将项目全名映射到 projectCode（6 项）</li>
+                    <li><strong>媒体名称映射（全量排名用）：</strong><code>scheduleCodeMap</code> 将媒体全名映射到 scheduleCode（6 项）</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-code"></i> 关键技术实现</div>
+                <ul class="item-list">
+                    <li><strong>通用渲染函数：</strong><code>renderDrillContent(channels)</code> — 媒体质量下钻复用此函数渲染大区→小区→门店结构</li>
+                    <li><strong>通用门店卡片：</strong><code>generateStoreCard(store, areaLabel)</code> — 项目和媒体质量下钻共享门店卡片 HTML 生成</li>
+                    <li><strong>Tab 切换：</strong>
+                        <ul style="margin-left: 1rem; margin-top: 0.5rem;">
+                            <li>项目下钻：<code>initProjectTabSwitch()</code> 限定在 <code>#projectDrillModalContent</code></li>
+                            <li>媒体质量下钻：<code>initDrillTabSwitch('#scheduleDrillModalContent')</code> 通用函数</li>
+                        </ul>
+                    </li>
+                    <li><strong>层级叠加：</strong>z-index 设为 1100（高于 rankingModal 的 1000），确保从全量排名打开时正确叠加显示</li>
+                    <li><strong>Hover 样式：</strong>排名行 hover 时显示蓝色浅底（<code>#f0f5ff</code>），提示可点击</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-xmark"></i> 关闭方式</div>
+                <ul class="item-list">
+                    <li><strong>项目下钻：</strong>点击 × 按钮 或 点击遮罩层，调用 <code>closeProjectDrillModal()</code></li>
+                    <li><strong>媒体质量下钻：</strong>点击 × 按钮 或 点击遮罩层，调用 <code>closeScheduleDrillModal()</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ===================== 6-5 全量排行榜弹窗 ===================== -->
+        <section class="section" id="modal-fullranking">
+            <h2 class="section-title"><i class="fa-solid fa-list-ol"></i>六 · 5 全量排行榜弹窗（rankingModal）</h2>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1.5rem;">全量排行榜支持 <strong>4 种类型</strong>，通过 <code>openFullRanking(type)</code> 统一入口打开，不同类型展示不同的表头和数据列。</p>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-table-columns"></i> 四种类型对比</div>
+                <table class="flow-table">
+                    <thead><tr><th>type 参数</th><th>标题</th><th>数据列</th><th>数据来源</th><th>支持行级下钻</th></tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><code>'quality'</code></td>
+                            <td>通话质量标签全量排行榜</td>
+                            <td>排名 / 原因类型 / 具体原因标签 / 用户数 / 占比 / 环比</td>
+                            <td><code>qualityFullData</code>（15 条）</td>
+                            <td>否</td>
+                        </tr>
+                        <tr>
+                            <td><code>'resistance'</code></td>
+                            <td>抗拒点标签全量排行榜</td>
+                            <td>排名 / 回访结果 / 具体原因 / 用户数 / 占比 / 环比</td>
+                            <td><code>resistanceFullData</code>（12 条）</td>
+                            <td>否</td>
+                        </tr>
+                        <tr>
+                            <td><code>'project'</code></td>
+                            <td>全量大项目线索质量排名</td>
+                            <td>排名 / 项目名称 / HAB占比 / 到店率 / 试驾率 / 锁单率</td>
+                            <td>动态生成 30 行</td>
+                            <td><span class="badge green">是</span> 前 6 个项目名可点击下钻</td>
+                        </tr>
+                        <tr>
+                            <td><code>'schedule'</code></td>
+                            <td>全量媒体质量排名</td>
+                            <td>排名 / 媒体名称 / HAB占比 / 到店率 / 试驾率 / 锁单率</td>
+                            <td>动态生成 30 行</td>
+                            <td><span class="badge green">是</span> 前 6 个媒体名可点击下钻</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-bullseye"></i> 触发方式</div>
+                <ul class="item-list">
+                    <li>通话质量标签排行榜卡片右上角「查看全部」→ <code>openFullRanking('quality')</code></li>
+                    <li>抗拒点标签排行榜卡片右上角「查看全部」→ <code>openFullRanking('resistance')</code></li>
+                    <li>大项目线索质量排名组件「查看全部」→ <code>openFullRanking('project')</code></li>
+                    <li>媒体质量排名组件「查看全部」→ <code>openFullRanking('schedule')</code></li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-arrow-right-from-bracket"></i> 下钻联动</div>
+                <ul class="item-list">
+                    <li>全量大项目排名中带 <code>projectCode</code> 的行可点击，触发 <code>showProjectDrillModal(projectCode)</code>，打开项目下钻弹窗（z-index 1100 叠加在 rankingModal 之上）</li>
+                    <li>全量媒体质量排名中带 <code>scheduleCode</code> 的行可点击，触发 <code>showScheduleDrillModal(scheduleCode)</code>，打开媒体质量下钻弹窗</li>
+                    <li>名称映射：通过 <code>projectCodeMap</code>（6 项）和 <code>scheduleCodeMap</code>（6 项）将全名映射到代码</li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-ruler-combined"></i> 页边距设置</div>
+                <ul class="item-list">
+                    <li>所有 4 种类型全量排行榜弹窗的 <code>drawer-body</code> 统一设置 <code>padding: 0 60px</code>（左右各 60px 空白）<span class="badge green">V2.4</span></li>
+                </ul>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-card-title"><i class="fa-solid fa-xmark"></i> 关闭方式</div>
+                <ul class="item-list">
+                    <li>点击 × 按钮 或 点击遮罩层，调用 <code>closeRankingModal()</code></li>
+                </ul>
+            </div>
+        </section>
+
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V2.4 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-05-14</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V2.4 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-05-21</p>
         </div>
 
     </main>

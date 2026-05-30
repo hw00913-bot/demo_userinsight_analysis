@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>产品原型演示</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -31,7 +30,6 @@
 
         .nav-content {
             width: 100%;
-            max-width: none;
             margin: 0;
             padding: 0 24px;
             display: flex;
@@ -41,7 +39,7 @@
 
         .logo {
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 700;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             background-clip: text;
@@ -58,6 +56,10 @@
             margin-left: 20px;
         }
 
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+
         .tab-btn {
             padding: 14px 20px;
             background: none;
@@ -68,9 +70,6 @@
             transition: all 0.2s;
             white-space: nowrap;
             border-bottom: 3px solid transparent;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
         .tab-btn.active {
@@ -84,19 +83,9 @@
             background: #f8fafc;
         }
 
-        .tab-btn .lock-icon {
-            font-size: 11px;
-            opacity: 0.5;
-        }
-
-        .tab-btn.unlocked .lock-icon {
-            opacity: 0;
-        }
-
         .content-area {
             flex: 1;
             width: 100%;
-            max-width: none;
             padding: 12px;
             display: flex;
             flex-direction: column;
@@ -122,172 +111,6 @@
             flex-shrink: 0;
         }
 
-        .tabs::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* ===== 密码弹窗 ===== */
-        .pwd-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.55);
-            backdrop-filter: blur(4px);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .pwd-overlay.show {
-            display: flex;
-        }
-
-        .pwd-card {
-            background: white;
-            border-radius: 16px;
-            padding: 40px 36px 32px;
-            width: 360px;
-            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        @keyframes popIn {
-            from {
-                transform: scale(0.88);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .pwd-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 24px;
-            color: white;
-        }
-
-        .pwd-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 6px;
-        }
-
-        .pwd-desc {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-bottom: 24px;
-        }
-
-        .pwd-input-wrap {
-            position: relative;
-            margin-bottom: 12px;
-        }
-
-        .pwd-input {
-            width: 100%;
-            padding: 12px 44px 12px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.2s;
-            letter-spacing: 2px;
-            color: #1e293b;
-        }
-
-        .pwd-input:focus {
-            border-color: #667eea;
-        }
-
-        .pwd-input.error {
-            border-color: #ef4444;
-            animation: shake 0.3s;
-        }
-
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-6px);
-            }
-
-            75% {
-                transform: translateX(6px);
-            }
-        }
-
-        .pwd-toggle {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: #94a3b8;
-            font-size: 15px;
-        }
-
-        .pwd-error-msg {
-            font-size: 12px;
-            color: #ef4444;
-            text-align: left;
-            margin-bottom: 16px;
-            min-height: 18px;
-        }
-
-        .pwd-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: opacity 0.2s, transform 0.15s;
-        }
-
-        .pwd-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        .pwd-btn:active {
-            transform: translateY(0);
-        }
-
-        .pwd-cancel {
-            margin-top: 12px;
-            font-size: 13px;
-            color: #94a3b8;
-            cursor: pointer;
-            text-decoration: underline;
-            background: none;
-            border: none;
-        }
-
-        .pwd-cancel:hover {
-            color: #64748b;
-        }
-
         @media (max-width: 768px) {
             .nav-content {
                 padding: 0 12px;
@@ -305,11 +128,6 @@
             .content-area {
                 padding: 8px;
             }
-
-            .pwd-card {
-                width: 90%;
-                padding: 32px 24px 24px;
-            }
         }
     </style>
 </head>
@@ -317,7 +135,7 @@
 <body>
     <div class="navbar">
         <div class="nav-content">
-            <div class="logo">🎨 产品原型演示</div>
+            <div class="logo">产品原型演示</div>
             <div class="tabs" id="tabsContainer"></div>
         </div>
     </div>
@@ -326,138 +144,34 @@
         <iframe class="prototype-frame" id="prototypeFrame" title="原型展示"></iframe>
     </div>
 
-    <footer>🔒 密码保护 · 仅供预览 | 如有问题请联系产品经理</footer>
-
-    <!-- 密码验证弹窗 -->
-    <div class="pwd-overlay" id="pwdOverlay">
-        <div class="pwd-card">
-            <div class="pwd-icon"><i class="fa-solid fa-file-lines"></i></div>
-            <div class="pwd-title">交互说明文档</div>
-            <div class="pwd-desc">请输入访问密码以查看文档</div>
-            <div class="pwd-input-wrap">
-                <input class="pwd-input" id="pwdInput" type="password" placeholder="请输入密码" autocomplete="off">
-                <button class="pwd-toggle" id="pwdToggle" type="button">
-                    <i class="fa-regular fa-eye" id="toggleIcon"></i>
-                </button>
-            </div>
-            <div class="pwd-error-msg" id="pwdError"></div>
-            <button class="pwd-btn" id="pwdConfirm">确认进入</button>
-            <br>
-            <button class="pwd-cancel" id="pwdCancel">取消</button>
-        </div>
-    </div>
+    <footer>仅供预览 | 如有问题请联系产品经理</footer>
 
     <script>
-        // ===== 配置 =====
-        const CORRECT_PWD = 'dcc2026';          // 可修改密码
-        const DOCS_FILE = 'interaction_docs.html'; // 跳转目标页
-        const SESSION_KEY = 'ui_docs_unlocked'; // sessionStorage key
-
         const PAGES = [
-            { name: '用户洞察', file: 'userinsight.html', protected: false },
-            { name: '交互说明', file: DOCS_FILE, protected: false },
+            { name: '用户洞察', file: 'userinsight.html' },
+            { name: '交互说明', file: 'interaction_docs.html' },
         ];
 
         let currentTab = 0;
 
-        // ===== 渲染 Tab =====
         function renderTabs() {
             const container = document.getElementById('tabsContainer');
             container.innerHTML = '';
-            PAGES.forEach((page, idx) => {
+            PAGES.forEach((page, index) => {
                 const btn = document.createElement('button');
-                const unlocked = !page.protected || sessionStorage.getItem(SESSION_KEY) === '1';
-                btn.className = 'tab-btn' + (idx === currentTab ? ' active' : '') + (unlocked ? ' unlocked' : '');
-                btn.innerHTML = page.name +
-                    (page.protected ? ' <i class="fa-solid fa-lock lock-icon"></i>' : '');
-                btn.onclick = () => handleTabClick(idx);
+                btn.className = 'tab-btn' + (index === currentTab ? ' active' : '');
+                btn.textContent = page.name;
+                btn.onclick = () => setActiveTab(index);
                 container.appendChild(btn);
             });
-        }
-
-        function handleTabClick(index) {
-            const page = PAGES[index];
-            if (page.protected && sessionStorage.getItem(SESSION_KEY) !== '1') {
-                // 需要密码验证
-                pendingTab = index;
-                openPwdModal();
-            } else {
-                setActiveTab(index);
-            }
         }
 
         function setActiveTab(index) {
             currentTab = index;
             renderTabs();
-            const frame = document.getElementById('prototypeFrame');
-            if (frame && PAGES[index]) {
-                frame.src = PAGES[index].file;
-            }
+            document.getElementById('prototypeFrame').src = PAGES[index].file;
         }
 
-        // ===== 密码弹窗逻辑 =====
-        let pendingTab = -1;
-
-        function openPwdModal() {
-            document.getElementById('pwdInput').value = '';
-            document.getElementById('pwdError').textContent = '';
-            document.getElementById('pwdInput').classList.remove('error');
-            document.getElementById('pwdOverlay').classList.add('show');
-            setTimeout(() => document.getElementById('pwdInput').focus(), 100);
-        }
-
-        function closePwdModal() {
-            document.getElementById('pwdOverlay').classList.remove('show');
-            pendingTab = -1;
-        }
-
-        function verifyPassword() {
-            const input = document.getElementById('pwdInput');
-            const errEl = document.getElementById('pwdError');
-            if (input.value === CORRECT_PWD) {
-                sessionStorage.setItem(SESSION_KEY, '1');
-                closePwdModal();
-                setActiveTab(pendingTab);
-            } else {
-                input.classList.add('error');
-                errEl.textContent = '密码错误，请重新输入';
-                input.value = '';
-                setTimeout(() => input.classList.remove('error'), 400);
-                input.focus();
-            }
-        }
-
-        // 确认按钮
-        document.getElementById('pwdConfirm').addEventListener('click', verifyPassword);
-
-        // 回车确认
-        document.getElementById('pwdInput').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') verifyPassword();
-        });
-
-        // 取消
-        document.getElementById('pwdCancel').addEventListener('click', closePwdModal);
-
-        // 点击遮罩关闭
-        document.getElementById('pwdOverlay').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('pwdOverlay')) closePwdModal();
-        });
-
-        // 明文切换
-        document.getElementById('pwdToggle').addEventListener('click', () => {
-            const input = document.getElementById('pwdInput');
-            const icon = document.getElementById('toggleIcon');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.className = 'fa-regular fa-eye-slash';
-            } else {
-                input.type = 'password';
-                icon.className = 'fa-regular fa-eye';
-            }
-        });
-
-        // ===== 初始化 =====
-        renderTabs();
         setActiveTab(0);
     </script>
 </body>

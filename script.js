@@ -31,995 +31,342 @@ document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
     });
 });
 
-// 初始化时间范围快捷选择 + 自定义日期
+// 初始化各分页内的时间范围快捷选择 + 自定义日期
 function initDateRange() {
-    const startInput = document.getElementById('startDate');
-    const endInput = document.getElementById('endDate');
-    const shortcuts = document.getElementById('dateShortcuts');
-    const customInputs = document.getElementById('customDateInputs');
-    if (!startInput || !endInput || !shortcuts) return;
+    document.querySelectorAll('.filter-section .date-range-group').forEach(group => {
+        const startInput = group.querySelector('.date-custom-start');
+        const endInput = group.querySelector('.date-custom-end');
+        const shortcuts = group.querySelector('.date-shortcuts');
+        const customInputs = group.querySelector('.date-custom-inputs');
+        if (!startInput || !endInput || !shortcuts || !customInputs) return;
 
-    const today = new Date();
-    const twoYearsAgo = new Date();
-    twoYearsAgo.setFullYear(today.getFullYear() - 2);
+        const today = new Date();
+        const twoYearsAgo = new Date();
+        twoYearsAgo.setFullYear(today.getFullYear() - 2);
 
-    const todayStr = formatDate(today);
-    const twoYearsAgoStr = formatDate(twoYearsAgo);
+        const todayStr = formatDate(today);
+        const twoYearsAgoStr = formatDate(twoYearsAgo);
 
-    startInput.min = twoYearsAgoStr;
-    startInput.max = todayStr;
-    endInput.min = twoYearsAgoStr;
-    endInput.max = todayStr;
+        startInput.min = twoYearsAgoStr;
+        startInput.max = todayStr;
+        endInput.min = twoYearsAgoStr;
+        endInput.max = todayStr;
 
-    // 当前选中范围（内部状态，默认30天）
-    let currentDays = 30;
+        const defaultRange = group.dataset.defaultRange || group.querySelector('.shortcut-btn.active')?.dataset.range || '7';
+        let currentDays = parseInt(defaultRange, 10) || 7;
 
-    // 设置日期输入值
-    function setDateValues(days) {
-        const start = new Date();
-        start.setDate(today.getDate() - days);
-        startInput.value = formatDate(start);
-        endInput.value = todayStr;
-    }
-
-    // 初始化：默认近30天
-    setDateValues(30);
-
-    // 快捷按钮点击事件
-    shortcuts.addEventListener('click', (e) => {
-        const btn = e.target.closest('.shortcut-btn');
-        if (!btn) return;
-
-        // 更新按钮 active 状态
-        shortcuts.querySelectorAll('.shortcut-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const range = btn.dataset.range;
-        if (range === 'custom') {
-            // 显示自定义日期输入
-            customInputs.style.display = 'flex';
-            // 用当前 internal days 填充自定义输入
-            setDateValues(currentDays);
-        } else {
-            // 隐藏自定义日期输入
-            customInputs.style.display = 'none';
-            currentDays = parseInt(range);
-            setDateValues(currentDays);
-        }
-    });
-
-    // 自定义日期变更校验：最大92天
-    const validateCustomRange = (changedInput) => {
-        const start = new Date(startInput.value);
-        const end = new Date(endInput.value);
-
-        if (start > end) {
-            if (changedInput === 'start') endInput.value = startInput.value;
-            else startInput.value = endInput.value;
-            return;
+        function setDateValues(days) {
+            const start = new Date();
+            start.setDate(today.getDate() - days);
+            startInput.value = formatDate(start);
+            endInput.value = todayStr;
         }
 
-        const maxRange = 92 * 24 * 60 * 60 * 1000;
-        if (end - start > maxRange) {
-            alert('统计日期区间最大可选 90 天范围');
-            if (changedInput === 'start') {
-                const newEnd = new Date(start.getTime() + maxRange);
-                endInput.value = formatDate(newEnd > today ? today : newEnd);
+        setDateValues(currentDays);
+
+        shortcuts.addEventListener('click', (e) => {
+            const btn = e.target.closest('.shortcut-btn');
+            if (!btn) return;
+
+            shortcuts.querySelectorAll('.shortcut-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const range = btn.dataset.range;
+            if (range === 'custom') {
+                customInputs.style.display = 'flex';
+                setDateValues(currentDays);
             } else {
-                const newStart = new Date(end.getTime() - maxRange);
-                startInput.value = formatDate(newStart < twoYearsAgo ? twoYearsAgo : newStart);
+                customInputs.style.display = 'none';
+                currentDays = parseInt(range, 10);
+                setDateValues(currentDays);
             }
-        }
-    };
+        });
 
-    startInput.addEventListener('change', () => validateCustomRange('start'));
-    endInput.addEventListener('change', () => validateCustomRange('end'));
+        const validateCustomRange = (changedInput) => {
+            const start = new Date(startInput.value);
+            const end = new Date(endInput.value);
+
+            if (start > end) {
+                if (changedInput === 'start') endInput.value = startInput.value;
+                else startInput.value = endInput.value;
+                return;
+            }
+
+            const maxRange = 92 * 24 * 60 * 60 * 1000;
+            if (end - start > maxRange) {
+                alert('统计日期区间最大可选 90 天范围');
+                if (changedInput === 'start') {
+                    const newEnd = new Date(start.getTime() + maxRange);
+                    endInput.value = formatDate(newEnd > today ? today : newEnd);
+                } else {
+                    const newStart = new Date(end.getTime() - maxRange);
+                    startInput.value = formatDate(newStart < twoYearsAgo ? twoYearsAgo : newStart);
+                }
+            }
+        };
+
+        startInput.addEventListener('change', () => validateCustomRange('start'));
+        endInput.addEventListener('change', () => validateCustomRange('end'));
+    });
 }
 
 // 页面加载时初始化
 window.addEventListener('DOMContentLoaded', () => {
     initDateRange();
-    initGlobalFilters();    // 新增：全局筛选器逻辑
+    initFilterMultiSelects();
+    initGlobalFilters();    // 分页内筛选器逻辑
+    initCultivationScaledCharts();
     initProjectRankInteraction(); // 初始化大项目排名交互
-    initScheduleRankInteraction(); // 初始化排期排名交互
+    initScheduleRankInteraction(); // 初始化媒体质量排名交互
 });
 
-// 全局筛选器交互逻辑
+function parseUserCount(text) {
+    const match = String(text || '').match(/([\d,]+)\s*人/);
+    return match ? parseInt(match[1].replace(/,/g, ''), 10) : 0;
+}
+
+function findCultivationCard(title) {
+    const pane = document.getElementById('cultivation-op');
+    if (!pane) return null;
+    const cards = Array.from(pane.querySelectorAll('.content-card'));
+    return cards.find(card => card.querySelector('.card-title')?.textContent.trim() === title) || null;
+}
+
+function scaleCultivationHorizontalBars(title) {
+    const card = findCultivationCard(title);
+    if (!card) return;
+
+    const rows = Array.from(card.querySelectorAll('.card-body div'))
+        .filter(row => parseUserCount(row.textContent) > 0);
+    const rowData = rows.map(row => {
+        const count = parseUserCount(row.textContent);
+        const bars = Array.from(row.children || []).filter(child => {
+            const style = child.getAttribute('style') || '';
+            return style.includes('background: #f3f4f6') && style.includes('display: flex');
+        });
+        return { row, count, bar: bars[0] };
+    }).filter(item => item.bar);
+
+    const max = Math.max(...rowData.map(item => item.count), 0);
+    if (!max) return;
+
+    rowData.forEach(({ row, count, bar }) => {
+        if (bar.parentElement?.classList.contains('scaled-total-track')) return;
+        const ratio = Math.max(0.08, count / max);
+        const track = document.createElement('div');
+        track.className = 'scaled-total-track';
+        track.style.cssText = 'flex: 1; height: ' + (bar.style.height || '14px') + '; background: #f3f4f6; border-radius: 3px; overflow: hidden;';
+
+        const scaledWidth = (ratio * 100).toFixed(1) + '%';
+        bar.style.flex = '0 0 auto';
+        bar.style.width = scaledWidth;
+        bar.style.maxWidth = scaledWidth;
+        bar.style.minWidth = '18px';
+        bar.style.height = '100%';
+
+        row.insertBefore(track, bar);
+        track.appendChild(bar);
+    });
+}
+
+function scaleCultivationVerticalChannelChart() {
+    const card = findCultivationCard('渠道线索质量');
+    if (!card) return;
+
+    const totalsByLabel = {
+        '百度': 2876,
+        '抖音': 2654,
+        '懂车帝': 2432,
+        '汽车之家': 2134,
+        '易车': 1876,
+        '微信': 1654
+    };
+    const max = Math.max(...Object.values(totalsByLabel));
+
+    Array.from(card.querySelectorAll('.card-body > div:first-child > div')).forEach(item => {
+        const label = item.querySelector('span')?.textContent.trim();
+        const total = totalsByLabel[label];
+        const bar = item.querySelector('div[style*="height: 200px"]');
+        if (!total || !bar || bar.dataset.scaledTotal === 'true') return;
+
+        const ratio = Math.max(0.18, total / max);
+        bar.dataset.scaledTotal = 'true';
+        bar.style.height = Math.round(200 * ratio) + 'px';
+        bar.title = `${label}：${total.toLocaleString()}人`;
+    });
+}
+
+function initCultivationScaledCharts() {
+    [
+        '区域投放效果（TOP10城市）',
+        '大区投放效果',
+        '小区投放效果',
+        '大项目线索质量排名（TOP10）',
+        '媒体线索质量排名（TOP10）'
+    ].forEach(scaleCultivationHorizontalBars);
+
+    scaleCultivationVerticalChannelChart();
+}
+
+function updateFilterLevelText(multiSelect) {
+    const checkedBoxes = multiSelect.querySelectorAll('.level-cb:checked');
+    const allBoxes = multiSelect.querySelectorAll('.level-cb');
+    const selectAll = multiSelect.querySelector('.select-all-levels');
+    const text = multiSelect.querySelector('.lead-level-text');
+    if (selectAll) selectAll.checked = checkedBoxes.length === allBoxes.length;
+    if (text) {
+        text.innerText = checkedBoxes.length === allBoxes.length
+            ? `全选 (${allBoxes.length}项)`
+            : `已选 ${checkedBoxes.length} 项`;
+    }
+}
+
+function initFilterMultiSelects() {
+    document.querySelectorAll('.custom-multi-select').forEach(multiSelect => {
+        const header = multiSelect.querySelector('.select-header');
+        const dropdown = multiSelect.querySelector('.select-dropdown');
+        const selectAll = multiSelect.querySelector('.select-all-levels');
+
+        header?.addEventListener('click', () => {
+            document.querySelectorAll('.custom-multi-select .select-dropdown').forEach(panel => {
+                if (panel !== dropdown) panel.style.display = 'none';
+            });
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        });
+
+        selectAll?.addEventListener('change', () => {
+            multiSelect.querySelectorAll('.level-cb').forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            updateFilterLevelText(multiSelect);
+        });
+
+        multiSelect.querySelectorAll('.level-cb').forEach(checkbox => {
+            checkbox.addEventListener('change', () => updateFilterLevelText(multiSelect));
+        });
+    });
+
+    document.addEventListener('click', e => {
+        if (e.target.closest('.custom-multi-select')) return;
+        document.querySelectorAll('.custom-multi-select .select-dropdown').forEach(dropdown => {
+            dropdown.style.display = 'none';
+        });
+    });
+}
+
+// 分页内筛选器交互逻辑
 function initGlobalFilters() {
-    const queryBtn = document.getElementById('queryBtn');
-    const resetBtn = document.getElementById('resetBtn');
+    document.querySelectorAll('.filter-section').forEach(filterSection => {
+        const queryBtn = filterSection.querySelector('.query-btn');
+        const resetBtn = filterSection.querySelector('.reset-btn');
 
-    if (queryBtn) {
-        queryBtn.addEventListener('click', () => {
+        queryBtn?.addEventListener('click', () => {
             showNotification('正在基于线索创建日期为您聚合统计数据...', 'info');
-
-            // 模拟加载效果和数据变动
-            const metrics = document.querySelectorAll('.metric-value');
-            metrics.forEach(m => m.style.opacity = '0.5');
-
             setTimeout(() => {
-                metrics.forEach(m => {
-                    const original = parseInt(m.textContent.replace(/,/g, ''));
-                    // 随机浮动 5% 以内，模拟筛选后的数据变化
-                    const newVal = Math.floor(original * (0.95 + Math.random() * 0.1));
-                    m.textContent = newVal.toLocaleString();
-                    m.style.opacity = '1';
-                });
-
-                // 更新趋势图
-                if (window.commonAnalyzer) window.commonAnalyzer.renderLineChart();
-                if (window.resistanceAnalyzer) window.resistanceAnalyzer.renderLineChart();
-
                 showNotification('数据更新成功（已基于所选条件重新取值）', 'success');
             }, 800);
         });
-    }
 
-    if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
+        resetBtn?.addEventListener('click', () => {
             showNotification('正在重置筛选条件...', 'info');
-            // 重置所有筛选器
+            resetGlobalFilters(filterSection);
             setTimeout(() => {
                 showNotification('筛选条件已重置', 'success');
             }, 300);
         });
-    }
-}
-
-
-
-// 初始化：设置所有tree-children的display，同步open节点状态
-function initTreeState() {
-    document.querySelectorAll('.tree-node').forEach(node => {
-        const tc = node.querySelector(':scope > .tree-children');
-        const icon = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-icon');
-        if (tc) {
-            const isOpen = node.classList.contains('open');
-            tc.style.display = isOpen ? 'block' : 'none';
-            if (icon) {
-                icon.style.transform = isOpen ? 'rotate(90deg)' : 'rotate(0deg)';
-            }
-        }
-    });
-}
-window.addEventListener('DOMContentLoaded', initTreeState);
-
-
-
-// 动态读取标签树数据并更新饼图
-const chartColors = [
-    '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
-    '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#ff9f7f',
-    '#0081ff', '#00b894', '#6c5ce7', '#f50', '#2db7f5', '#87d068'
-];
-
-// 模拟分布权重数据（仅针对二级分类定义权重，一级分类会自动求和）
-const DISTRIBUTION_MOCKS = {
-    // 常见问题 L2
-    '购车时间': 2800, '购车意向': 3700,
-    '到店行为': 1500, '购买形态': 1200, '客服意愿': 1500,
-
-    // 抗拒点 L2
-    '价格因素': 2200, '产品力': 1500, '品牌逻辑': 800,
-    '政策抗拒': 1200, '交付时间': 600
-};
-
-function renderDoubleRingChart(containerId, modalId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    const modal = document.getElementById(modalId);
-    if (!modal) return;
-
-    const l1Nodes = modal.querySelectorAll(':scope > .category-tree > .tree-node.tree-level-1');
-    const l1Data = [];
-    const l2Data = [];
-
-    l1Nodes.forEach(node => {
-        const l1LabelEl = node.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
-        if (!l1LabelEl) return;
-        const l1Name = l1LabelEl.textContent.trim().replace(/\s*\(.*?\)$/, '');
-
-        let l1Sum = 0;
-        const l2Nodes = node.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-2');
-
-        l2Nodes.forEach(l2 => {
-            const labelEl = l2.querySelector(':scope > .tree-header > .tree-header-left > .tree-label');
-            if (labelEl) {
-                const name = labelEl.textContent.trim().replace(/\s*\(.*?\)$/, '');
-                // 如果字典没定义，则根据该节点是否有子节点(L3)给一个默认权值
-                const l3Count = l2.querySelectorAll(':scope > .tree-children > .tree-node.tree-level-3').length;
-                const mockVal = DISTRIBUTION_MOCKS[name] || (l3Count > 0 ? l3Count * 200 : 300);
-
-                l2Data.push({ name, count: mockVal, l1Name });
-                l1Sum += mockVal;
-            }
-        });
-
-        // 核心修正：一级分类数由二级分类之和决定
-        l1Data.push({ name: l1Name, count: l1Sum });
-    });
-
-    // 计算总数（此时总数相等）
-    const totalCount = l1Data.reduce((sum, item) => sum + item.count, 0) || 1;
-    const totalL1 = totalCount;
-    const totalL2 = totalCount;
-
-    // 双环SVG：内环(L1) r=11，外环(L2) r=17
-    const L1_R = 11, L1_C = 2 * Math.PI * L1_R;
-    const L2_R = 17, L2_C = 2 * Math.PI * L2_R;
-
-    let svg = `<svg width="160" height="160" viewBox="0 0 44 44" class="pie-chart-svg">`;
-
-    // 内环：一级分类
-    let l1Offset = 0;
-    l1Data.forEach((item, i) => {
-        const percent = Math.round((item.count / totalL1) * 100);
-        const dashLen = (item.count / totalL1) * L1_C;
-        const color = chartColors[i % chartColors.length];
-        svg += `<circle cx="22" cy="22" r="${L1_R}" fill="transparent" stroke="${color}" stroke-width="5" stroke-dasharray="${dashLen.toFixed(2)} ${(L1_C - dashLen).toFixed(2)}" stroke-dashoffset="${(-l1Offset).toFixed(2)}"></circle>`;
-        l1Offset += dashLen;
-    });
-
-    // 外环：二级分类
-    let l2Offset = 0;
-    l2Data.forEach((item, i) => {
-        const percent = Math.round((item.count / totalL2) * 100);
-        const dashLen = (item.count / totalL2) * L2_C;
-        const color = chartColors[i % chartColors.length];
-        svg += `<circle cx="22" cy="22" r="${L2_R}" fill="transparent" stroke="${color}" stroke-width="4" stroke-dasharray="${dashLen.toFixed(2)} ${(L2_C - dashLen).toFixed(2)}" stroke-dashoffset="${(-l2Offset).toFixed(2)}"></circle>`;
-        l2Offset += dashLen;
-    });
-
-    svg += '</svg>';
-
-    // 图例
-    let legend = '<div class="pie-legend">';
-    if (l1Data.length > 0) {
-        legend += '<div class="legend-group">一级分类</div>';
-        l1Data.forEach((item, i) => {
-            const percent = Math.round((item.count / totalL1) * 100);
-            const color = chartColors[i % chartColors.length];
-            legend += `<div class="legend-item"><span class="legend-ring-dot" style="background:${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count} (${percent}%)</span></div>`;
-        });
-    }
-    if (l2Data.length > 0) {
-        legend += '<div class="legend-group">二级分类</div>';
-        l2Data.forEach((item, i) => {
-            const percent = Math.round((item.count / totalL2) * 100);
-            const color = chartColors[i % chartColors.length];
-            legend += `<div class="legend-item"><span class="legend-ring-dot outer" style="background:${color};"></span><span class="legend-label">${item.name}</span><span class="percent">${item.count || 0} (${percent}%)</span></div>`;
-        });
-    }
-    legend += '</div>';
-
-    container.innerHTML = '<div class="pie-chart-container"><div class="double-ring-wrapper">' + svg + '</div>' + legend + '</div>';
-}
-
-
-
-
-
-// 常见标签排行排序功能
-function initCommonTagSort() {
-    const sortBtns = document.querySelectorAll('.tab-pane#common-issues .sort-switch-btn');
-    if (!sortBtns.length) return;
-
-    const tableBody = document.querySelector('.tab-pane#common-issues .ranking-card .data-table tbody');
-    if (!tableBody) return;
-
-    sortBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-            sortBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-
-            const sortType = this.dataset.sort;
-            const rows = Array.from(tableBody.querySelectorAll('tr'));
-
-            const rowData = rows.map(row => {
-                const cells = row.querySelectorAll('td');
-                // 索引：0rank, 1L1, 2L2, 3L3, 4Count, 5Prop, 6Trend, 7Hot
-                const count = parseInt(cells[4]?.textContent?.replace(/,/g, '')?.trim()) || 0;
-
-                // 环比提取
-                const trendEl = cells[6]?.querySelector('.trend-up, .trend-down, .rise, .fall, .trend');
-                const trendText = trendEl?.textContent?.trim() || '0%';
-                const trendVal = parseFloat(trendText.replace(/[^0-9.-]/g, '')) || 0;
-                const trendSign = (trendEl?.classList.contains('trend-down') || trendEl?.classList.contains('fall')) ? -1 : 1;
-                const trend = trendVal * trendSign;
-
-                const hotEl = cells[7]?.querySelector('.hot-value');
-                const hot = parseInt(hotEl?.textContent?.trim() || cells[7]?.textContent?.trim()) || 0;
-
-                return { row: row.cloneNode(true), count, trend, hot };
-            });
-
-            if (sortType === 'count') {
-                rowData.sort((a, b) => b.count - a.count);
-            } else if (sortType === 'trend') {
-                rowData.sort((a, b) => b.trend - a.trend);
-            } else if (sortType === 'hot') {
-                rowData.sort((a, b) => b.hot - a.hot);
-            }
-
-            tableBody.innerHTML = '';
-            rowData.forEach((item, index) => {
-                const newRow = item.row;
-                const rankBadge = newRow.querySelector('.rank-badge');
-                if (rankBadge) {
-                    rankBadge.textContent = index + 1;
-                    rankBadge.className = 'rank-badge' + (index < 3 ? ` top-${index + 1}` : '');
-                }
-                tableBody.appendChild(newRow);
-            });
-        });
     });
 }
 
-// 抗拒点排行排序功能
-function initResistanceSort() {
-    const sortBtns = document.querySelectorAll('.tab-pane#resistance-points .sort-switch-btn');
-    if (!sortBtns.length) return;
+function resetGlobalFilters(filterSection = document.querySelector('.filter-section')) {
+    if (!filterSection) return;
 
-    const tableBody = document.querySelector('.tab-pane#resistance-points .ranking-card .data-table tbody');
-    if (!tableBody) return;
-
-    sortBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-            sortBtns.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-
-            const sortType = this.dataset.sort;
-            const rows = Array.from(tableBody.querySelectorAll('tr'));
-
-            const rowData = rows.map(row => {
-                const cells = row.querySelectorAll('td');
-                // 索引同上：4Count, 6Trend, 7Hot
-                const count = parseInt(cells[4]?.textContent?.replace(/,/g, '')?.trim()) || 0;
-
-                const trendEl = cells[6]?.querySelector('.trend-up, .trend-down, .rise, .fall, .trend');
-                const trendText = trendEl?.textContent?.trim() || '0%';
-                const trendVal = parseFloat(trendText.replace(/[^0-9.-]/g, '')) || 0;
-                const trendSign = (trendEl?.classList.contains('trend-down') || trendEl?.classList.contains('fall')) ? -1 : 1;
-                const trend = trendVal * trendSign;
-
-                const hotEl = cells[7]?.querySelector('.hot-value');
-                const hot = parseInt(hotEl?.textContent?.trim() || cells[7]?.textContent?.trim()) || 0;
-
-                return { row: row.cloneNode(true), count, trend, hot };
-            });
-
-            if (sortType === 'count') {
-                rowData.sort((a, b) => b.count - a.count);
-            } else if (sortType === 'trend') {
-                rowData.sort((a, b) => b.trend - a.trend);
-            } else if (sortType === 'hot') {
-                rowData.sort((a, b) => b.hot - a.hot);
-            }
-
-            tableBody.innerHTML = '';
-            rowData.forEach((item, index) => {
-                const newRow = item.row;
-                const rankBadge = newRow.querySelector('.rank-badge');
-                if (rankBadge) {
-                    rankBadge.textContent = index + 1;
-                    rankBadge.className = 'rank-badge' + (index < 3 ? ` top-${index + 1}` : '');
-                }
-                tableBody.appendChild(newRow);
-            });
-        });
-    });
-}
-
-/**
- * 修复报表表格的层级结构（处理 rowspan）
- */
-function fixTableHierarchy(tbody) {
-    const rows = Array.from(tbody.querySelectorAll('tr'));
-    if (rows.length === 0) return;
-
-    // 先补全所有行的分类单元格，确保每行都有 L1, L2, L3 对应的 td
-    rows.forEach(row => {
-        let l1 = row.querySelector('.col-l1');
-        if (!l1) {
-            l1 = document.createElement('td');
-            l1.className = 'row-header col-l1';
-            row.insertBefore(l1, row.firstChild);
-        }
-        l1.textContent = row.dataset.l1 || '';
-        l1.rowSpan = 1;
-        l1.style.display = '';
-
-        let l2 = row.querySelector('.col-l2');
-        if (!l2) {
-            l2 = document.createElement('td');
-            l2.className = 'row-header col-l2';
-            const l3 = row.querySelector('.col-l3');
-            row.insertBefore(l2, l3);
-        }
-        l2.textContent = row.dataset.l2 || '';
-        l2.rowSpan = 1;
-        l2.style.display = '';
+    filterSection.querySelectorAll('select').forEach(select => {
+        select.selectedIndex = 0;
     });
 
-    // 重新计算并应用合并逻辑
-    let prevL1Cell = null, prevL2Cell = null;
-    let l1Count = 0, l2Count = 0;
-
-    rows.forEach((row, i) => {
-        const l1 = row.querySelector('.col-l1'), l2 = row.querySelector('.col-l2');
-        const v1 = row.dataset.l1, v2 = row.dataset.l2;
-
-        if (prevL1Cell && prevL1Cell.textContent === v1) {
-            l1.style.display = 'none';
-            l1Count++;
-            prevL1Cell.rowSpan = l1Count;
-        } else {
-            prevL1Cell = l1;
-            l1Count = 1;
-        }
-
-        const isSameL1 = (i > 0 && rows[i - 1].dataset.l1 === v1);
-        if (prevL2Cell && prevL2Cell.textContent === v2 && isSameL1) {
-            l2.style.display = 'none';
-            l2Count++;
-            prevL2Cell.rowSpan = l2Count;
-        } else {
-            prevL2Cell = l2;
-            l2Count = 1;
-        }
+    filterSection.querySelectorAll('input[type="text"], input[type="search"]').forEach(input => {
+        input.value = '';
     });
-}
 
-function initReportTableSort() {
-    const tables = document.querySelectorAll('.report-table');
-    tables.forEach(table => {
-        const headers = table.querySelectorAll('thead th');
-        const tbody = table.querySelector('tbody');
-        if (!tbody) return;
-
-        headers.forEach((th, index) => {
-            const sortIcon = th.querySelector('.sort-icon');
-            if (!sortIcon) return;
-            th.onclick = () => {
-                const dir = th.dataset.sortDir === 'desc' ? 'asc' : 'desc';
-                th.dataset.sortDir = dir;
-                headers.forEach(h => h !== th && (h.dataset.sortDir = ''));
-
-                const rows = Array.from(tbody.querySelectorAll('tr'));
-                rows.sort((a, b) => {
-                    const getNum = (r) => {
-                        const td = r.querySelectorAll('td:not(.col-l1):not(.col-l2):not(.col-l3)')[index - 3];
-                        return parseInt(td?.querySelector('.count')?.textContent || '0');
-                    };
-                    return dir === 'desc' ? getNum(b) - getNum(a) : getNum(a) - getNum(b);
-                });
-                tbody.innerHTML = '';
-                rows.forEach(r => tbody.appendChild(r));
-                fixTableHierarchy(tbody);
-            };
-        });
+    const selectAllLevels = filterSection.querySelector('.select-all-levels');
+    const levelCheckboxes = filterSection.querySelectorAll('.level-cb');
+    if (selectAllLevels) selectAllLevels.checked = true;
+    levelCheckboxes.forEach(checkbox => {
+        checkbox.checked = true;
     });
-}
 
-window.addEventListener('DOMContentLoaded', () => {
-    initCommonTagSort();
-    initResistanceSort();
-    initReportTableSort();
-    initReportTableFilter();
-});
-
-/**
- * 报表筛选层级数据定义
- */
-const filterHierarchyData = {
-    common: {
-        '核心标签': {
-            '购车时间': ['计划7天', '计划一个月内买车', '计划三个月内买车']
-        },
-        '补充标签': {
-            '到店行为': ['7天内到店', '已到店-是'],
-            '购车意向': ['有意向未确定', '明确购车意向'],
-            '购买形态': ['首购', '换购'],
-            '客服意愿': ['同意/已经加微信']
-        }
-    },
-    res: {
-        '强抗拒': {
-            '需求终止': ['无购车需求', '已买车'],
-            '意愿拒绝': ['拒绝被联系', '对品牌不认可'],
-            '条件限制': ['店内无法上牌', '无法跨区域购买']
-        },
-        '弱抗拒': {
-            '资金障碍': ['购买力不足', '无法获取底价'],
-            '便利性障碍': ['近期不方便到店', '店铺距离远'],
-            '决策障碍': ['无法直接决策'],
-            '产品方案': ['配置不满意', '无现车'],
-            '价格方案': ['价格不满意', '优惠不满意']
-        }
-    }
-};
-
-/**
- * 初始化分析报表的筛选功能
- * 升级：支持三级级联下拉、查询与重置按钮
- */
-function initReportTableFilter() {
-    const tables = document.querySelectorAll('.report-table');
-    tables.forEach(table => {
-        const tbody = table.querySelector('tbody');
-        if (!tbody) return;
-        const originalRows = Array.from(tbody.querySelectorAll('tr'));
-        const filterArea = table.closest('.report-section').querySelector('.report-filters');
-        if (!filterArea) return;
-
-        const type = filterArea.dataset.type;
-        const l1Select = filterArea.querySelector('.l1-filter');
-        const l2Select = filterArea.querySelector('.l2-filter');
-        const l3Select = filterArea.querySelector('.l3-filter');
-        const btnSearch = filterArea.querySelector('.btn-search');
-        const btnReset = filterArea.querySelector('.btn-reset');
-
-        // 初始化每行的 dataset
-        let curL1 = '', curL2 = '';
-        originalRows.forEach(row => {
-            const l1 = row.querySelector('.col-l1');
-            const l2 = row.querySelector('.col-l2');
-            if (l1) curL1 = l1.textContent.trim();
-            if (l2) curL2 = l2.textContent.trim();
-            row.dataset.l1 = curL1;
-            row.dataset.l2 = curL2;
-            row.dataset.l3 = row.querySelector('.col-l3')?.textContent.trim() || '';
-        });
-
-        const updateL2 = () => {
-            const v1 = l1Select.value;
-            l2Select.innerHTML = '<option value="">二级分类</option>';
-            l3Select.innerHTML = '<option value="">三级标签</option>';
-            if (v1 && filterHierarchyData[type][v1]) {
-                Object.keys(filterHierarchyData[type][v1]).forEach(v2 => {
-                    const opt = document.createElement('option');
-                    opt.value = opt.textContent = v2;
-                    l2Select.appendChild(opt);
-                });
-            }
-        };
-
-        const updateL3 = () => {
-            const v1 = l1Select.value, v2 = l2Select.value;
-            l3Select.innerHTML = '<option value="">三级标签</option>';
-            if (v1 && v2 && filterHierarchyData[type][v1][v2]) {
-                filterHierarchyData[type][v1][v2].forEach(v3 => {
-                    const opt = document.createElement('option');
-                    opt.value = opt.textContent = v3;
-                    l3Select.appendChild(opt);
-                });
-            }
-        };
-
-        l1Select.onchange = updateL2;
-        l2Select.onchange = updateL3;
-
-        const apply = () => {
-            const v1 = l1Select.value, v2 = l2Select.value, v3 = l3Select.value;
-            const matches = originalRows.filter(r =>
-                (!v1 || r.dataset.l1 === v1) &&
-                (!v2 || r.dataset.l2 === v2) &&
-                (!v3 || r.dataset.l3 === v3)
-            );
-            tbody.innerHTML = '';
-            if (matches.length === 0) {
-                const colspan = table.querySelectorAll('thead th').length;
-                tbody.innerHTML = `<tr><td colspan="${colspan}" style="text-align:center;padding:40px;color:#999">暂无匹配数据</td></tr>`;
-            } else {
-                matches.forEach(r => tbody.appendChild(r));
-                fixTableHierarchy(tbody);
-            }
-        };
-
-        btnSearch.onclick = apply;
-        btnReset.onclick = () => {
-            l1Select.value = '';
-            updateL2();
-            apply();
-        };
-
-        // 初次加载确保状态正确
-        fixTableHierarchy(tbody);
-    });
-}
-
-// ==================== 趋势分析核心数据 ====================
-
-// 常见标签三级分类数据（用于趋势分析模拟）
-const commonTagsTreeData = {
-    l1: [
-        { name: '核心标签 (A7ED8A)', count: 1250 },
-        { name: '补充标签 (6542E7)', count: 680 }
-    ],
-    l2: [
-        { name: '计划购车时间 (CDA824)', l1Name: '核心标签 (A7ED8A)', count: 580 },
-        { name: '预计到店时间 (F109A8)', l1Name: '核心标签 (A7ED8A)', count: 420 },
-        { name: '购车意向 (1B0E51)', l1Name: '补充标签 (6542E7)', count: 380 },
-        { name: '首购/换购 (1C2FE5)', l1Name: '补充标签 (6542E7)', count: 180 },
-        { name: '到店情况 (49AEA6)', l1Name: '补充标签 (6542E7)', count: 120 }
-    ],
-    l3: [
-        { name: '计划7天 (D1E2F4)', l1Name: '核心标签 (A7ED8A)', l2Name: '计划购车时间 (CDA824)', count: 98 },
-        { name: '计划一个月内买车 (37F6E4)', l1Name: '核心标签 (A7ED8A)', l2Name: '计划购车时间 (CDA824)', count: 245 },
-        { name: '计划三个月内买车 (2DE44A)', l1Name: '核心标签 (A7ED8A)', l2Name: '计划购车时间 (CDA824)', count: 428 },
-        { name: '计划三个月后买车 (E1850F)', l1Name: '核心标签 (A7ED8A)', l2Name: '计划购车时间 (CDA824)', count: 156 },
-        { name: '7天内 (C76485)', l1Name: '核心标签 (A7ED8A)', l2Name: '预计到店时间 (F109A8)', count: 128 },
-        { name: '14天内 (000FA3)', l1Name: '核心标签 (A7ED8A)', l2Name: '预计到店时间 (F109A8)', count: 356 },
-        { name: '30天内 (C10710)', l1Name: '核心标签 (A7ED8A)', l2Name: '预计到店时间 (F109A8)', count: 89 },
-        { name: '有意向未确定 (105666)', l1Name: '核心标签 (A7ED8A)', l2Name: '预计到店时间 (F109A8)', count: 186 },
-        { name: '明确购车意向 (0BB120)', l1Name: '补充标签 (6542E7)', l2Name: '购车意向 (1B0E51)', count: 298 },
-        { name: '有意向未确定 (105666)', l1Name: '补充标签 (6542E7)', l2Name: '购车意向 (1B0E51)', count: 82 },
-        { name: '首购 (FC3D71)', l1Name: '补充标签 (6542E7)', l2Name: '首购/换购 (1C2FE5)', count: 142 },
-        { name: '换购 (1687B1)', l1Name: '补充标签 (6542E7)', l2Name: '首购/换购 (1C2FE5)', count: 86 },
-        { name: '已到店-是 (B8B9C5)', l1Name: '补充标签 (6542E7)', l2Name: '到店情况 (49AEA6)', count: 76 },
-        { name: '同意 (E61F2C)', l1Name: '补充标签 (6542E7)', l2Name: '到店情况 (49AEA6)', count: 44 }
-    ]
-};
-
-// 抗拒点三级分类数据（用于趋势分析模拟）
-const resistanceTagsTreeData = {
-    l1: [
-        { name: 'A. 人 (决策主体)', count: 890 },
-        { name: 'B. 货 (产品价值)', count: 620 },
-        { name: 'C. 场 (购车环境)', count: 430 }
-    ],
-    l2: [
-        { name: '强抗拒 (流失预警)', l1Name: 'A. 人 (决策主体)', count: 510 },
-        { name: '弱抗拒 (培育空间)', l1Name: 'A. 人 (决策主体)', count: 380 },
-        { name: '强抗拒 (硬伤)', l1Name: 'B. 货 (产品价值)', count: 320 },
-        { name: '弱抗拒 (博弈点)', l1Name: 'B. 货 (产品价值)', count: 300 },
-        { name: '强抗拒 (地域/政策)', l1Name: 'C. 场 (购车环境)', count: 210 },
-        { name: '弱抗拒 (体验感)', l1Name: 'C. 场 (购车环境)', count: 220 }
-    ],
-    l3: [
-        // A. 人 - 强抗拒
-        { name: '已购竞品', l1Name: 'A. 人 (决策主体)', l2Name: '强抗拒 (流失预警)', count: 215 },
-        { name: '明确无购车计划', l1Name: 'A. 人 (决策主体)', l2Name: '强抗拒 (流失预警)', count: 178 },
-        { name: '电话拉黑/拒绝联系', l1Name: 'A. 人 (决策主体)', l2Name: '强抗拒 (流失预警)', count: 117 },
-        // A. 人 - 弱抗拒
-        { name: '购买力暂时不足', l1Name: 'A. 人 (决策主体)', l2Name: '弱抗拒 (培育空间)', count: 156 },
-        { name: '近期不便到店', l1Name: 'A. 人 (决策主体)', l2Name: '弱抗拒 (培育空间)', count: 134 },
-        { name: '非核心决策人（需请示家人）', l1Name: 'A. 人 (决策主体)', l2Name: '弱抗拒 (培育空间)', count: 90 },
-        // B. 货 - 强抗拒
-        { name: '品牌形象不认可', l1Name: 'B. 货 (产品价值)', l2Name: '强抗拒 (硬伤)', count: 178 },
-        { name: '核心配置缺失（如无通风座椅）', l1Name: 'B. 货 (产品价值)', l2Name: '强抗拒 (硬伤)', count: 142 },
-        // B. 货 - 弱抗拒
-        { name: '觉得价格偏高', l1Name: 'B. 货 (产品价值)', l2Name: '弱抗拒 (博弈点)', count: 134 },
-        { name: '对优惠力度不满', l1Name: 'B. 货 (产品价值)', l2Name: '弱抗拒 (博弈点)', count: 98 },
-        { name: '正在深度对比竞品', l1Name: 'B. 货 (产品价值)', l2Name: '弱抗拒 (博弈点)', count: 68 },
-        // C. 场 - 强抗拒
-        { name: '无法跨区域购买', l1Name: 'C. 场 (购车环境)', l2Name: '强抗拒 (地域/政策)', count: 112 },
-        { name: '店内无相关资质（如新能源牌照业务）', l1Name: 'C. 场 (购车环境)', l2Name: '强抗拒 (地域/政策)', count: 98 },
-        // C. 场 - 弱抗拒
-        { name: '离家太远', l1Name: 'C. 场 (购车环境)', l2Name: '弱抗拒 (体验感)', count: 78 },
-        { name: '无试驾车', l1Name: 'C. 场 (购车环境)', l2Name: '弱抗拒 (体验感)', count: 62 },
-        { name: '对到店礼不满意', l1Name: 'C. 场 (购车环境)', l2Name: '弱抗拒 (体验感)', count: 45 },
-        { name: '无法给到底价', l1Name: 'C. 场 (购车环境)', l2Name: '弱抗拒 (体验感)', count: 35 }
-    ]
-};
-
-// ==================== 趋势分析核心逻辑 ====================
-
-// 统一趋势图颜色方案
-const trendChartColors = [
-    '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
-    '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#ff9f7f'
-];
-
-/**
- * 通用趋势分析组件类
- */
-class TrendAnalyzer {
-    constructor(config) {
-        this.config = config;
-        this.selectedTags = [];
-        this.init();
+    const leadLevelText = filterSection.querySelector('.lead-level-text');
+    if (leadLevelText) {
+        leadLevelText.innerText = `全选 (${levelCheckboxes.length}项)`;
     }
 
-    init() {
-        const { selectorBtnId, dropdownId, tagListId, chartSvgId, emptyStateId, legendId, searchInputId, clearBtnId, countElId, treeDataGetter } = this.config;
-
-        const selectorBtn = document.getElementById(selectorBtnId);
-        const dropdown = document.getElementById(dropdownId);
-        if (!selectorBtn || !dropdown) return;
-
-        selectorBtn.onclick = (e) => {
-            e.stopPropagation();
-            dropdown.classList.toggle('show');
-            if (dropdown.classList.contains('show')) {
-                this.renderTagList();
-            }
-        };
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest(`#${dropdownId}`) && !e.target.closest(`#${selectorBtnId}`)) {
-                dropdown.classList.remove('show');
-            }
-        });
-
-        const searchInput = document.getElementById(searchInputId);
-        if (searchInput) {
-            searchInput.oninput = (e) => {
-                const keyword = e.target.value.toLowerCase();
-                const items = document.querySelectorAll(`#${tagListId} .tag-tree-level`);
-                items.forEach(item => {
-                    const nameEl = item.querySelector('.tag-item-name');
-                    if (nameEl) {
-                        const name = nameEl.textContent.toLowerCase();
-                        item.style.display = name.includes(keyword) ? '' : 'none';
-                    }
-                });
-            };
-        }
-
-        const clearBtn = document.getElementById(clearBtnId);
-        if (clearBtn) {
-            clearBtn.onclick = () => {
-                this.selectedTags = [];
-                this.updateUI();
-            };
-        }
-
-        this.setDefaultSelection();
-    }
-
-    setDefaultSelection() {
-        const treeData = this.config.treeDataGetter();
-        if (!treeData || !treeData.l3 || treeData.l3.length === 0) return;
-        const topTag = treeData.l3.reduce((max, tag) => tag.count > max.count ? tag : max, treeData.l3[0]);
-        if (topTag) {
-            this.selectedTags = [{
-                name: topTag.name, level: 3, l1Name: topTag.l1Name, l2Name: topTag.l2Name,
-                color: trendChartColors[0], count: topTag.count
-            }];
-            this.updateUI();
-        }
-    }
-
-    renderTagList() {
-        const container = document.getElementById(this.config.tagListId);
-        if (!container) return;
-        const treeData = this.config.treeDataGetter();
-        let html = '';
-
-        treeData.l1.forEach((l1, l1Idx) => {
-            html += `<div class="tag-tree-level tag-tree-l1" data-level="1" data-name="${l1.name}">
-                <div class="tag-tree-row">
-                    <i class="fa-solid fa-chevron-right tag-tree-toggle"></i>
-                    <div class="tag-checkbox"><i class="fa-solid fa-check"></i></div>
-                    <span class="tag-item-name">${l1.name}</span>
-                    <span class="tag-item-color" style="background:${trendChartColors[l1Idx % 10]}"></span>
-                    <span class="tag-level-badge">一级</span>
-                </div><div class="tag-tree-children" style="display:none">`;
-
-            treeData.l2.filter(l2 => l2.l1Name === l1.name).forEach((l2, l2Idx) => {
-                html += `<div class="tag-tree-level tag-tree-l2" data-level="2" data-name="${l2.name}" data-l1name="${l1.name}">
-                    <div class="tag-tree-row">
-                        <i class="fa-solid fa-chevron-right tag-tree-toggle"></i>
-                        <div class="tag-checkbox"><i class="fa-solid fa-check"></i></div>
-                        <span class="tag-item-name">${l2.name}</span>
-                        <span class="tag-item-color" style="background:${trendChartColors[(l1Idx * 3 + l2Idx) % 10]}"></span>
-                        <span class="tag-level-badge">二级</span>
-                    </div><div class="tag-tree-children" style="display:none">`;
-
-                treeData.l3.filter(l3 => l3.l2Name === l2.name).forEach((l3, l3Idx) => {
-                    html += `<div class="tag-tree-level tag-tree-l3" data-level="3" data-name="${l3.name}" data-l1name="${l1.name}" data-l2name="${l2.name}">
-                        <div class="tag-tree-row">
-                            <div class="tag-checkbox"><i class="fa-solid fa-check"></i></div>
-                            <span class="tag-item-name">${l3.name}</span>
-                            <span class="tag-item-color" style="background:${trendChartColors[(l1Idx * 5 + l2Idx * 2 + l3Idx) % 10]}"></span>
-                            <span class="tag-level-badge">三级</span>
-                        </div></div>`;
-                });
-                html += `</div></div>`;
-            });
-            html += `</div></div>`;
-        });
-
-        container.innerHTML = html;
-        container.querySelectorAll('.tag-tree-toggle').forEach(t => t.onclick = (e) => {
-            e.stopPropagation();
-            const child = t.closest('.tag-tree-row').nextElementSibling;
-            child.style.display = child.style.display === 'none' ? 'block' : 'none';
-            t.classList.toggle('expanded');
-        });
-
-        container.querySelectorAll('.tag-tree-row').forEach(row => row.onclick = () => {
-            const item = row.closest('.tag-tree-level');
-            const level = parseInt(item.dataset.level);
-            const name = item.dataset.name;
-            const l1Name = item.dataset.l1name || '';
-            const l2Name = item.dataset.l2name || '';
-
-            const idx = this.selectedTags.findIndex(t => t.name === name && t.level === level && (level < 2 || t.l1Name === l1Name) && (level < 3 || t.l2Name === l2Name));
-            if (idx >= 0) this.selectedTags.splice(idx, 1);
-            else if (this.selectedTags.length < 8) {
-                const data = treeData[`l${level}`].find(d => d.name === name && (level < 2 || d.l1Name === l1Name) && (level < 3 || d.l2Name === l2Name));
-                this.selectedTags.push({ name, level, l1Name, l2Name, count: data ? data.count : 50, color: trendChartColors[this.selectedTags.length % 10] });
-            } else alert('最多选择8个标签');
-            this.updateUI();
-        });
-        this.updateTagListUI();
-    }
-
-    updateTagListUI() {
-        const container = document.getElementById(this.config.tagListId);
-        if (container) container.querySelectorAll('.tag-tree-level').forEach(item => {
-            const isSelected = this.selectedTags.some(t => t.name === item.dataset.name && t.level === parseInt(item.dataset.level));
-            item.classList.toggle('selected', isSelected);
+    const shortcuts = filterSection.querySelector('.date-shortcuts');
+    const customInputs = filterSection.querySelector('.date-custom-inputs');
+    const dateRangeGroup = filterSection.querySelector('.date-range-group');
+    const defaultRange = dateRangeGroup?.dataset.defaultRange || '7';
+    if (shortcuts) {
+        shortcuts.querySelectorAll('.shortcut-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.range === defaultRange);
         });
     }
+    if (customInputs) customInputs.style.display = 'none';
 
-    updateUI() {
-        this.updateTagListUI();
-        const countEl = document.getElementById(this.config.countElId);
-        if (countEl) {
-            countEl.textContent = this.selectedTags.length;
-            countEl.style.display = this.selectedTags.length > 0 ? '' : 'none';
-        }
-        this.renderLineChart();
-    }
-
-    renderLineChart() {
-        const svg = document.getElementById(this.config.chartSvgId);
-        if (!svg) return;
-        const legend = document.getElementById(this.config.legendId);
-        const empty = document.getElementById(this.config.emptyStateId);
-
-        if (this.selectedTags.length === 0) {
-            svg.style.display = 'none';
-            empty.style.display = 'flex';
-            legend.innerHTML = '';
-            return;
-        }
-
-        svg.style.display = '';
-        empty.style.display = 'none';
-
-        // 根据日期区间动态决定粒度
-        const dateInfo = this.getDatesAndGranularity();
-        const { dates, isWeekly } = dateInfo;
-        const pointCount = dates.length;
-
-        const allData = this.selectedTags.map(tag => ({ ...tag, dates: dates, values: this.getValues(tag.count, pointCount) }));
-        const w = svg.parentElement.clientWidth - 32, h = 260, pad = { t: 30, b: 40, l: 60, r: 20 }, plotW = w - pad.l - pad.r, plotH = h - pad.t - pad.b;
-
-        const allVal = allData.flatMap(d => d.values);
-        const maxVal = Math.ceil(Math.max(...allVal, 10) * 1.1);
-        const minVal = Math.floor(Math.min(...allVal, 0) * 0.9);
-
-        // 动态计算横轴步长
-        const xStep = plotW / Math.max(pointCount - 1, 1);
-
-        let svgHtml = '';
-        // 绘制 Y 轴
-        for (let i = 0; i <= 5; i++) {
-            const y = pad.t + (plotH / 5) * i;
-            svgHtml += `<line x1="${pad.l}" y1="${y}" x2="${w - pad.r}" y2="${y}" stroke="#f0f0f0" stroke-dasharray="4,2"/>`;
-            svgHtml += `<text x="${pad.l - 10}" y="${y + 4}" text-anchor="end" font-size="11" fill="#999">${Math.round(maxVal - (maxVal - minVal) * i / 5)}</text>`;
-        }
-
-        // 绘制 X 轴日期标签
-        const labelInterval = isWeekly ? 1 : (pointCount > 15 ? 5 : 2);
-        for (let i = 0; i < pointCount; i += labelInterval) {
-            const x = pad.l + i * xStep;
-            const fullDate = dates[i];
-            const displayDate = isWeekly ? fullDate : fullDate.substring(5); // 周展示全名/日期截取
-            svgHtml += `<text x="${x}" y="${h - 15}" text-anchor="middle" font-size="10" fill="#999">${displayDate}</text>`;
-        }
-
-        allData.forEach((s, sIdx) => {
-            const points = s.values.map((v, i) => `${pad.l + i * xStep},${pad.t + plotH - ((v - minVal) / (maxVal - minVal || 1)) * plotH}`).join(' ');
-            svgHtml += `<polyline points="${points}" fill="none" stroke="${s.color}" stroke-width="2.5" />`;
-            s.values.forEach((v, i) => {
-                const x = pad.l + i * xStep, y = pad.t + plotH - ((v - minVal) / (maxVal - minVal || 1)) * plotH;
-                svgHtml += `<circle cx="${x}" cy="${y}" r="12" fill="transparent" class="data-point" data-idx="${i}" data-v="${v}" data-date="${s.dates[i]}" data-sidx="${sIdx}"/>`;
-                svgHtml += `<circle cx="${x}" cy="${y}" r="4" fill="${s.color}" stroke="white" stroke-width="2"/>`;
-            });
-        });
-
-        svgHtml += `<g class="chart-tooltip" style="display:none"><rect class="tip-bg" rx="6" fill="rgba(0,0,0,0.85)"/><text class="tip-date" text-anchor="middle" fill="white" font-size="11"/><g class="tip-content"></g></g>`;
-        svg.innerHTML = svgHtml;
-        svg.setAttribute('width', w);
-        svg.setAttribute('height', h);
-
-        const tip = svg.querySelector('.chart-tooltip'), bg = tip.querySelector('.tip-bg'), dateEl = tip.querySelector('.tip-date'), cont = tip.querySelector('.tip-content');
-        svg.onmousemove = (e) => {
-            const p = e.target.closest('.data-point');
-            if (!p) { tip.style.display = 'none'; return; }
-            tip.style.display = 'block';
-            dateEl.textContent = p.dataset.date;
-            dateEl.setAttribute('x', 70); dateEl.setAttribute('y', 20);
-            cont.innerHTML = allData.map((s, i) => `<text x="12" y="${38 + i * 16}" fill="${s.color}" font-size="11">${s.name}: ${s.values[p.dataset.idx]}</text>`).join('');
-            bg.setAttribute('width', 140); bg.setAttribute('height', 45 + allData.length * 16);
-            const r = svg.getBoundingClientRect();
-            let x = e.clientX - r.left + 15, y = e.clientY - r.top - 40;
-            if (x + 150 > r.width) x -= 170;
-            tip.setAttribute('transform', `translate(${x},${y})`);
-        };
-        svg.onmouseleave = () => tip.style.display = 'none';
-        legend.innerHTML = allData.map(s => `<div class="legend-item"><span class="legend-dot" style="background:${s.color}"></span><span>${s.name}</span></div>`).join('');
-    }
-
-    getDatesAndGranularity() {
-        const startInput = document.getElementById('startDate');
-        const endInput = document.getElementById('endDate');
-        const start = new Date(startInput?.value || '2024-05-01');
-        const end = new Date(endInput?.value || '2024-05-30');
-
-        const diffDays = Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) + 1;
-        const isWeekly = diffDays > 31;
-        const dates = [];
-
-        if (isWeekly) {
-            // 按周生成，如 2024-W19
-            let current = new Date(start);
-            while (current <= end) {
-                const weekNum = this.getWeekNumber(current);
-                const label = `${current.getFullYear()}-W${String(weekNum).padStart(2, '0')}`;
-                if (!dates.includes(label)) dates.push(label);
-                current.setDate(current.getDate() + 7);
-            }
-        } else {
-            // 按日生成
-            let current = new Date(start);
-            for (let i = 0; i < diffDays; i++) {
-                dates.push(formatDate(current));
-                current.setDate(current.getDate() + 1);
-            }
-        }
-        return { dates, isWeekly };
-    }
-
-    getWeekNumber(d) {
-        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-        const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-        const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-        return weekNo;
-    }
-
-    getValues(base, count) {
-        const v = [];
-        for (let i = 0; i < count; i++) v.push(Math.round(base * (0.8 + Math.random() * 0.4)));
-        return v;
+    const startInput = filterSection.querySelector('.date-custom-start');
+    const endInput = filterSection.querySelector('.date-custom-end');
+    if (startInput && endInput) {
+        const today = new Date();
+        const start = new Date();
+        start.setDate(today.getDate() - (parseInt(defaultRange, 10) || 7));
+        startInput.value = formatDate(start);
+        endInput.value = formatDate(today);
     }
 }
 
-function initAnalyzers() {
-    window.commonAnalyzer = new TrendAnalyzer({
-        selectorBtnId: 'openTagSelector', dropdownId: 'tagDropdown', tagListId: 'tagListForSelection',
-        chartSvgId: 'lineChartSvg', emptyStateId: 'chartEmptyState', legendId: 'chartLegend',
-        searchInputId: 'tagSearchInput', clearBtnId: 'clearAllTags', countElId: 'selectedTagCount',
-        exportBtnId: 'exportTrendBtn',
-        treeDataGetter: () => commonTagsTreeData
-    });
+function showNotification(message, type = 'info') {
+    const oldToast = document.querySelector('.prototype-toast');
+    if (oldToast) oldToast.remove();
 
-    window.resistanceAnalyzer = new TrendAnalyzer({
-        selectorBtnId: 'openTagSelector2', dropdownId: 'tagDropdown2', tagListId: 'tagListForSelection2',
-        chartSvgId: 'lineChartSvg2', emptyStateId: 'chartEmptyState2', legendId: 'chartLegend2',
-        searchInputId: 'tagSearchInput2', clearBtnId: 'clearAllTags2', countElId: 'selectedTagCount2',
-        exportBtnId: 'exportTrendBtn2',
-        treeDataGetter: () => resistanceTagsTreeData
-    });
+    const toast = document.createElement('div');
+    toast.className = `prototype-toast ${type}`;
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        top: 72px;
+        right: 24px;
+        z-index: 3000;
+        padding: 10px 14px;
+        border-radius: 8px;
+        background: ${type === 'success' ? '#f0fdf4' : '#eff6ff'};
+        color: ${type === 'success' ? '#166534' : '#1d4ed8'};
+        border: 1px solid ${type === 'success' ? '#bbf7d0' : '#bfdbfe'};
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+        font-size: 13px;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2200);
 }
 
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        setTimeout(() => {
-            if (window.commonAnalyzer) window.commonAnalyzer.renderLineChart();
-            if (window.resistanceAnalyzer) window.resistanceAnalyzer.renderLineChart();
-        }, 300);
-    });
-});
-
-window.addEventListener('load', initAnalyzers);
+function switchTouchMediaTab(tab) {
+    const channelPanel = document.getElementById('touchMediaPanel_channel');
+    const mediaPanel = document.getElementById('touchMediaPanel_media');
+    const channelTab = document.getElementById('touchMediaTab_channel');
+    const mediaTab = document.getElementById('touchMediaTab_media');
+    if (tab === 'channel') {
+        channelPanel.style.display = '';
+        mediaPanel.style.display = 'none';
+        channelTab.style.color = '#2563eb';
+        channelTab.style.borderBottom = '2px solid #2563eb';
+        mediaTab.style.color = '#94a3b8';
+        mediaTab.style.borderBottom = '2px solid transparent';
+    } else {
+        channelPanel.style.display = 'none';
+        mediaPanel.style.display = '';
+        mediaTab.style.color = '#2563eb';
+        mediaTab.style.borderBottom = '2px solid #2563eb';
+        channelTab.style.color = '#94a3b8';
+        channelTab.style.borderBottom = '2px solid transparent';
+    }
+}
 
 // 区域投放效果 Top 10/20 切换逻辑
 document.addEventListener('click', (e) => {
@@ -1126,28 +473,35 @@ function initProjectRankInteraction() {
         listContainer.style.opacity = '0';
 
         setTimeout(() => {
+            const baseMap = { hab: 12345, arrival: 12345, testdrive: 5185, order: 2345 };
+            const base = baseMap[metric] || 12345;
             let html = '';
             data.forEach((item, index) => {
                 const rankClass = index < 3 ? 'top3' : '';
+                const pct = parseFloat(item.val);
+                const count = Math.round(pct * base / 100);
 
                 let barHtml = '';
                 if (metric === 'hab') {
-                    // 堆叠模式
+                    const hCount = Math.round(item.h * base / 100);
+                    const aCount = Math.round(item.a * base / 100);
+                    const bCount = Math.round(item.b * base / 100);
                     barHtml = `
                         <div class="ce-h-stack">
-                            <div class="ce-h-seg h" style="width: ${item.h}%;"></div>
-                            <div class="ce-h-seg a" style="width: ${item.a}%;"></div>
-                            <div class="ce-h-seg b" style="width: ${item.b}%;"></div>
+                            <div class="ce-h-seg h" style="width: ${item.h}%;" title="H: ${hCount}人"></div>
+                            <div class="ce-h-seg a" style="width: ${item.a}%;" title="A: ${aCount}人"></div>
+                            <div class="ce-h-seg b" style="width: ${item.b}%;" title="B: ${bCount}人"></div>
                             <div class="ce-h-seg other" style="width: ${item.other}%;"></div>
                         </div>
                     `;
+                    barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
                 } else {
-                    // 单值模式 (主色蓝)
                     barHtml = `
                         <div class="ce-h-stack">
                             <div class="ce-h-seg a" style="width: ${item.val};"></div>
                         </div>
                     `;
+                    barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
                 }
 
                 html += `
@@ -1158,7 +512,6 @@ function initProjectRankInteraction() {
                         </div>
                         <div class="ce-h-chart-wrapper">
                             ${barHtml}
-                            <span class="ce-h-total">${labelText}: ${item.val}</span>
                         </div>
                     </div>
                 `;
@@ -1204,7 +557,7 @@ document.addEventListener('click', (e) => {
 
 // 线索质量排名切换交互逻辑
 
-// 排期排名切换交互逻辑
+// 媒体质量排名切换交互逻辑
 function initScheduleRankInteraction() {
     const tabs = document.getElementById('scheduleMetricTabs');
     const listContainer = document.getElementById('scheduleRankList');
@@ -1272,26 +625,35 @@ function initScheduleRankInteraction() {
         listContainer.style.opacity = '0';
 
         setTimeout(() => {
+            const baseMap = { hab: 12345, arrival: 12345, testdrive: 5185, order: 2345 };
+            const base = baseMap[metric] || 12345;
             let html = '';
             data.forEach((item, index) => {
                 const rankClass = index < 3 ? 'top3' : '';
+                const pct = parseFloat(item.val);
+                const count = Math.round(pct * base / 100);
 
                 let barHtml = '';
                 if (metric === 'hab') {
+                    const hCount = Math.round(item.h * base / 100);
+                    const aCount = Math.round(item.a * base / 100);
+                    const bCount = Math.round(item.b * base / 100);
                     barHtml = `
                         <div class="ce-h-stack">
-                            <div class="ce-h-seg h" style="width: ${item.h}%;"></div>
-                            <div class="ce-h-seg a" style="width: ${item.a}%;"></div>
-                            <div class="ce-h-seg b" style="width: ${item.b}%;"></div>
+                            <div class="ce-h-seg h" style="width: ${item.h}%;" title="H: ${hCount}人"></div>
+                            <div class="ce-h-seg a" style="width: ${item.a}%;" title="A: ${aCount}人"></div>
+                            <div class="ce-h-seg b" style="width: ${item.b}%;" title="B: ${bCount}人"></div>
                             <div class="ce-h-seg other" style="width: ${item.other}%;"></div>
                         </div>
                     `;
+                    barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
                 } else {
                     barHtml = `
                         <div class="ce-h-stack">
                             <div class="ce-h-seg a" style="width: ${item.val};"></div>
                         </div>
                     `;
+                    barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
                 }
 
                 html += `
@@ -1302,7 +664,6 @@ function initScheduleRankInteraction() {
                         </div>
                         <div class="ce-h-chart-wrapper">
                             ${barHtml}
-                            <span class="ce-h-total">${labelText}: ${item.val}</span>
                         </div>
                     </div>
                 `;
@@ -1422,21 +783,36 @@ function closeFocusModal() {
  * 全量排行榜相关逻辑
  */
 const qualityFullData = [
-    { rank: 1, type: '休眠失联', reason: '处于考虑/纠结期', count: 1245, percent: '10.1%', trend: 'up', trendVal: '1.2%' },
-    { rank: 2, type: '休眠失联', reason: '正在开车/忙碌', count: 952, percent: '7.7%', trend: 'down', trendVal: '0.5%' },
-    { rank: 3, type: '接通有效', reason: '确认有购车意向', count: 880, percent: '7.1%', trend: 'up', trendVal: '2.4%' },
-    { rank: 4, type: '休眠失联', reason: '接通后挂断', count: 720, percent: '5.8%', trend: 'none', trendVal: '0%' },
-    { rank: 5, type: '再次联系', reason: '无人接听', count: 680, percent: '5.5%', trend: 'down', trendVal: '1.8%' },
-    { rank: 6, type: '已接无效', reason: '已购车', count: 550, percent: '4.5%', trend: 'up', trendVal: '0.3%' },
-    { rank: 7, type: '空号/停机', reason: '空号', count: 520, percent: '4.2%', trend: 'down', trendVal: '0.9%' },
-    { rank: 8, type: '已接无效', reason: '购车意愿不明确', count: 480, percent: '3.9%', trend: 'up', trendVal: '0.1%' },
-    { rank: 9, type: '再次联系', reason: '忙线 (占线)', count: 420, percent: '3.4%', trend: 'none', trendVal: '0%' },
-    { rank: 10, type: '已接无效', reason: '强烈抗议', count: 320, percent: '2.6%', trend: 'up', trendVal: '0.4%' },
-    { rank: 11, type: '再次联系', reason: '关机', count: 280, percent: '2.3%', trend: 'down', trendVal: '0.2%' },
-    { rank: 12, type: '再次联系', reason: '不在服务区', count: 210, percent: '1.7%', trend: 'none', trendVal: '0%' },
-    { rank: 13, type: '拦截/黑名单', reason: '黑名单过滤', count: 180, percent: '1.5%', trend: 'up', trendVal: '0.1%' },
-    { rank: 14, type: '空号/停机', reason: '停机', count: 150, percent: '1.2%', trend: 'down', trendVal: '0.4%' },
-    { rank: 15, type: '休眠未购', reason: '其他琐碎沟通', count: 120, percent: '1.0%', trend: 'none', trendVal: '0%' }
+    { rank: 1, type: '无法建联', reason: '无人接听', count: 1245, percent: '10.1%', trend: 'up', trendVal: '1.2%' },
+    { rank: 2, type: '无法建联', reason: '无法接通', count: 952, percent: '7.7%', trend: 'down', trendVal: '0.5%' },
+    { rank: 3, type: '无法建联', reason: '接通后挂断', count: 880, percent: '7.1%', trend: 'up', trendVal: '2.4%' },
+    { rank: 4, type: '有效号码', reason: '确认有购车意向', count: 720, percent: '5.8%', trend: 'none', trendVal: '0%' },
+    { rank: 5, type: '无效号码', reason: '空号', count: 680, percent: '5.5%', trend: 'down', trendVal: '1.8%' },
+    { rank: 6, type: '无法建联', reason: '忙线（占线）', count: 550, percent: '4.5%', trend: 'up', trendVal: '0.3%' },
+    { rank: 7, type: '无法建联', reason: '休眠失联', count: 520, percent: '4.2%', trend: 'down', trendVal: '0.9%' },
+    { rank: 8, type: '无法建联', reason: '处于考虑/纠结期', count: 480, percent: '3.9%', trend: 'up', trendVal: '0.1%' },
+    { rank: 9, type: '有效号码', reason: '已购车', count: 420, percent: '3.4%', trend: 'none', trendVal: '0%' },
+    { rank: 10, type: '无效号码', reason: '黑名单过滤', count: 320, percent: '2.6%', trend: 'up', trendVal: '0.4%' },
+    { rank: 11, type: '无效号码', reason: '停机', count: 280, percent: '2.3%', trend: 'down', trendVal: '0.2%' },
+    { rank: 12, type: '无效号码', reason: '线路拦截', count: 260, percent: '2.1%', trend: 'none', trendVal: '0%' },
+    { rank: 13, type: '无效号码', reason: '秘书台号码', count: 240, percent: '1.9%', trend: 'up', trendVal: '0.1%' },
+    { rank: 14, type: '无效号码', reason: '语音信箱号', count: 220, percent: '1.8%', trend: 'down', trendVal: '0.4%' },
+    { rank: 15, type: '无效号码', reason: '手机助理号码', count: 210, percent: '1.7%', trend: 'none', trendVal: '0%' },
+    { rank: 16, type: '无法建联', reason: '休眠未购', count: 198, percent: '1.6%', trend: 'up', trendVal: '0.2%' },
+    { rank: 17, type: '无法建联', reason: '信号差/无有效交互', count: 186, percent: '1.5%', trend: 'down', trendVal: '0.3%' },
+    { rank: 18, type: '无法建联', reason: '正在开车/忙碌', count: 174, percent: '1.4%', trend: 'none', trendVal: '0%' },
+    { rank: 19, type: '无法建联', reason: '其他琐碎沟通/未触达核心', count: 162, percent: '1.3%', trend: 'up', trendVal: '0.1%' },
+    { rank: 20, type: '无法建联', reason: '转秘书台', count: 150, percent: '1.2%', trend: 'down', trendVal: '0.2%' },
+    { rank: 21, type: '无法建联', reason: '语音信箱', count: 138, percent: '1.1%', trend: 'none', trendVal: '0%' },
+    { rank: 22, type: '无法建联', reason: '手机助理', count: 126, percent: '1.0%', trend: 'up', trendVal: '0.1%' },
+    { rank: 23, type: '有效号码', reason: '强烈抗议', count: 114, percent: '0.9%', trend: 'down', trendVal: '0.1%' },
+    { rank: 24, type: '有效号码', reason: '购车意愿明确', count: 102, percent: '0.8%', trend: 'none', trendVal: '0%' },
+    { rank: 25, type: '有效号码', reason: '购车意愿不明确', count: 96, percent: '0.8%', trend: 'up', trendVal: '0.1%' },
+    { rank: 26, type: '有效号码', reason: '意向不明', count: 88, percent: '0.7%', trend: 'down', trendVal: '0.1%' },
+    { rank: 27, type: '无法建联', reason: '关机', count: 76, percent: '0.6%', trend: 'none', trendVal: '0%' },
+    { rank: 28, type: '无法建联', reason: '不在服务区', count: 64, percent: '0.5%', trend: 'up', trendVal: '0.1%' },
+    { rank: 29, type: '无法建联', reason: '拒接', count: 52, percent: '0.4%', trend: 'down', trendVal: '0.1%' },
+    { rank: 30, type: '无法建联', reason: '欠费', count: 40, percent: '0.3%', trend: 'none', trendVal: '0%' }
 ];
 
 const resistanceFullData = [
@@ -1454,6 +830,210 @@ const resistanceFullData = [
     { rank: 12, result: '战败', reason: '金融方案不满意', count: 50, percent: '1.1%', trend: 'up', trendVal: '0.1%' }
 ];
 
+const areaDeliveryFullData = [
+    { rank: 1, area: '上海一区', count: 2180, h: 20, a: 23, b: 24, other: 33 },
+    { rank: 2, area: '广州一区', count: 1870, h: 16, a: 21, b: 23, other: 40 },
+    { rank: 3, area: '北京一区', count: 1610, h: 14, a: 18, b: 21, other: 47 },
+    { rank: 4, area: '成都一区', count: 1260, h: 10, a: 15, b: 20, other: 55 },
+    { rank: 5, area: '上海二区', count: 1180, h: 9, a: 14, b: 19, other: 58 },
+    { rank: 6, area: '深圳一区', count: 1060, h: 8, a: 13, b: 18, other: 61 },
+    { rank: 7, area: '广州二区', count: 960, h: 8, a: 12, b: 17, other: 63 },
+    { rank: 8, area: '武汉一区', count: 850, h: 7, a: 11, b: 16, other: 66 },
+    { rank: 9, area: '西安一区', count: 740, h: 6, a: 10, b: 15, other: 69 },
+    { rank: 10, area: '深圳二区', count: 680, h: 6, a: 9, b: 14, other: 71 },
+    { rank: 11, area: '重庆一区', count: 620, h: 5, a: 9, b: 13, other: 73 },
+    { rank: 12, area: '南京一区', count: 580, h: 5, a: 8, b: 12, other: 75 },
+    { rank: 13, area: '杭州一区', count: 540, h: 4, a: 8, b: 12, other: 76 },
+    { rank: 14, area: '苏州一区', count: 500, h: 4, a: 7, b: 11, other: 78 },
+    { rank: 15, area: '郑州一区', count: 460, h: 4, a: 7, b: 10, other: 79 }
+];
+
+const channelOverlapFullData = {
+    channelOverlap5plus: {
+        title: '渠道留资重合度分析：5 个以上',
+        rows: [
+            { rank: 1, media: 'R1 + R2 + R4 + R6 + R8 + R10', unionCount: 2860, overlapCount: 42, overlapRate: '1.5%' },
+            { rank: 2, media: 'R1 + R3 + R4 + R7 + R9 + R11', unionCount: 2540, overlapCount: 34, overlapRate: '1.3%' },
+            { rank: 3, media: 'R2 + R3 + R5 + R6 + R8', unionCount: 2380, overlapCount: 31, overlapRate: '1.3%' },
+            { rank: 4, media: 'R1 + R4 + R5 + R8 + R10', unionCount: 2200, overlapCount: 25, overlapRate: '1.1%' },
+            { rank: 5, media: 'R3 + R4 + R6 + R9 + R11', unionCount: 2050, overlapCount: 19, overlapRate: '0.9%' },
+            { rank: 6, media: 'R2 + R5 + R7 + R8 + R10 + R11', unionCount: 1960, overlapCount: 16, overlapRate: '0.8%' },
+            { rank: 7, media: 'R1 + R3 + R6 + R7 + R10', unionCount: 1820, overlapCount: 14, overlapRate: '0.8%' },
+            { rank: 8, media: 'R4 + R5 + R8 + R9 + R10 + R11', unionCount: 1680, overlapCount: 12, overlapRate: '0.7%' },
+            { rank: 9, media: 'R1 + R2 + R6 + R7 + R9', unionCount: 1520, overlapCount: 10, overlapRate: '0.7%' },
+            { rank: 10, media: 'R3 + R5 + R7 + R8 + R11', unionCount: 1360, overlapCount: 8, overlapRate: '0.6%' }
+        ]
+    },
+    channelOverlap5: {
+        title: '渠道留资重合度分析：5个',
+        rows: [
+            { rank: 1, media: 'R1 + R2 + R4 + R6 + R8', unionCount: 2420, overlapCount: 68, overlapRate: '2.8%' },
+            { rank: 2, media: 'R2 + R3 + R5 + R7 + R9', unionCount: 2260, overlapCount: 56, overlapRate: '2.5%' },
+            { rank: 3, media: 'R1 + R4 + R6 + R8 + R10', unionCount: 2100, overlapCount: 48, overlapRate: '2.3%' },
+            { rank: 4, media: 'R3 + R5 + R6 + R9 + R11', unionCount: 1980, overlapCount: 39, overlapRate: '2.0%' },
+            { rank: 5, media: 'R1 + R2 + R7 + R8 + R11', unionCount: 1840, overlapCount: 32, overlapRate: '1.7%' },
+            { rank: 6, media: 'R2 + R4 + R5 + R9 + R10', unionCount: 1720, overlapCount: 26, overlapRate: '1.5%' },
+            { rank: 7, media: 'R1 + R3 + R6 + R7 + R10', unionCount: 1580, overlapCount: 22, overlapRate: '1.4%' },
+            { rank: 8, media: 'R4 + R6 + R8 + R9 + R11', unionCount: 1460, overlapCount: 18, overlapRate: '1.2%' },
+            { rank: 9, media: 'R1 + R5 + R7 + R10 + R11', unionCount: 1320, overlapCount: 14, overlapRate: '1.1%' },
+            { rank: 10, media: 'R2 + R3 + R8 + R9 + R10', unionCount: 1200, overlapCount: 10, overlapRate: '0.8%' }
+        ]
+    },
+    channelOverlap4: {
+        title: '渠道留资重合度分析：4 个',
+        rows: [
+            { rank: 1, media: 'R1 + R2 + R4 + R6', unionCount: 2180, overlapCount: 126, overlapRate: '5.8%' },
+            { rank: 2, media: 'R2 + R3 + R5 + R8', unionCount: 2020, overlapCount: 104, overlapRate: '5.1%' },
+            { rank: 3, media: 'R1 + R4 + R7 + R9', unionCount: 1860, overlapCount: 82, overlapRate: '4.4%' },
+            { rank: 4, media: 'R3 + R6 + R8 + R10', unionCount: 1720, overlapCount: 66, overlapRate: '3.8%' },
+            { rank: 5, media: 'R5 + R7 + R9 + R11', unionCount: 1600, overlapCount: 54, overlapRate: '3.4%' },
+            { rank: 6, media: 'R1 + R2 + R3 + R5', unionCount: 1480, overlapCount: 44, overlapRate: '3.0%' },
+            { rank: 7, media: 'R4 + R6 + R9 + R10', unionCount: 1360, overlapCount: 36, overlapRate: '2.6%' },
+            { rank: 8, media: 'R2 + R7 + R8 + R11', unionCount: 1240, overlapCount: 28, overlapRate: '2.3%' },
+            { rank: 9, media: 'R1 + R5 + R6 + R10', unionCount: 1120, overlapCount: 20, overlapRate: '1.8%' },
+            { rank: 10, media: 'R3 + R4 + R8 + R9', unionCount: 980, overlapCount: 14, overlapRate: '1.4%' }
+        ]
+    },
+    channelOverlap3: {
+        title: '渠道留资重合度分析：3 个',
+        rows: [
+            { rank: 1, media: 'R1 + R2 + R4', unionCount: 1960, overlapCount: 196, overlapRate: '10.0%' },
+            { rank: 2, media: 'R2 + R3 + R6', unionCount: 1780, overlapCount: 154, overlapRate: '8.7%' },
+            { rank: 3, media: 'R1 + R5 + R8', unionCount: 1620, overlapCount: 128, overlapRate: '7.9%' },
+            { rank: 4, media: 'R4 + R7 + R9', unionCount: 1460, overlapCount: 92, overlapRate: '6.3%' },
+            { rank: 5, media: 'R6 + R10 + R11', unionCount: 1320, overlapCount: 70, overlapRate: '5.3%' },
+            { rank: 6, media: 'R1 + R3 + R8', unionCount: 1200, overlapCount: 56, overlapRate: '4.7%' },
+            { rank: 7, media: 'R2 + R5 + R9', unionCount: 1080, overlapCount: 44, overlapRate: '4.1%' },
+            { rank: 8, media: 'R3 + R7 + R10', unionCount: 960, overlapCount: 34, overlapRate: '3.5%' },
+            { rank: 9, media: 'R4 + R6 + R11', unionCount: 840, overlapCount: 24, overlapRate: '2.9%' },
+            { rank: 10, media: 'R5 + R8 + R9', unionCount: 720, overlapCount: 16, overlapRate: '2.2%' }
+        ]
+    },
+    channelOverlap2: {
+        title: '渠道留资重合度分析：2 个',
+        rows: [
+            { rank: 1, media: 'R4 + R1', unionCount: 1680, overlapCount: 180, overlapRate: '10.7%' },
+            { rank: 2, media: 'R2 + R1', unionCount: 1500, overlapCount: 128, overlapRate: '8.5%' },
+            { rank: 3, media: 'R1 + R3', unionCount: 1320, overlapCount: 92, overlapRate: '7.0%' },
+            { rank: 4, media: 'R6 + R2', unionCount: 1160, overlapCount: 68, overlapRate: '5.9%' },
+            { rank: 5, media: 'R3 + R4', unionCount: 1020, overlapCount: 56, overlapRate: '5.5%' },
+            { rank: 6, media: 'R1 + R5', unionCount: 920, overlapCount: 42, overlapRate: '4.6%' },
+            { rank: 7, media: 'R2 + R3', unionCount: 860, overlapCount: 38, overlapRate: '4.4%' },
+            { rank: 8, media: 'R7 + R1', unionCount: 780, overlapCount: 28, overlapRate: '3.6%' },
+            { rank: 9, media: 'R8 + R2', unionCount: 640, overlapCount: 18, overlapRate: '2.8%' },
+            { rank: 10, media: 'R4 + R9', unionCount: 520, overlapCount: 12, overlapRate: '2.3%' }
+        ]
+    },
+    channelOverlap1: {
+        title: '渠道留资重合度分析：仅 1 个',
+        rows: [
+            { rank: 1, media: 'R1', unionCount: 2460, overlapCount: 2460, overlapRate: '100%' },
+            { rank: 2, media: 'R2', unionCount: 2180, overlapCount: 2180, overlapRate: '100%' },
+            { rank: 3, media: 'R4', unionCount: 1920, overlapCount: 1920, overlapRate: '100%' },
+            { rank: 4, media: 'R3', unionCount: 1680, overlapCount: 1680, overlapRate: '100%' },
+            { rank: 5, media: 'R5', unionCount: 1420, overlapCount: 1420, overlapRate: '100%' },
+            { rank: 6, media: 'R6', unionCount: 1180, overlapCount: 1180, overlapRate: '100%' },
+            { rank: 7, media: 'R7', unionCount: 920, overlapCount: 920, overlapRate: '100%' },
+            { rank: 8, media: 'R8', unionCount: 680, overlapCount: 680, overlapRate: '100%' },
+            { rank: 9, media: 'R9', unionCount: 460, overlapCount: 460, overlapRate: '100%' },
+            { rank: 10, media: 'R10', unionCount: 320, overlapCount: 320, overlapRate: '100%' }
+        ]
+    }
+};
+
+const mediaOverlapFullData = {
+    mediaOverlap5plus: {
+        title: '媒体留资重合度分析：5 个以上',
+        rows: [
+            { rank: 1, media: '抖音 + 懂车帝 + 百度 + 快手 + 小红书 + 头条', unionCount: 3200, overlapCount: 38, overlapRate: '1.2%' },
+            { rank: 2, media: '抖音 + 懂车帝 + 快手 + 朋友圈 + B站', unionCount: 2860, overlapCount: 28, overlapRate: '1.0%' },
+            { rank: 3, media: '百度 + 快手 + 小红书 + 头条 + 优酷', unionCount: 2540, overlapCount: 22, overlapRate: '0.9%' },
+            { rank: 4, media: '抖音 + 小红书 + 朋友圈 + 头条 + 知乎', unionCount: 2380, overlapCount: 16, overlapRate: '0.7%' },
+            { rank: 5, media: '懂车帝 + 百度 + 快手 + 优酷 + B站', unionCount: 2200, overlapCount: 12, overlapRate: '0.5%' },
+            { rank: 6, media: '抖音 + 懂车帝 + 百度 + 朋友圈 + 头条 + B站', unionCount: 2080, overlapCount: 10, overlapRate: '0.5%' },
+            { rank: 7, media: '快手 + 小红书 + 朋友圈 + 优酷 + 知乎', unionCount: 1920, overlapCount: 8, overlapRate: '0.4%' },
+            { rank: 8, media: '抖音 + 百度 + 头条 + 优酷 + B站 + 知乎', unionCount: 1780, overlapCount: 6, overlapRate: '0.3%' },
+            { rank: 9, media: '懂车帝 + 快手 + 小红书 + 头条 + 朋友圈', unionCount: 1640, overlapCount: 5, overlapRate: '0.3%' },
+            { rank: 10, media: '百度 + 朋友圈 + 头条 + 优酷 + 知乎 + B站', unionCount: 1500, overlapCount: 4, overlapRate: '0.3%' }
+        ]
+    },
+    mediaOverlap5: {
+        title: '媒体留资重合度分析：5个',
+        rows: [
+            { rank: 1, media: '抖音 + 懂车帝 + 百度 + 快手 + 小红书', unionCount: 2860, overlapCount: 56, overlapRate: '2.0%' },
+            { rank: 2, media: '懂车帝 + 百度 + 快手 + 朋友圈 + 头条', unionCount: 2600, overlapCount: 46, overlapRate: '1.8%' },
+            { rank: 3, media: '抖音 + 百度 + 小红书 + 头条 + 优酷', unionCount: 2400, overlapCount: 38, overlapRate: '1.6%' },
+            { rank: 4, media: '懂车帝 + 快手 + 小红书 + 朋友圈 + B站', unionCount: 2200, overlapCount: 30, overlapRate: '1.4%' },
+            { rank: 5, media: '抖音 + 百度 + 快手 + 优酷 + 知乎', unionCount: 2000, overlapCount: 22, overlapRate: '1.1%' },
+            { rank: 6, media: '小红书 + 朋友圈 + 头条 + 优酷 + B站', unionCount: 1860, overlapCount: 18, overlapRate: '1.0%' },
+            { rank: 7, media: '抖音 + 懂车帝 + 朋友圈 + 优酷 + 知乎', unionCount: 1720, overlapCount: 14, overlapRate: '0.8%' },
+            { rank: 8, media: '百度 + 快手 + 头条 + 优酷 + B站', unionCount: 1580, overlapCount: 10, overlapRate: '0.6%' },
+            { rank: 9, media: '懂车帝 + 小红书 + 朋友圈 + 头条 + 知乎', unionCount: 1440, overlapCount: 8, overlapRate: '0.6%' },
+            { rank: 10, media: '抖音 + 快手 + 朋友圈 + B站 + 知乎', unionCount: 1300, overlapCount: 6, overlapRate: '0.5%' }
+        ]
+    },
+    mediaOverlap4: {
+        title: '媒体留资重合度分析：4 个',
+        rows: [
+            { rank: 1, media: '抖音 + 懂车帝 + 百度 + 快手', unionCount: 2460, overlapCount: 108, overlapRate: '4.4%' },
+            { rank: 2, media: '懂车帝 + 百度 + 快手 + 小红书', unionCount: 2280, overlapCount: 88, overlapRate: '3.9%' },
+            { rank: 3, media: '抖音 + 百度 + 小红书 + 头条', unionCount: 2100, overlapCount: 72, overlapRate: '3.4%' },
+            { rank: 4, media: '懂车帝 + 快手 + 朋友圈 + 头条', unionCount: 1920, overlapCount: 58, overlapRate: '3.0%' },
+            { rank: 5, media: '抖音 + 快手 + 小红书 + 优酷', unionCount: 1780, overlapCount: 44, overlapRate: '2.5%' },
+            { rank: 6, media: '百度 + 朋友圈 + 头条 + 优酷', unionCount: 1620, overlapCount: 34, overlapRate: '2.1%' },
+            { rank: 7, media: '懂车帝 + 小红书 + B站 + 知乎', unionCount: 1480, overlapCount: 26, overlapRate: '1.8%' },
+            { rank: 8, media: '抖音 + 朋友圈 + 优酷 + 知乎', unionCount: 1340, overlapCount: 18, overlapRate: '1.3%' },
+            { rank: 9, media: '快手 + 小红书 + 头条 + B站', unionCount: 1200, overlapCount: 12, overlapRate: '1.0%' },
+            { rank: 10, media: '百度 + 快手 + 朋友圈 + 知乎', unionCount: 1060, overlapCount: 8, overlapRate: '0.8%' }
+        ]
+    },
+    mediaOverlap3: {
+        title: '媒体留资重合度分析：3 个',
+        rows: [
+            { rank: 1, media: '抖音 + 懂车帝 + 百度', unionCount: 2200, overlapCount: 176, overlapRate: '8.0%' },
+            { rank: 2, media: '懂车帝 + 百度 + 快手', unionCount: 1960, overlapCount: 142, overlapRate: '7.2%' },
+            { rank: 3, media: '抖音 + 小红书 + 头条', unionCount: 1780, overlapCount: 116, overlapRate: '6.5%' },
+            { rank: 4, media: '百度 + 快手 + 朋友圈', unionCount: 1600, overlapCount: 86, overlapRate: '5.4%' },
+            { rank: 5, media: '懂车帝 + 优酷 + B站', unionCount: 1420, overlapCount: 64, overlapRate: '4.5%' },
+            { rank: 6, media: '抖音 + 快手 + 小红书', unionCount: 1280, overlapCount: 48, overlapRate: '3.8%' },
+            { rank: 7, media: '百度 + 朋友圈 + 头条', unionCount: 1140, overlapCount: 38, overlapRate: '3.3%' },
+            { rank: 8, media: '小红书 + 优酷 + 知乎', unionCount: 1000, overlapCount: 28, overlapRate: '2.8%' },
+            { rank: 9, media: '抖音 + 朋友圈 + B站', unionCount: 880, overlapCount: 18, overlapRate: '2.0%' },
+            { rank: 10, media: '快手 + 头条 + 知乎', unionCount: 760, overlapCount: 12, overlapRate: '1.6%' }
+        ]
+    },
+    mediaOverlap2: {
+        title: '媒体留资重合度分析：2 个',
+        rows: [
+            { rank: 1, media: '抖音 + 懂车帝', unionCount: 1880, overlapCount: 168, overlapRate: '8.9%' },
+            { rank: 2, media: '懂车帝 + 百度', unionCount: 1640, overlapCount: 120, overlapRate: '7.3%' },
+            { rank: 3, media: '抖音 + 百度', unionCount: 1500, overlapCount: 90, overlapRate: '6.0%' },
+            { rank: 4, media: '快手 + 抖音', unionCount: 1280, overlapCount: 62, overlapRate: '4.8%' },
+            { rank: 5, media: '小红书 + 懂车帝', unionCount: 1100, overlapCount: 46, overlapRate: '4.2%' },
+            { rank: 6, media: '百度 + 快手', unionCount: 960, overlapCount: 34, overlapRate: '3.5%' },
+            { rank: 7, media: '抖音 + 小红书', unionCount: 840, overlapCount: 26, overlapRate: '3.1%' },
+            { rank: 8, media: '朋友圈 + 懂车帝', unionCount: 720, overlapCount: 18, overlapRate: '2.5%' },
+            { rank: 9, media: '头条 + 百度', unionCount: 600, overlapCount: 12, overlapRate: '2.0%' },
+            { rank: 10, media: '优酷 + 抖音', unionCount: 480, overlapCount: 8, overlapRate: '1.7%' }
+        ]
+    },
+    mediaOverlap1: {
+        title: '媒体留资重合度分析：仅 1 个',
+        rows: [
+            { rank: 1, media: '抖音', unionCount: 3120, overlapCount: 3120, overlapRate: '100%' },
+            { rank: 2, media: '懂车帝', unionCount: 2540, overlapCount: 2540, overlapRate: '100%' },
+            { rank: 3, media: '百度', unionCount: 1960, overlapCount: 1960, overlapRate: '100%' },
+            { rank: 4, media: '快手', unionCount: 1480, overlapCount: 1480, overlapRate: '100%' },
+            { rank: 5, media: '小红书', unionCount: 1120, overlapCount: 1120, overlapRate: '100%' },
+            { rank: 6, media: '朋友圈', unionCount: 820, overlapCount: 820, overlapRate: '100%' },
+            { rank: 7, media: '头条', unionCount: 580, overlapCount: 580, overlapRate: '100%' },
+            { rank: 8, media: '优酷', unionCount: 380, overlapCount: 380, overlapRate: '100%' },
+            { rank: 9, media: '知乎', unionCount: 240, overlapCount: 240, overlapRate: '100%' },
+            { rank: 10, media: 'B站', unionCount: 160, overlapCount: 160, overlapRate: '100%' }
+        ]
+    }
+};
+
 function openFullRanking(type) {
     const modal = document.getElementById('rankingModal');
     const title = document.getElementById('rankingModalTitle');
@@ -1466,7 +1046,7 @@ function openFullRanking(type) {
     modal.querySelector('.drawer-body').style.padding = '';
 
     if (type === 'quality') {
-        title.innerText = '质量标签全量排行榜';
+        title.innerText = '通话质量标签全量排行榜';
         modal.querySelector('.drawer-body').style.padding = '0 60px';
         thead.innerHTML = `
             <tr>
@@ -1482,7 +1062,7 @@ function openFullRanking(type) {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
-                <td><span class="status-tag" style="background: #f1f5f9; color: #475569; border: none;">${item.type}</span></td>
+                <td><span class="status-tag" style="${getQualityTypeStyle(item.type)}">${item.type}</span></td>
                 <td style="font-weight: 500;">${item.reason}</td>
                 <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}</td>
                 <td style="text-align: right;">${item.percent}</td>
@@ -1515,17 +1095,184 @@ function openFullRanking(type) {
             `;
             tbody.appendChild(row);
         });
-    } else     if (type === 'project' || type === 'schedule') {
-        title.innerText = type === 'project' ? '全量大项目线索质量排名' : '全量排期线索质量排名';
+    } else if (type === 'areaDelivery') {
+        title.innerText = '小区投放效果全量';
         modal.querySelector('.drawer-body').style.padding = '0 60px';
         thead.innerHTML = `
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
-                <th>${type === 'project' ? '项目名称' : '排期名称'}</th>
-                <th style="width: 150px; text-align: right;">H/A/B 占比</th>
-                <th style="width: 100px; text-align: right;">到店率</th>
-                <th style="width: 100px; text-align: right;">试驾率</th>
-                <th style="width: 100px; text-align: right;">锁单率</th>
+                <th>小区</th>
+                <th style="width: 140px; text-align: right;">新增线索用户</th>
+                <th style="width: 120px; text-align: right;">H占比</th>
+                <th style="width: 120px; text-align: right;">A占比</th>
+                <th style="width: 120px; text-align: right;">B占比</th>
+                <th style="width: 120px; text-align: right;">C/其他</th>
+                <th style="width: 150px; text-align: right;">H/A/B占比</th>
+            </tr>
+        `;
+        areaDeliveryFullData.forEach(item => {
+            const hab = item.h + item.a + item.b;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
+                <td style="font-weight: 500;">${item.area}</td>
+                <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}人</td>
+                <td style="text-align: right;">${item.h}%</td>
+                <td style="text-align: right;">${item.a}%</td>
+                <td style="text-align: right;">${item.b}%</td>
+                <td style="text-align: right;">${item.other}%</td>
+                <td style="text-align: right;">
+                    <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
+                        <div style="width: 64px; height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden;">
+                            <div style="height: 100%; width: ${hab}%; background: #00337c;"></div>
+                        </div>
+                        <strong>${hab}%</strong>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    } else if (channelOverlapFullData[type]) {
+        const overlap = channelOverlapFullData[type];
+        title.innerText = overlap.title;
+        modal.querySelector('.drawer-body').style.padding = '0 60px';
+        thead.innerHTML = `
+            <tr>
+                <th style="width: 60px; text-align: center;">排名</th>
+                <th>重合媒体名称列表</th>
+                <th style="width: 140px; text-align: right;">并集用户数</th>
+                <th style="width: 140px; text-align: right;">重合用户数</th>
+                <th style="width: 120px; text-align: right;">重合率</th>
+            </tr>
+        `;
+        overlap.rows.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
+                <td style="font-weight: 500;">${item.media}</td>
+                <td style="text-align: right; font-weight: 600;">${item.unionCount.toLocaleString()}人</td>
+                <td style="text-align: right; font-weight: 600;">${item.overlapCount.toLocaleString()}人</td>
+                <td style="text-align: right;">${item.overlapRate}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } else if (mediaOverlapFullData[type]) {
+        const overlap = mediaOverlapFullData[type];
+        title.innerText = overlap.title;
+        modal.querySelector('.drawer-body').style.padding = '0 60px';
+        thead.innerHTML = `
+            <tr>
+                <th style="width: 60px; text-align: center;">排名</th>
+                <th>重合媒体名称列表</th>
+                <th style="width: 140px; text-align: right;">并集用户数</th>
+                <th style="width: 140px; text-align: right;">重合用户数</th>
+                <th style="width: 120px; text-align: right;">重合率</th>
+            </tr>
+        `;
+        overlap.rows.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
+                <td style="font-weight: 500;">${item.media}</td>
+                <td style="text-align: right; font-weight: 600;">${item.unionCount.toLocaleString()}人</td>
+                <td style="text-align: right; font-weight: 600;">${item.overlapCount.toLocaleString()}人</td>
+                <td style="text-align: right;">${item.overlapRate}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } else if (type === 'assignedStore' || type === 'dealStore' || type === 'firstTouchDealStore' || type === 'reachStore') {
+        const titles = { assignedStore: '下发专营店全量排名', dealStore: '成交专营店全量排名', firstTouchDealStore: '首触-成交专营店全量排名', reachStore: '触达专营店全量排名' };
+        title.innerText = titles[type];
+        modal.querySelector('.drawer-body').style.padding = '0 60px';
+        thead.innerHTML = `
+            <tr>
+                <th style="width: 60px; text-align: center;">排名</th>
+                <th>专营店名称</th>
+                <th style="width: 140px; text-align: right;">用户数</th>
+                <th style="width: 120px; text-align: right;">占比</th>
+            </tr>
+        `;
+        const storeFullData = {
+            assignedStore: [
+                { rank:1, name:'上海东风南方', count:1980, percent:'16.0%' },
+                { rank:2, name:'广州天河', count:1520, percent:'12.3%' },
+                { rank:3, name:'深圳南山', count:1080, percent:'8.7%' },
+                { rank:4, name:'北京朝阳', count:940, percent:'7.6%' },
+                { rank:5, name:'武汉光谷', count:820, percent:'6.6%' },
+                { rank:6, name:'成都锦江', count:700, percent:'5.7%' },
+                { rank:7, name:'杭州西湖', count:610, percent:'4.9%' },
+                { rank:8, name:'南京鼓楼', count:520, percent:'4.2%' },
+                { rank:9, name:'重庆渝北', count:430, percent:'3.5%' },
+                { rank:10, name:'苏州工业园', count:360, percent:'2.9%' },
+                { rank:11, name:'长沙岳麓', count:310, percent:'2.5%' },
+                { rank:12, name:'天津河西', count:270, percent:'2.2%' },
+                { rank:13, name:'西安雁塔', count:240, percent:'1.9%' },
+                { rank:14, name:'郑州金水', count:210, percent:'1.7%' },
+                { rank:15, name:'合肥蜀山', count:185, percent:'1.5%' }
+            ],
+            dealStore: [
+                { rank:1, name:'上海东风南方', count:520, percent:'22.0%' },
+                { rank:2, name:'北京朝阳', count:430, percent:'18.0%' },
+                { rank:3, name:'广州天河', count:360, percent:'15.0%' },
+                { rank:4, name:'深圳南山', count:280, percent:'12.0%' },
+                { rank:5, name:'成都锦江', count:220, percent:'9.0%' },
+                { rank:6, name:'武汉光谷', count:180, percent:'7.5%' },
+                { rank:7, name:'杭州西湖', count:140, percent:'6.0%' },
+                { rank:8, name:'重庆渝北', count:105, percent:'4.4%' },
+                { rank:9, name:'南京鼓楼', count:72, percent:'3.0%' },
+                { rank:10, name:'苏州工业园', count:50, percent:'2.1%' }
+            ],
+            firstTouchDealStore: [
+                { rank:1, name:'上海东风南方', count:420, percent:'18.0%' },
+                { rank:2, name:'广州天河', count:320, percent:'14.0%' },
+                { rank:3, name:'北京朝阳', count:260, percent:'11.0%' },
+                { rank:4, name:'深圳南山', count:220, percent:'9.5%' },
+                { rank:5, name:'成都锦江', count:180, percent:'7.7%' },
+                { rank:6, name:'武汉光谷', count:140, percent:'6.0%' },
+                { rank:7, name:'杭州西湖', count:110, percent:'4.7%' },
+                { rank:8, name:'重庆渝北', count:88, percent:'3.8%' },
+                { rank:9, name:'南京鼓楼', count:65, percent:'2.8%' },
+                { rank:10, name:'苏州工业园', count:48, percent:'2.1%' }
+            ],
+            reachStore: [
+                { rank:1, name:'上海东风南方', count:2340, percent:'19.0%' },
+                { rank:2, name:'广州天河', count:1860, percent:'15.0%' },
+                { rank:3, name:'深圳南山', count:1480, percent:'12.0%' },
+                { rank:4, name:'北京朝阳', count:1260, percent:'10.0%' },
+                { rank:5, name:'成都锦江', count:1100, percent:'9.0%' },
+                { rank:6, name:'武汉光谷', count:920, percent:'7.5%' },
+                { rank:7, name:'杭州西湖', count:760, percent:'6.2%' },
+                { rank:8, name:'重庆渝北', count:590, percent:'4.8%' },
+                { rank:9, name:'南京鼓楼', count:460, percent:'3.7%' },
+                { rank:10, name:'苏州工业园', count:350, percent:'2.8%' },
+                { rank:11, name:'长沙岳麓', count:280, percent:'2.3%' },
+                { rank:12, name:'天津河西', count:230, percent:'1.9%' },
+                { rank:13, name:'西安雁塔', count:195, percent:'1.6%' },
+                { rank:14, name:'郑州金水', count:160, percent:'1.3%' },
+                { rank:15, name:'合肥蜀山', count:130, percent:'1.1%' }
+            ]
+        };
+        storeFullData[type].forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
+                <td style="font-weight: 500;">${item.name}</td>
+                <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}人</td>
+                <td style="text-align: right;">${item.percent}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    } else     if (type === 'project' || type === 'schedule') {
+        title.innerText = type === 'project' ? '全量大项目线索质量排名' : '全量媒体质量排名';
+        modal.querySelector('.drawer-body').style.padding = '0 60px';
+        thead.innerHTML = `
+            <tr>
+                <th style="width: 60px; text-align: center;">排名</th>
+                <th>${type === 'project' ? '项目名称' : '媒体名称'}</th>
+                <th style="width: 200px; text-align: right;">H/A/B 占比</th>
+                <th style="width: 145px; text-align: right;">到店率</th>
+                <th style="width: 145px; text-align: right;">试驾率</th>
+                <th style="width: 145px; text-align: right;">锁单率</th>
             </tr>
         `;
 
@@ -1543,7 +1290,7 @@ function openFullRanking(type) {
             '售后维系老带新活动': '老带新活动'
         };
 
-        // 排期名称 → scheduleCode 映射（用于下钻弹窗）
+        // 媒体名称 → scheduleCode 映射（用于下钻弹窗）
         const scheduleCodeMap = {
             '抖音信息流-0501-R4核心排期': 'douyin0501',
             '懂车帝CPS-0428-R4效果通': 'chekong0428',
@@ -1557,10 +1304,18 @@ function openFullRanking(type) {
             const nameIdx = (i - 1) % names.length;
             const baseName = names[nameIdx];
             const name = baseName + (i > names.length ? ` #${i}` : '');
-            const hab = (45 - i * 0.5).toFixed(1) + '%';
-            const arrival = (28 - i * 0.4).toFixed(1) + '%';
-            const testdrive = (18 - i * 0.3).toFixed(1) + '%';
-            const order = (8 - i * 0.1).toFixed(1) + '%';
+            const habVal = (45 - i * 0.5);
+            const arrivalVal = (28 - i * 0.4);
+            const testdriveVal = (18 - i * 0.3);
+            const orderVal = (8 - i * 0.1);
+            const hab = habVal.toFixed(1) + '%';
+            const arrival = arrivalVal.toFixed(1) + '%';
+            const testdrive = testdriveVal.toFixed(1) + '%';
+            const order = orderVal.toFixed(1) + '%';
+            const habCount = Math.round(habVal * 12345 / 100);
+            const arrivalCount = Math.round(arrivalVal * 12345 / 100);
+            const testdriveCount = Math.round(testdriveVal * 5185 / 100);
+            const orderCount = Math.round(orderVal * 2345 / 100);
             const projectCode = type === 'project' ? projectCodeMap[baseName] : undefined;
             const scheduleCode = type === 'schedule' ? scheduleCodeMap[baseName] : undefined;
 
@@ -1583,11 +1338,12 @@ function openFullRanking(type) {
                             <div style="height: 100%; background: #00337c; width: ${hab};"></div>
                         </div>
                         <span style="font-weight: 600; min-width: 45px;">${hab}</span>
+                        <span style="font-size: 11px; color: #6b7280;">(${habCount.toLocaleString()}人)</span>
                     </div>
                 </td>
-                <td style="text-align: right;">${arrival}</td>
-                <td style="text-align: right;">${testdrive}</td>
-                <td style="text-align: right;">${order}</td>
+                <td style="text-align: right;">${arrival} <span style="font-size: 11px; color: #6b7280;">(${arrivalCount.toLocaleString()}人)</span></td>
+                <td style="text-align: right;">${testdrive} <span style="font-size: 11px; color: #6b7280;">(${testdriveCount.toLocaleString()}人)</span></td>
+                <td style="text-align: right;">${order} <span style="font-size: 11px; color: #6b7280;">(${orderCount.toLocaleString()}人)</span></td>
             `;
             tbody.appendChild(row);
         }
@@ -1598,6 +1354,15 @@ function openFullRanking(type) {
 
 function closeRankingModal() {
     document.getElementById('rankingModal').classList.remove('active');
+}
+
+function getQualityTypeStyle(type) {
+    const styles = {
+        '无效号码': 'background: #f3f4f6; color: #374151; border: none;',
+        '无法建联': 'background: #eff6ff; color: #1e40af; border: none;',
+        '有效号码': 'background: #f0fdf4; color: #166534; border: none;'
+    };
+    return styles[type] || 'background: #f1f5f9; color: #475569; border: none;';
 }
 
 function getTrendColor(trend) {
@@ -2039,7 +1804,7 @@ document.addEventListener('click', (e) => {
     if (projectModal && e.target === projectModal) {
         closeProjectDrillModal();
     }
-    // 关闭排期下钻抽屉
+    // 关闭媒体质量下钻抽屉
     const scheduleModal = document.getElementById('scheduleDrillModal');
     if (scheduleModal && e.target === scheduleModal) {
         closeScheduleDrillModal();
@@ -2627,7 +2392,7 @@ const projectDrillData = {
 };
 
 // ============================================
-// 排期线索质量下钻数据
+// 媒体质量下钻数据
 // ============================================
 const scheduleDrillData = {
     'douyin0501': {
@@ -3640,12 +3405,12 @@ function closeProjectDrillModal() {
 }
 
 // ============================================
-// 排期线索质量下钻功能
+// 媒体质量下钻功能
 // ============================================
 
 /**
- * 显示排期下钻抽屉
- * @param {string} scheduleCode - 排期代码
+ * 显示媒体质量下钻抽屉
+ * @param {string} scheduleCode - 媒体代码
  */
 function showScheduleDrillModal(scheduleCode) {
     const modal = document.getElementById('scheduleDrillModal');
@@ -3854,13 +3619,32 @@ function initDrillTabSwitch(containerSelector) {
 }
 
 /**
- * 关闭排期下钻抽屉
+ * 关闭媒体质量下钻抽屉
  */
 function closeScheduleDrillModal() {
     const modal = document.getElementById('scheduleDrillModal');
     if (modal) {
         modal.classList.remove('active');
     }
+}
+
+/**
+ * 切换培育运营跟进过程页签
+ */
+function switchCultivationFollowProcess(tabKey) {
+    const tabButtons = document.querySelectorAll('.follow-process-tab');
+    const panels = document.querySelectorAll('.follow-process-panel');
+
+    tabButtons.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.followTab === tabKey);
+    });
+
+    panels.forEach(panel => {
+        const isTargetPanel =
+            (tabKey === 'headquarters' && panel.id === 'headquartersFollowPanel') ||
+            (tabKey === 'store' && panel.id === 'storeFollowPanel');
+        panel.classList.toggle('active', isTargetPanel);
+    });
 }
 
 // 点击弹窗外部关闭大区弹窗

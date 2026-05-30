@@ -121,8 +121,8 @@
             const card = document.querySelector('.lock-card');
             
             if (inputPwd === CORRECT_PASSWORD) {
-                // 验证成功，跳转到交互说明文档
-                window.location.href = "interaction_docs.html";
+                // 验证成功，跳转到原型主预览页
+                window.location.href = "main.html";
             } else {
                 // 验证失败特效
                 errorDiv.textContent = '❌ 密码错误，请重新输入';

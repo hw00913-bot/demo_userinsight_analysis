@@ -10,8 +10,7 @@
 - `interaction_docs.html` - 交互逻辑说明文档
 - `main.html` - 主容器页面
 - `userinsight.html` - 用户洞察看板
-- `manual_review.html` - 人工复核任务中心
-- `manual_review_detail.html` - 人工复核详情页
+- `workbench.html` - 独立工作台页面
 
 ## 访问密码
 

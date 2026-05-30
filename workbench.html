@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作台样式</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #efefef;
+            color: #333;
+            font-family: Arial, "Microsoft YaHei", sans-serif;
+            font-size: 12px;
+        }
+
+        .page {
+            width: 1180px;
+            min-height: 960px;
+            margin: 0 auto;
+            border: 1px solid #d0d0d0;
+            background: #f2f2f2;
+        }
+
+        .page-title {
+            height: 54px;
+            line-height: 54px;
+            text-align: center;
+            font-size: 22px;
+            color: #222;
+        }
+
+        .hint-bar {
+            height: 54px;
+            margin: 2px 24px 6px;
+            border: 1px solid #34bfff;
+            background: #dff8ff;
+            color: #0094ff;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 54px;
+            text-align: right;
+            padding-right: 30px;
+            border-radius: 3px;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 342px 462px 330px;
+            gap: 6px;
+            margin: 0 24px 32px;
+            min-height: 814px;
+        }
+
+        .panel {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            min-width: 0;
+        }
+
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .left-top {
+            display: grid;
+            grid-template-columns: 122px 1fr;
+            border-bottom: 1px solid #e3e3e3;
+            min-height: 50px;
+        }
+
+        .left-tab {
+            display: flex;
+            align-items: center;
+            padding-left: 14px;
+            color: #008cff;
+            font-size: 15px;
+            font-weight: 700;
+            border-bottom: 2px solid #008cff;
+        }
+
+        .list-search {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 8px;
+            background: #f7f3f3;
+        }
+
+        .search-box {
+            flex: 1;
+            height: 30px;
+            border: 1px solid #d9d9d9;
+            padding: 0 28px 0 8px;
+            color: #777;
+            background: #fff;
+        }
+
+        .filter-icon {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #4c4c4c;
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .filter-icon::before {
+            content: "";
+            position: absolute;
+            left: 4px;
+            top: 3px;
+            width: 7px;
+            height: 7px;
+            border-left: 2px solid #4c4c4c;
+            border-bottom: 2px solid #4c4c4c;
+            transform: rotate(-45deg);
+        }
+
+        .task-group {
+            border-bottom: 1px solid #e4e4e4;
+        }
+
+        .group-title {
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px 0 12px;
+            color: #008cff;
+            font-size: 16px;
+            font-weight: 700;
+            border-left: 3px solid #008cff;
+        }
+
+        .group-title .chevron {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .task-item {
+            min-height: 58px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 72px minmax(104px, 1fr) 34px 64px;
+            align-items: center;
+            column-gap: 8px;
+            padding: 7px 10px 7px 8px;
+            border-top: 1px solid #dedede;
+            cursor: pointer;
+        }
+
+        .task-item.active {
+            background: #e8f9b7;
+        }
+
+        .priority {
+            position: absolute;
+            top: 4px;
+            left: 10px;
+            width: 48px;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+            color: #fff;
+            font-size: 12px;
+            border-radius: 3px;
+            background: #999;
+            font-weight: 700;
+        }
+
+        .priority.h {
+            background: #f30000;
+        }
+
+        .task-name {
+            align-self: center;
+            padding-top: 15px;
+            color: #111;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 18px;
+            white-space: nowrap;
+        }
+
+        .task-main {
+            padding-top: 8px;
+            min-width: 0;
+        }
+
+        .task-phone {
+            color: #111;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 18px;
+            white-space: nowrap;
+        }
+
+        .task-time {
+            margin-top: 4px;
+            color: #999;
+            font-size: 12px;
+            line-height: 16px;
+        }
+
+        .wechat {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #d7ffd9;
+            color: #00c85c;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .call-btn,
+        .submit-mini {
+            height: 30px;
+            min-width: 52px;
+            border: 0;
+            border-radius: 4px;
+            color: #fff;
+            background: #0095ff;
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 30px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .submit-mini {
+            background: #202020;
+            min-width: 64px;
+        }
+
+        .middle-panel {
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
+        }
+
+        .customer-head {
+            height: 52px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 12px;
+            border-bottom: 1px solid #e4e4e4;
+            background: #fff;
+        }
+
+        .customer-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .edit-mark {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .tag {
+            background: #f5f5f5;
+            padding: 4px 10px;
+            border-radius: 3px;
+            color: #555;
+            white-space: nowrap;
+        }
+
+        .customer-head .tag:first-of-type {
+            margin-left: auto;
+        }
+
+        .head-wechat {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #ceffd4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00c85c;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .scroll-area {
+            position: relative;
+            height: 720px;
+            overflow-y: auto;
+            padding: 12px 10px 8px 14px;
+        }
+
+        .scroll-area::-webkit-scrollbar,
+        .right-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .scroll-area::-webkit-scrollbar-thumb,
+        .right-panel::-webkit-scrollbar-thumb {
+            background: #000;
+        }
+
+        .section-title {
+            color: #0095ff;
+            font-size: 16px;
+            font-weight: 700;
+            border-left: 3px solid #0095ff;
+            padding-left: 7px;
+            margin: 4px 0 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .collapse {
+            color: #777;
+            font-size: 13px;
+            font-weight: 400;
+            margin-right: 8px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        .info-table td,
+        .form-table td {
+            border: 1px solid #cfcfcf;
+            height: 31px;
+            padding: 6px 9px;
+            color: #888;
+            background: #fff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            line-height: 18px;
+        }
+
+        .info-table td.label,
+        .form-table td.label {
+            width: 82px;
+            color: #777;
+            background: #f0f0f0;
+        }
+
+        .copy {
+            color: #281aff;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+
+        .linkish {
+            color: #281aff;
+            font-weight: 700;
+        }
+
+        .float-badge {
+            position: absolute;
+            left: 84px;
+            top: 528px;
+            width: 30px;
+            height: 38px;
+            border-radius: 18px 18px 18px 4px;
+            background: #3028db;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-table select,
+        .form-table input {
+            width: 100%;
+            height: 26px;
+            border: 1px solid #cfcfcf;
+            padding: 2px 6px;
+            background: #fff;
+        }
+
+        .required {
+            color: #f00;
+            margin-right: 2px;
+        }
+
+        .bottom-actions {
+            position: sticky;
+            bottom: 0;
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            padding: 12px 0 4px;
+            background: #fff;
+        }
+
+        .action-btn {
+            border: 0;
+            border-radius: 4px;
+            padding: 8px 13px;
+            color: #fff;
+            background: #333;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .action-btn.primary {
+            background: #009bdd;
+        }
+
+        .right-panel {
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        .ai-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            height: 62px;
+            border-bottom: 1px solid #eee;
+            background: #fff;
+        }
+
+        .ai-tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-bottom: 2px solid transparent;
+            background: #fff;
+            color: #222;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .ai-tab.active {
+            color: #0095ff;
+            border-bottom-color: #0095ff;
+        }
+
+        .ai-tab.more {
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+
+        .ai-content {
+            padding: 20px 14px 22px;
+            background: #fff;
+            min-height: 744px;
+        }
+
+        .summary-title {
+            margin: 6px 0 14px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .summary-text {
+            color: #222;
+            font-size: 14px;
+            line-height: 1.55;
+            margin-bottom: 28px;
+        }
+
+        .tag-note-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .tag-note-row select {
+            height: 26px;
+            border: 1px solid #cfcfcf;
+            background: #fff;
+        }
+
+        .red-star {
+            color: #f00;
+        }
+
+        .profile-scroll-box {
+            max-height: 398px;
+            overflow-y: auto;
+            padding-right: 4px;
+            margin-bottom: 22px;
+        }
+
+        .profile-scroll-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .profile-scroll-box::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            background: #c9c9c9;
+        }
+
+        .info-chip-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0 16px;
+        }
+
+        .info-chip {
+            padding: 9px 18px;
+            border-radius: 18px;
+            color: #7a3b1d;
+            background: #ffd8c5;
+            white-space: nowrap;
+        }
+
+        .info-chip.intent {
+            color: #18712a;
+            background: #bdf7c8;
+        }
+
+        .info-chip.time {
+            color: #0b4d82;
+            background: #70baff;
+        }
+
+        .info-chip.status {
+            color: #7a3b1d;
+            background: #ffd8c5;
+        }
+
+        .info-chip.focus {
+            color: #8a2950;
+            background: #ffafd0;
+        }
+
+        .chip-line {
+            flex: 1;
+            height: 1px;
+            background: #d9d9d9;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 22px;
+            row-gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .profile-field {
+            font-size: 13px;
+            line-height: 1.45;
+            color: #222;
+            white-space: nowrap;
+        }
+
+        .field-label {
+            color: #333;
+        }
+
+        .talk-title {
+            margin: 6px 0 14px;
+            padding-left: 8px;
+            border-left: 3px solid #1297ff;
+            color: #1297ff;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .script-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 0;
+            margin-bottom: 10px;
+        }
+
+        .script-tab {
+            padding: 5px 9px;
+            border: 1px solid #d8d8d8;
+            background: #f7f7f7;
+            color: #333;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .script-tab.primary {
+            background: #1c97ff;
+            color: #fff;
+            border-color: #1c97ff;
+            font-weight: 700;
+            transform: skewX(-14deg);
+        }
+
+        .script-tab.primary span {
+            display: inline-block;
+            transform: skewX(14deg);
+        }
+
+        .script-tab.active {
+            color: #0095ff;
+            border-color: #0095ff;
+            background: #fff;
+        }
+
+        .qa-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .qa-row {
+            display: grid;
+            grid-template-columns: 22px 1fr;
+            align-items: center;
+            gap: 8px;
+            min-height: 32px;
+            padding: 5px 8px;
+            background: #e8eef4;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .qa-badge {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #0786d9;
+            background: #9bd6ff;
+        }
+
+        .qa-badge.answer {
+            color: #098b13;
+            background: #76f35a;
+        }
+
+        .ai-avatar {
+            position: sticky;
+            float: right;
+            right: 14px;
+            bottom: 10px;
+            width: 88px;
+            height: 70px;
+            margin-top: -36px;
+        }
+
+        .ai-avatar .head {
+            position: absolute;
+            left: 13px;
+            top: 0;
+            width: 64px;
+            height: 64px;
+            border: 7px solid #e51b0f;
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .ai-avatar .face {
+            position: absolute;
+            left: 24px;
+            top: 24px;
+            width: 42px;
+            height: 18px;
+            border: 3px solid #e51b0f;
+            border-radius: 12px;
+            background: #fff;
+        }
+
+        .ai-avatar .eye {
+            position: absolute;
+            top: 28px;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            border: 1px solid #e51b0f;
+            background: #fff;
+        }
+
+        .ai-avatar .eye.left {
+            left: 21px;
+        }
+
+        .ai-avatar .eye.right {
+            right: 18px;
+        }
+
+        .ai-avatar .ear {
+            position: absolute;
+            top: 30px;
+            width: 8px;
+            height: 17px;
+            background: #e51b0f;
+            border-radius: 8px;
+        }
+
+        .ai-avatar .ear.left {
+            left: 6px;
+        }
+
+        .ai-avatar .ear.right {
+            right: 4px;
+        }
+
+        .ai-avatar .neck {
+            position: absolute;
+            left: 32px;
+            bottom: 0;
+            width: 28px;
+            height: 8px;
+            border-radius: 0 0 10px 10px;
+            border: 6px solid #e51b0f;
+            border-top: 0;
+        }
+
+        @media (max-width: 1180px) {
+            .page {
+                width: 100%;
+                min-width: 1024px;
+            }
+
+            .workspace {
+                margin-left: 16px;
+                margin-right: 16px;
+                grid-template-columns: 342px 1fr 316px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <div class="page-title">工作台样式</div>
+        <div class="hint-bar">请选择任务外呼跟进</div>
+
+        <section class="workspace">
+            <aside class="panel left-panel">
+                <div class="left-top">
+                    <div class="left-tab">外呼列表</div>
+                    <div class="list-search">
+                        <input class="search-box" placeholder="手机号搜索">
+                        <span class="filter-icon"></span>
+                    </div>
+                </div>
+
+                <div class="task-group">
+                    <div class="group-title">新任务(10)<span class="chevron">⌃</span></div>
+                    <div class="task-item active" data-name="黄先生" data-phone="15817137598">
+                        <span class="priority h">H</span>
+                        <div class="task-name">黄先生</div>
+                        <div class="task-main">
+                            <div class="task-phone">15817137598</div>
+                            <div class="task-time">10-01 18:00</div>
+                        </div>
+                        <div class="wechat">☏</div>
+                        <button class="call-btn">外呼</button>
+                    </div>
+                    <div class="task-item" data-name="刘德华" data-phone="15817137577">
+                        <span class="priority">B</span>
+                        <div class="task-name">刘德华</div>
+                        <div class="task-main">
+                            <div class="task-phone">15817137577</div>
+                            <div class="task-time">10-02 18:00</div>
+                        </div>
+                        <div class="wechat">☏</div>
+                        <button class="call-btn">外呼</button>
+                    </div>
+                    <div class="task-item" data-name="陈奕迅" data-phone="1582342243">
+                        <span class="priority">B</span>
+                        <div class="task-name">陈奕迅</div>
+                        <div class="task-main">
+                            <div class="task-phone">1582342243</div>
+                            <div class="task-time">10-02 18:00</div>
+                        </div>
+                        <button class="call-btn">外呼</button>
+                    </div>
+                    <div class="task-item" data-name="陈奕迅" data-phone="1582342243">
+                        <span class="priority">B</span>
+                        <div class="task-name">陈奕迅</div>
+                        <div class="task-main">
+                            <div class="task-phone">1582342243</div>
+                            <div class="task-time">10-02 18:00</div>
+                        </div>
+                        <button class="call-btn">外呼</button>
+                    </div>
+                    <div class="task-item" data-name="刘德华" data-phone="15817137577">
+                        <span class="priority">B</span>
+                        <div class="task-name">刘德华</div>
+                        <div class="task-main">
+                            <div class="task-phone">15817137577</div>
+                            <div class="task-time">10-02 18:00</div>
+                        </div>
+                        <button class="call-btn">外呼</button>
+                    </div>
+                </div>
+
+                <div class="task-group">
+                    <div class="group-title">当日继续(2)<span class="chevron">⌄</span></div>
+                    <div class="task-item" data-name="刘德华" data-phone="15817137577">
+                        <span class="priority">B</span>
+                        <div class="task-name">刘德华</div>
+                        <div class="task-main">
+                            <div class="task-phone">15817137577</div>
+                            <div class="task-time">10-02 18:00</div>
+                        </div>
+                        <div class="wechat">☏</div>
+                        <button class="submit-mini">回访提交</button>
+                    </div>
+                    <div class="task-item" data-name="陈奕迅" data-phone="1582342243">
+                        <span class="priority">B</span>
+                        <div class="task-name">陈奕迅</div>
+                        <div class="task-main">
+                            <div class="task-phone">1582342243</div>
+                            <div class="task-time">10-02 18:00</div>
+                        </div>
+                        <button class="call-btn">外呼</button>
+                    </div>
+                    <div class="task-item" data-name="陈奕迅" data-phone="1582342243">
+                        <span class="priority">B</span>
+                        <div class="task-name">陈奕迅</div>
+                        <div class="task-main">
+                            <div class="task-phone">1582342243</div>
+                            <div class="task-time">10-02 18:00</div>
+                        </div>
+                        <button class="call-btn">外呼</button>
+                    </div>
+                </div>
+
+                <div class="task-group">
+                    <div class="group-title">逾期任务(0)<span class="chevron">⌄</span></div>
+                    <div class="group-title">未来任务(0)<span class="chevron">⌄</span></div>
+                </div>
+            </aside>
+
+            <section class="panel middle-panel">
+                <header class="customer-head">
+                    <span class="customer-name" id="customerName">刘德华</span>
+                    <span class="edit-mark">✎</span>
+                    <span class="tag">女</span>
+                    <span class="tag">保客</span>
+                    <span class="tag">意向级别：A</span>
+                    <span class="head-wechat">☏</span>
+                </header>
+
+                <div class="scroll-area">
+                    <div class="section-title">线索信息 <span class="collapse">◆ 收起</span></div>
+                    <table class="info-table">
+                        <tr>
+                            <td class="label">联系电话</td>
+                            <td>15817137452 <span class="copy">▢</span></td>
+                            <td class="label">IP归属地</td>
+                            <td>广东广州</td>
+                        </tr>
+                        <tr>
+                            <td class="label">线索类型</td>
+                            <td>试驾线索</td>
+                            <td class="label">线索来源</td>
+                            <td>垂媒 &gt; 懂车帝 &gt; 品广</td>
+                        </tr>
+                        <tr>
+                            <td class="label">首次线索状态</td>
+                            <td>休眠失联</td>
+                            <td class="label">首次意向级别</td>
+                            <td>低</td>
+                        </tr>
+                        <tr>
+                            <td class="label">意向车辆</td>
+                            <td>N7（AE01）- 高级灰</td>
+                            <td class="label">跟进次数</td>
+                            <td>2</td>
+                        </tr>
+                        <tr>
+                            <td class="label">留资时间</td>
+                            <td>2024-07-27 10:25:21</td>
+                            <td class="label">线索状态</td>
+                            <td>休眠未购</td>
+                        </tr>
+                        <tr>
+                            <td class="label">线索描述</td>
+                            <td>一段文字一段文字...</td>
+                            <td class="label">意向门店</td>
+                            <td>广州绿日</td>
+                        </tr>
+                        <tr>
+                            <td class="label">渠道名称</td>
+                            <td>某渠道</td>
+                            <td class="label">媒体名称</td>
+                            <td>某媒体 <span class="copy">▢</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">大项目名</td>
+                            <td>某大项目</td>
+                            <td class="label">线索备注</td>
+                            <td>文字超出...悬浮显</td>
+                        </tr>
+                        <tr>
+                            <td class="label">线索编码</td>
+                            <td>NXSH23024324</td>
+                            <td class="label">任务编码</td>
+                            <td>CT4232322343</td>
+                        </tr>
+                        <tr>
+                            <td class="label">购车时间</td>
+                            <td>2024-11-11</td>
+                            <td class="label">车系车型</td>
+                            <td>天籁真心版 <span class="copy">▢</span></td>
+                        </tr>
+                        <tr>
+                            <td class="label">购车门店</td>
+                            <td>广州绿日</td>
+                            <td class="label">VIN码</td>
+                            <td>23024324234...</td>
+                        </tr>
+                        <tr>
+                            <td class="label">是否AI外呼过</td>
+                            <td><span class="linkish">【是】 【AI小结】 【录音文本】</span></td>
+                            <td class="label">总部冷线索</td>
+                            <td>是</td>
+                        </tr>
+                        <tr>
+                            <td class="label">人工手动下发</td>
+                            <td>是</td>
+                            <td class="label"></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="label">初始化线索来源</td>
+                            <td>999999-线索挖掘</td>
+                            <td class="label"></td>
+                            <td></td>
+                        </tr>
+                    </table>
+
+                    <span class="float-badge">20</span>
+
+                    <div class="section-title" style="margin-top: 24px;">回访提交</div>
+                    <table class="form-table">
+                        <tr>
+                            <td class="label"><span class="required">*</span>接触状态</td>
+                            <td><select><option>请选择</option></select></td>
+                            <td class="label">性别</td>
+                            <td><select><option>女</option><option>男</option></select></td>
+                        </tr>
+                        <tr>
+                            <td class="label"><span class="required">*</span>回访结果</td>
+                            <td><select><option>请选择</option></select></td>
+                            <td class="label">意向级别</td>
+                            <td><select><option>请选择</option><option>A</option><option>B</option></select></td>
+                        </tr>
+                        <tr>
+                            <td class="label">备用电话</td>
+                            <td><input value="反显可修改"></td>
+                            <td class="label">上次回访时间</td>
+                            <td>2024-07-28 10:25:21</td>
+                        </tr>
+                        <tr>
+                            <td class="label">下次回访</td>
+                            <td>2025-09-02 13:00</td>
+                            <td class="label"></td>
+                            <td></td>
+                        </tr>
+                    </table>
+
+                    <div class="bottom-actions">
+                        <button class="action-btn">回访暂存</button>
+                        <button class="action-btn primary">回访提交</button>
+                        <button class="action-btn primary">下发短信</button>
+                        <button class="action-btn">门店查询</button>
+                        <button class="action-btn">加入黑名单</button>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="panel right-panel">
+                <nav class="ai-tabs" aria-label="客户信息标签">
+                    <button class="ai-tab active" type="button">AI画像</button>
+                    <button class="ai-tab" type="button">回访记录</button>
+                    <button class="ai-tab" type="button">时光轴</button>
+                    <button class="ai-tab more" type="button">...</button>
+                </nav>
+
+                <div class="ai-content">
+                    <h3 class="summary-title">客户小结</h3>
+                    <p class="summary-text">
+                        该客户是一个什么样的客户，意向车系是什么，预算多少，.....(本段200字内容由AI跟据所有任务下的录音总结而来)。
+                    </p>
+
+                    <div class="tag-note-row">
+                        <span>注：<span class="red-star">*</span>为自动建档标签信息</span>
+                        <select aria-label="提及标签">
+                            <option>提及标签</option>
+                        </select>
+                    </div>
+
+                    <div class="profile-scroll-box">
+                        <div class="info-chip-row">
+                            <span class="info-chip">客户基本信息</span>
+                            <span class="chip-line"></span>
+                        </div>
+                        <div class="profile-grid">
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">性别：</span>男</div>
+                            <div class="profile-field"><span class="field-label">收入水平：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">备用电话：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">职业类型：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">客户微信号：</span>weixin_lion</div>
+                            <div class="profile-field"><span class="field-label">家庭结构：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">客户微信号为手机号：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">财务状态：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">接触状态：</span>正常拉通</div>
+                            <div class="profile-field"><span class="field-label">征信情况：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">居住状态：</span>未提及</div>
+                        </div>
+
+                        <div class="info-chip-row">
+                            <span class="info-chip intent">客户意向信息</span>
+                            <span class="chip-line"></span>
+                        </div>
+                        <div class="profile-grid">
+                            <div class="profile-field"><span class="field-label">客户意向等级名称：</span>高意向</div>
+                            <div class="profile-field"><span class="field-label">贷款意向：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">意向级别：</span>H</div>
+                            <div class="profile-field"><span class="field-label">有置换兴趣：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">意向品牌：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">有意向置换车型：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">意向车型号：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">购车方式：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">价格因素：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">有试驾需求：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">配置需求：</span>未提及</div>
+                        </div>
+
+                        <div class="info-chip-row">
+                            <span class="info-chip time">时间信息</span>
+                            <span class="chip-line"></span>
+                        </div>
+                        <div class="profile-grid">
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">计划到店时间：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">再次沟通时间：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">预计购车时间：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">再联系时间：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">有计划置换时间：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">下次回访时间：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">预计到店时间：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">活动期限内到店：</span>未提及</div>
+                        </div>
+
+                        <div class="info-chip-row">
+                            <span class="info-chip status">客户行动与状态</span>
+                            <span class="chip-line"></span>
+                        </div>
+                        <div class="profile-grid">
+                            <div class="profile-field"><span class="field-label">用户已完成旧车评估：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">用户认为置换价格：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">要求发微信：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">结果原因：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">要求加微信：</span>未提及</div>
+                            <div class="profile-field"><span class="red-star">*</span> <span class="field-label">回访结果：</span>未提及</div>
+                        </div>
+
+                        <div class="info-chip-row">
+                            <span class="info-chip focus">客户关注点</span>
+                            <span class="chip-line"></span>
+                        </div>
+                        <div class="profile-grid">
+                            <div class="profile-field"><span class="field-label">关注店内活动：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注价格：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注活动细节：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注活动车型：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注补贴价格：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注新能源车型：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注置换费用：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注置换活动细节：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注置换品牌范围：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注置换补贴价格：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注本品牌新车配置：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注置换评估内容：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注评估内容：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注置换价格：</span>用户认为置换价格</div>
+                            <div class="profile-field"><span class="field-label">关注置换流程：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">询问置换服务：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注贷款内容：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">询问活动期限：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注上牌政策：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">询问活动车型：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注保养服务：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">询问活动覆盖范围：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注售后服务：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">询问其他优惠：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注车辆价格：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">询问活动参与方式：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注店内优惠：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">询问参与活动车型：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注全款优惠：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">询问上牌条件：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注贷款服务：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">咨询上牌：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">关注保险业务：</span>未提及</div>
+                            <div class="profile-field"><span class="field-label">购车&上牌条件：</span>未提及</div>
+                        </div>
+                    </div>
+
+                    <div class="talk-title">话术提醒</div>
+                    <div class="script-tabs">
+                        <button class="script-tab" type="button">智推问题话术</button>
+                        <button class="script-tab primary" type="button"><span>常见问题话术</span></button>
+                        <button class="script-tab active" type="button">经营业务</button>
+                        <button class="script-tab" type="button">基础信息</button>
+                        <button class="script-tab" type="button">经营政策</button>
+                        <button class="script-tab" type="button">其他问题</button>
+                    </div>
+                    <div class="qa-list">
+                        <div class="qa-row"><span class="qa-badge">问</span><span>我们店的车可以在哪些城市销售呢?</span></div>
+                        <div class="qa-row"><span class="qa-badge answer">答</span><span>全国都可以销售。</span></div>
+                        <div class="qa-row"><span class="qa-badge">问</span><span>我们对置换的车型品牌是否有要求?</span></div>
+                        <div class="qa-row"><span class="qa-badge answer">答</span><span>对所有品牌车型都提供置换服务</span></div>
+                        <div class="qa-row"><span class="qa-badge">问</span><span>我们店有退役试驾车吗?</span></div>
+                    </div>
+
+                    <div class="ai-avatar" aria-hidden="true">
+                        <span class="head"></span>
+                        <span class="face"></span>
+                        <span class="eye left"></span>
+                        <span class="eye right"></span>
+                        <span class="ear left"></span>
+                        <span class="ear right"></span>
+                        <span class="neck"></span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <script>
+        document.querySelectorAll('.task-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.task-item').forEach(row => row.classList.remove('active'));
+                item.classList.add('active');
+                document.getElementById('customerName').textContent = item.dataset.name || '刘德华';
+            });
+        });
+
+        document.querySelectorAll('.ai-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.ai-tab').forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+    </script>
+</body>
+
+</html>
