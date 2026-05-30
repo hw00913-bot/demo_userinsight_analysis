@@ -110,8 +110,35 @@ function initDateRange() {
     });
 }
 
+// 原因类型大类联动
+function initReasonTypeFilter() {
+    document.querySelectorAll('.reason-category-select').forEach(catSelect => {
+        const filterItem = catSelect.closest('.filter-item');
+        const reasonSelect = filterItem.parentElement.querySelector('.reason-type-select');
+        if (!reasonSelect) return;
+
+        catSelect.addEventListener('change', () => {
+            const category = catSelect.value;
+            const options = reasonSelect.querySelectorAll('option');
+            let firstVisible = null;
+
+            options.forEach(opt => {
+                if (category === 'all' || opt.value === 'all' || opt.dataset.category === category) {
+                    opt.style.display = '';
+                    if (!firstVisible && opt.value !== 'all') firstVisible = opt;
+                } else {
+                    opt.style.display = 'none';
+                }
+            });
+
+            reasonSelect.value = 'all';
+        });
+    });
+}
+
 // 页面加载时初始化
 window.addEventListener('DOMContentLoaded', () => {
+    initReasonTypeFilter();
     initDateRange();
     initFilterMultiSelects();
     initGlobalFilters();    // 分页内筛选器逻辑

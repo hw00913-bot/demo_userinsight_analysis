@@ -262,23 +262,30 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">原因类型大类:</label>
-                                        <select class="filter-select">
-                                            <option value="invalid">无效号码</option>
-                                            <option value="valid">有效号码</option>
-                                            <option value="unreachable">无法建联</option>
+                                        <select class="filter-select reason-category-select">
+    <option value="all">全部</option>
+    <option value="invalid">无效号码</option>
+    <option value="unreachable">无法建联</option>
+    <option value="valid">有效号码</option>
                                         </select>
+
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">原因类型:</label>
-                                        <select class="filter-select">
-                                            <option value="all">以上的细分</option>
-                                            <option value="empty">空号</option>
-                                            <option value="shutdown">停机</option>
-                                            <option value="blacklist">黑名单过滤</option>
-                                            <option value="connected">已接通</option>
-                                            <option value="dormant">休眠失联</option>
-                                            <option value="busy">忙线</option>
+                                        <select class="filter-select reason-type-select">
+    <option value="all">全部</option>
+    <option value="empty" data-category="invalid">空号</option>
+    <option value="shutdown" data-category="invalid">停机</option>
+    <option value="block" data-category="invalid">拦截</option>
+    <option value="blacklist" data-category="invalid">黑名单</option>
+    <option value="answered_invalid" data-category="invalid">已接无效</option>
+    <option value="dormant_lost" data-category="unreachable">休眠失联</option>
+    <option value="dormant_notbuy" data-category="unreachable">休眠未购</option>
+    <option value="connected_valid" data-category="valid">接通有效</option>
+    <option value="intent_unclear" data-category="valid">意向不明</option>
+    <option value="cannot_reach" data-category="valid">无法打通</option>
                                         </select>
+
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">时间维度切换:</label>
@@ -2318,23 +2325,30 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">原因类型大类:</label>
-                                        <select class="filter-select">
-                                            <option value="invalid">无效号码</option>
-                                            <option value="valid">有效号码</option>
-                                            <option value="unreachable">无法建联</option>
+                                        <select class="filter-select reason-category-select">
+    <option value="all">全部</option>
+    <option value="invalid">无效号码</option>
+    <option value="unreachable">无法建联</option>
+    <option value="valid">有效号码</option>
                                         </select>
+
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">原因类型:</label>
-                                        <select class="filter-select">
-                                            <option value="all">以上的细分</option>
-                                            <option value="empty">空号</option>
-                                            <option value="shutdown">停机</option>
-                                            <option value="blacklist">黑名单过滤</option>
-                                            <option value="connected">已接通</option>
-                                            <option value="dormant">休眠失联</option>
-                                            <option value="busy">忙线</option>
+                                        <select class="filter-select reason-type-select">
+    <option value="all">全部</option>
+    <option value="empty" data-category="invalid">空号</option>
+    <option value="shutdown" data-category="invalid">停机</option>
+    <option value="block" data-category="invalid">拦截</option>
+    <option value="blacklist" data-category="invalid">黑名单</option>
+    <option value="answered_invalid" data-category="invalid">已接无效</option>
+    <option value="dormant_lost" data-category="unreachable">休眠失联</option>
+    <option value="dormant_notbuy" data-category="unreachable">休眠未购</option>
+    <option value="connected_valid" data-category="valid">接通有效</option>
+    <option value="intent_unclear" data-category="valid">意向不明</option>
+    <option value="cannot_reach" data-category="valid">无法打通</option>
                                         </select>
+
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">时间维度切换:</label>
@@ -2941,23 +2955,30 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">原因类型大类:</label>
-                                        <select class="filter-select">
-                                            <option value="invalid">无效号码</option>
-                                            <option value="valid">有效号码</option>
-                                            <option value="unreachable">无法建联</option>
+                                        <select class="filter-select reason-category-select">
+    <option value="all">全部</option>
+    <option value="invalid">无效号码</option>
+    <option value="unreachable">无法建联</option>
+    <option value="valid">有效号码</option>
                                         </select>
+
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">原因类型:</label>
-                                        <select class="filter-select">
-                                            <option value="all">以上的细分</option>
-                                            <option value="empty">空号</option>
-                                            <option value="shutdown">停机</option>
-                                            <option value="blacklist">黑名单过滤</option>
-                                            <option value="connected">已接通</option>
-                                            <option value="dormant">休眠失联</option>
-                                            <option value="busy">忙线</option>
+                                        <select class="filter-select reason-type-select">
+    <option value="all">全部</option>
+    <option value="empty" data-category="invalid">空号</option>
+    <option value="shutdown" data-category="invalid">停机</option>
+    <option value="block" data-category="invalid">拦截</option>
+    <option value="blacklist" data-category="invalid">黑名单</option>
+    <option value="answered_invalid" data-category="invalid">已接无效</option>
+    <option value="dormant_lost" data-category="unreachable">休眠失联</option>
+    <option value="dormant_notbuy" data-category="unreachable">休眠未购</option>
+    <option value="connected_valid" data-category="valid">接通有效</option>
+    <option value="intent_unclear" data-category="valid">意向不明</option>
+    <option value="cannot_reach" data-category="valid">无法打通</option>
                                         </select>
+
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">时间维度切换:</label>
