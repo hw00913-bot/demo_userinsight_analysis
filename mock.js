@@ -1317,3 +1317,61 @@ const storeFullData = {
     ]
 };
 
+
+// ============================================
+// Plan B 数据配置 — KPI / 饼图 / 柱状图
+// ============================================
+const kpiPageData = {
+  'channel-effect': [
+    { border: 'kpi-border-purple', flex: 0.9, icon: 'fa-filter', title: '线索统计', metrics: [
+      { label: '新增线索量', val: '22,345', unit: '条', trend: 'up', tv: '5.2%' },
+      { label: '总部培育新增线索', val: '12,345', unit: '条', trend: 'up', tv: '4.8%' }
+    ]},
+    { border: 'kpi-border-blue', flex: 1.4, icon: 'fa-phone', title: '通话统计（有通话记录）（总部培育+门店虚拟号）', metrics: [
+      { label: '通话总数', val: '9,876', unit: '通', trend: 'up', tv: '3.1%' },
+      { label: '接通总数', val: '8,234', unit: '通', trend: 'up', tv: '2.8%' },
+      { label: '平均时长', val: '30', unit: 's', trend: 'up', tv: '1s' }
+    ]},
+    { border: 'kpi-border-cyan', flex: 1.6, icon: 'fa-layer-group', title: '线索大类（含占比）（有通话记录）（总部培育）', metrics: [
+      { label: '外呼有效量', val: '9,876', unit: '人', trend: 'up', tv: '0.5pp' },
+      { label: '有效号码占比', val: '68', unit: '%', trend: 'up', tv: '0.5pp' },
+      { label: '无法建联用户', val: '3,210', unit: '人', trend: 'down', tv: '0.4%' },
+      { label: '无法建联占比', val: '18', unit: '%', trend: 'down', tv: '0.4pp' },
+      { label: '外呼无效用户', val: '2,469', unit: '人', trend: 'down', tv: '1.1%' },
+      { label: '无效号码占比', val: '32', unit: '%', trend: 'down', tv: '1.1pp' }
+    ]},
+    { border: 'kpi-border-blue', flex: 1.6, icon: 'fa-user-check', title: '用户分级（含占比）', metrics: [
+      { label: 'H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B用户', val: '4,321', unit: '人', trend: 'up', tv: '1.2pp' },
+      { label: 'H/A/B 用户占比', val: '35', unit: '%', trend: 'up', tv: '1.2pp' }
+    ]},
+    { border: 'kpi-border-green', flex: 1.8, icon: 'fa-arrows-to-dot', title: '行为转化（含占比）', metrics: [
+      { label: '到店数（首次）', val: '2,345', unit: '人', trend: 'up', tv: '2pp' },
+      { label: '到店占比', val: '35', unit: '%', trend: 'up', tv: '2pp' },
+      { label: '试驾数', val: '1,234', unit: '人', trend: 'up', tv: '0.8pp' },
+      { label: '试驾占比', val: '12', unit: '%', trend: 'up', tv: '0.8pp' },
+      { label: '锁单数', val: '456', unit: '人', trend: 'up', tv: '0.3pp' },
+      { label: '锁单占比', val: '5.4', unit: '%', trend: 'up', tv: '0.3pp' },
+      { label: '交车数', val: '218', unit: '人', trend: 'up', tv: '0.2pp' },
+      { label: '交车占比', val: '2.6', unit: '%', trend: 'up', tv: '0.2pp' }
+    ]}
+  ]
+};
+
+// 饼图备用数据（通过卡片标题查找替换）
+const pieOverrideData = {
+  '线索级别占比': {
+    centerTotal: '12,345', centerLabel: '新增线索用户',
+    segments: [
+      { color: '#991b1b', label: 'H（试驾排程）', count: '1,481', pct: '12%', start: 0, end: 12 },
+      { color: '#dc2626', label: 'H（试驾线索）', count: '1,852', pct: '15%', start: 12, end: 27 },
+      { color: '#ef4444', label: 'H（非试驾线索）', count: '988', pct: '8%', start: 27, end: 35 },
+      { color: '#f97316', label: 'A', count: '1,358', pct: '11%', start: 35, end: 46 },
+      { color: '#eab308', label: 'B', count: '1,481', pct: '12%', start: 46, end: 58 },
+      { color: '#22c55e', label: 'C', count: '1,852', pct: '15%', start: 58, end: 73 },
+      { color: '#06b6d4', label: 'F', count: '617', pct: '5%', start: 73, end: 78 },
+      { color: '#3b82f6', label: 'L', count: '494', pct: '4%', start: 78, end: 82 },
+      { color: '#8b5cf6', label: 'E', count: '370', pct: '3%', start: 82, end: 85 },
+      { color: '#9ca3af', label: '无效号码', count: '1,852', pct: '15%', start: 85, end: 100 }
+    ]
+  }
+};
