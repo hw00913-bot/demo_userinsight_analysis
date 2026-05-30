@@ -1862,15 +1862,481 @@ function renderLeadLevelPie() {
     </div>`;
 }
 
-// 初始化
+// ============================================
+// ============================================
+// 筛选门店弹窗 - 菜单树 + 门店多选列表
+// ============================================
+var storeFilterState = {
+    trigger: null,
+    selectedStores: {},    // { storeName: true } accumulated across all selections
+    activeTab: 'byRegion',
+    activeLeaf: null       // currently active 小区 or 县区 node id
+};
+
+// ====== 弹窗开关 ======
+function openStoreFilterModal(btn) {
+    storeFilterState.trigger = btn;
+    document.getElementById('storeFilterOverlay').classList.add('open');
+    buildMenuTree('byRegion');
+    buildMenuTree('byLocation');
+    switchStoreTab('byRegion');
+}
+
+function closeStoreFilterModal(e) {
+    if (e && e.target !== document.getElementById('storeFilterOverlay')) return;
+    document.getElementById('storeFilterOverlay').classList.remove('open');
+}
+
+function switchStoreTab(tab) {
+    storeFilterState.activeTab = tab;
+    storeFilterState.activeLeaf = null;
+    document.querySelectorAll('.store-filter-tab').forEach(function(t) {
+        t.classList.toggle('active', t.getAttribute('data-tab') === tab);
+    });
+    document.querySelectorAll('.store-filter-panel').forEach(function(p) {
+        p.classList.toggle('active', p.id === 'storePanel_' + tab);
+    });
+    refreshStoreList(tab);
+    updateStoreCount();
+}
+
+// ====== 菜单树构建 ======
+function buildMenuTree(tab) {
+    var h = MOCK.hierarchy;
+    if (!h) return;
+    var container = document.getElementById('menuTree_' + tab);
+    if (!container) return;
+    container.innerHTML = '';
+
+    if (tab === 'byRegion') {
+        Object.keys(h).sort().forEach(function(regionName) {
+            var parentId = 'region_' + regionName.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_');
+            var parentDiv = document.createElement('div');
+            parentDiv.className = 'menu-tree-item';
+            parentDiv.innerHTML = '<div class="menu-tree-parent" data-id="' + parentId + '" onclick="toggleMenuTree(this, \'byRegion\')">'
+                + '<span class="arrow">▶</span><span class="label">' + regionName + '</span></div>';
+
+            var childDiv = document.createElement('div');
+            childDiv.className = 'menu-tree-children';
+            childDiv.setAttribute('data-parent', parentId);
+            var subregions = h[regionName];
+            subregions.forEach(function(sr) {
+                var storeCount = countSubregionStores(sr);
+                var childId = 'sub_' + sr.name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_');
+                childDiv.innerHTML += '<div class="menu-tree-child" data-id="' + childId + '" data-region="' + regionName + '" data-subregion="' + sr.name + '" onclick="selectMenuLeaf(this, \'byRegion\')">'
+                    + sr.name + '<span class="count">' + storeCount + '</span></div>';
+            });
+            parentDiv.appendChild(childDiv);
+            container.appendChild(parentDiv);
+        });
+    } else {
+        // byLocation: 省份 → 城市 → 县区
+        var provMap = {};
+        Object.keys(h).forEach(function(r) {
+            h[r].forEach(function(sr) {
+                sr.provinces.forEach(function(p) {
+                    if (!provMap[p.name]) provMap[p.name] = [];
+                    p.cities.forEach(function(c) {
+                        var existing = provMap[p.name].find(function(x) { return x.name === c.name; });
+                        if (!existing) {
+                            existing = { name: c.name, districts: [] };
+                            provMap[p.name].push(existing);
+                        }
+                        c.districts.forEach(function(d) {
+                            var dex = existing.districts.find(function(x) { return x.name === d.name; });
+                            if (!dex) {
+                                dex = { name: d.name, stores: [] };
+                                existing.districts.push(dex);
+                            }
+                            d.stores.forEach(function(s) { if (dex.stores.indexOf(s) === -1) dex.stores.push(s); });
+                        });
+                    });
+                });
+            });
+        });
+
+        Object.keys(provMap).sort().forEach(function(provName) {
+            var provId = 'prov_' + provName.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_');
+            var parentDiv = document.createElement('div');
+            parentDiv.className = 'menu-tree-item';
+            parentDiv.innerHTML = '<div class="menu-tree-parent" data-id="' + provId + '" onclick="toggleMenuTree(this, \'byLocation\')">'
+                + '<span class="arrow">▶</span><span class="label">' + provName + '</span></div>';
+
+            var childDiv = document.createElement('div');
+            childDiv.className = 'menu-tree-children';
+            childDiv.setAttribute('data-parent', provId);
+
+            provMap[provName].sort(function(a,b) { return a.name.localeCompare(b.name); }).forEach(function(city) {
+                var cityId = 'city_' + city.name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_');
+                var itemHtml = '<div class="menu-tree-item">'
+                    + '<div class="menu-tree-child" data-id="' + cityId + '" data-province="' + provName + '" data-city="' + city.name + '" onclick="toggleCityMenu(this)">'
+                    + '<span class="arrow">▶</span>' + city.name + '<span class="count">' + city.districts.length + '</span></div>';
+
+                var grandHtml = '<div class="menu-tree-grandchildren" data-parent="' + cityId + '">';
+                city.districts.sort(function(a,b) { return a.name.localeCompare(b.name); }).forEach(function(dist) {
+                    var distId = 'dist_' + dist.name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_');
+                    grandHtml += '<div class="menu-tree-grandchild" data-id="' + distId + '" data-province="' + provName + '" data-city="' + city.name + '" data-district="' + dist.name + '" onclick="selectMenuLeaf(this, \'byLocation\')">'
+                        + dist.name + '<span class="count">' + dist.stores.length + '</span></div>';
+                });
+                grandHtml += '</div>';
+                itemHtml += grandHtml + '</div>';
+                childDiv.innerHTML += itemHtml;
+            });
+            parentDiv.appendChild(childDiv);
+            container.appendChild(parentDiv);
+        });
+    }
+}
+
+function countSubregionStores(sr) {
+    var count = 0;
+    sr.provinces.forEach(function(p) { p.cities.forEach(function(c) { c.districts.forEach(function() { count++; }); }); });
+    return count;
+}
+
+// ====== 菜单交互 ======
+function toggleMenuTree(el, tab) {
+    var parentId = el.getAttribute('data-id');
+    var item = el.parentElement;
+    var children = item.querySelector('.menu-tree-children');
+    if (children) {
+        children.classList.toggle('open');
+        el.querySelector('.arrow').classList.toggle('open');
+    }
+}
+
+function toggleCityMenu(el) {
+    var item = el.parentElement;
+    var grandChildren = item.querySelector('.menu-tree-grandchildren');
+    if (grandChildren) {
+        grandChildren.classList.toggle('open');
+        el.querySelector('.arrow').classList.toggle('open');
+    }
+}
+
+function selectMenuLeaf(el, tab) {
+    var leafId = el.getAttribute('data-id');
+    storeFilterState.activeLeaf = leafId;
+    storeFilterState.activeTab = tab;
+
+    var container = document.getElementById('menuTree_' + tab);
+    container.querySelectorAll('.menu-tree-child.selected, .menu-tree-grandchild.selected').forEach(function(e) { e.classList.remove('selected'); });
+    el.classList.add('selected');
+
+    refreshStoreList(tab);
+}
+
+// ====== 门店列表 ======
+function getStoresForActiveLeaf(tab) {
+    var h = MOCK.hierarchy;
+    if (!h) return [];
+    var stores = [];
+
+    if (tab === 'byRegion') {
+        var selected = document.querySelector('#menuTree_byRegion .menu-tree-child.selected');
+        if (!selected) return [];
+        var regionName = selected.getAttribute('data-region');
+        var subregionName = selected.getAttribute('data-subregion');
+        if (!regionName || !subregionName) return [];
+        var region = h[regionName];
+        if (!region) return [];
+        var sr = region.find(function(s) { return s.name === subregionName; });
+        if (!sr) return [];
+        sr.provinces.forEach(function(p) { p.cities.forEach(function(c) { c.districts.forEach(function(d) { stores = stores.concat(d.stores); }); }); });
+    } else {
+        var selected = document.querySelector('#menuTree_byLocation .menu-tree-grandchild.selected');
+        if (!selected) return [];
+        var prov = selected.getAttribute('data-province');
+        var city = selected.getAttribute('data-city');
+        var dist = selected.getAttribute('data-district');
+        if (!prov || !city || !dist) return [];
+        Object.keys(h).forEach(function(r) {
+            h[r].forEach(function(sr) {
+                sr.provinces.forEach(function(p) {
+                    if (p.name !== prov) return;
+                    p.cities.forEach(function(c) {
+                        if (c.name !== city) return;
+                        c.districts.forEach(function(d) {
+                            if (d.name === dist) stores = stores.concat(d.stores);
+                        });
+                    });
+                });
+            });
+        });
+    }
+    return stores.sort();
+}
+
+function refreshStoreList(tab) {
+    var container = document.getElementById('storeList_' + tab);
+    if (!container) return;
+
+    var stores = getStoresForActiveLeaf(tab);
+    if (stores.length === 0) {
+        container.innerHTML = '<div class="store-list-hint">点击左侧' + (tab === 'byRegion' ? '小区' : '县区') + '查看门店</div>';
+        return;
+    }
+
+    var html = '<div class="store-check-actions">';
+    html += '<button onclick="checkAllStores(\'' + tab + '\', true)">全选</button>';
+    html += '<button onclick="checkAllStores(\'' + tab + '\', false)">取消全选</button>';
+    html += '</div>';
+
+    stores.forEach(function(s) {
+        var checked = storeFilterState.selectedStores[s] ? ' checked' : '';
+        html += '<label class="store-check-item"><input type="checkbox" value="' + s.replace(/"/g, '&quot;') + '" onchange="toggleStoreCheck(this)"' + checked + '>' + s + '</label>';
+    });
+
+    container.innerHTML = html;
+}
+
+function checkAllStores(tab, check) {
+    var stores = getStoresForActiveLeaf(tab);
+    stores.forEach(function(s) {
+        if (check) storeFilterState.selectedStores[s] = true;
+        else delete storeFilterState.selectedStores[s];
+    });
+    refreshStoreList(tab);
+    updateStoreCount();
+}
+
+// ====== 模糊搜索门店 ======
+var allStoreNames = null;
+function getAllStoreNames() {
+    if (allStoreNames) return allStoreNames;
+    allStoreNames = [];
+    var h = MOCK.hierarchy;
+    if (!h) return allStoreNames;
+    Object.keys(h).forEach(function(r) {
+        h[r].forEach(function(sr) {
+            sr.provinces.forEach(function(p) {
+                p.cities.forEach(function(c) {
+                    c.districts.forEach(function(d) {
+                        d.stores.forEach(function(s) { allStoreNames.push(s); });
+                    });
+                });
+            });
+        });
+    });
+    allStoreNames.sort();
+    return allStoreNames;
+}
+
+function searchStores(query) {
+    var clearBtn = document.querySelector('.store-search-clear');
+    var tabPanel = document.getElementById('storePanel_' + storeFilterState.activeTab);
+    var searchPanel = document.getElementById('storePanel_search');
+
+    if (!query || query.trim() === '') {
+        if (clearBtn) clearBtn.style.display = 'none';
+        if (tabPanel) tabPanel.style.display = 'block';
+        if (searchPanel) searchPanel.style.display = 'none';
+        // Restore the other tab panel too
+        ['byRegion', 'byLocation'].forEach(function(t) {
+            var p = document.getElementById('storePanel_' + t);
+            if (p && t === storeFilterState.activeTab) p.style.display = 'block';
+            else if (p) p.style.display = 'none';
+        });
+        refreshStoreList(storeFilterState.activeTab);
+        return;
+    }
+
+    if (clearBtn) clearBtn.style.display = 'flex';
+    // Hide both tab panels, show search panel
+    ['byRegion', 'byLocation'].forEach(function(t) {
+        var p = document.getElementById('storePanel_' + t);
+        if (p) p.style.display = 'none';
+    });
+    if (searchPanel) searchPanel.style.display = 'block';
+
+    var q = query.trim().toLowerCase();
+    var matches = getAllStoreNames().filter(function(s) { return s.toLowerCase().indexOf(q) !== -1; });
+
+    var container = document.getElementById('storeList_search');
+    if (!container) return;
+
+    if (matches.length === 0) {
+        container.innerHTML = '<div class="store-list-hint">未找到匹配的门店</div>';
+        return;
+    }
+
+    var html = '<div class="store-check-actions">';
+    html += '<button onclick="searchCheckAll(true)">全选结果</button>';
+    html += '<button onclick="searchCheckAll(false)">取消全选</button>';
+    html += '<span style="font-size:12px;color:#94a3b8;margin-left:8px;">匹配 ' + matches.length + ' 家</span>';
+    html += '</div>';
+
+    matches.forEach(function(s) {
+        var checked = storeFilterState.selectedStores[s] ? ' checked' : '';
+        html += '<label class="store-check-item"><input type="checkbox" value="' + s.replace(/"/g, '&quot;') + '" onchange="toggleStoreCheck(this)"' + checked + '>' + s + '</label>';
+    });
+
+    container.innerHTML = html;
+}
+
+function searchCheckAll(check) {
+    var container = document.getElementById('storeList_search');
+    if (!container) return;
+    container.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+        cb.checked = check;
+        if (check) storeFilterState.selectedStores[cb.value] = true;
+        else delete storeFilterState.selectedStores[cb.value];
+    });
+    updateStoreCount();
+}
+
+function clearSearch() {
+    var input = document.querySelector('.store-filter-search input');
+    if (input) input.value = '';
+    searchStores('');
+}
+
+function toggleStoreCheck(cb) {
+    if (cb.checked) storeFilterState.selectedStores[cb.value] = true;
+    else delete storeFilterState.selectedStores[cb.value];
+    updateStoreCount();
+}
+
+// ====== 选中计数 ======
+function updateStoreCount() {
+    var count = Object.keys(storeFilterState.selectedStores).length;
+    var el = document.querySelector('.store-filter-count strong');
+    if (el) el.textContent = count;
+}
+
+// ====== 重置 & 确认 ======
+function resetStoreFilter() {
+    storeFilterState.selectedStores = {};
+    storeFilterState.activeLeaf = null;
+    document.querySelectorAll('.menu-tree-child.selected, .menu-tree-grandchild.selected').forEach(function(e) { e.classList.remove('selected'); });
+    document.querySelectorAll('.store-check-list').forEach(function(c) {
+        c.innerHTML = '<div class="store-list-hint">点击左侧查看门店</div>';
+    });
+    updateStoreCount();
+    if (storeFilterState.trigger) {
+        storeFilterState.trigger.querySelector('span').textContent = '全部门店';
+        storeFilterState.trigger.classList.remove('has-selection');
+    }
+    document.getElementById('storeFilterOverlay').classList.remove('open');
+}
+
+function confirmStoreFilter() {
+    var trigger = storeFilterState.trigger;
+    var count = Object.keys(storeFilterState.selectedStores).length;
+    if (trigger) {
+        var span = trigger.querySelector('span');
+        if (count > 0) {
+            var names = Object.keys(storeFilterState.selectedStores);
+            span.textContent = count > 1 ? ('已选 ' + count + ' 家门店') : names[0];
+            trigger.classList.add('has-selection');
+        } else {
+            span.textContent = '全部门店';
+            trigger.classList.remove('has-selection');
+        }
+    }
+    document.getElementById('storeFilterOverlay').classList.remove('open');
+}
+
+function initStoreFilters() {
+    if (MOCK.hierarchy) {
+        buildMenuTree('byRegion');
+        buildMenuTree('byLocation');
+    }
+}
+
+
+
 function initDynamicRender() {
     renderKpiCards();
     renderLeadLevelPie();
 }
 
+// ============================================
+// 渠道效果 - 异步下载明细数据
+// ============================================
+function downloadChannelEffectDetail() {
+    var btn = document.getElementById('channelEffectDownloadBtn');
+    if (!btn) return;
+
+    // 设置加载状态
+    btn.classList.add('loading');
+    var iconEl = btn.querySelector('i');
+    var spanEl = btn.querySelector('span');
+    var originalIcon = iconEl.className;
+    var originalText = spanEl.textContent;
+    iconEl.className = 'fa-solid fa-spinner fa-spin';
+    spanEl.textContent = '下载中...';
+
+    // 恢复按钮状态的通用函数
+    function restoreBtn() {
+        btn.classList.remove('loading');
+        iconEl.className = originalIcon;
+        spanEl.textContent = originalText;
+    }
+
+    // 模拟异步接口请求（实际对接后端API时替换为 fetch 调用）
+    simulateAsyncDownload(channelEffectDetailData)
+        .then(function(csvContent) {
+            var now = new Date();
+            var timestamp = formatTimestamp(now);
+            downloadFile(csvContent, '渠道效果明细_' + timestamp + '.csv', 'text/csv;charset=utf-8;');
+        })
+        .catch(function(err) {
+            console.error('下载失败:', err);
+            alert('下载失败，请稍后重试');
+        })
+        .finally(restoreBtn);
+}
+
+// 生成时间戳字符串 YYYYMMDD_HHmmss
+function formatTimestamp(date) {
+    var d = formatDate(date).replace(/-/g, '');
+    return d + '_'
+        + String(date.getHours()).padStart(2, '0')
+        + String(date.getMinutes()).padStart(2, '0')
+        + String(date.getSeconds()).padStart(2, '0');
+}
+
+// 通过 Blob 触发浏览器文件下载
+function downloadFile(content, filename, mimeType) {
+    var BOM = '﻿'; // BOM 确保 Excel 正确识别中文
+    var blob = new Blob([BOM + content], { type: mimeType });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+// 生成 CSV 内容
+function generateCsv(data) {
+    var parts = [];
+    parts.push(data.headers.join(','));
+    data.rows.forEach(function(row) {
+        parts.push(row.map(function(cell) {
+            return '"' + String(cell).replace(/"/g, '""') + '"';
+        }).join(','));
+    });
+    return parts.join('\n');
+}
+
+// 模拟异步下载（实际对接后端时替换为 fetch 调用）
+function simulateAsyncDownload(data) {
+    return new Promise(function(resolve) {
+        var delay = 800 + Math.random() * 1200;
+        setTimeout(function() {
+            resolve(generateCsv(data));
+        }, delay);
+    });
+}
+
 // 页面加载时调用（在原有初始化之后）
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function() {
+        try { initStoreFilters(); } catch(e) { console.warn('Store filters init:', e.message); }
         try { initDynamicRender(); } catch(e) { console.warn('Plan B render:', e.message); }
     }, 50);
 });

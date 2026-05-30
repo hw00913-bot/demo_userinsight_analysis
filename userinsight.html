@@ -180,65 +180,11 @@
                                         <label class="filter-label">大项目:</label>
                                         <input type="text" class="filter-input" placeholder="输入关键字查询" style="min-width: 160px;">
                                     </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">大区:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="华东大区">华东大区</option>
-                                            <option value="华南大区">华南大区</option>
-                                            <option value="华北大区">华北大区</option>
-                                            <option value="华中大区">华中大区</option>
-                                            <option value="西部大区">西部大区</option>
-                                            <option value="东北大区">东北大区</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">小区:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海一区">上海一区</option>
-                                            <option value="上海二区">上海二区</option>
-                                            <option value="广州一区">广州一区</option>
-                                            <option value="深圳一区">深圳一区</option>
-                                            <option value="北京一区">北京一区</option>
-                                            <option value="成都一区">成都一区</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">省份:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海">上海</option>
-                                            <option value="广东">广东</option>
-                                            <option value="北京">北京</option>
-                                            <option value="四川">四川</option>
-                                            <option value="湖北">湖北</option>
-                                            <option value="陕西">陕西</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">城市:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海">上海</option>
-                                            <option value="广州">广州</option>
-                                            <option value="深圳">深圳</option>
-                                            <option value="北京">北京</option>
-                                            <option value="成都">成都</option>
-                                            <option value="武汉">武汉</option>
-                                            <option value="西安">西安</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">专营店:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海东风南方专营店">上海东风南方专营店</option>
-                                            <option value="广州天河专营店">广州天河专营店</option>
-                                            <option value="深圳南山专营店">深圳南山专营店</option>
-                                            <option value="北京朝阳专营店">北京朝阳专营店</option>
-                                            <option value="成都武侯专营店">成都武侯专营店</option>
-                                        </select>
+                                    <div class="filter-item store-filter-item">
+                                        <label class="filter-label">筛选门店:</label>
+                                        <button class="store-filter-trigger" onclick="openStoreFilterModal(this)" data-store-text="全部门店">
+                                            <i class="fa-solid fa-store"></i> <span>全部门店</span> <i class="fa-solid fa-chevron-down"></i>
+                                        </button>
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">线索等级:</label>
@@ -302,6 +248,10 @@
                                         <button class="icon-btn reset-btn">
                                             <i class="fa-solid fa-rotate-right"></i>
                                             <span>重置</span>
+                                        </button>
+                                        <button class="icon-btn download-btn" id="channelEffectDownloadBtn" onclick="downloadChannelEffectDetail()">
+                                            <i class="fa-solid fa-download"></i>
+                                            <span>下载明细</span>
                                         </button>
                                     </div>
                                 </div>
@@ -454,10 +404,10 @@
                                         <div class="ce-pie-wrap">
                                             <svg viewBox="0 0 36 36">
                                                 <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#f3f4f6" stroke-width="3"></circle>
-                                                <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#0081ff" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="25"></circle>
-                                                <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#7c3aed" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="85"></circle>
-                                                <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#059669" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="60"></circle>
-                                                <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#f59e0b" stroke-width="3" stroke-dasharray="15 85" stroke-dashoffset="40"></circle>
+                                                <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#00337c" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="25"></circle>
+                                                <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#0052cc" stroke-width="3" stroke-dasharray="25 75" stroke-dashoffset="85"></circle>
+                                                <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#3b82f6" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="60"></circle>
+                                                <circle cx="18" cy="18" r="15.915" fill="transparent" stroke="#93c5fd" stroke-width="3" stroke-dasharray="15 85" stroke-dashoffset="40"></circle>
                                                 
                                                 <!-- 中心总数显示 -->
                                                 <text x="18" y="17.5" text-anchor="middle" font-size="7" font-weight="700" fill="#111827">12,345</text>
@@ -465,22 +415,22 @@
                                             </svg>
                                             <div class="ce-legend">
                                                 <div class="ce-legend-item">
-                                                    <span class="ce-legend-dot" style="background: #0081ff;"></span>
+                                                    <span class="ce-legend-dot" style="background: #00337c;"></span>
                                                     <span class="ce-legend-label">N7</span>
                                                     <span class="ce-legend-val">4,938 (40%)</span>
                                                 </div>
                                                 <div class="ce-legend-item">
-                                                    <span class="ce-legend-dot" style="background: #7c3aed;"></span>
+                                                    <span class="ce-legend-dot" style="background: #0052cc;"></span>
                                                     <span class="ce-legend-label">N6</span>
                                                     <span class="ce-legend-val">3,086 (25%)</span>
                                                 </div>
                                                 <div class="ce-legend-item">
-                                                    <span class="ce-legend-dot" style="background: #059669;"></span>
+                                                    <span class="ce-legend-dot" style="background: #3b82f6;"></span>
                                                     <span class="ce-legend-label">天籁鸿蒙</span>
                                                     <span class="ce-legend-val">2,469 (20%)</span>
                                                 </div>
                                                 <div class="ce-legend-item">
-                                                    <span class="ce-legend-dot" style="background: #f59e0b;"></span>
+                                                    <span class="ce-legend-dot" style="background: #93c5fd;"></span>
                                                     <span class="ce-legend-label">NX8</span>
                                                     <span class="ce-legend-val">1,852 (15%)</span>
                                                 </div>
@@ -497,9 +447,9 @@
                                     <div class="card-body" style="padding: 24px; text-align: center;">
                                         <div style="display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap;">
                                             <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(
-                                                #0081ff 0% 68%,
-                                                #9ca3af 68% 80%,
-                                                #f97316 80% 100%
+                                                #00337c 0% 68%,
+                                                #3b82f6 68% 80%,
+                                                #93c5fd 80% 100%
                                             ); margin: 0 auto; position: relative;">
                                                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                                                     <div style="font-size: 18px; font-weight: 700; color: #1e293b;">12,345</div>
@@ -508,22 +458,22 @@
                                             </div>
                                             <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; text-align: left; min-width: 130px;">
                                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #0081ff; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #00337c; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">有效号码</span>
                                                     <span style="font-weight: 600; color: #1e293b;">8,395人</span>
-                                                    <span style="color: #0081ff; font-weight: 600;">68%</span>
+                                                    <span style="color: #00337c; font-weight: 600;">68%</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #9ca3af; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #3b82f6; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">无效号码</span>
                                                     <span style="font-weight: 600; color: #1e293b;">1,481人</span>
-                                                    <span style="color: #9ca3af; font-weight: 600;">12%</span>
+                                                    <span style="color: #3b82f6; font-weight: 600;">12%</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 8px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #f97316; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #93c5fd; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">无法建联</span>
                                                     <span style="font-weight: 600; color: #1e293b;">2,469人</span>
-                                                    <span style="color: #f97316; font-weight: 600;">20%</span>
+                                                    <span style="color: #93c5fd; font-weight: 600;">20%</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -540,16 +490,16 @@
                                         <div style="display: flex; align-items: center; gap: 40px;">
                                             <!-- 饼图 -->
                                             <div style="width: 200px; height: 200px; flex-shrink: 0; border-radius: 50%; background: conic-gradient(
-                                                #991b1b 0% 12%,
-                                                #dc2626 12% 27%,
-                                                #ef4444 27% 35%,
-                                                #f97316 35% 46%,
-                                                #eab308 46% 58%,
-                                                #22c55e 58% 73%,
-                                                #06b6d4 73% 78%,
-                                                #3b82f6 78% 82%,
-                                                #8b5cf6 82% 85%,
-                                                #9ca3af 85% 100%
+                                                #00337c 0% 12%,
+                                                #0052cc 12% 27%,
+                                                #0081ff 27% 35%,
+                                                #1a75ff 35% 46%,
+                                                #3b82f6 46% 58%,
+                                                #60a5fa 58% 73%,
+                                                #93c5fd 73% 78%,
+                                                #bfdbfe 78% 82%,
+                                                #cfe2ff 82% 85%,
+                                                #dbeafe 85% 100%
                                             ); position: relative;">
                                                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90px; height: 90px; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
                                                     <div style="font-size: 20px; font-weight: 700; color: #1e293b;">12,345</div>
@@ -559,64 +509,64 @@
                                             <!-- 图例 -->
                                             <div style="display: flex; flex-direction: column; gap: 6px; font-size: 11px; text-align: left; flex: 1; min-width: 0;">
                                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #991b1b; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #00337c; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">H（试驾排程）</span>
                                                     <span style="font-weight: 600; color: #1e293b;">1,481人</span>
-                                                    <span style="color: #991b1b; font-weight: 600;">12%</span>
+                                                    <span style="color: #00337c; font-weight: 600;">12%</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #dc2626; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #0052cc; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">H（试驾线索）</span>
                                                     <span style="font-weight: 600; color: #1e293b;">1,852人</span>
-                                                    <span style="color: #dc2626; font-weight: 600;">15%</span>
+                                                    <span style="color: #0052cc; font-weight: 600;">15%</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #ef4444; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #0081ff; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">H（非试驾线索）</span>
                                                     <span style="font-weight: 600; color: #1e293b;">988人</span>
-                                                    <span style="color: #ef4444; font-weight: 600;">8%</span>
+                                                    <span style="color: #0081ff; font-weight: 600;">8%</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #f97316; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #1a75ff; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">A</span>
                                                     <span style="font-weight: 600; color: #1e293b;">1,358人</span>
-                                                    <span style="color: #f97316; font-weight: 600;">11%</span>
-                                                </div>
-                                                <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #eab308; flex-shrink: 0;"></span>
-                                                    <span style="color: #6b7280; flex: 1;">B</span>
-                                                    <span style="font-weight: 600; color: #1e293b;">1,481人</span>
-                                                    <span style="color: #eab308; font-weight: 600;">12%</span>
-                                                </div>
-                                                <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #22c55e; flex-shrink: 0;"></span>
-                                                    <span style="color: #6b7280; flex: 1;">C</span>
-                                                    <span style="font-weight: 600; color: #1e293b;">1,852人</span>
-                                                    <span style="color: #22c55e; font-weight: 600;">15%</span>
-                                                </div>
-                                                <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #06b6d4; flex-shrink: 0;"></span>
-                                                    <span style="color: #6b7280; flex: 1;">F</span>
-                                                    <span style="font-weight: 600; color: #1e293b;">617人</span>
-                                                    <span style="color: #06b6d4; font-weight: 600;">5%</span>
+                                                    <span style="color: #1a75ff; font-weight: 600;">11%</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 6px;">
                                                     <span style="width: 10px; height: 10px; border-radius: 2px; background: #3b82f6; flex-shrink: 0;"></span>
+                                                    <span style="color: #6b7280; flex: 1;">B</span>
+                                                    <span style="font-weight: 600; color: #1e293b;">1,481人</span>
+                                                    <span style="color: #3b82f6; font-weight: 600;">12%</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #60a5fa; flex-shrink: 0;"></span>
+                                                    <span style="color: #6b7280; flex: 1;">C</span>
+                                                    <span style="font-weight: 600; color: #1e293b;">1,852人</span>
+                                                    <span style="color: #60a5fa; font-weight: 600;">15%</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #93c5fd; flex-shrink: 0;"></span>
+                                                    <span style="color: #6b7280; flex: 1;">F</span>
+                                                    <span style="font-weight: 600; color: #1e293b;">617人</span>
+                                                    <span style="color: #93c5fd; font-weight: 600;">5%</span>
+                                                </div>
+                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #bfdbfe; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">L</span>
                                                     <span style="font-weight: 600; color: #1e293b;">494人</span>
-                                                    <span style="color: #3b82f6; font-weight: 600;">4%</span>
+                                                    <span style="color: #bfdbfe; font-weight: 600;">4%</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #8b5cf6; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #cfe2ff; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">E</span>
                                                     <span style="font-weight: 600; color: #1e293b;">370人</span>
-                                                    <span style="color: #8b5cf6; font-weight: 600;">3%</span>
+                                                    <span style="color: #cfe2ff; font-weight: 600;">3%</span>
                                                 </div>
                                                 <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #9ca3af; flex-shrink: 0;"></span>
+                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #dbeafe; flex-shrink: 0;"></span>
                                                     <span style="color: #6b7280; flex: 1;">无效号码</span>
                                                     <span style="font-weight: 600; color: #1e293b;">1,852人</span>
-                                                    <span style="color: #9ca3af; font-weight: 600;">15%</span>
+                                                    <span style="color: #dbeafe; font-weight: 600;">15%</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -2029,7 +1979,23 @@
                                             <div id="touchMediaPanel_channel">
                                             <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">首次留资渠道</div>
+                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">留资总数</div>
+                                                    <div style="display:flex; flex-direction:column; gap:8px;">
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R1</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:82%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,460人 · 19.9%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R2</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:76%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,280人 · 18.5%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R3</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:68%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,040人 · 16.5%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R4</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:55%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,650人 · 13.4%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R5</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:42%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,260人 · 10.2%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R6</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:36%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,080人 · 8.7%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R7</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:28%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">840人 · 6.8%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R8</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:20%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">600人 · 4.9%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R9</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:18%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">540人 · 4.4%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R10</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:14%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">420人 · 3.4%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R11</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">300人 · 2.4%</span></div>
+                                                    </div>
+                                                </div>
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">首次留资渠道（首触去重）</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R1</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:82%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,520人 · 20.4%</span></div>
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R2</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:74%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,270人 · 18.4%</span></div>
@@ -2058,22 +2024,6 @@
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R9</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:19%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">590人 · 4.8%</span></div>
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R10</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:15%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">460人 · 3.7%</span></div>
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R11</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">310人 · 2.5%</span></div>
-                                                    </div>
-                                                </div>
-                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">渠道数量（去重）</div>
-                                                    <div style="display:flex; flex-direction:column; gap:8px;">
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R1</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:82%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,460人 · 19.9%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R2</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:76%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,280人 · 18.5%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R3</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:68%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,040人 · 16.5%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R4</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:55%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,650人 · 13.4%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R5</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:42%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,260人 · 10.2%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R6</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:36%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,080人 · 8.7%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R7</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:28%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">840人 · 6.8%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R8</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:20%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">600人 · 4.9%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R9</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:18%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">540人 · 4.4%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R10</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:14%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">420人 · 3.4%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R11</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">300人 · 2.4%</span></div>
                                                     </div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
@@ -2107,7 +2057,22 @@
                                             <div id="touchMediaPanel_media" style="display: none;">
                                             <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">首次留资媒体</div>
+                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">媒体留资总数</div>
+                                                    <div style="display:flex; flex-direction:column; gap:8px;">
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">抖音</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:81%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">3,060人 · 24.7%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">懂车帝</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:66%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,500人 · 20.2%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">百度</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:51%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,920人 · 15.5%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">快手</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:38%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,460人 · 11.8%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">小红书</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:29%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,080人 · 8.7%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">朋友圈</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:21%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">780人 · 6.3%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">头条</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:15%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">560人 · 4.5%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">优酷</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">360人 · 2.9%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">知乎</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:6%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">220人 · 1.8%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">B站</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:4%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">140人 · 1.1%</span></div>
+                                                    </div>
+                                                </div>
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">首次留资媒体（首触去重）</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">抖音</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:82%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">3,120人 · 25.2%</span></div>
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">懂车帝</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:67%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,540人 · 20.5%</span></div>
@@ -2134,21 +2099,6 @@
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">优酷</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:11%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">420人 · 3.4%</span></div>
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">知乎</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:7%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">260人 · 2.1%</span></div>
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">B站</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:5%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">180人 · 1.5%</span></div>
-                                                    </div>
-                                                </div>
-                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">媒体数量（去重）</div>
-                                                    <div style="display:flex; flex-direction:column; gap:8px;">
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">抖音</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:81%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">3,060人 · 24.7%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">懂车帝</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:66%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,500人 · 20.2%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">百度</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:51%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,920人 · 15.5%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">快手</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:38%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,460人 · 11.8%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">小红书</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:29%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,080人 · 8.7%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">朋友圈</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:21%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">780人 · 6.3%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">头条</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:15%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">560人 · 4.5%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">优酷</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">360人 · 2.9%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">知乎</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:6%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">220人 · 1.8%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">B站</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:4%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">140人 · 1.1%</span></div>
                                                     </div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
@@ -2343,65 +2293,11 @@
                                         <label class="filter-label">大项目:</label>
                                         <input type="text" class="filter-input" placeholder="输入关键字查询" style="min-width: 160px;">
                                     </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">大区:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="华东大区">华东大区</option>
-                                            <option value="华南大区">华南大区</option>
-                                            <option value="华北大区">华北大区</option>
-                                            <option value="华中大区">华中大区</option>
-                                            <option value="西部大区">西部大区</option>
-                                            <option value="东北大区">东北大区</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">小区:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海一区">上海一区</option>
-                                            <option value="上海二区">上海二区</option>
-                                            <option value="广州一区">广州一区</option>
-                                            <option value="深圳一区">深圳一区</option>
-                                            <option value="北京一区">北京一区</option>
-                                            <option value="成都一区">成都一区</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">省份:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海">上海</option>
-                                            <option value="广东">广东</option>
-                                            <option value="北京">北京</option>
-                                            <option value="四川">四川</option>
-                                            <option value="湖北">湖北</option>
-                                            <option value="陕西">陕西</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">城市:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海">上海</option>
-                                            <option value="广州">广州</option>
-                                            <option value="深圳">深圳</option>
-                                            <option value="北京">北京</option>
-                                            <option value="成都">成都</option>
-                                            <option value="武汉">武汉</option>
-                                            <option value="西安">西安</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">专营店:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海东风南方专营店">上海东风南方专营店</option>
-                                            <option value="广州天河专营店">广州天河专营店</option>
-                                            <option value="深圳南山专营店">深圳南山专营店</option>
-                                            <option value="北京朝阳专营店">北京朝阳专营店</option>
-                                            <option value="成都武侯专营店">成都武侯专营店</option>
-                                        </select>
+                                    <div class="filter-item store-filter-item">
+                                        <label class="filter-label">筛选门店:</label>
+                                        <button class="store-filter-trigger" onclick="openStoreFilterModal(this)" data-store-text="全部门店">
+                                            <i class="fa-solid fa-store"></i> <span>全部门店</span> <i class="fa-solid fa-chevron-down"></i>
+                                        </button>
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">线索等级:</label>
@@ -2973,65 +2869,11 @@
                                         <label class="filter-label">大项目:</label>
                                         <input type="text" class="filter-input" placeholder="输入关键字查询" style="min-width: 160px;">
                                     </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">大区:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="华东大区">华东大区</option>
-                                            <option value="华南大区">华南大区</option>
-                                            <option value="华北大区">华北大区</option>
-                                            <option value="华中大区">华中大区</option>
-                                            <option value="西部大区">西部大区</option>
-                                            <option value="东北大区">东北大区</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">小区:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海一区">上海一区</option>
-                                            <option value="上海二区">上海二区</option>
-                                            <option value="广州一区">广州一区</option>
-                                            <option value="深圳一区">深圳一区</option>
-                                            <option value="北京一区">北京一区</option>
-                                            <option value="成都一区">成都一区</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">省份:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海">上海</option>
-                                            <option value="广东">广东</option>
-                                            <option value="北京">北京</option>
-                                            <option value="四川">四川</option>
-                                            <option value="湖北">湖北</option>
-                                            <option value="陕西">陕西</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">城市:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海">上海</option>
-                                            <option value="广州">广州</option>
-                                            <option value="深圳">深圳</option>
-                                            <option value="北京">北京</option>
-                                            <option value="成都">成都</option>
-                                            <option value="武汉">武汉</option>
-                                            <option value="西安">西安</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">专营店:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="上海东风南方专营店">上海东风南方专营店</option>
-                                            <option value="广州天河专营店">广州天河专营店</option>
-                                            <option value="深圳南山专营店">深圳南山专营店</option>
-                                            <option value="北京朝阳专营店">北京朝阳专营店</option>
-                                            <option value="成都武侯专营店">成都武侯专营店</option>
-                                        </select>
+                                    <div class="filter-item store-filter-item">
+                                        <label class="filter-label">筛选门店:</label>
+                                        <button class="store-filter-trigger" onclick="openStoreFilterModal(this)" data-store-text="全部门店">
+                                            <i class="fa-solid fa-store"></i> <span>全部门店</span> <i class="fa-solid fa-chevron-down"></i>
+                                        </button>
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">线索等级:</label>
@@ -3827,6 +3669,56 @@
 
     
 
+
+    <!-- 筛选门店弹窗 -->
+    <div class="store-filter-overlay" id="storeFilterOverlay" onclick="closeStoreFilterModal(event)">
+        <div class="store-filter-modal" onclick="event.stopPropagation()">
+            <div class="store-filter-modal-header">
+                <span class="store-filter-modal-title"><i class="fa-solid fa-store"></i> 筛选门店</span>
+                <button class="store-filter-modal-close" onclick="closeStoreFilterModal()">&times;</button>
+            </div>
+            <div class="store-filter-tabs">
+                <button class="store-filter-tab active" data-tab="byRegion" onclick="switchStoreTab('byRegion')">按大小区选择</button>
+                <button class="store-filter-tab" data-tab="byLocation" onclick="switchStoreTab('byLocation')">按省市区选择</button>
+            </div>
+            <div class="store-filter-search">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" placeholder="搜索门店名称（模糊匹配）..." oninput="searchStores(this.value)">
+                <button class="store-search-clear" onclick="clearSearch()" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="store-filter-body">
+                <!-- Tab1: 按大小区选择 -->
+                <div class="store-filter-panel active" id="storePanel_byRegion">
+                    <div class="store-filter-split">
+                        <div class="store-menu-tree" id="menuTree_byRegion"></div>
+                        <div class="store-check-list" id="storeList_byRegion">
+                            <div class="store-list-hint">点击左侧小区查看门店</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab2: 按省市区选择 -->
+                <div class="store-filter-panel" id="storePanel_byLocation">
+                    <div class="store-filter-split">
+                        <div class="store-menu-tree" id="menuTree_byLocation"></div>
+                        <div class="store-check-list" id="storeList_byLocation">
+                            <div class="store-list-hint">点击左侧县区查看门店</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 搜索结果面板（搜索时覆盖显示） -->
+                <div class="store-filter-panel" id="storePanel_search" style="display:none;">
+                    <div class="store-check-list" id="storeList_search"></div>
+                </div>
+            </div>
+            <div class="store-filter-footer">
+                <span class="store-filter-count">已选 <strong>0</strong> 家门店</span>
+                <div class="store-filter-actions">
+                    <button class="store-filter-btn reset" onclick="resetStoreFilter()">重置</button>
+                    <button class="store-filter-btn confirm" onclick="confirmStoreFilter()">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="mock.js"></script>
     <script src="script.js"></script>
