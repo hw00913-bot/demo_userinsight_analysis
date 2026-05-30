@@ -659,10 +659,9 @@ function openFocusDrillDown(category) {
     modal.classList.add('active');
 }
 
-function closeFocusModal() {
-    const modal = document.getElementById('focusDrillDownModal');
-    if (modal) modal.classList.remove('active');
-}
+// 通用弹窗关闭
+function closeModal(id) { const m = document.getElementById(id); if (m) m.classList.remove('active'); }
+function closeFocusModal() { closeModal('focusDrillDownModal'); }
 
 /**
  * 全量排行榜相关逻辑
@@ -930,9 +929,7 @@ function openFullRanking(type) {
     modal.classList.add('active');
 }
 
-function closeRankingModal() {
-    document.getElementById('rankingModal').classList.remove('active');
-}
+function closeRankingModal() { closeModal('rankingModal'); }
 
 function getQualityTypeStyle(type) {
     const styles = {
@@ -1242,12 +1239,7 @@ function initAreaTabSwitch() {
 /**
  * 关闭城市专营店意向等级详情弹窗
  */
-function closeCityStoreModal() {
-    const modal = document.getElementById('cityStoreModal');
-    if (modal) {
-        modal.classList.remove('active');
-    }
-}
+function closeCityStoreModal() { closeModal('cityStoreModal'); }
 
 // 区域投放效果柱状图点击事件（仅限区域投放效果图表）
 document.addEventListener('click', (e) => {
@@ -1271,36 +1263,9 @@ document.addEventListener('click', (e) => {
 
 // 点击弹窗/抽屉外部关闭
 document.addEventListener('click', (e) => {
-    // 关闭城市专营店抽屉
-    const cityModal = document.getElementById('cityStoreModal');
-    if (cityModal && e.target === cityModal) {
-        closeCityStoreModal();
-    }
-    // 关闭大区渠道质量抽屉
-    const regionModal = document.getElementById('regionChannelModal');
-    if (regionModal && e.target === regionModal) {
-        closeRegionChannelModal();
-    }
-    // 关闭大项目下钻抽屉
-    const projectModal = document.getElementById('projectDrillModal');
-    if (projectModal && e.target === projectModal) {
-        closeProjectDrillModal();
-    }
-    // 关闭媒体质量下钻抽屉
-    const scheduleModal = document.getElementById('scheduleDrillModal');
-    if (scheduleModal && e.target === scheduleModal) {
-        closeScheduleDrillModal();
-    }
-    // 关闭全量排行榜抽屉
-    const rankingModal = document.getElementById('rankingModal');
-    if (rankingModal && e.target === rankingModal) {
-        closeRankingModal();
-    }
-    // 关闭培育运营下钻抽屉
-    const focusModal = document.getElementById('focusDrillDownModal');
-    if (focusModal && e.target === focusModal) {
-        closeFocusModal();
-    }
+    ['cityStoreModal','regionChannelModal','projectDrillModal','scheduleDrillModal','rankingModal','focusDrillDownModal'].forEach(id => {
+        if (e.target === document.getElementById(id)) closeModal(id);
+    });
 });
 
 // ============================================
@@ -1725,84 +1690,16 @@ function showRegionChannelModal(regionCode) {
     content.innerHTML = html;
     
     // 绑定小区 Tab 切换事件
-    initRegionTabSwitch();
+    initDrillTabSwitch('#regionChannelModalContent');
     
     // 显示弹窗
     modal.classList.add('active');
 }
 
 /**
- * 初始化大区 Tab 切换
- */
-function initRegionTabSwitch() {
-    // 一级大区 Tab 切换
-    const regionTabBtns = document.querySelectorAll('.region-tab-btn');
-    const regionPanels = document.querySelectorAll('.region-panel');
-    
-    regionTabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetRegion = btn.dataset.region;
-            
-            // 切换大区 Tab 按钮状态
-            regionTabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            // 切换大区内容面板
-            regionPanels.forEach(panel => {
-                if (panel.dataset.region === targetRegion) {
-                    panel.classList.add('active');
-                    // 激活该大区内的第一个小区 Tab
-                    const areaBtns = panel.querySelectorAll('.area-tab-btn');
-                    const areaPanels = panel.querySelectorAll('.area-panel');
-                    if (areaBtns.length > 0) {
-                        areaBtns.forEach(b => b.classList.remove('active'));
-                        areaPanels.forEach(p => p.classList.remove('active'));
-                        areaBtns[0].classList.add('active');
-                        areaPanels[0].classList.add('active');
-                    }
-                } else {
-                    panel.classList.remove('active');
-                }
-            });
-        });
-    });
-    
-    // 二级小区 Tab 切换
-    const areaTabBtns = document.querySelectorAll('.area-tab-btn');
-    areaTabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetArea = btn.dataset.area;
-            const parentRegion = btn.dataset.parent;
-            
-            // 找到对应的父级大区面板
-            const parentPanel = document.querySelector(`.region-panel[data-region="${parentRegion}"]`);
-            if (!parentPanel) return;
-            
-            // 切换小区 Tab 按钮状态
-            const panelAreaBtns = parentPanel.querySelectorAll('.area-tab-btn');
-            const panelAreaPanels = parentPanel.querySelectorAll('.area-panel');
-            
-            panelAreaBtns.forEach(b => b.classList.remove('active'));
-            panelAreaPanels.forEach(p => p.classList.remove('active'));
-            
-            btn.classList.add('active');
-            const targetPanel = parentPanel.querySelector(`.area-panel[data-area="${targetArea}"]`);
-            if (targetPanel) {
-                targetPanel.classList.add('active');
-            }
-        });
-    });
-}
-
-/**
  * 关闭大区渠道质量详情弹窗
  */
-function closeRegionChannelModal() {
-    const modal = document.getElementById('regionChannelModal');
-    if (modal) {
-        modal.classList.remove('active');
-    }
-}
+function closeRegionChannelModal() { closeModal('regionChannelModal'); }
 
 // ============================================
 // 大项目线索质量下钻功能
@@ -2033,7 +1930,7 @@ function showProjectDrillModal(projectCode) {
     `;
 
     content.innerHTML = html;
-    initProjectTabSwitch();
+    initDrillTabSwitch('#projectDrillModalContent');
     modal.classList.add('active');
 }
 
@@ -2081,67 +1978,11 @@ function generateStoreCard(store, areaLabel) {
     `;
 }
 
-/**
- * 初始化大项目 Tab 切换（支持二级小区 Tab）
- */
-function initProjectTabSwitch() {
-    // 一级大区 Tab
-    const regionTabBtns = document.querySelectorAll('#projectDrillModalContent .region-tab-btn');
-    const regionPanels = document.querySelectorAll('#projectDrillModalContent .region-panel');
-
-    regionTabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetRegion = btn.dataset.region;
-            regionTabBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            regionPanels.forEach(panel => {
-                if (panel.dataset.region === targetRegion) {
-                    panel.classList.add('active');
-                    const areaBtns = panel.querySelectorAll('.area-tab-btn');
-                    const areaPanels = panel.querySelectorAll('.area-panel');
-                    if (areaBtns.length > 0) {
-                        areaBtns.forEach(b => b.classList.remove('active'));
-                        areaPanels.forEach(p => p.classList.remove('active'));
-                        areaBtns[0].classList.add('active');
-                        areaPanels[0].classList.add('active');
-                    }
-                } else {
-                    panel.classList.remove('active');
-                }
-            });
-        });
-    });
-
-    // 二级小区 Tab
-    const areaTabBtns = document.querySelectorAll('#projectDrillModalContent .area-tab-btn');
-    areaTabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const targetArea = btn.dataset.area;
-            const parentRegion = btn.dataset.parent;
-            const parentPanel = document.querySelector(`#projectDrillModalContent .region-panel[data-region="${parentRegion}"]`);
-            if (!parentPanel) return;
-
-            const panelAreaBtns = parentPanel.querySelectorAll('.area-tab-btn');
-            const panelAreaPanels = parentPanel.querySelectorAll('.area-panel');
-            panelAreaBtns.forEach(b => b.classList.remove('active'));
-            panelAreaPanels.forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            const targetPanel = parentPanel.querySelector(`.area-panel[data-area="${targetArea}"]`);
-            if (targetPanel) targetPanel.classList.add('active');
-        });
-    });
-}
 
 /**
  * 关闭大项目下钻抽屉
  */
-function closeProjectDrillModal() {
-    const modal = document.getElementById('projectDrillModal');
-    if (modal) {
-        modal.classList.remove('active');
-    }
-}
+function closeProjectDrillModal() { closeModal('projectDrillModal'); }
 
 // ============================================
 // 媒体质量下钻功能
@@ -2360,12 +2201,7 @@ function initDrillTabSwitch(containerSelector) {
 /**
  * 关闭媒体质量下钻抽屉
  */
-function closeScheduleDrillModal() {
-    const modal = document.getElementById('scheduleDrillModal');
-    if (modal) {
-        modal.classList.remove('active');
-    }
-}
+function closeScheduleDrillModal() { closeModal('scheduleDrillModal'); }
 
 /**
  * 切换培育运营跟进过程页签
@@ -2385,14 +2221,6 @@ function switchCultivationFollowProcess(tabKey) {
         panel.classList.toggle('active', isTargetPanel);
     });
 }
-
-// 点击弹窗外部关闭大区弹窗
-document.addEventListener('click', (e) => {
-    const modal = document.getElementById('regionChannelModal');
-    if (modal && e.target === modal) {
-        closeRegionChannelModal();
-    }
-});
 
 // ============================================
 // 渠道质量柱状图点击事件（仅限渠道质量图表）
