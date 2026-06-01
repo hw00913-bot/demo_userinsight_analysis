@@ -367,11 +367,25 @@ function updateFilterLevelText(multiSelect) {
     }
 }
 
+function updateFilterPlatformText(multiSelect) {
+    const checkedBoxes = multiSelect.querySelectorAll('.platform-cb:checked');
+    const allBoxes = multiSelect.querySelectorAll('.platform-cb');
+    const selectAll = multiSelect.querySelector('.select-all-platforms');
+    const text = multiSelect.querySelector('.platform-text');
+    if (selectAll) selectAll.checked = checkedBoxes.length === allBoxes.length;
+    if (text) {
+        text.innerText = checkedBoxes.length === allBoxes.length
+            ? '全选 (' + allBoxes.length + '项)'
+            : '已选 ' + checkedBoxes.length + ' 项';
+    }
+}
+
 function initFilterMultiSelects() {
     document.querySelectorAll('.custom-multi-select').forEach(multiSelect => {
         const header = multiSelect.querySelector('.select-header');
         const dropdown = multiSelect.querySelector('.select-dropdown');
-        const selectAll = multiSelect.querySelector('.select-all-levels');
+        const selectAllLevels = multiSelect.querySelector('.select-all-levels');
+        const selectAllPlatforms = multiSelect.querySelector('.select-all-platforms');
 
         header?.addEventListener('click', () => {
             document.querySelectorAll('.custom-multi-select .select-dropdown').forEach(panel => {
@@ -380,15 +394,26 @@ function initFilterMultiSelects() {
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         });
 
-        selectAll?.addEventListener('change', () => {
+        selectAllLevels?.addEventListener('change', () => {
             multiSelect.querySelectorAll('.level-cb').forEach(checkbox => {
-                checkbox.checked = selectAll.checked;
+                checkbox.checked = selectAllLevels.checked;
             });
             updateFilterLevelText(multiSelect);
         });
 
+        selectAllPlatforms?.addEventListener('change', () => {
+            multiSelect.querySelectorAll('.platform-cb').forEach(checkbox => {
+                checkbox.checked = selectAllPlatforms.checked;
+            });
+            updateFilterPlatformText(multiSelect);
+        });
+
         multiSelect.querySelectorAll('.level-cb').forEach(checkbox => {
             checkbox.addEventListener('change', () => updateFilterLevelText(multiSelect));
+        });
+
+        multiSelect.querySelectorAll('.platform-cb').forEach(checkbox => {
+            checkbox.addEventListener('change', () => updateFilterPlatformText(multiSelect));
         });
     });
 
