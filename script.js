@@ -1527,6 +1527,7 @@ function showRegionChannelModal(regionCode) {
     title.innerText = '各区渠道质量分布';
     
     // 计算全局总计（11级）
+    var regionCodes = Object.keys(regionChannelData);
     var allRegionsTotal = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
     regionCodes.forEach(function(code) {
         var t = calculateRegionTotal(regionChannelData[code]);
