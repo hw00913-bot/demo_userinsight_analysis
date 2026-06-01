@@ -240,10 +240,23 @@ var LEVEL_COLORS = {
     h: '#00337c', c: '#22c55e', hab: '#059669', other: '#9ca3af'
 };
 
-var LEVEL_LABELS = [
-    { key: 'hSchedule', label: 'H-试驾排程' },
-    { key: 'hLead', label: 'H-试驾线索' },
-    { key: 'hNonTest', label: 'H-非试驾' },
+// 与 MOCK.leadLevels 完全对齐
+var LEVEL_LABELS = MOCK && MOCK.leadLevels ? [
+    { key: 'hSchedule', label: MOCK.leadLevels[0] },
+    { key: 'hLead', label: MOCK.leadLevels[1] },
+    { key: 'hNonTest', label: MOCK.leadLevels[2] },
+    { key: 'a', label: MOCK.leadLevels[3] },
+    { key: 'b', label: MOCK.leadLevels[4] },
+    { key: 'cUnclear', label: MOCK.leadLevels[5] },
+    { key: 'cUnreachable', label: MOCK.leadLevels[6] },
+    { key: 'f', label: MOCK.leadLevels[7] },
+    { key: 'l', label: MOCK.leadLevels[8] },
+    { key: 'e', label: MOCK.leadLevels[9] },
+    { key: 'invalid', label: MOCK.leadLevels[10] }
+] : [
+    { key: 'hSchedule', label: 'H-试驾排程单' },
+    { key: 'hLead', label: 'H-试驾线索单' },
+    { key: 'hNonTest', label: 'H-非试驾线索单' },
     { key: 'a', label: 'A' },
     { key: 'b', label: 'B' },
     { key: 'cUnclear', label: 'C-意向不明' },
@@ -1553,9 +1566,9 @@ function showRegionChannelModal(regionCode) {
                 </div>
                 <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾排程</div><div style="font-size: 14px; font-weight: 600; color: #b91c1c;">${allRegionsTotal.hSchedule}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾线索</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allRegionsTotal.hLead}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-非试驾</div><div style="font-size: 14px; font-weight: 600; color: #fb7185;">${allRegionsTotal.hNonTest}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾排程单</div><div style="font-size: 14px; font-weight: 600; color: #b91c1c;">${allRegionsTotal.hSchedule}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾线索单</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allRegionsTotal.hLead}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-非试驾线索单</div><div style="font-size: 14px; font-weight: 600; color: #fb7185;">${allRegionsTotal.hNonTest}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">A</div><div style="font-size: 14px; font-weight: 600; color: #f59e0b;">${allRegionsTotal.a}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">B</div><div style="font-size: 14px; font-weight: 600; color: #3b82f6;">${allRegionsTotal.b}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C-意向不明</div><div style="font-size: 14px; font-weight: 600; color: #14b8a6;">${allRegionsTotal.cUnclear}</div></div>
@@ -1912,9 +1925,9 @@ function renderDrillContent(channels) {
                 <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">专营店数量</div><div style="font-size: 18px; font-weight: 600; color: #111827;">${allStoreCount} 家</div></div>
                 <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾排程</div><div style="font-size: 14px; font-weight: 600; color: #b91c1c;">${allTotal.hSchedule}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾线索</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allTotal.hLead}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-非试驾</div><div style="font-size: 14px; font-weight: 600; color: #fb7185;">${allTotal.hNonTest}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾排程单</div><div style="font-size: 14px; font-weight: 600; color: #b91c1c;">${allTotal.hSchedule}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾线索单</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allTotal.hLead}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-非试驾线索单</div><div style="font-size: 14px; font-weight: 600; color: #fb7185;">${allTotal.hNonTest}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">A</div><div style="font-size: 14px; font-weight: 600; color: #f59e0b;">${allTotal.a}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">B</div><div style="font-size: 14px; font-weight: 600; color: #3b82f6;">${allTotal.b}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C-意向不明</div><div style="font-size: 14px; font-weight: 600; color: #14b8a6;">${allTotal.cUnclear}</div></div>
