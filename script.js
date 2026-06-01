@@ -142,11 +142,85 @@ window.addEventListener('DOMContentLoaded', () => {
     initDateRange();
     initFilterMultiSelects();
     initGlobalFilters();    // 分页内筛选器逻辑
+    reorderCultivationDeliveryCharts();
+    alignChannelQualityLeadLevels();
+    convertCultivationChartsToHorizontal();
     initChannelJourneyFilter();
+    initMediaJourneyFilter();
     initCultivationScaledCharts();
     initRankInteraction({ tabsId: 'rankMetricTabs', listId: 'projectRankList', dataProp: 'projectCode', dataAttr: 'project', data: projectRankData });
     initRankInteraction({ tabsId: 'scheduleMetricTabs', listId: 'scheduleRankList', dataProp: 'scheduleCode', dataAttr: 'schedule', data: scheduleRankData });
 });
+
+function reorderCultivationDeliveryCharts() {
+    const hierarchyRow = document.querySelector('.ce-hierarchy-row');
+    const analysisRow = document.querySelector('.ce-mid-row');
+    const rankRow = document.querySelector('.ce-rank-row');
+    if (!hierarchyRow || !analysisRow || hierarchyRow.parentNode !== analysisRow.parentNode) return;
+
+    analysisRow.parentNode.insertBefore(hierarchyRow, analysisRow);
+    if (rankRow && rankRow.parentNode === analysisRow.parentNode) {
+        analysisRow.parentNode.insertBefore(rankRow, analysisRow.nextSibling);
+    }
+}
+
+function alignChannelQualityLeadLevels() {
+    const chart = document.getElementById('channelVChart');
+    const card = chart?.closest('.content-card');
+    const legend = card?.querySelector('.ce-v-legend');
+    if (!chart || !legend || !MOCK.leadLevels) return;
+
+    const levelClasses = [
+        'h-schedule', 'h-lead', 'h-nontest', 'a', 'b',
+        'c-unclear', 'c-unreachable', 'f', 'l', 'e', 'invalid'
+    ];
+    const distributions = [
+        [7, 6, 5, 10, 15, 10, 10, 10, 5, 7, 15],
+        [6, 6, 4, 10, 15, 10, 10, 10, 5, 8, 16],
+        [6, 5, 4, 10, 15, 10, 10, 10, 5, 8, 17],
+        [5, 5, 4, 8, 12, 9, 9, 15, 6, 8, 19],
+        [5, 4, 4, 9, 13, 8, 9, 15, 6, 8, 19],
+        [4, 4, 4, 8, 12, 8, 7, 20, 6, 8, 19],
+        [4, 4, 3, 7, 11, 7, 6, 25, 6, 8, 19],
+        [4, 3, 3, 7, 10, 6, 6, 28, 6, 8, 19],
+        [3, 3, 2, 6, 8, 6, 6, 30, 6, 10, 20],
+        [3, 2, 2, 5, 8, 5, 5, 32, 6, 10, 22],
+        [2, 2, 2, 5, 7, 5, 4, 34, 6, 10, 23]
+    ];
+
+    legend.innerHTML = MOCK.leadLevels.map((label, index) => `
+        <div class="ce-v-legend-item"><span class="ce-v-legend-dot ${levelClasses[index]}"></span><span>${label}</span></div>
+    `).join('');
+
+    chart.querySelectorAll('.ce-v-bar-item').forEach((item, index) => {
+        const stack = item.querySelector('.ce-v-stack');
+        if (!stack) return;
+        const distribution = distributions[index] || distributions[distributions.length - 1];
+        stack.innerHTML = distribution.map((percent, levelIndex) => `
+            <div class="ce-v-seg ${levelClasses[levelIndex]}" style="height: ${percent}%;"></div>
+        `).join('');
+    });
+}
+
+function convertCultivationChartsToHorizontal() {
+    ['regionVChart', 'channelVChart'].forEach(chartId => {
+        const chart = document.getElementById(chartId);
+        if (!chart || chart.classList.contains('ce-v-horizontal')) return;
+
+        chart.classList.add('ce-v-horizontal');
+        chart.querySelectorAll('.ce-v-bar-item').forEach(item => {
+            const stack = item.querySelector('.ce-v-stack');
+            if (!stack) return;
+
+            stack.style.width = stack.style.height;
+            stack.style.height = '18px';
+            stack.querySelectorAll('.ce-v-seg').forEach(segment => {
+                segment.style.width = segment.style.height;
+                segment.style.height = '100%';
+            });
+        });
+    });
+}
 
 function parseUserCount(text) {
     const match = String(text || '').match(/([\d,]+)\s*人/);
@@ -241,7 +315,7 @@ function scaleCultivationVerticalChannelChart() {
 
 function initCultivationScaledCharts() {
     [
-        '区域投放效果（TOP10城市）',
+        '城市投放效果（TOP10城市）',
         '大区投放效果',
         '小区投放效果',
         '大项目线索质量排名（TOP10）',
@@ -487,7 +561,130 @@ function renderChannelJourneyList() {
     }).join('');
 }
 
-// 区域投放效果 Top 10/20 切换逻辑
+function initMediaJourneyFilter() {
+    const firstSelect = document.getElementById('firstJourneyMedia');
+    const lastMultiSelect = document.getElementById('lastJourneyMedia');
+    const config = MOCK.touchMedia?.mediaJourney;
+    if (!firstSelect || !lastMultiSelect || !config) return;
+
+    const media = config.media || [];
+    const firstInput = firstSelect.querySelector('.journey-search-input');
+    const firstDropdown = firstSelect.querySelector('.journey-search-dropdown');
+    const lastDropdown = lastMultiSelect.querySelector('.select-dropdown');
+    const lastSearchInput = lastMultiSelect.querySelector('.journey-dropdown-search input');
+    const lastOptions = lastMultiSelect.querySelector('.journey-dropdown-options');
+    firstSelect.dataset.value = media.includes('天网') ? '天网' : media[0];
+    firstInput.value = firstSelect.dataset.value;
+    lastOptions.innerHTML = `
+        <label class="dropdown-item"><input type="checkbox" class="select-all-journey-media" value="all" checked> 全选</label>
+        ${media.map(item => `<label class="dropdown-item"><input type="checkbox" class="journey-media-cb" value="${item}" checked> ${item}</label>`).join('')}
+    `;
+
+    function renderFirstMediaOptions(keyword) {
+        const filteredMedia = media.filter(item => item.includes(keyword.trim()));
+        firstDropdown.innerHTML = filteredMedia.length
+            ? filteredMedia.map(item => `<button type="button" class="journey-search-option" data-value="${item}">${item}</button>`).join('')
+            : '<div class="journey-search-empty">暂无匹配媒体</div>';
+        firstDropdown.style.display = 'block';
+    }
+
+    firstInput.addEventListener('focus', () => renderFirstMediaOptions(firstInput.value === firstSelect.dataset.value ? '' : firstInput.value));
+    firstInput.addEventListener('input', () => renderFirstMediaOptions(firstInput.value));
+    firstDropdown.addEventListener('click', event => {
+        const option = event.target.closest('.journey-search-option');
+        if (!option) return;
+        firstSelect.dataset.value = option.dataset.value;
+        firstInput.value = option.dataset.value;
+        firstDropdown.style.display = 'none';
+        renderMediaJourneyList();
+    });
+    lastMultiSelect.querySelector('.select-header').addEventListener('click', () => {
+        lastDropdown.style.display = lastDropdown.style.display === 'none' ? 'block' : 'none';
+        if (lastDropdown.style.display === 'block') {
+            lastSearchInput.focus();
+        }
+    });
+    lastMultiSelect.querySelector('.select-all-journey-media').addEventListener('change', event => {
+        lastMultiSelect.querySelectorAll('.journey-media-cb').forEach(checkbox => {
+            checkbox.checked = event.target.checked;
+        });
+        updateMediaJourneyFilterText();
+        renderMediaJourneyList();
+    });
+    lastMultiSelect.querySelectorAll('.journey-media-cb').forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            updateMediaJourneyFilterText();
+            renderMediaJourneyList();
+        });
+    });
+    updateMediaJourneyFilterText();
+    lastSearchInput.addEventListener('input', () => {
+        const keyword = lastSearchInput.value.trim();
+        lastOptions.querySelectorAll('.dropdown-item').forEach(item => {
+            const checkbox = item.querySelector('input');
+            item.style.display = checkbox.value === 'all' || checkbox.value.includes(keyword) ? 'flex' : 'none';
+        });
+    });
+    document.addEventListener('click', event => {
+        if (!event.target.closest('#firstJourneyMedia')) {
+            firstDropdown.style.display = 'none';
+            firstInput.value = firstSelect.dataset.value;
+        }
+        if (!event.target.closest('#lastJourneyMedia')) {
+            lastDropdown.style.display = 'none';
+        }
+    });
+    renderMediaJourneyList();
+}
+
+function updateMediaJourneyFilterText() {
+    const multiSelect = document.getElementById('lastJourneyMedia');
+    if (!multiSelect) return;
+
+    const checkboxes = [...multiSelect.querySelectorAll('.journey-media-cb')];
+    const selected = checkboxes.filter(checkbox => checkbox.checked);
+    multiSelect.querySelector('.select-all-journey-media').checked = selected.length === checkboxes.length;
+    multiSelect.querySelector('.journey-media-text').textContent = selected.length === checkboxes.length
+        ? `全选 (${checkboxes.length}项)`
+        : `已选 (${selected.length}项)`;
+}
+
+function renderMediaJourneyList() {
+    const firstSelect = document.getElementById('firstJourneyMedia');
+    const lastMultiSelect = document.getElementById('lastJourneyMedia');
+    const list = document.getElementById('mediaJourneyList');
+    const config = MOCK.touchMedia?.mediaJourney;
+    if (!firstSelect || !lastMultiSelect || !list || !config) return;
+
+    const media = [...lastMultiSelect.querySelectorAll('.journey-media-cb:checked')]
+        .map(checkbox => checkbox.value);
+    if (!media.length) {
+        list.innerHTML = '<div style="padding:16px 0;text-align:center;font-size:12px;color:#94a3b8;">请选择末次留资媒体</div>';
+        return;
+    }
+    const firstMedia = firstSelect.dataset.value;
+    const weight = config.firstMediaWeights[firstMedia] || 1;
+    const rows = media.map(item => {
+        const count = Math.round((config.lastMediaCounts[item] || 0) * weight);
+        return { media: item, count, percent: pctStr(count, config.totalUsers) };
+    });
+    const maxCount = Math.max(...rows.map(row => row.count), 1);
+
+    list.innerHTML = rows.map(row => {
+        const width = Math.max(4, Math.round(row.count / maxCount * 100));
+        return `
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span style="width:90px; font-size:12px;">${firstMedia}-${row.media}</span>
+                <div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
+                    <div style="width:${width}%;height:100%;background:#2563eb;"></div>
+                </div>
+                <span style="width:76px;text-align:right;font-size:11px;color:#64748b;">${row.count.toLocaleString()}人 · ${row.percent}%</span>
+            </div>
+        `;
+    }).join('');
+}
+
+// 城市投放效果 Top 10/20 切换逻辑
 document.addEventListener('click', (e) => {
     const btn = e.target.closest('#regionTopTabs .ce-dim-btn');
     if (!btn) return;
@@ -504,7 +701,7 @@ document.addEventListener('click', (e) => {
 
     const extras = container.querySelectorAll('.ce-v-bar-extra');
     if (topVal === '20') {
-        extras.forEach(el => el.style.display = 'flex');
+        extras.forEach(el => el.style.display = '');
     } else {
         extras.forEach(el => el.style.display = 'none');
     }
@@ -730,6 +927,7 @@ function openFullRanking(type) {
         thead.innerHTML = `
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
+                <th>大区</th>
                 <th>小区</th>
                 <th style="width: 140px; text-align: right;">新增线索用户</th>
                 <th style="width: 120px; text-align: right;">H占比</th>
@@ -744,6 +942,7 @@ function openFullRanking(type) {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
+                <td style="font-weight: 500;">${item.region}</td>
                 <td style="font-weight: 500;">${item.area}</td>
                 <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}人</td>
                 <td style="text-align: right;">${item.h}%</td>
@@ -761,14 +960,14 @@ function openFullRanking(type) {
             `;
             tbody.appendChild(row);
         });
-    } else if (channelOverlapFullData[type]) {
-        const overlap = channelOverlapFullData[type];
+    } else if (type.startsWith('channelOverlap') && channelOverlapFullData[type.replace('channelOverlap', '')]) {
+        const overlap = channelOverlapFullData[type.replace('channelOverlap', '')];
         title.innerText = overlap.title;
         modal.querySelector('.drawer-body').style.padding = '0 60px';
         thead.innerHTML = `
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
-                <th>重合媒体名称列表</th>
+                <th>重合渠道名称列表</th>
                 <th style="width: 140px; text-align: right;">并集用户数</th>
                 <th style="width: 140px; text-align: right;">重合用户数</th>
                 <th style="width: 120px; text-align: right;">重合率</th>
@@ -785,8 +984,8 @@ function openFullRanking(type) {
             `;
             tbody.appendChild(row);
         });
-    } else if (mediaOverlapFullData[type]) {
-        const overlap = mediaOverlapFullData[type];
+    } else if (type.startsWith('mediaOverlap') && mediaOverlapFullData[type.replace('mediaOverlap', '')]) {
+        const overlap = mediaOverlapFullData[type.replace('mediaOverlap', '')];
         title.innerText = overlap.title;
         modal.querySelector('.drawer-body').style.padding = '0 60px';
         thead.innerHTML = `
@@ -1197,9 +1396,9 @@ function showCityStoreModal(cityName) {
 
 
 
-// 区域投放效果柱状图点击事件（仅限区域投放效果图表）
+// 城市投放效果柱状图点击事件（仅限城市投放效果图表）
 document.addEventListener('click', (e) => {
-    // 只响应区域投放效果图表内的点击
+    // 只响应城市投放效果图表内的点击
     const chartContainer = e.target.closest('#regionVChart');
     if (!chartContainer) return;
     

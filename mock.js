@@ -137,16 +137,16 @@ resistance: {
 // ============================================
 areaDelivery: {
     fullData: [
-        { rank: 1, area: '华南区', count: 4042, h: 10, a: 28, b: 25, other: 37 },
-        { rank: 2, area: '华北区', count: 4992, h: 23, a: 23, b: 15, other: 39 },
-        { rank: 3, area: '华中一区', count: 3825, h: 21, a: 15, b: 21, other: 43 },
-        { rank: 4, area: '华中二区', count: 3596, h: 25, a: 28, b: 22, other: 25 },
-        { rank: 5, area: '华东二区', count: 2596, h: 5, a: 17, b: 21, other: 57 },
-        { rank: 6, area: '华东一区', count: 2090, h: 13, a: 22, b: 22, other: 43 },
-        { rank: 7, area: '东北区', count: 4620, h: 25, a: 18, b: 15, other: 42 },
-        { rank: 8, area: '西南区', count: 2964, h: 7, a: 27, b: 18, other: 48 },
-        { rank: 9, area: '华东三区', count: 1568, h: 8, a: 17, b: 28, other: 47 },
-        { rank: 10, area: '西北区', count: 1728, h: 9, a: 21, b: 25, other: 45 },
+        { rank: 1, region: '华东一区', area: '上海一区', count: 2180, h: 20, a: 23, b: 24, other: 33 },
+        { rank: 2, region: '华南区', area: '广州一区', count: 1870, h: 16, a: 21, b: 23, other: 40 },
+        { rank: 3, region: '华北区', area: '北京一区', count: 1610, h: 14, a: 18, b: 21, other: 47 },
+        { rank: 4, region: '西南区', area: '成都一区', count: 1260, h: 10, a: 15, b: 20, other: 55 },
+        { rank: 5, region: '华东一区', area: '上海二区', count: 1180, h: 9, a: 14, b: 19, other: 58 },
+        { rank: 6, region: '大湾区', area: '深圳一区', count: 1060, h: 8, a: 13, b: 18, other: 61 },
+        { rank: 7, region: '华南区', area: '广州二区', count: 960, h: 8, a: 12, b: 17, other: 63 },
+        { rank: 8, region: '华中一区', area: '武汉一区', count: 850, h: 7, a: 11, b: 16, other: 66 },
+        { rank: 9, region: '西北区', area: '西安一区', count: 740, h: 6, a: 10, b: 15, other: 69 },
+        { rank: 10, region: '华东二区', area: '南京一区', count: 680, h: 6, a: 9, b: 14, other: 71 },
     ]
 },
 
@@ -162,6 +162,18 @@ touchMedia: {
         lastChannelCounts: {
             R1: 1180, R2: 1095, R3: 980, R4: 880, R5: 795, R6: 705,
             R7: 620, R8: 535, R9: 450, R10: 365, R11: 310
+        },
+        totalUsers: 12345
+    },
+    mediaJourney: {
+        media: ['天网', '抖音', '懂车帝', '百度', '快手', '小红书', '朋友圈', '头条', '优酷', '知乎', 'B站'],
+        firstMediaWeights: {
+            '天网': 1, '抖音': 0.96, '懂车帝': 0.94, '百度': 0.86, '快手': 0.78, '小红书': 0.7,
+            '朋友圈': 0.64, '头条': 0.56, '优酷': 0.48, '知乎': 0.4, 'B站': 0.34
+        },
+        lastMediaCounts: {
+            '天网': 1460, '抖音': 1320, '懂车帝': 1180, '百度': 1040, '快手': 920, '小红书': 780,
+            '朋友圈': 650, '头条': 540, '优酷': 430, '知乎': 320, 'B站': 240
         },
         totalUsers: 12345
     },

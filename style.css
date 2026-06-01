@@ -2919,6 +2919,99 @@ body {
     background: #f8fafc;
 }
 
+.journey-search-select {
+    position: relative;
+    display: inline-block;
+    width: 118px;
+    vertical-align: middle;
+}
+
+.journey-search-control {
+    display: flex;
+    height: 28px;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: #fff;
+}
+
+.journey-search-input {
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 12px;
+}
+
+.journey-search-control i,
+.journey-dropdown-search i {
+    color: #64748b;
+    font-size: 10px;
+}
+
+.journey-search-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1001;
+    min-width: 140px;
+    max-height: 250px;
+    margin-top: 4px;
+    padding: 4px 0;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.journey-search-option {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    border: 0;
+    background: #fff;
+    color: var(--text-primary);
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.journey-search-option:hover {
+    background: #f8fafc;
+}
+
+.journey-search-empty {
+    padding: 8px 12px;
+    color: #94a3b8;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.journey-dropdown-search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 6px 4px;
+    padding: 5px 7px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.journey-dropdown-search input {
+    min-width: 0;
+    width: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font-size: 12px;
+}
+
 .store-analysis-reset-btn {
     padding: 3px 8px;
     border: 1px solid #cbd5e1;
@@ -3320,9 +3413,49 @@ body {
 
 .ce-mid-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
     margin-bottom: 16px;
+}
+
+.ce-mid-row > .content-card {
+    min-width: 0;
+}
+
+.ce-hierarchy-row .card-body > div:last-child {
+    gap: 9px !important;
+}
+
+.ce-hierarchy-row [style*="height: 26px"] {
+    height: 18px !important;
+}
+
+@media (max-width: 900px) {
+    .ce-mid-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ce-rank-row {
+        flex-direction: column;
+    }
+
+    .ce-rank-row > .content-card {
+        width: 100%;
+    }
+
+    .ce-rank-row .ce-h-bar-item {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 4px;
+    }
+
+    .ce-rank-row .ce-h-total {
+        flex: 0 0 96px;
+        min-width: 96px;
+        overflow: hidden;
+        font-size: 11px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 .ce-rank-row {
@@ -3387,7 +3520,7 @@ body {
     background-position: right 8px center;
 }
 
-/* 区域投放效果 - 横向条形图 */
+/* 城市投放效果 - 横向条形图 */
 .ce-region-chart {
     display: flex;
     flex-direction: column;
@@ -3428,7 +3561,7 @@ body {
     color: white;
 }
 
-/* 区域投放效果 - 纵向堆叠柱状图 */
+/* 城市投放效果 - 纵向堆叠柱状图 */
 .ce-v-chart-container {
     height: 300px;
     margin-top: 24px;
@@ -3460,77 +3593,116 @@ body {
 
 /* 线索等级单色系方案 (蓝色由深到浅) */
 .ce-v-legend-dot.h {
-    background: #00337c;
+    background: #ef4444;
 }
 
-/* 深蓝 */
+.ce-v-legend-dot.h-schedule {
+    background: #b91c1c;
+}
+
+.ce-v-legend-dot.h-lead {
+    background: #ef4444;
+}
+
+.ce-v-legend-dot.h-nontest {
+    background: #fb7185;
+}
+
 .ce-v-legend-dot.a {
-    background: #0052cc;
+    background: #f59e0b;
 }
 
 .ce-v-legend-dot.b {
-    background: #0066ff;
+    background: #3b82f6;
 }
 
 .ce-v-legend-dot.c {
-    background: #3385ff;
+    background: #14b8a6;
+}
+
+.ce-v-legend-dot.c-unclear {
+    background: #14b8a6;
+}
+
+.ce-v-legend-dot.c-unreachable {
+    background: #67e8f9;
 }
 
 .ce-v-legend-dot.f {
-    background: #66a3ff;
+    background: #8b5cf6;
 }
 
 .ce-v-legend-dot.l {
-    background: #99c2ff;
+    background: #ec4899;
 }
 
 .ce-v-legend-dot.e {
-    background: #cce0ff;
+    background: #84cc16;
 }
 
 .ce-v-legend-dot.invalid {
-    background: #e6f0ff;
+    background: #94a3b8;
 }
 
 .ce-v-legend-dot.other {
-    background: #f0f7ff;
+    background: #cbd5e1;
 }
 
 /* 针对堆叠段落的颜色 */
 .ce-v-seg.h {
-    background: #00337c;
+    background: #ef4444;
+}
+
+.ce-v-seg.h-schedule {
+    background: #b91c1c;
+}
+
+.ce-v-seg.h-lead {
+    background: #ef4444;
+}
+
+.ce-v-seg.h-nontest {
+    background: #fb7185;
 }
 
 .ce-v-seg.a {
-    background: #0052cc;
+    background: #f59e0b;
 }
 
 .ce-v-seg.b {
-    background: #0066ff;
+    background: #3b82f6;
 }
 
 .ce-v-seg.c {
-    background: #3385ff;
+    background: #14b8a6;
+}
+
+.ce-v-seg.c-unclear {
+    background: #14b8a6;
+}
+
+.ce-v-seg.c-unreachable {
+    background: #67e8f9;
 }
 
 .ce-v-seg.f {
-    background: #66a3ff;
+    background: #8b5cf6;
 }
 
 .ce-v-seg.l {
-    background: #99c2ff;
+    background: #ec4899;
 }
 
 .ce-v-seg.e {
-    background: #cce0ff;
+    background: #84cc16;
 }
 
 .ce-v-seg.invalid {
-    background: #e6f0ff;
+    background: #94a3b8;
 }
 
 .ce-v-seg.other {
-    background: #f0f7ff;
+    background: #cbd5e1;
 }
 
 .ce-v-grid {
@@ -3585,6 +3757,62 @@ body {
     position: relative;
     /* 为 Tooltip 定位 */
     cursor: pointer;
+}
+
+.ce-v-chart-container.ce-v-horizontal {
+    height: auto;
+    margin-top: 16px;
+    padding: 0;
+    width: 100%;
+}
+
+.ce-v-horizontal .ce-v-grid {
+    display: none;
+}
+
+.ce-v-horizontal .ce-v-bars {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 0;
+}
+
+.ce-v-horizontal .ce-v-bar-item {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    max-width: none;
+    height: auto;
+}
+
+.ce-v-horizontal .ce-v-stack {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: row;
+    min-width: 18px;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #f1f5f9;
+}
+
+.ce-v-horizontal .ce-v-seg {
+    flex: 0 0 auto;
+}
+
+.ce-v-horizontal .ce-v-x-label {
+    grid-column: 1;
+    grid-row: 1;
+    position: static;
+    margin: 0;
+    color: #475569;
+    font-size: 12px;
+    text-align: right;
 }
 
 /* Tooltip 样式 */
@@ -3647,22 +3875,19 @@ body {
 
 /* 颜色方案 */
 .ce-v-seg.h {
-    background-color: #00337c;
+    background-color: #ef4444;
 }
 
-/* 深蓝 */
 .ce-v-seg.a {
-    background-color: #0081ff;
+    background-color: #f59e0b;
 }
 
-/* 中蓝 */
 .ce-v-seg.b {
-    background-color: #6fb8ff;
+    background-color: #3b82f6;
 }
 
-/* 浅蓝 */
 .ce-v-seg.other {
-    background-color: #e5e7eb;
+    background-color: #cbd5e1;
 }
 
 /* 浅灰 - 其他 */
@@ -3863,20 +4088,21 @@ body {
 .ce-h-bars {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 9px;
     padding: 20px;
 }
 
 .ce-h-bar-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+    display: grid;
+    grid-template-columns: minmax(180px, 230px) minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
 }
 
 .ce-h-bar-item.project-bar-item {
     cursor: pointer;
     transition: background-color 0.2s;
-    padding: 8px 12px;
+    padding: 4px 6px;
     border-radius: 6px;
 }
 
@@ -3918,11 +4144,12 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 0;
 }
 
 .ce-h-stack {
     flex: 1;
-    height: 12px;
+    height: 18px;
     background: #f3f4f6;
     border-radius: 6px;
     overflow: hidden;
@@ -3933,17 +4160,17 @@ body {
     height: 100%;
 }
 
-/* 复用蓝色系 */
+/* 与渠道线索质量保持一致 */
 .ce-h-seg.h {
-    background: #00337c;
+    background: #ef4444;
 }
 
 .ce-h-seg.a {
-    background: #0052cc;
+    background: #f59e0b;
 }
 
 .ce-h-seg.b {
-    background: #0066ff;
+    background: #3b82f6;
 }
 
 .ce-h-seg.c {
@@ -3967,7 +4194,7 @@ body {
 }
 
 .ce-h-seg.other {
-    background: #f0f7ff;
+    background: #cbd5e1;
 }
 
 .ce-h-total {
