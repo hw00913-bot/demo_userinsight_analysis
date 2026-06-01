@@ -140,6 +140,7 @@
                                             <option value="all">全部</option>
                                             <option value="N7">N7</option>
                                             <option value="N6">N6</option>
+                                            <option value="天籁鸿蒙">天籁鸿蒙</option>
                                             <option value="NX8">NX8</option>
                                         </select>
                                     </div>
@@ -162,19 +163,7 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">媒体名称:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="抖音">抖音</option>
-                                            <option value="懂车帝">懂车帝</option>
-                                            <option value="百度">百度</option>
-                                            <option value="快手">快手</option>
-                                            <option value="小红书">小红书</option>
-                                            <option value="朋友圈">朋友圈</option>
-                                            <option value="头条">头条</option>
-                                            <option value="优酷">优酷</option>
-                                            <option value="知乎">知乎</option>
-                                            <option value="B站">B站</option>
-                                        </select>
+                                        <input type="search" class="filter-input filter-search-input" placeholder="输入媒体名称关键字">
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">大项目:</label>
@@ -190,18 +179,21 @@
                                         <label class="filter-label">线索等级:</label>
                                         <div class="custom-multi-select">
                                             <div class="select-header">
-                                                <span class="lead-level-text">全选 (8项)</span>
+                                                <span class="lead-level-text">全选 (11项)</span>
                                                 <i class="fa-solid fa-chevron-down"></i>
                                             </div>
                                             <div class="select-dropdown" style="display: none;">
                                                 <label class="dropdown-item"><input type="checkbox" class="select-all-levels" value="all" checked> 全选</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="H" checked> H</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive_schedule" checked> H-试驾排程单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive" checked> H-试驾线索单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_non_test_drive" checked> H-非试驾线索单</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="A" checked> A</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="B" checked> B</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="C" checked> C</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_intent_unclear" checked> C-意向不明</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_unreachable" checked> C-无法接通</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F-战败</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L-休眠</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E-意向含糊</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="invalid" checked> 无效号码</label>
                                             </div>
                                         </div>
@@ -2026,22 +2018,25 @@
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:78px; font-size:12px;">R11</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:10%;height:100%;background:#bfdbfe;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">310人 · 2.5%</span></div>
                                                     </div>
                                                 </div>
-                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">首次到末次留资渠道 TOP10</div>
-                                                    <div style="display:flex; flex-direction:column; gap:8px;">
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R4-R1</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:84%;height:100%;background:#2563eb;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">1,180人 · 9.6%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R2-R1</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:78%;height:100%;background:#2563eb;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">1,095人 · 8.9%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R1-R3</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:70%;height:100%;background:#3b82f6;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">980人 · 7.9%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R6-R2</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:63%;height:100%;background:#3b82f6;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">880人 · 7.1%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R3-R1</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:57%;height:100%;background:#60a5fa;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">795人 · 6.4%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R8-R4</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:50%;height:100%;background:#60a5fa;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">705人 · 5.7%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R5-R2</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:44%;height:100%;background:#93c5fd;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">620人 · 5.0%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R9-R3</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:38%;height:100%;background:#93c5fd;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">535人 · 4.3%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R7-R1</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:32%;height:100%;background:#bfdbfe;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">450人 · 3.6%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:90px; font-size:12px;">R11-R6</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:26%;height:100%;background:#bfdbfe;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">365人 · 3.0%</span></div>
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 2;">
+                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">首次到末次留资渠道</div>
+                                                    <div style="display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-bottom:10px;">
+                                                        <label style="font-size:12px; color:#64748b;">首次留资渠道
+                                                            <select id="firstJourneyChannel" class="filter-select" style="margin-left:4px; padding:4px 24px 4px 8px; min-width:72px;"></select>
+                                                        </label>
+                                                        <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#64748b;">末次留资渠道
+                                                            <div id="lastJourneyChannel" class="journey-multi-select">
+                                                                <div class="select-header">
+                                                                    <span class="journey-channel-text">全选 (11项)</span>
+                                                                    <i class="fa-solid fa-chevron-down"></i>
+                                                                </div>
+                                                                <div class="select-dropdown" style="display:none;"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                    <div id="channelJourneyList" style="display:flex; flex-direction:column; gap:8px;"></div>
                                                 </div>
-                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;">
                                                     <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">渠道留资重合度分析</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
                                                         <div onclick="openFullRanking('channelOverlap5plus')" style="display:flex; align-items:center; gap:8px; cursor:pointer;"><span style="width:90px; font-size:12px;">5 个以上</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:11%;height:100%;background:#2563eb;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">6</span></div>
@@ -2170,39 +2165,37 @@
                                                     </div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-                                                        <div style="font-size: 12px; font-weight: 700; color: #334155;">触达专营店数量（去重）</div>
-                                                        <button class="text-link-btn" onclick="openFullRanking('reachStore')" style="font-size: 11px; color: var(--primary-color); border: none; background: none; cursor: pointer; padding: 0;">查看全部 <i class="fa-solid fa-angle-right"></i></button>
-                                                    </div>
+                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">触达专营店数量（去重）</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">上海东风南方</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:68%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">2,340人 · 19%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">广州天河</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:55%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,860人 · 15%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">深圳南山</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:44%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,480人 · 12%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">北京朝阳</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:38%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,260人 · 10%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">成都锦江</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:33%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">1,100人 · 9%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">武汉光谷</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:28%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">920人 · 7.5%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">杭州西湖</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:23%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">760人 · 6.2%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">重庆渝北</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:18%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">590人 · 4.8%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">南京鼓楼</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:14%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">460人 · 3.7%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">苏州工业园</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:11%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">350人 · 2.8%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">仅 1 个</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:52%;height:100%;background:#2563eb;"></div></div><span style="width:82px;text-align:right;font-size:11px;color:#64748b;">6,420人 · 52%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">2 个</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:24%;height:100%;background:#3b82f6;"></div></div><span style="width:82px;text-align:right;font-size:11px;color:#64748b;">2,963人 · 24%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">3 个</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:13%;height:100%;background:#60a5fa;"></div></div><span style="width:82px;text-align:right;font-size:11px;color:#64748b;">1,605人 · 13%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">4 个</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:7%;height:100%;background:#93c5fd;"></div></div><span style="width:82px;text-align:right;font-size:11px;color:#64748b;">864人 · 7%</span></div>
+                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">5 个及以上</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:4%;height:100%;background:#bfdbfe;"></div></div><span style="width:82px;text-align:right;font-size:11px;color:#64748b;">493人 · 4%</span></div>
                                                     </div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
-                                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-                                                        <div style="font-size: 12px; font-weight: 700; color: #334155;">首触-成交专营店排名</div>
-                                                        <button class="text-link-btn" onclick="openFullRanking('firstTouchDealStore')" style="font-size: 11px; color: var(--primary-color); border: none; background: none; cursor: pointer; padding: 0;">查看全部 <i class="fa-solid fa-angle-right"></i></button>
+                                                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px;">
+                                                        <div style="font-size: 12px; font-weight: 700; color: #334155;">首触-成交专营店</div>
+                                                        <div style="display:flex; gap:6px;">
+                                                            <button class="store-analysis-query-btn" onclick="queryFirstTouchDealStoreAnalysis()">查询</button>
+                                                            <button class="store-analysis-reset-btn" onclick="resetFirstTouchDealStoreAnalysis()">重置</button>
+                                                        </div>
                                                     </div>
-                                                    <div style="display:flex; flex-direction:column; gap:8px;">
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">上海东风南方</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:72%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">420人 · 18%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">广州天河</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:55%;height:100%;background:#2563eb;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">320人 · 14%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">北京朝阳</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:44%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">260人 · 11%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">深圳南山</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:37%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">220人 · 9.5%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">成都锦江</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:30%;height:100%;background:#3b82f6;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">180人 · 7.7%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">武汉光谷</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:24%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">140人 · 6%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">杭州西湖</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:19%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">110人 · 4.7%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">重庆渝北</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:15%;height:100%;background:#60a5fa;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">88人 · 3.8%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">南京鼓楼</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:11%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">65人 · 2.8%</span></div>
-                                                        <div style="display:flex; align-items:center; gap:8px;"><span style="width:92px; font-size:12px;">苏州工业园</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:8%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">48人 · 2.1%</span></div>
+                                                    <div style="display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-bottom:10px;">
+                                                        <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#64748b;">首触专营店
+                                                            <button class="store-filter-trigger store-analysis-trigger" onclick="openStoreFilterModal(this)" data-store-filter-mode="firstTouch" data-store-text="请选择门店">
+                                                                <i class="fa-solid fa-store"></i> <span>请选择门店</span> <i class="fa-solid fa-chevron-down"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#64748b;">成交专营店
+                                                            <button class="store-filter-trigger store-analysis-trigger" onclick="openStoreFilterModal(this)" data-store-filter-mode="deal" data-store-text="请选择门店">
+                                                                <i class="fa-solid fa-store"></i> <span>请选择门店</span> <i class="fa-solid fa-chevron-down"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div id="firstTouchDealStoreList" style="display:flex; flex-direction:column; gap:8px;">
+                                                        <div style="padding:16px 0;text-align:center;font-size:12px;color:#94a3b8;">请选择门店进行分析</div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2253,6 +2246,7 @@
                                             <option value="all">全部</option>
                                             <option value="N7">N7</option>
                                             <option value="N6">N6</option>
+                                            <option value="天籁鸿蒙">天籁鸿蒙</option>
                                             <option value="NX8">NX8</option>
                                         </select>
                                     </div>
@@ -2275,19 +2269,7 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">媒体名称:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="抖音">抖音</option>
-                                            <option value="懂车帝">懂车帝</option>
-                                            <option value="百度">百度</option>
-                                            <option value="快手">快手</option>
-                                            <option value="小红书">小红书</option>
-                                            <option value="朋友圈">朋友圈</option>
-                                            <option value="头条">头条</option>
-                                            <option value="优酷">优酷</option>
-                                            <option value="知乎">知乎</option>
-                                            <option value="B站">B站</option>
-                                        </select>
+                                        <input type="search" class="filter-input filter-search-input" placeholder="输入媒体名称关键字">
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">大项目:</label>
@@ -2303,18 +2285,21 @@
                                         <label class="filter-label">线索等级:</label>
                                         <div class="custom-multi-select">
                                             <div class="select-header">
-                                                <span class="lead-level-text">全选 (8项)</span>
+                                                <span class="lead-level-text">全选 (11项)</span>
                                                 <i class="fa-solid fa-chevron-down"></i>
                                             </div>
                                             <div class="select-dropdown" style="display: none;">
                                                 <label class="dropdown-item"><input type="checkbox" class="select-all-levels" value="all" checked> 全选</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="H" checked> H</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive_schedule" checked> H-试驾排程单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive" checked> H-试驾线索单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_non_test_drive" checked> H-非试驾线索单</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="A" checked> A</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="B" checked> B</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="C" checked> C</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_intent_unclear" checked> C-意向不明</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_unreachable" checked> C-无法接通</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F-战败</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L-休眠</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E-意向含糊</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="invalid" checked> 无效号码</label>
                                             </div>
                                         </div>
@@ -2829,6 +2814,7 @@
                                             <option value="all">全部</option>
                                             <option value="N7">N7</option>
                                             <option value="N6">N6</option>
+                                            <option value="天籁鸿蒙">天籁鸿蒙</option>
                                             <option value="NX8">NX8</option>
                                         </select>
                                     </div>
@@ -2851,19 +2837,7 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">媒体名称:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="抖音">抖音</option>
-                                            <option value="懂车帝">懂车帝</option>
-                                            <option value="百度">百度</option>
-                                            <option value="快手">快手</option>
-                                            <option value="小红书">小红书</option>
-                                            <option value="朋友圈">朋友圈</option>
-                                            <option value="头条">头条</option>
-                                            <option value="优酷">优酷</option>
-                                            <option value="知乎">知乎</option>
-                                            <option value="B站">B站</option>
-                                        </select>
+                                        <input type="search" class="filter-input filter-search-input" placeholder="输入媒体名称关键字">
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">大项目:</label>
@@ -2879,18 +2853,21 @@
                                         <label class="filter-label">线索等级:</label>
                                         <div class="custom-multi-select">
                                             <div class="select-header">
-                                                <span class="lead-level-text">全选 (8项)</span>
+                                                <span class="lead-level-text">全选 (11项)</span>
                                                 <i class="fa-solid fa-chevron-down"></i>
                                             </div>
                                             <div class="select-dropdown" style="display: none;">
                                                 <label class="dropdown-item"><input type="checkbox" class="select-all-levels" value="all" checked> 全选</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="H" checked> H</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive_schedule" checked> H-试驾排程单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive" checked> H-试驾线索单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_non_test_drive" checked> H-非试驾线索单</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="A" checked> A</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="B" checked> B</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="C" checked> C</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_intent_unclear" checked> C-意向不明</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_unreachable" checked> C-无法接通</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F-战败</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L-休眠</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E-意向含糊</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="invalid" checked> 无效号码</label>
                                             </div>
                                         </div>
@@ -3799,6 +3776,19 @@
                         <!-- 动态生成内容 -->
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- 首触-成交专营店统计结果抽屉 -->
+    <div id="firstTouchDealStoreModal" class="drawer-overlay">
+        <div class="drawer-container store-result-drawer">
+            <div class="drawer-header">
+                <h3 class="drawer-title">首触-成交专营店统计结果</h3>
+                <button class="drawer-close" data-modal-id="firstTouchDealStoreModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="drawer-body store-result-drawer-body">
+                <div id="firstTouchDealStoreModalContent"></div>
             </div>
         </div>
     </div>
