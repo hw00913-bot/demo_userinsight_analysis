@@ -1476,13 +1476,16 @@ document.addEventListener('click', (e) => {
 
 // 计算大区总计
 function calculateRegionTotal(regionData) {
-    var total = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    var total = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
     Object.values(regionData.areas).forEach(function(areaStores) {
         areaStores.forEach(function(store) {
-            total.h += storeHTotal(store);
+            total.hSchedule += storeLevel(store, 'hSchedule');
+            total.hLead += storeLevel(store, 'hLead');
+            total.hNonTest += storeLevel(store, 'hNonTest');
             total.a += (store.a || 0);
             total.b += (store.b || 0);
-            total.c += storeCTotal(store);
+            total.cUnclear += storeLevel(store, 'cUnclear');
+            total.cUnreachable += storeLevel(store, 'cUnreachable');
             total.f += (store.f || 0);
             total.l += (store.l || 0);
             total.e += (store.e || 0);
@@ -1490,6 +1493,9 @@ function calculateRegionTotal(regionData) {
             total.total += storeTotal(store);
         });
     });
+    // 兼容旧字段
+    total.h = total.hSchedule + total.hLead + total.hNonTest;
+    total.c = total.cUnclear + total.cUnreachable;
     return total;
 }
 
@@ -1507,25 +1513,29 @@ function showRegionChannelModal(regionCode) {
     // 设置标题
     title.innerText = '各区渠道质量分布';
     
-    // 计算全局总计
-    const allRegionsTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
-    const regionCodes = Object.keys(regionChannelData);
-    regionCodes.forEach(code => {
-        const total = calculateRegionTotal(regionChannelData[code]);
-        allRegionsTotal.h += total.h;
-        allRegionsTotal.a += total.a;
-        allRegionsTotal.b += total.b;
-        allRegionsTotal.c += total.c;
-        allRegionsTotal.f += total.f;
-        allRegionsTotal.l += total.l;
-        allRegionsTotal.e += total.e;
-        allRegionsTotal.invalid += total.invalid;
-        allRegionsTotal.total += total.total;
+    // 计算全局总计（11级）
+    var allRegionsTotal = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    regionCodes.forEach(function(code) {
+        var t = calculateRegionTotal(regionChannelData[code]);
+        allRegionsTotal.hSchedule += t.hSchedule;
+        allRegionsTotal.hLead += t.hLead;
+        allRegionsTotal.hNonTest += t.hNonTest;
+        allRegionsTotal.a += t.a;
+        allRegionsTotal.b += t.b;
+        allRegionsTotal.cUnclear += t.cUnclear;
+        allRegionsTotal.cUnreachable += t.cUnreachable;
+        allRegionsTotal.f += t.f;
+        allRegionsTotal.l += t.l;
+        allRegionsTotal.e += t.e;
+        allRegionsTotal.invalid += t.invalid;
+        allRegionsTotal.total += t.total;
     });
-    const allHabTotal = allRegionsTotal.h + allRegionsTotal.a + allRegionsTotal.b;
-    const allHabPercent = allRegionsTotal.total > 0 ? ((allHabTotal / allRegionsTotal.total) * 100).toFixed(1) : '0.0';
-    const allStoreCount = regionCodes.reduce((sum, code) => {
-        return sum + Object.values(regionChannelData[code].areas).reduce((s, stores) => s + stores.length, 0);
+    var allHTotal = allRegionsTotal.hSchedule + allRegionsTotal.hLead + allRegionsTotal.hNonTest;
+    var allCTotal = allRegionsTotal.cUnclear + allRegionsTotal.cUnreachable;
+    var allHabTotal = allHTotal + allRegionsTotal.a + allRegionsTotal.b;
+    var allHabPercent = allRegionsTotal.total > 0 ? (allHabTotal / allRegionsTotal.total * 100).toFixed(1) : '0.0';
+    var allStoreCount = regionCodes.reduce(function(sum, code) {
+        return sum + Object.values(regionChannelData[code].areas).reduce(function(s, stores) { return s + stores.length; }, 0);
     }, 0);
     
     // 生成内容 HTML
@@ -1542,39 +1552,18 @@ function showRegionChannelModal(regionCode) {
                     <div style="font-size: 18px; font-weight: 600; color: #111827;">${allStoreCount} 家</div>
                 </div>
                 <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
-                <div style="display: flex; gap: 12px;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 10px; color: #6b7280;">H级</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #00337c;">${allRegionsTotal.h}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 10px; color: #6b7280;">A级</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #0081ff;">${allRegionsTotal.a}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 10px; color: #6b7280;">B级</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #6fb8ff;">${allRegionsTotal.b}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 10px; color: #6b7280;">C级</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #22c55e;">${allRegionsTotal.c}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 10px; color: #6b7280;">F级</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #f97316;">${allRegionsTotal.f}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 10px; color: #6b7280;">L级</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #a855f7;">${allRegionsTotal.l}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 10px; color: #6b7280;">E级</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #64748b;">${allRegionsTotal.e}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 10px; color: #6b7280;">无效</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allRegionsTotal.invalid}</div>
-                    </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾排程</div><div style="font-size: 14px; font-weight: 600; color: #b91c1c;">${allRegionsTotal.hSchedule}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾线索</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allRegionsTotal.hLead}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-非试驾</div><div style="font-size: 14px; font-weight: 600; color: #fb7185;">${allRegionsTotal.hNonTest}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">A</div><div style="font-size: 14px; font-weight: 600; color: #f59e0b;">${allRegionsTotal.a}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">B</div><div style="font-size: 14px; font-weight: 600; color: #3b82f6;">${allRegionsTotal.b}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C-意向不明</div><div style="font-size: 14px; font-weight: 600; color: #14b8a6;">${allRegionsTotal.cUnclear}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C-无法接通</div><div style="font-size: 14px; font-weight: 600; color: #67e8f9;">${allRegionsTotal.cUnreachable}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">F-战败</div><div style="font-size: 14px; font-weight: 600; color: #8b5cf6;">${allRegionsTotal.f}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">L-休眠</div><div style="font-size: 14px; font-weight: 600; color: #ec4899;">${allRegionsTotal.l}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">E-意向含糊</div><div style="font-size: 14px; font-weight: 600; color: #84cc16;">${allRegionsTotal.e}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">无效号码</div><div style="font-size: 14px; font-weight: 600; color: #94a3b8;">${allRegionsTotal.invalid}</div></div>
                 </div>
                 <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
                 <div style="text-align: center;">
