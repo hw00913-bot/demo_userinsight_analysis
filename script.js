@@ -354,72 +354,51 @@ function initCultivationScaledCharts() {
     scaleCultivationVerticalChannelChart();
 }
 
-function updateFilterLevelText(multiSelect) {
-    const checkedBoxes = multiSelect.querySelectorAll('.level-cb:checked');
-    const allBoxes = multiSelect.querySelectorAll('.level-cb');
-    const selectAll = multiSelect.querySelector('.select-all-levels');
-    const text = multiSelect.querySelector('.lead-level-text');
-    if (selectAll) selectAll.checked = checkedBoxes.length === allBoxes.length;
-    if (text) {
-        text.innerText = checkedBoxes.length === allBoxes.length
-            ? `全选 (${allBoxes.length}项)`
-            : `已选 ${checkedBoxes.length} 项`;
+// 通用：更新多选筛选器的显示文本
+function updateMultiSelectText(multiSelect) {
+    var allCb = multiSelect.querySelectorAll('input[type="checkbox"]:not([value="all"])');
+    var checkedCb = multiSelect.querySelectorAll('input[type="checkbox"]:not([value="all"]):checked');
+    var selectAll = multiSelect.querySelector('input[type="checkbox"][value="all"]');
+    var textSpan = multiSelect.querySelector('.select-header span');
+    if (selectAll) selectAll.checked = checkedCb.length === allCb.length;
+    if (textSpan) {
+        textSpan.innerText = checkedCb.length === allCb.length
+            ? '全选 (' + allCb.length + '项)'
+            : '已选 ' + checkedCb.length + ' 项';
     }
 }
 
-function updateFilterPlatformText(multiSelect) {
-    const checkedBoxes = multiSelect.querySelectorAll('.platform-cb:checked');
-    const allBoxes = multiSelect.querySelectorAll('.platform-cb');
-    const selectAll = multiSelect.querySelector('.select-all-platforms');
-    const text = multiSelect.querySelector('.platform-text');
-    if (selectAll) selectAll.checked = checkedBoxes.length === allBoxes.length;
-    if (text) {
-        text.innerText = checkedBoxes.length === allBoxes.length
-            ? '全选 (' + allBoxes.length + '项)'
-            : '已选 ' + checkedBoxes.length + ' 项';
-    }
-}
+// 向后兼容别名
+function updateFilterLevelText(multiSelect) { updateMultiSelectText(multiSelect); }
+function updateFilterPlatformText(multiSelect) { updateMultiSelectText(multiSelect); }
 
 function initFilterMultiSelects() {
-    document.querySelectorAll('.custom-multi-select').forEach(multiSelect => {
-        const header = multiSelect.querySelector('.select-header');
-        const dropdown = multiSelect.querySelector('.select-dropdown');
-        const selectAllLevels = multiSelect.querySelector('.select-all-levels');
-        const selectAllPlatforms = multiSelect.querySelector('.select-all-platforms');
+    document.querySelectorAll('.custom-multi-select').forEach(function(multiSelect) {
+        var header = multiSelect.querySelector('.select-header');
+        var dropdown = multiSelect.querySelector('.select-dropdown');
+        var selectAll = multiSelect.querySelector('input[type="checkbox"][value="all"]');
+        var itemCbs = multiSelect.querySelectorAll('input[type="checkbox"]:not([value="all"])');
 
-        header?.addEventListener('click', () => {
-            document.querySelectorAll('.custom-multi-select .select-dropdown').forEach(panel => {
+        header && header.addEventListener('click', function() {
+            document.querySelectorAll('.custom-multi-select .select-dropdown').forEach(function(panel) {
                 if (panel !== dropdown) panel.style.display = 'none';
             });
             dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
         });
 
-        selectAllLevels?.addEventListener('change', () => {
-            multiSelect.querySelectorAll('.level-cb').forEach(checkbox => {
-                checkbox.checked = selectAllLevels.checked;
-            });
-            updateFilterLevelText(multiSelect);
+        selectAll && selectAll.addEventListener('change', function() {
+            itemCbs.forEach(function(cb) { cb.checked = selectAll.checked; });
+            updateMultiSelectText(multiSelect);
         });
 
-        selectAllPlatforms?.addEventListener('change', () => {
-            multiSelect.querySelectorAll('.platform-cb').forEach(checkbox => {
-                checkbox.checked = selectAllPlatforms.checked;
-            });
-            updateFilterPlatformText(multiSelect);
-        });
-
-        multiSelect.querySelectorAll('.level-cb').forEach(checkbox => {
-            checkbox.addEventListener('change', () => updateFilterLevelText(multiSelect));
-        });
-
-        multiSelect.querySelectorAll('.platform-cb').forEach(checkbox => {
-            checkbox.addEventListener('change', () => updateFilterPlatformText(multiSelect));
+        itemCbs.forEach(function(cb) {
+            cb.addEventListener('change', function() { updateMultiSelectText(multiSelect); });
         });
     });
 
-    document.addEventListener('click', e => {
+    document.addEventListener('click', function(e) {
         if (e.target.closest('.custom-multi-select')) return;
-        document.querySelectorAll('.custom-multi-select .select-dropdown').forEach(dropdown => {
+        document.querySelectorAll('.custom-multi-select .select-dropdown').forEach(function(dropdown) {
             dropdown.style.display = 'none';
         });
     });
