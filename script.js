@@ -231,12 +231,28 @@ function parseUserCount(text) {
 function pctNum(part, total) { return total > 0 ? +(part / total * 100).toFixed(1) : 0; }
 function pctStr(part, total) { return total > 0 ? (part / total * 100).toFixed(1) : '0.0'; }
 
-// --- 等级颜色常量 ---
-const LEVEL_COLORS = {
-    h: '#00337c', a: '#0081ff', b: '#6fb8ff', c: '#22c55e',
-    f: '#f97316', l: '#a855f7', e: '#64748b', invalid: '#ef4444',
-    hab: '#059669', other: '#9ca3af'
+// --- 等级颜色常量（与 MOCK.leadLevels 11 级对齐）---
+var LEVEL_COLORS = {
+    hSchedule: '#b91c1c', hLead: '#ef4444', hNonTest: '#fb7185',
+    a: '#f59e0b', b: '#3b82f6',
+    cUnclear: '#14b8a6', cUnreachable: '#67e8f9',
+    f: '#8b5cf6', l: '#ec4899', e: '#84cc16', invalid: '#94a3b8',
+    h: '#00337c', c: '#22c55e', hab: '#059669', other: '#9ca3af'
 };
+
+var LEVEL_LABELS = [
+    { key: 'hSchedule', label: 'H-试驾排程' },
+    { key: 'hLead', label: 'H-试驾线索' },
+    { key: 'hNonTest', label: 'H-非试驾' },
+    { key: 'a', label: 'A' },
+    { key: 'b', label: 'B' },
+    { key: 'cUnclear', label: 'C-意向不明' },
+    { key: 'cUnreachable', label: 'C-无法接通' },
+    { key: 'f', label: 'F-战败' },
+    { key: 'l', label: 'L-休眠' },
+    { key: 'e', label: 'E-意向含糊' },
+    { key: 'invalid', label: '无效号码' }
+];
 
 const TREND_ICONS = { up: 'fa-caret-up', down: 'fa-caret-down', equal: 'fa-minus' };
 const TREND_COLORS = { up: '#ef4444', down: '#10b981', equal: '#6b7280' };
@@ -738,33 +754,48 @@ function initRankInteraction(config) {
         setTimeout(() => {
             const baseMap = { hab: 12345, arrival: 12345, testdrive: 5185, order: 2345 };
             const base = baseMap[metric] || 12345;
-            let html = '';
-            data.forEach((item, index) => {
-                const rankClass = index < 3 ? 'top3' : '';
-                const pct = parseFloat(item.val);
-                const count = Math.round(pct * base / 100);
 
-                let barHtml = '';
+            // 计算每项的绝对数量，并按最大值归一化，让柱长反映总量差异
+            const itemsWithCount = data.map(function(item) {
+                var pct = parseFloat(item.val);
+                var count = Math.round(pct * base / 100);
+                return { item: item, count: count };
+            });
+            var maxCount = itemsWithCount.reduce(function(max, ic) { return Math.max(max, ic.count); }, 0) || 1;
+
+            var html = '';
+            itemsWithCount.forEach(function(ic, index) {
+                var item = ic.item;
+                var count = ic.count;
+                var barPct = Math.round(count / maxCount * 100);
+                var rankClass = index < 3 ? 'top3' : '';
+
+                var barHtml = '';
                 if (metric === 'hab') {
-                    const hCount = Math.round(item.h * base / 100);
-                    const aCount = Math.round(item.a * base / 100);
-                    const bCount = Math.round(item.b * base / 100);
+                    var hCount = Math.round(item.h * base / 100);
+                    var aCount = Math.round(item.a * base / 100);
+                    var bCount = Math.round(item.b * base / 100);
+                    var totalSeg = item.h + item.a + item.b + item.other;
+                    var hW = totalSeg > 0 ? Math.round(item.h / totalSeg * barPct) : 0;
+                    var aW = totalSeg > 0 ? Math.round(item.a / totalSeg * barPct) : 0;
+                    var bW = totalSeg > 0 ? Math.round(item.b / totalSeg * barPct) : 0;
+                    var otherW = barPct - hW - aW - bW;
                     barHtml = `
                         <div class="ce-h-stack">
-                            <div class="ce-h-seg h" style="width: ${item.h}%;" title="H: ${hCount}人"></div>
-                            <div class="ce-h-seg a" style="width: ${item.a}%;" title="A: ${aCount}人"></div>
-                            <div class="ce-h-seg b" style="width: ${item.b}%;" title="B: ${bCount}人"></div>
-                            <div class="ce-h-seg other" style="width: ${item.other}%;"></div>
+                            <div class="ce-h-seg h" style="width: ${hW}%;" title="H: ${hCount}人"></div>
+                            <div class="ce-h-seg a" style="width: ${aW}%;" title="A: ${aCount}人"></div>
+                            <div class="ce-h-seg b" style="width: ${bW}%;" title="B: ${bCount}人"></div>
+                            <div class="ce-h-seg other" style="width: ${otherW}%;"></div>
                         </div>
                     `;
-                    barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
+                    barHtml += '<span class="ce-h-total">' + labelText + ': ' + item.val + ' (' + count.toLocaleString() + '人)</span>';
                 } else {
                     barHtml = `
                         <div class="ce-h-stack">
-                            <div class="ce-h-seg a" style="width: ${item.val};"></div>
+                            <div class="ce-h-seg a" style="width: ${barPct}%;"></div>
                         </div>
                     `;
-                    barHtml += `<span class="ce-h-total">${labelText}: ${item.val} (${count.toLocaleString()}人)</span>`;
+                    barHtml += '<span class="ce-h-total">' + labelText + ': ' + item.val + ' (' + count.toLocaleString() + '人)</span>';
                 }
 
                 const code = item[config.dataProp];
@@ -1445,18 +1476,18 @@ document.addEventListener('click', (e) => {
 
 // 计算大区总计
 function calculateRegionTotal(regionData) {
-    let total = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
-    Object.values(regionData.areas).forEach(areaStores => {
-        areaStores.forEach(store => {
-            total.h += store.h;
-            total.a += store.a;
-            total.b += store.b;
-            total.c += store.c;
-            total.f += store.f;
-            total.l += store.l;
-            total.e += store.e;
-            total.invalid += store.invalid;
-            total.total += store.total;
+    var total = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    Object.values(regionData.areas).forEach(function(areaStores) {
+        areaStores.forEach(function(store) {
+            total.h += storeHTotal(store);
+            total.a += (store.a || 0);
+            total.b += (store.b || 0);
+            total.c += storeCTotal(store);
+            total.f += (store.f || 0);
+            total.l += (store.l || 0);
+            total.e += (store.e || 0);
+            total.invalid += (store.invalid || 0);
+            total.total += storeTotal(store);
         });
     });
     return total;
@@ -1655,7 +1686,7 @@ function showRegionChannelModal(regionCode) {
         areaNames.forEach((areaName, gi) => {
             const areaStores = region.areas[areaName];
             const areaTotal = areaStores.reduce((sum, s) => {
-                sum.h += s.h; sum.a += s.a; sum.b += s.b; sum.total += s.total;
+                sum.h += storeHTotal(s); sum.a += s.a; sum.b += s.b; sum.total += s.total;
                 return sum;
             }, { h: 0, a: 0, b: 0, total: 0 });
             const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
@@ -1704,7 +1735,7 @@ function showRegionChannelModal(regionCode) {
         areaNames.forEach((areaName, gi) => {
             const areaStores = region.areas[areaName];
             const areaTotal = areaStores.reduce((sum, s) => {
-                sum.h += s.h; sum.a += s.a; sum.b += s.b; sum.c += s.c;
+                sum.h += storeHTotal(s); sum.a += s.a; sum.b += s.b; sum.c += storeCTotal(s);
                 sum.f += s.f; sum.l += s.l; sum.e += s.e; sum.invalid += s.invalid; sum.total += s.total;
                 return sum;
             }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
@@ -1782,15 +1813,33 @@ function showProjectDrillModal(projectCode) {
 /**
  * 生成门店卡片 HTML
  */
+// 兼容旧数据：计算合并的 H 和 C 总量
+function storeLevel(s, key) { return s[key] || 0; }
+function storeHTotal(s) { return storeLevel(s, 'hSchedule') + storeLevel(s, 'hLead') + storeLevel(s, 'hNonTest') || s.h || 0; }
+function storeCTotal(s) { return storeLevel(s, 'cUnclear') + storeLevel(s, 'cUnreachable') || s.c || 0; }
+function storeTotal(s) { return s.total || 0; }
+function storeHabTotal(s) { return storeHTotal(s) + (s.a || 0) + (s.b || 0); }
+
 function generateStoreCard(store, areaLabel) {
-    const hab = store.h + store.a + store.b;
-    const habPct = store.total > 0 ? ((hab / store.total) * 100).toFixed(1) : '0.0';
-    const hP = store.total > 0 ? (store.h / store.total * 100).toFixed(1) : 0;
-    const aP = store.total > 0 ? (store.a / store.total * 100).toFixed(1) : 0;
-    const bP = store.total > 0 ? (store.b / store.total * 100).toFixed(1) : 0;
-    const cP = store.total > 0 ? (store.c / store.total * 100).toFixed(1) : 0;
-    const fP = store.total > 0 ? (store.f / store.total * 100).toFixed(1) : 0;
-    const subLabel = areaLabel ? `<div style="font-size: 10px; color: #9ca3af;">${areaLabel}</div>` : '';
+    var t = storeTotal(store);
+    var habTotal = storeHabTotal(store);
+    var habPct = t > 0 ? (habTotal / t * 100).toFixed(1) : '0.0';
+    var subLabel = areaLabel ? '<div style="font-size: 10px; color: #9ca3af;">' + areaLabel + '</div>' : '';
+
+    // 迷你条形图：11级分段
+    var barSegments = '';
+    LEVEL_LABELS.forEach(function(lv) {
+        var val = store[lv.key] || 0;
+        var pct = t > 0 ? (val / t * 100).toFixed(1) : 0;
+        barSegments += '<div style="height:100%;background:' + LEVEL_COLORS[lv.key] + ';width:' + pct + '%;" title="' + lv.label + ': ' + val + '"></div>';
+    });
+
+    // 底部标签行
+    var labelRow = '';
+    LEVEL_LABELS.forEach(function(lv) {
+        var val = store[lv.key] || 0;
+        labelRow += '<span style="color:' + LEVEL_COLORS[lv.key] + ';">' + lv.label + ':<span style="font-weight:600;">' + val + '</span></span>';
+    });
 
     return `
         <div style="background: white; border: 1px solid #e5e7eb; border-radius: 6px; padding: 10px 14px;">
@@ -1802,22 +1851,11 @@ function generateStoreCard(store, areaLabel) {
                 <div style="font-weight: 600; color: #059669; font-size: 13px;">${habPct}%</div>
             </div>
             <div style="height: 5px; background: #f3f4f6; border-radius: 3px; overflow: hidden; display: flex; margin-bottom: 6px;">
-                <div style="height: 100%; background: #00337c; width: ${hP}%;"></div>
-                <div style="height: 100%; background: #0081ff; width: ${aP}%;"></div>
-                <div style="height: 100%; background: #6fb8ff; width: ${bP}%;"></div>
-                <div style="height: 100%; background: #22c55e; width: ${cP}%;"></div>
-                <div style="height: 100%; background: #f97316; width: ${fP}%;"></div>
+                ${barSegments}
             </div>
-            <div style="display: flex; align-items: center; gap: 10px; font-size: 10px;">
-                <span style="color: #00337c;">H:<span style="font-weight: 600;">${store.h}</span></span>
-                <span style="color: #0081ff;">A:<span style="font-weight: 600;">${store.a}</span></span>
-                <span style="color: #6fb8ff;">B:<span style="font-weight: 600;">${store.b}</span></span>
-                <span style="color: #22c55e;">C:<span style="font-weight: 600;">${store.c}</span></span>
-                <span style="color: #f97316;">F:<span style="font-weight: 600;">${store.f}</span></span>
-                <span style="color: #a855f7;">L:<span style="font-weight: 600;">${store.l}</span></span>
-                <span style="color: #64748b;">E:<span style="font-weight: 600;">${store.e}</span></span>
-                <span style="color: #ef4444;">无效:<span style="font-weight: 600;">${store.invalid}</span></span>
-                <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${store.total}</span></span>
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 9px; flex-wrap: wrap;">
+                ${labelRow}
+                <span style="color: #6b7280; margin-left: auto;">合计:<span style="font-weight: 600;">${t}</span></span>
             </div>
         </div>
     `;
@@ -1857,34 +1895,45 @@ function showScheduleDrillModal(scheduleCode) {
  */
 function renderDrillContent(channels) {
     const regionNames = Object.keys(channels);
-    const allTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    const allTotal = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
     const allStoreCount = regionNames.reduce((sum, r) => {
         return sum + Object.values(channels[r]).reduce((s, stores) => s + stores.length, 0);
     }, 0);
     regionNames.forEach(region => {
         Object.values(channels[region]).forEach(stores => {
-            stores.forEach(store => {
-                allTotal.h += store.h; allTotal.a += store.a; allTotal.b += store.b; allTotal.c += store.c;
-                allTotal.f += store.f; allTotal.l += store.l; allTotal.e += store.e; allTotal.invalid += store.invalid; allTotal.total += store.total;
+            stores.forEach(function(store) {
+                allTotal.hSchedule += storeLevel(store, 'hSchedule');
+                allTotal.hLead += storeLevel(store, 'hLead');
+                allTotal.hNonTest += storeLevel(store, 'hNonTest');
+                allTotal.a += (store.a || 0); allTotal.b += (store.b || 0);
+                allTotal.cUnclear += storeLevel(store, 'cUnclear');
+                allTotal.cUnreachable += storeLevel(store, 'cUnreachable');
+                allTotal.f += (store.f || 0); allTotal.l += (store.l || 0); allTotal.e += (store.e || 0); allTotal.invalid += (store.invalid || 0);
+                allTotal.total += storeTotal(store);
             });
         });
     });
-    const allHab = allTotal.total > 0 ? ((allTotal.h + allTotal.a + allTotal.b) / allTotal.total * 100).toFixed(1) : '0.0';
+    const allH = allTotal.hSchedule + allTotal.hLead + allTotal.hNonTest;
+    const allC = allTotal.cUnclear + allTotal.cUnreachable;
+    const allHab = allTotal.total > 0 ? ((allH + allTotal.a + allTotal.b) / allTotal.total * 100).toFixed(1) : '0.0';
 
     let html = `
         <div style="padding: 16px 20px;">
             <div style="display: flex; align-items: center; gap: 20px; padding: 12px 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px; flex-wrap: wrap;">
                 <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">专营店数量</div><div style="font-size: 18px; font-weight: 600; color: #111827;">${allStoreCount} 家</div></div>
                 <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
-                <div style="display: flex; gap: 16px;">
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H级</div><div style="font-size: 14px; font-weight: 600; color: #00337c;">${allTotal.h}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">A级</div><div style="font-size: 14px; font-weight: 600; color: #0081ff;">${allTotal.a}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">B级</div><div style="font-size: 14px; font-weight: 600; color: #6fb8ff;">${allTotal.b}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C级</div><div style="font-size: 14px; font-weight: 600; color: #22c55e;">${allTotal.c}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">F级</div><div style="font-size: 14px; font-weight: 600; color: #f97316;">${allTotal.f}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">L级</div><div style="font-size: 14px; font-weight: 600; color: #a855f7;">${allTotal.l}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">E级</div><div style="font-size: 14px; font-weight: 600; color: #64748b;">${allTotal.e}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">无效</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allTotal.invalid}</div></div>
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾排程</div><div style="font-size: 14px; font-weight: 600; color: #b91c1c;">${allTotal.hSchedule}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-试驾线索</div><div style="font-size: 14px; font-weight: 600; color: #ef4444;">${allTotal.hLead}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">H-非试驾</div><div style="font-size: 14px; font-weight: 600; color: #fb7185;">${allTotal.hNonTest}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">A</div><div style="font-size: 14px; font-weight: 600; color: #f59e0b;">${allTotal.a}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">B</div><div style="font-size: 14px; font-weight: 600; color: #3b82f6;">${allTotal.b}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C-意向不明</div><div style="font-size: 14px; font-weight: 600; color: #14b8a6;">${allTotal.cUnclear}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">C-无法接通</div><div style="font-size: 14px; font-weight: 600; color: #67e8f9;">${allTotal.cUnreachable}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">F-战败</div><div style="font-size: 14px; font-weight: 600; color: #8b5cf6;">${allTotal.f}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">L-休眠</div><div style="font-size: 14px; font-weight: 600; color: #ec4899;">${allTotal.l}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">E-意向含糊</div><div style="font-size: 14px; font-weight: 600; color: #84cc16;">${allTotal.e}</div></div>
+                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">无效号码</div><div style="font-size: 14px; font-weight: 600; color: #94a3b8;">${allTotal.invalid}</div></div>
                 </div>
                 <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
                 <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">合计线索</div><div style="font-size: 18px; font-weight: 600; color: #111827;">${allTotal.total}</div></div>
@@ -1898,9 +1947,9 @@ function renderDrillContent(channels) {
     regionNames.forEach(region => {
         const regionAreas = channels[region];
         const regionTotal = { h: 0, a: 0, b: 0, total: 0 };
-        Object.values(regionAreas).forEach(stores => { stores.forEach(s => { regionTotal.h += s.h; regionTotal.a += s.a; regionTotal.b += s.b; regionTotal.total += s.total; }); });
+        Object.values(regionAreas).forEach(stores => { stores.forEach(function(s) { regionTotal.h += storeHTotal(s); regionTotal.a += (s.a || 0); regionTotal.b += (s.b || 0); regionTotal.total += storeTotal(s); }); });
         const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
-        html += `<button class="region-tab-btn" data-region="${region}"><span>${region}</span><span class="region-tab-count">${regionHab}%</span></button>`;
+        html += '<button class="region-tab-btn" data-region="' + region + '"><span>' + region + '</span><span class="region-tab-count">' + regionHab + '%</span></button>';
     });
 
     html += `</div><div class="region-tab-content">`;
@@ -1930,8 +1979,8 @@ function renderDrillContent(channels) {
     regionNames.forEach((region) => {
         const regionAreas = channels[region];
         const areaNames = Object.keys(regionAreas);
-        const regionTotal = { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
-        Object.values(regionAreas).forEach(stores => { stores.forEach(s => { regionTotal.h += s.h; regionTotal.a += s.a; regionTotal.b += s.b; regionTotal.c += s.c; regionTotal.f += s.f; regionTotal.l += s.l; regionTotal.e += s.e; regionTotal.invalid += s.invalid; regionTotal.total += s.total; }); });
+        const regionTotal = { h: 0, a: 0, b: 0, total: 0 };
+        Object.values(regionAreas).forEach(stores => { stores.forEach(function(s) { regionTotal.h += storeHTotal(s); regionTotal.a += (s.a || 0); regionTotal.b += (s.b || 0); regionTotal.total += storeTotal(s); }); });
         const regionHab = regionTotal.total > 0 ? ((regionTotal.h + regionTotal.a + regionTotal.b) / regionTotal.total * 100).toFixed(1) : '0.0';
         const regionStoreCount = Object.values(regionAreas).reduce((s, st) => s + st.length, 0);
 
@@ -1948,7 +1997,7 @@ function renderDrillContent(channels) {
         `;
         areaNames.forEach(areaName => {
             const areaHab = (() => {
-                const t = regionAreas[areaName].reduce((s, st) => { s.h += st.h; s.a += st.a; s.b += st.b; s.total += st.total; return s; }, { h: 0, a: 0, b: 0, total: 0 });
+                const t = regionAreas[areaName].reduce(function(s, st) { s.h += storeHTotal(st); s.a += (st.a || 0); s.b += (st.b || 0); s.total += storeTotal(st); return s; }, { h: 0, a: 0, b: 0, total: 0 });
                 return t.total > 0 ? ((t.h + t.a + t.b) / t.total * 100).toFixed(1) : '0.0';
             })();
             html += `<button class="area-tab-btn" data-area="${areaName}" data-parent="${region}"><span>${areaName}</span><span class="area-tab-count">${regionAreas[areaName].length}家</span></button>`;
@@ -1969,7 +2018,7 @@ function renderDrillContent(channels) {
         // 每个小区面板
         areaNames.forEach(areaName => {
             const areaStores = regionAreas[areaName];
-            const areaTotal = areaStores.reduce((s, st) => { s.h += st.h; s.a += st.a; s.b += st.b; s.c += st.c; s.f += st.f; s.l += st.l; s.e += st.e; s.invalid += st.invalid; s.total += st.total; return s; }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
+            const areaTotal = areaStores.reduce(function(s, st) { s.h += storeHTotal(st); s.a += (st.a || 0); s.b += (st.b || 0); s.c += storeCTotal(st); s.f += (st.f || 0); s.l += (st.l || 0); s.e += (st.e || 0); s.invalid += (st.invalid || 0); s.total += storeTotal(st); return s; }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
             const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
             html += `
             <div class="area-panel" data-area="${areaName}">
