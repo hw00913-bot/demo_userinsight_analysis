@@ -149,6 +149,7 @@ window.addEventListener('DOMContentLoaded', () => {
     enhanceOverviewHabLabels();
     initChannelJourneyFilter();
     initMediaJourneyFilter();
+    enhanceTouchHabitDeliveryMetrics();
     initCultivationScaledCharts();
     initRankInteraction({ tabsId: 'rankMetricTabs', listId: 'projectRankList', dataProp: 'projectCode', dataAttr: 'project', data: projectRankData });
     initRankInteraction({ tabsId: 'scheduleMetricTabs', listId: 'scheduleRankList', dataProp: 'scheduleCode', dataAttr: 'schedule', data: scheduleRankData });
@@ -292,6 +293,33 @@ function parseUserCount(text) {
 // --- 工具函数 ---
 function pctNum(part, total) { return total > 0 ? +(part / total * 100).toFixed(1) : 0; }
 function pctStr(part, total) { return total > 0 ? (part / total * 100).toFixed(1) : '0.0'; }
+
+function touchHabitDeliveryRate(label) {
+    const hash = [...String(label || '')].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    return +(2.8 + (hash % 43) / 10).toFixed(1);
+}
+
+function enhanceTouchHabitDeliveryMetrics() {
+    const section = document.getElementById('touchHabitAnalysis');
+    if (!section) return;
+
+    section.querySelectorAll('span').forEach(metric => {
+        if (metric.dataset.deliveryEnhanced === 'true') return;
+        const match = metric.textContent.trim().match(/^([\d,]+)人\s*·\s*([\d.]+)%$/);
+        if (!match) return;
+
+        const row = metric.parentElement;
+        const label = row?.querySelector('span')?.textContent.trim();
+        if (!label || label === metric.textContent.trim()) return;
+
+        const count = parseInt(match[1].replace(/,/g, ''), 10);
+        const rate = touchHabitDeliveryRate(label);
+        const deliveries = Math.round(count * rate / 100);
+        metric.dataset.deliveryEnhanced = 'true';
+        metric.classList.add('touch-habit-metric');
+        metric.innerHTML = `${match[1]}人 · ${match[2]}% · <span class="touch-habit-delivery">交车 ${deliveries.toLocaleString()}人 · ${rate}%</span>`;
+    });
+}
 
 // --- 等级颜色常量（与 MOCK.leadLevels 10 级对齐）---
 var LEVEL_COLORS = {
@@ -647,6 +675,7 @@ function renderChannelJourneyList() {
             </div>
         `;
     }).join('');
+    enhanceTouchHabitDeliveryMetrics();
 }
 
 function initMediaJourneyFilter() {
@@ -770,6 +799,7 @@ function renderMediaJourneyList() {
             </div>
         `;
     }).join('');
+    enhanceTouchHabitDeliveryMetrics();
 }
 
 // 城市投放效果 Top 10/20 切换逻辑
@@ -2825,10 +2855,12 @@ function renderFirstTouchDealStoreResult() {
     var rowsHtml = rows.map(function(row) {
         var width = Math.max(4, Math.round(row.count / maxCount * 100));
         var percent = pctStr(row.count, total);
+        var deliveryRate = touchHabitDeliveryRate(firstStore + row.dealStore);
+        var deliveries = Math.round(row.count * deliveryRate / 100);
         return '<div class="store-result-row">'
             + '<span class="store-result-path" title="' + firstStore + ' → ' + row.dealStore + '">' + firstStore + ' → ' + row.dealStore + '</span>'
             + '<div class="store-result-bar"><div class="store-result-bar-fill" style="width:' + width + '%;"></div></div>'
-            + '<span class="store-result-value">' + row.count.toLocaleString() + ' 人 · ' + percent + '%</span>'
+            + '<span class="store-result-value">' + row.count.toLocaleString() + ' 人 · ' + percent + '% · 交车 ' + deliveries.toLocaleString() + ' 人 · ' + deliveryRate + '%</span>'
             + '</div>';
     }).join('');
 
@@ -2839,7 +2871,7 @@ function renderFirstTouchDealStoreResult() {
         + '</div>'
         + '<div class="store-result-list-card">'
         + '<div class="store-result-list-title"><strong>成交专营店统计</strong><span>共 ' + dealStores.length + ' 家</span></div>'
-        + '<div class="store-result-list-header"><span>首触 → 成交专营店</span><span>用户数分布</span><span>用户数 / 占比</span></div>'
+        + '<div class="store-result-list-header"><span>首触 → 成交专营店</span><span>用户数分布</span><span>用户数 / 占比 / 交车数 / 交车占比</span></div>'
         + '<div class="store-result-list">' + rowsHtml + '</div>'
         + '</div>';
 }

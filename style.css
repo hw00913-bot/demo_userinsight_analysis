@@ -3106,7 +3106,7 @@ body {
 .store-result-list-header,
 .store-result-row {
     display: grid;
-    grid-template-columns: minmax(230px, 280px) minmax(180px, 1fr) 112px;
+    grid-template-columns: minmax(230px, 280px) minmax(180px, 1fr) 220px;
     gap: 14px;
     align-items: center;
 }
@@ -3196,7 +3196,7 @@ body {
     .store-result-list-title,
     .store-result-list-header,
     .store-result-row {
-        grid-template-columns: minmax(150px, 1fr) minmax(100px, 0.8fr) 92px;
+        grid-template-columns: minmax(150px, 1fr) minmax(100px, 0.8fr) 190px;
         gap: 8px;
     }
 }
@@ -4519,6 +4519,17 @@ body {
 
 .follow-call-time-item {
     grid-template-columns: 36px minmax(0, 1fr) 166px;
+}
+
+.touch-habit-metric {
+    width: 196px !important;
+    min-width: 196px;
+    white-space: nowrap;
+}
+
+.touch-habit-delivery {
+    color: #059669;
+    font-weight: 700;
 }
 
 .follow-pie-card {
