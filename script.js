@@ -1639,12 +1639,20 @@ function showRegionChannelModal(regionCode) {
                             <div style="display: flex; flex-direction: column; gap: 8px;">
     `;
     
+    // 预计算全局最大总量（用于柱长归一化）
+    var allFlatStores = [];
+    regionCodes.forEach(function(code) {
+        var region = regionChannelData[code];
+        Object.values(region.areas).forEach(function(stores) { allFlatStores = allFlatStores.concat(stores); });
+    });
+    var globalMaxTotal = maxStoreTotal(allFlatStores);
+
     // 生成全部门店列表
-    regionCodes.forEach((code) => {
-        const region = regionChannelData[code];
-        Object.values(region.areas).forEach((stores) => {
-            stores.forEach((store) => {
-                html += generateStoreCard(store, region.regionName);
+    regionCodes.forEach(function(code) {
+        var region = regionChannelData[code];
+        Object.values(region.areas).forEach(function(stores) {
+            stores.forEach(function(store) {
+                html += generateStoreCard(store, region.regionName, globalMaxTotal);
             });
         });
     });
@@ -1721,10 +1729,15 @@ function showRegionChannelModal(regionCode) {
                             <div style="display: flex; flex-direction: column; gap: 6px;">
         `;
 
+        // 预计算该大区的最大总量
+        var regionAllStores = [];
+        areaNames.forEach(function(a) { regionAllStores = regionAllStores.concat(region.areas[a]); });
+        var regionMaxTotal = maxStoreTotal(regionAllStores);
+
         // 遍历所有小区的门店
-        areaNames.forEach((areaName) => {
-            region.areas[areaName].forEach((store) => {
-                html += generateStoreCard(store, areaName);
+        areaNames.forEach(function(areaName) {
+            region.areas[areaName].forEach(function(store) {
+                html += generateStoreCard(store, areaName, regionMaxTotal);
             });
         });
 
@@ -1755,8 +1768,9 @@ function showRegionChannelModal(regionCode) {
                             <div style="display: flex; flex-direction: column; gap: 6px;">
             `;
             
-            areaStores.forEach((store) => {
-                html += generateStoreCard(store);
+            var areaMaxTotal = maxStoreTotal(areaStores);
+            areaStores.forEach(function(store) {
+                html += generateStoreCard(store, '', areaMaxTotal);
             });
             
             html += `
@@ -1821,20 +1835,24 @@ function storeHTotal(s) { return storeLevel(s, 'hSchedule') + storeLevel(s, 'hLe
 function storeCTotal(s) { return storeLevel(s, 'cUnclear') + storeLevel(s, 'cUnreachable'); }
 function storeTotal(s) { return s.total || 0; }
 function storeHabTotal(s) { return storeHTotal(s) + (s.a || 0) + (s.b || 0); }
+function maxStoreTotal(stores) { return stores.reduce(function(m, s) { return Math.max(m, storeTotal(s)); }, 0); }
 
-function generateStoreCard(store, areaLabel) {
+function generateStoreCard(store, areaLabel, maxTotal) {
     var t = storeTotal(store);
     var habTotal = storeHabTotal(store);
     var habPct = t > 0 ? (habTotal / t * 100).toFixed(1) : '0.0';
     var subLabel = areaLabel ? '<div style="font-size: 10px; color: #9ca3af;">' + areaLabel + '</div>' : '';
+
+    // 按最大总量归一化，让柱长反映门店间的总量差异
+    var scale = maxTotal && maxTotal > 0 ? (t / maxTotal * 100) : 100;
 
     // 迷你条形图 + 底部标签行（一次遍历）
     var barSegments = '';
     var labelRow = '';
     LEVEL_LABELS.forEach(function(lv) {
         var val = store[lv.key] || 0;
-        var pct = t > 0 ? (val / t * 100).toFixed(1) : 0;
-        barSegments += '<div style="height:100%;background:' + LEVEL_COLORS[lv.key] + ';width:' + pct + '%;" title="' + lv.label + ': ' + val + '"></div>';
+        var segPct = t > 0 ? (val / t * scale).toFixed(1) : 0;
+        barSegments += '<div style="height:100%;background:' + LEVEL_COLORS[lv.key] + ';width:' + segPct + '%;" title="' + lv.label + ': ' + val + '"></div>';
         labelRow += '<span style="color:' + LEVEL_COLORS[lv.key] + ';">' + lv.label + ':<span style="font-weight:600;">' + val + '</span></span>';
     });
 
@@ -1965,9 +1983,17 @@ function renderDrillContent(channels) {
             </div>
             <div class="area-tab-content"><div class="area-panel active" data-area="all"><div style="display: flex; flex-direction: column; gap: 8px;">
     `;
-    regionNames.forEach(region => {
-        Object.entries(channels[region]).forEach(([areaName, stores]) => {
-            stores.forEach(store => { html += generateStoreCard(store, areaName); });
+    // 预计算全部面板的最大总量
+    var drillAllStores = [];
+    regionNames.forEach(function(r) {
+        Object.values(channels[r]).forEach(function(stores) { drillAllStores = drillAllStores.concat(stores); });
+    });
+    var drillGlobalMax = maxStoreTotal(drillAllStores);
+
+    regionNames.forEach(function(region) {
+        Object.entries(channels[region]).forEach(function(_a) {
+            var areaName = _a[0], stores = _a[1];
+            stores.forEach(function(store) { html += generateStoreCard(store, areaName, drillGlobalMax); });
         });
     });
     html += `</div></div></div></div>`;
@@ -2009,7 +2035,9 @@ function renderDrillContent(channels) {
                 <span style="font-size: 11px; color: #64748b;">${regionStoreCount} 家专营店</span>
                 <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${regionHab}%</span>
             </div><div style="display: flex; flex-direction: column; gap: 6px;">`;
-        areaNames.forEach(areaName => { regionAreas[areaName].forEach(store => { html += generateStoreCard(store, areaName); }); });
+        var drRegionStores = []; areaNames.forEach(function(a) { drRegionStores = drRegionStores.concat(regionAreas[a]); });
+        var drRegionMax = maxStoreTotal(drRegionStores);
+        areaNames.forEach(function(areaName) { regionAreas[areaName].forEach(function(store) { html += generateStoreCard(store, areaName, drRegionMax); }); });
         html += `</div></div>`;
 
         // 每个小区面板
@@ -2024,7 +2052,8 @@ function renderDrillContent(channels) {
                     <span style="font-size: 11px; color: #64748b;">${areaStores.length} 家专营店</span>
                     <span style="margin-left: auto; font-size: 12px; font-weight: 600; color: #059669;">H/A/B ${areaHab}%</span>
                 </div><div style="display: flex; flex-direction: column; gap: 6px;">`;
-            areaStores.forEach(store => { html += generateStoreCard(store); });
+            var drAreaMax = maxStoreTotal(areaStores);
+            areaStores.forEach(function(store) { html += generateStoreCard(store, '', drAreaMax); });
             html += `</div></div>`;
         });
 
