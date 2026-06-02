@@ -3641,10 +3641,6 @@ body {
     background: #84cc16;
 }
 
-.ce-v-legend-dot.invalid {
-    background: #94a3b8;
-}
-
 .ce-v-legend-dot.other {
     background: #cbd5e1;
 }
@@ -3696,10 +3692,6 @@ body {
 
 .ce-v-seg.e {
     background: #84cc16;
-}
-
-.ce-v-seg.invalid {
-    background: #94a3b8;
 }
 
 .ce-v-seg.other {
@@ -4198,10 +4190,6 @@ body {
 
 .ce-h-seg.e {
     background: #cce0ff;
-}
-
-.ce-h-seg.invalid {
-    background: #e6f0ff;
 }
 
 .ce-h-seg.other {

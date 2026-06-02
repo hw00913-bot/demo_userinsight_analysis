@@ -196,20 +196,20 @@ function alignChannelQualityLeadLevels() {
 
     const levelClasses = [
         'h-schedule', 'h-lead', 'h-nontest', 'a', 'b',
-        'c-unclear', 'c-unreachable', 'f', 'l', 'e', 'invalid'
+        'c-unclear', 'c-unreachable', 'f', 'l', 'e'
     ];
     const distributions = [
-        [7, 6, 5, 10, 15, 10, 10, 10, 5, 7, 15],
-        [6, 6, 4, 10, 15, 10, 10, 10, 5, 8, 16],
-        [6, 5, 4, 10, 15, 10, 10, 10, 5, 8, 17],
-        [5, 5, 4, 8, 12, 9, 9, 15, 6, 8, 19],
-        [5, 4, 4, 9, 13, 8, 9, 15, 6, 8, 19],
-        [4, 4, 4, 8, 12, 8, 7, 20, 6, 8, 19],
-        [4, 4, 3, 7, 11, 7, 6, 25, 6, 8, 19],
-        [4, 3, 3, 7, 10, 6, 6, 28, 6, 8, 19],
-        [3, 3, 2, 6, 8, 6, 6, 30, 6, 10, 20],
-        [3, 2, 2, 5, 8, 5, 5, 32, 6, 10, 22],
-        [2, 2, 2, 5, 7, 5, 4, 34, 6, 10, 23]
+        [8, 7, 6, 12, 18, 12, 12, 12, 6, 7],
+        [7, 7, 5, 12, 18, 12, 12, 12, 6, 9],
+        [7, 6, 5, 12, 18, 12, 12, 12, 6, 10],
+        [6, 6, 5, 10, 15, 11, 11, 18, 7, 11],
+        [6, 5, 5, 11, 16, 10, 11, 18, 7, 11],
+        [5, 5, 5, 10, 15, 10, 9, 25, 7, 9],
+        [5, 5, 4, 9, 14, 9, 7, 31, 7, 9],
+        [5, 4, 4, 9, 12, 7, 7, 35, 7, 10],
+        [4, 4, 3, 8, 10, 8, 8, 37, 7, 11],
+        [4, 3, 3, 6, 10, 6, 6, 41, 8, 13],
+        [3, 3, 3, 6, 9, 6, 5, 44, 8, 13]
     ];
 
     legend.innerHTML = MOCK.leadLevels.map((label, index) => `
@@ -293,12 +293,12 @@ function parseUserCount(text) {
 function pctNum(part, total) { return total > 0 ? +(part / total * 100).toFixed(1) : 0; }
 function pctStr(part, total) { return total > 0 ? (part / total * 100).toFixed(1) : '0.0'; }
 
-// --- 等级颜色常量（与 MOCK.leadLevels 11 级对齐）---
+// --- 等级颜色常量（与 MOCK.leadLevels 10 级对齐）---
 var LEVEL_COLORS = {
     hSchedule: '#b91c1c', hLead: '#ef4444', hNonTest: '#fb7185',
     a: '#f59e0b', b: '#3b82f6',
     cUnclear: '#14b8a6', cUnreachable: '#67e8f9',
-    f: '#8b5cf6', l: '#ec4899', e: '#84cc16', invalid: '#94a3b8'
+    f: '#8b5cf6', l: '#ec4899', e: '#84cc16'
 };
 
 // 与 MOCK.leadLevels 完全对齐
@@ -312,8 +312,7 @@ var LEVEL_LABELS = MOCK && MOCK.leadLevels ? [
     { key: 'cUnreachable', label: MOCK.leadLevels[6] },
     { key: 'f', label: MOCK.leadLevels[7] },
     { key: 'l', label: MOCK.leadLevels[8] },
-    { key: 'e', label: MOCK.leadLevels[9] },
-    { key: 'invalid', label: MOCK.leadLevels[10] }
+    { key: 'e', label: MOCK.leadLevels[9] }
 ] : [
     { key: 'hSchedule', label: 'H-试驾排程单' },
     { key: 'hLead', label: 'H-试驾线索单' },
@@ -324,8 +323,7 @@ var LEVEL_LABELS = MOCK && MOCK.leadLevels ? [
     { key: 'cUnreachable', label: 'C-无法接通' },
     { key: 'f', label: 'F-战败' },
     { key: 'l', label: 'L-休眠' },
-    { key: 'e', label: 'E-意向含糊' },
-    { key: 'invalid', label: '无效号码' }
+    { key: 'e', label: 'E-意向含糊' }
 ];
 
 const TREND_ICONS = { up: 'fa-caret-up', down: 'fa-caret-down', equal: 'fa-minus' };
@@ -1555,7 +1553,7 @@ document.addEventListener('click', (e) => {
 
 // 计算大区总计
 function calculateRegionTotal(regionData) {
-    var total = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    var total = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, total: 0 };
     Object.values(regionData.areas).forEach(function(areaStores) {
         areaStores.forEach(function(store) {
             total.hSchedule += storeLevel(store, 'hSchedule');
@@ -1568,7 +1566,6 @@ function calculateRegionTotal(regionData) {
             total.f += (store.f || 0);
             total.l += (store.l || 0);
             total.e += (store.e || 0);
-            total.invalid += (store.invalid || 0);
             total.total += storeTotal(store);
         });
     });
@@ -1592,9 +1589,9 @@ function showRegionChannelModal(regionCode) {
     // 设置标题
     title.innerText = '各区渠道质量分布';
     
-    // 计算全局总计（11级）
+    // 计算全局总计（10级）
     var regionCodes = Object.keys(regionChannelData);
-    var allRegionsTotal = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    var allRegionsTotal = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, total: 0 };
     regionCodes.forEach(function(code) {
         var t = calculateRegionTotal(regionChannelData[code]);
         allRegionsTotal.hSchedule += t.hSchedule;
@@ -1607,7 +1604,6 @@ function showRegionChannelModal(regionCode) {
         allRegionsTotal.f += t.f;
         allRegionsTotal.l += t.l;
         allRegionsTotal.e += t.e;
-        allRegionsTotal.invalid += t.invalid;
         allRegionsTotal.total += t.total;
     });
     var allHTotal = allRegionsTotal.hSchedule + allRegionsTotal.hLead + allRegionsTotal.hNonTest;
@@ -1643,7 +1639,6 @@ function showRegionChannelModal(regionCode) {
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">F-战败</div><div style="font-size: 14px; font-weight: 600; color: #8b5cf6;">${allRegionsTotal.f}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">L-休眠</div><div style="font-size: 14px; font-weight: 600; color: #ec4899;">${allRegionsTotal.l}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">E-意向含糊</div><div style="font-size: 14px; font-weight: 600; color: #84cc16;">${allRegionsTotal.e}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">无效号码</div><div style="font-size: 14px; font-weight: 600; color: #94a3b8;">${allRegionsTotal.invalid}</div></div>
                 </div>
                 <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
                 <div style="text-align: center;">
@@ -1818,9 +1813,9 @@ function showRegionChannelModal(regionCode) {
             const areaStores = region.areas[areaName];
             const areaTotal = areaStores.reduce((sum, s) => {
                 sum.h += storeHTotal(s); sum.a += s.a; sum.b += s.b; sum.c += storeCTotal(s);
-                sum.f += s.f; sum.l += s.l; sum.e += s.e; sum.invalid += s.invalid; sum.total += s.total;
+                sum.f += s.f; sum.l += s.l; sum.e += s.e; sum.total += s.total;
                 return sum;
-            }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
+            }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, total: 0 });
             const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
 
             html += `
@@ -1977,7 +1972,7 @@ function showScheduleDrillModal(scheduleCode) {
  */
 function renderDrillContent(channels) {
     const regionNames = Object.keys(channels);
-    const allTotal = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 };
+    const allTotal = { hSchedule: 0, hLead: 0, hNonTest: 0, a: 0, b: 0, cUnclear: 0, cUnreachable: 0, f: 0, l: 0, e: 0, total: 0 };
     const allStoreCount = regionNames.reduce((sum, r) => {
         return sum + Object.values(channels[r]).reduce((s, stores) => s + stores.length, 0);
     }, 0);
@@ -1990,7 +1985,7 @@ function renderDrillContent(channels) {
                 allTotal.a += (store.a || 0); allTotal.b += (store.b || 0);
                 allTotal.cUnclear += storeLevel(store, 'cUnclear');
                 allTotal.cUnreachable += storeLevel(store, 'cUnreachable');
-                allTotal.f += (store.f || 0); allTotal.l += (store.l || 0); allTotal.e += (store.e || 0); allTotal.invalid += (store.invalid || 0);
+                allTotal.f += (store.f || 0); allTotal.l += (store.l || 0); allTotal.e += (store.e || 0);
                 allTotal.total += storeTotal(store);
             });
         });
@@ -2015,7 +2010,6 @@ function renderDrillContent(channels) {
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">F-战败</div><div style="font-size: 14px; font-weight: 600; color: #8b5cf6;">${allTotal.f}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">L-休眠</div><div style="font-size: 14px; font-weight: 600; color: #ec4899;">${allTotal.l}</div></div>
                     <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">E-意向含糊</div><div style="font-size: 14px; font-weight: 600; color: #84cc16;">${allTotal.e}</div></div>
-                    <div style="text-align: center;"><div style="font-size: 10px; color: #6b7280;">无效号码</div><div style="font-size: 14px; font-weight: 600; color: #94a3b8;">${allTotal.invalid}</div></div>
                 </div>
                 <div style="width: 1px; height: 36px; background: #e5e7eb;"></div>
                 <div style="text-align: center;"><div style="font-size: 11px; color: #6b7280;">合计线索</div><div style="font-size: 18px; font-weight: 600; color: #111827;">${allTotal.total}</div></div>
@@ -2110,7 +2104,7 @@ function renderDrillContent(channels) {
         // 每个小区面板
         areaNames.forEach(areaName => {
             const areaStores = regionAreas[areaName];
-            const areaTotal = areaStores.reduce(function(s, st) { s.h += storeHTotal(st); s.a += (st.a || 0); s.b += (st.b || 0); s.c += storeCTotal(st); s.f += (st.f || 0); s.l += (st.l || 0); s.e += (st.e || 0); s.invalid += (st.invalid || 0); s.total += storeTotal(st); return s; }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, invalid: 0, total: 0 });
+            const areaTotal = areaStores.reduce(function(s, st) { s.h += storeHTotal(st); s.a += (st.a || 0); s.b += (st.b || 0); s.c += storeCTotal(st); s.f += (st.f || 0); s.l += (st.l || 0); s.e += (st.e || 0); s.total += storeTotal(st); return s; }, { h: 0, a: 0, b: 0, c: 0, f: 0, l: 0, e: 0, total: 0 });
             const areaHab = areaTotal.total > 0 ? ((areaTotal.h + areaTotal.a + areaTotal.b) / areaTotal.total * 100).toFixed(1) : '0.0';
             html += `
             <div class="area-panel" data-area="${areaName}">

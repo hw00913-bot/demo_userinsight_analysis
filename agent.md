@@ -52,11 +52,11 @@ node --check script.js && node --check mock.js
 ### 三个主 Tab（userinsight.html）
 
 **1. 渠道效果 (channel-effect)**
-- 筛选栏：时间范围、意向车系、渠道名称、媒体名称、大项目、落地平台（多选）、筛选门店（弹窗式）、线索等级（多选11级）、原因类型大类/类型（联动）、时间维度切换
+- 筛选栏：时间范围、意向车系、渠道名称、媒体名称、大项目、落地平台（多选）、筛选门店（弹窗式）、线索等级（多选10级）、原因类型大类/类型（联动）、时间维度切换
 - KPI 卡片组：线索统计、通话统计、线索分类、用户分级、行为转化（Plan B 动态渲染）
 - 意向车系占比、线索有效占比、线索级别占比（conic-gradient 饼图）
 - 城市投放效果（横向条形图，Top 10/20 切换）
-- 渠道线索质量（横向条形图，11级堆叠，点击下钻大区）
+- 渠道线索质量（横向条形图，10级堆叠，点击下钻大区）
 - 大项目线索质量排名（水平条形图，支持 HAB/到店/试驾/锁单切换，柱长按总量归一化）
 - 媒体线索质量排名（同上）
 - 大区投放效果、小区投放效果、质量标签分布
@@ -69,7 +69,7 @@ node --check script.js && node --check mock.js
 - 总部培育跟进过程 & 门店虚拟号跟进过程（Tab 切换）
   - 呼叫线索：呼叫次数、通话时长、呼叫时段（10段，左右两列）
   - 接通线索：接通次数、接通时段（10段）
-  - 激活下发线索：11级饼图
+  - 激活下发线索：10级饼图
 - 用户关注点卡片（价格/产品/服务/竞品），可点击二级下钻
 - 回访结果分析
 - 首次触达到成交门店分析
@@ -91,7 +91,7 @@ node --check script.js && node --check mock.js
 | 大项目 | 搜索输入框 | 关键字查询 |
 | 落地平台 | 多选下拉 | 官网/小程序/app，默认全选 |
 | 筛选门店 | 弹窗式 | 树形菜单（按大小区/按省市区）+ 模糊搜索 |
-| 线索等级 | 多选下拉 | 11级，默认全选 |
+| 线索等级 | 多选下拉 | 10级，默认全选 |
 | 原因类型大类/类型 | 联动下拉 | 大类切换 → 类型选项联动 |
 | 时间维度切换 | 下拉 | 转化维度/线索日期 |
 | 分类* | 多选下拉 | 新线索/总部休眠/异地回流/休眠回流/暂败回流 |
@@ -125,7 +125,7 @@ initDateRange()                     // 日期范围快捷选择 + 自定义
 initFilterMultiSelects()            // 多选下拉通用初始化（线索等级/落地平台/分类/清洗方式）
 initGlobalFilters()                 // 查询/重置按钮
 reorderCultivationDeliveryCharts()  // 培育运营图表顺序重排
-alignChannelQualityLeadLevels()     // 渠道线索质量图例 + 堆叠段渲染为11级
+alignChannelQualityLeadLevels()     // 渠道线索质量图例 + 堆叠段渲染为10级
 convertCultivationChartsToHorizontal() // 纵向堆叠图 → 横向条形图
 initChannelJourneyFilter()          // 渠道旅程筛选（首次/末次留资渠道联动）
 initMediaJourneyFilter()            // 媒体旅程筛选（首次/末次留资媒体联动）
@@ -146,9 +146,9 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 - `resetDateRange(group)` / `resetGlobalFilters(section)` — 筛选重置
 - `trendHtml(trend, tv)` — 趋势 HTML 渲染
 
-### 11级线索等级体系
+### 10级线索等级体系
 
-项目从 8 级升级为 11 级，与 `MOCK.leadLevels` 完全对齐：
+项目调整为 10 级，与 `MOCK.leadLevels` 完全对齐：
 
 | 索引 | 等级 | 数据 key | 颜色 |
 |------|------|---------|------|
@@ -162,10 +162,9 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 | 7 | F-战败 | f | #8b5cf6 |
 | 8 | L-休眠 | l | #ec4899 |
 | 9 | E-意向含糊 | e | #84cc16 |
-| 10 | 无效号码 | invalid | #94a3b8 |
 
 关键常量：
-- `LEVEL_COLORS` — 11级 hex 颜色映射
+- `LEVEL_COLORS` — 10级 hex 颜色映射
 - `LEVEL_LABELS` — `[{key, label}]` 数组，label 从 `MOCK.leadLevels` 动态获取
 
 辅助函数：
@@ -191,7 +190,7 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 - `showProjectDrillModal(code)` — 大项目下钻，复用 `renderDrillContent()`
 - `showScheduleDrillModal(code)` — 媒体下钻，复用 `renderDrillContent()`
 - `renderDrillContent(channels)` — 通用下钻渲染（大区→小区→门店）
-- `generateStoreCard(store, areaLabel, maxTotal)` — 门店卡片，11级迷你条形图，柱长按 maxTotal 归一化
+- `generateStoreCard(store, areaLabel, maxTotal)` — 门店卡片，10级迷你条形图，柱长按 maxTotal 归一化
 
 ### 弹窗逻辑
 - `showCityStoreModal(name)` — 城市专营店分布
@@ -250,7 +249,7 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 - 修改前确认 DOM id/class 是否被 `script.js` 硬编码引用
 - 修改表格列、排行卡片时，同步检查相关排序、下钻和 modal 渲染函数
 - 新增页面：复用 `style.css` 现有样式；加入 `main.html` 需在导航数组注册
-- Mock 数据保持中文业务语义，下钻数据使用 11 级属性名（`hSchedule` 等，非旧版 `h`/`c`）
+- Mock 数据保持中文业务语义，下钻数据使用 10 级属性名（`hSchedule` 等，非旧版 `h`/`c`）
 - 避免大规模重排 `userinsight.html`，它是长静态页面，局部修改更安全
 - 新增通用函数优先考虑复用（参考 `renderDrillContent`、`generateStoreCard`、`initRankInteraction`、`initFilterMultiSelects` 模式）
 - 筛选栏修改需同步 3 个 Tab（使用 `replace_all: true`）

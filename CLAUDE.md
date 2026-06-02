@@ -26,23 +26,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture: What agent.md Doesn't Cover
 
-### 11-Level Lead Quality System
+### 10-Level Lead Quality System
 
-The project migrated from an 8-level to an 11-level lead classification, aligned with `MOCK.leadLevels`:
+The project migrated to a 10-level lead classification, aligned with `MOCK.leadLevels`:
 
 ```
 H-试驾排程单, H-试驾线索单, H-非试驾线索单, A, B,
-C-意向不明, C-无法接通, F-战败, L-休眠, E-意向含糊, 无效号码
+C-意向不明, C-无法接通, F-战败, L-休眠, E-意向含糊
 ```
 
 Key JS constants in `script.js`:
-- `LEVEL_COLORS` — hex colors for each of the 11 levels (used by bar charts, legends, pie charts)
+- `LEVEL_COLORS` — hex colors for each of the 10 levels (used by bar charts, legends, pie charts)
 - `LEVEL_LABELS` — `[{key, label}]` array, labels dynamically sourced from `MOCK.leadLevels`
 - `storeLevel(s, key)` — safe property accessor
 - `storeHTotal(s)` / `storeCTotal(s)` / `storeTotal(s)` / `storeHabTotal(s)` — aggregation helpers
 - `maxStoreTotal(stores)` — find max total across a store array (used for bar normalization)
 
-Drill-down data in `mock.js` also uses the 11-level structure: `hSchedule`, `hLead`, `hNonTest`, `cUnclear`, `cUnreachable` instead of flat `h`/`c`.
+Drill-down data in `mock.js` also uses the 10-level structure: `hSchedule`, `hLead`, `hNonTest`, `cUnclear`, `cUnreachable` instead of flat `h`/`c`.
 
 ### Generic Multi-Select Filter System
 
@@ -66,7 +66,7 @@ When rendering groups of store cards, callers must compute `maxTotal` for the cu
 
 Two shared rendering functions used by both project and schedule drill-down modals:
 - `renderDrillContent(channels)` — renders region→subregion→store hierarchy with tab switching
-- `generateStoreCard(store, areaLabel, maxTotal)` — renders individual store card with 11-level mini bar and labels
+- `generateStoreCard(store, areaLabel, maxTotal)` — renders individual store card with 10-level mini bar and labels
 
 ### Channel V-Chart Legend
 

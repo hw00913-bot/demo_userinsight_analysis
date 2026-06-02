@@ -26,8 +26,7 @@ leadLevels: [
     'C-无法接通',
     'F-战败',
     'L-休眠',
-    'E-意向含糊',
-    '无效号码'
+    'E-意向含糊'
 ],
 
 // ============================================
@@ -435,16 +434,16 @@ store: {
             regionName: '华南区',
             areas: {
                 '河源区': [
-                    { name: '河源合利丰', hSchedule: 10, hLead: 10, hNonTest: 9, a: 18, b: 25, cUnclear: 7, cUnreachable: 7, f: 6, l: 8, e: 3, invalid: 9, total: 116 },
+                    { name: '河源合利丰', hSchedule: 10, hLead: 10, hNonTest: 9, a: 18, b: 25, cUnclear: 7, cUnreachable: 7, f: 6, l: 8, e: 3, total: 103 },
                 ],
                 '广州区': [
-                    { name: '广州耀骏', hSchedule: 13, hLead: 13, hNonTest: 10, a: 62, b: 98, cUnclear: 12, cUnreachable: 13, f: 20, l: 15, e: 8, invalid: 4, total: 328 },
-                    { name: '广州东风南方广辰', hSchedule: 4, hLead: 4, hNonTest: 2, a: 35, b: 33, cUnclear: 18, cUnreachable: 19, f: 18, l: 10, e: 2, invalid: 2, total: 128 },
-                    { name: '广州珠峰黄埔', hSchedule: 6, hLead: 6, hNonTest: 6, a: 27, b: 19, cUnclear: 12, cUnreachable: 13, f: 11, l: 6, e: 10, invalid: 8, total: 111 },
+                    { name: '广州耀骏', hSchedule: 13, hLead: 13, hNonTest: 10, a: 62, b: 98, cUnclear: 12, cUnreachable: 13, f: 20, l: 15, e: 8, total: 264 },
+                    { name: '广州东风南方广辰', hSchedule: 4, hLead: 4, hNonTest: 2, a: 35, b: 33, cUnclear: 18, cUnreachable: 19, f: 18, l: 10, e: 2, total: 145 },
+                    { name: '广州珠峰黄埔', hSchedule: 6, hLead: 6, hNonTest: 6, a: 27, b: 19, cUnclear: 12, cUnreachable: 13, f: 11, l: 6, e: 10, total: 116 },
                 ],
                 '珠海区': [
-                    { name: '珠海明珠', hSchedule: 8, hLead: 8, hNonTest: 6, a: 50, b: 38, cUnclear: 7, cUnreachable: 7, f: 19, l: 15, e: 10, invalid: 2, total: 173 },
-                    { name: '珠海黄浦金湾', hSchedule: 9, hLead: 9, hNonTest: 8, a: 15, b: 17, cUnclear: 12, cUnreachable: 13, f: 10, l: 9, e: 9, invalid: 8, total: 105 },
+                    { name: '珠海明珠', hSchedule: 8, hLead: 8, hNonTest: 6, a: 50, b: 38, cUnclear: 7, cUnreachable: 7, f: 19, l: 15, e: 10, total: 168 },
+                    { name: '珠海黄浦金湾', hSchedule: 9, hLead: 9, hNonTest: 8, a: 15, b: 17, cUnclear: 12, cUnreachable: 13, f: 10, l: 9, e: 9, total: 111 },
                 ],
             }
         },
@@ -452,21 +451,21 @@ store: {
             regionName: '华北区',
             areas: {
                 '石家庄区': [
-                    { name: '石家庄东风南方新华', hSchedule: 9, hLead: 9, hNonTest: 9, a: 24, b: 44, cUnclear: 13, cUnreachable: 13, f: 19, l: 7, e: 8, invalid: 9, total: 164 },
-                    { name: '石家庄东风南方联德', hSchedule: 29, hLead: 29, hNonTest: 25, a: 79, b: 87, cUnclear: 14, cUnreachable: 14, f: 11, l: 3, e: 11, invalid: 9, total: 418 },
-                    { name: '石家庄东风南方裕华', hSchedule: 6, hLead: 6, hNonTest: 4, a: 17, b: 17, cUnclear: 24, cUnreachable: 23, f: 20, l: 11, e: 10, invalid: 3, total: 111 },
+                    { name: '石家庄东风南方新华', hSchedule: 9, hLead: 9, hNonTest: 9, a: 24, b: 44, cUnclear: 13, cUnreachable: 13, f: 19, l: 7, e: 8, total: 155 },
+                    { name: '石家庄东风南方联德', hSchedule: 29, hLead: 29, hNonTest: 25, a: 79, b: 87, cUnclear: 14, cUnreachable: 14, f: 11, l: 3, e: 11, total: 302 },
+                    { name: '石家庄东风南方裕华', hSchedule: 6, hLead: 6, hNonTest: 4, a: 17, b: 17, cUnclear: 24, cUnreachable: 23, f: 20, l: 11, e: 10, total: 138 },
                 ],
                 '廊坊区': [
-                    { name: '廊坊华盛昌广阳', hSchedule: 4, hLead: 4, hNonTest: 4, a: 29, b: 38, cUnclear: 18, cUnreachable: 17, f: 8, l: 12, e: 5, invalid: 10, total: 175 },
-                    { name: '廊坊华盛昌安次', hSchedule: 8, hLead: 8, hNonTest: 7, a: 65, b: 107, cUnclear: 24, cUnreachable: 23, f: 23, l: 11, e: 7, invalid: 5, total: 384 },
+                    { name: '廊坊华盛昌广阳', hSchedule: 4, hLead: 4, hNonTest: 4, a: 29, b: 38, cUnclear: 18, cUnreachable: 17, f: 8, l: 12, e: 5, total: 139 },
+                    { name: '廊坊华盛昌安次', hSchedule: 8, hLead: 8, hNonTest: 7, a: 65, b: 107, cUnclear: 24, cUnreachable: 23, f: 23, l: 11, e: 7, total: 283 },
                 ],
                 '北京区': [
-                    { name: '北京华盛昌', hSchedule: 10, hLead: 10, hNonTest: 8, a: 55, b: 64, cUnclear: 9, cUnreachable: 9, f: 25, l: 7, e: 9, invalid: 6, total: 240 },
-                    { name: '北京东风南方亮马', hSchedule: 11, hLead: 11, hNonTest: 10, a: 69, b: 134, cUnclear: 24, cUnreachable: 25, f: 23, l: 4, e: 3, invalid: 9, total: 464 },
-                    { name: '北京东风南方丽泽', hSchedule: 14, hLead: 14, hNonTest: 11, a: 43, b: 35, cUnclear: 16, cUnreachable: 16, f: 7, l: 6, e: 7, invalid: 5, total: 189 },
+                    { name: '北京华盛昌', hSchedule: 10, hLead: 10, hNonTest: 8, a: 55, b: 64, cUnclear: 9, cUnreachable: 9, f: 25, l: 7, e: 9, total: 206 },
+                    { name: '北京东风南方亮马', hSchedule: 11, hLead: 11, hNonTest: 10, a: 69, b: 134, cUnclear: 24, cUnreachable: 25, f: 23, l: 4, e: 3, total: 314 },
+                    { name: '北京东风南方丽泽', hSchedule: 14, hLead: 14, hNonTest: 11, a: 43, b: 35, cUnclear: 16, cUnreachable: 16, f: 7, l: 6, e: 7, total: 169 },
                 ],
                 '大同区': [
-                    { name: '大同东昊', hSchedule: 23, hLead: 23, hNonTest: 20, a: 72, b: 45, cUnclear: 22, cUnreachable: 23, f: 14, l: 13, e: 3, invalid: 3, total: 304 },
+                    { name: '大同东昊', hSchedule: 23, hLead: 23, hNonTest: 20, a: 72, b: 45, cUnclear: 22, cUnreachable: 23, f: 14, l: 13, e: 3, total: 258 },
                 ],
             }
         },
@@ -474,18 +473,18 @@ store: {
             regionName: '华中二区',
             areas: {
                 '南宁区': [
-                    { name: '南宁恒信东顺', hSchedule: 35, hLead: 35, hNonTest: 31, a: 87, b: 105, cUnclear: 14, cUnreachable: 14, f: 24, l: 6, e: 7, invalid: 4, total: 460 },
-                    { name: '南宁广缘仙葫', hSchedule: 37, hLead: 37, hNonTest: 33, a: 99, b: 129, cUnclear: 13, cUnreachable: 13, f: 6, l: 4, e: 12, invalid: 7, total: 431 },
-                    { name: '南宁兴宁邕宾', hSchedule: 5, hLead: 5, hNonTest: 3, a: 33, b: 55, cUnclear: 9, cUnreachable: 9, f: 25, l: 7, e: 4, invalid: 8, total: 221 },
+                    { name: '南宁恒信东顺', hSchedule: 35, hLead: 35, hNonTest: 31, a: 87, b: 105, cUnclear: 14, cUnreachable: 14, f: 24, l: 6, e: 7, total: 358 },
+                    { name: '南宁广缘仙葫', hSchedule: 37, hLead: 37, hNonTest: 33, a: 99, b: 129, cUnclear: 13, cUnreachable: 13, f: 6, l: 4, e: 12, total: 383 },
+                    { name: '南宁兴宁邕宾', hSchedule: 5, hLead: 5, hNonTest: 3, a: 33, b: 55, cUnclear: 9, cUnreachable: 9, f: 25, l: 7, e: 4, total: 155 },
                 ],
                 '宜春区': [
-                    { name: '宜春利隆丰樟高', hSchedule: 3, hLead: 3, hNonTest: 3, a: 26, b: 21, cUnclear: 16, cUnreachable: 17, f: 23, l: 11, e: 4, invalid: 7, total: 137 },
-                    { name: '宜春利泰袁州', hSchedule: 3, hLead: 3, hNonTest: 2, a: 34, b: 37, cUnclear: 6, cUnreachable: 6, f: 16, l: 6, e: 12, invalid: 4, total: 145 },
+                    { name: '宜春利隆丰樟高', hSchedule: 3, hLead: 3, hNonTest: 3, a: 26, b: 21, cUnclear: 16, cUnreachable: 17, f: 23, l: 11, e: 4, total: 127 },
+                    { name: '宜春利泰袁州', hSchedule: 3, hLead: 3, hNonTest: 2, a: 34, b: 37, cUnclear: 6, cUnreachable: 6, f: 16, l: 6, e: 12, total: 125 },
                 ],
                 '长沙区': [
-                    { name: '长沙兰天河西', hSchedule: 24, hLead: 24, hNonTest: 21, a: 54, b: 63, cUnclear: 10, cUnreachable: 10, f: 10, l: 9, e: 2, invalid: 3, total: 288 },
-                    { name: '浏阳兰天集里', hSchedule: 24, hLead: 24, hNonTest: 20, a: 127, b: 100, cUnclear: 14, cUnreachable: 13, f: 10, l: 15, e: 3, invalid: 7, total: 457 },
-                    { name: '长沙兰天城西', hSchedule: 7, hLead: 7, hNonTest: 5, a: 21, b: 20, cUnclear: 20, cUnreachable: 19, f: 16, l: 7, e: 5, invalid: 4, total: 99 },
+                    { name: '长沙兰天河西', hSchedule: 24, hLead: 24, hNonTest: 21, a: 54, b: 63, cUnclear: 10, cUnreachable: 10, f: 10, l: 9, e: 2, total: 227 },
+                    { name: '浏阳兰天集里', hSchedule: 24, hLead: 24, hNonTest: 20, a: 127, b: 100, cUnclear: 14, cUnreachable: 13, f: 10, l: 15, e: 3, total: 350 },
+                    { name: '长沙兰天城西', hSchedule: 7, hLead: 7, hNonTest: 5, a: 21, b: 20, cUnclear: 20, cUnreachable: 19, f: 16, l: 7, e: 5, total: 127 },
                 ],
             }
         },
@@ -493,14 +492,14 @@ store: {
             regionName: '东北区',
             areas: {
                 '赤峰区': [
-                    { name: '赤峰金鹏', hSchedule: 15, hLead: 15, hNonTest: 12, a: 65, b: 48, cUnclear: 14, cUnreachable: 13, f: 16, l: 13, e: 10, invalid: 7, total: 284 },
-                    { name: '赤峰世鹏', hSchedule: 33, hLead: 33, hNonTest: 27, a: 106, b: 64, cUnclear: 8, cUnreachable: 9, f: 13, l: 5, e: 11, invalid: 5, total: 427 },
+                    { name: '赤峰金鹏', hSchedule: 15, hLead: 15, hNonTest: 12, a: 65, b: 48, cUnclear: 14, cUnreachable: 13, f: 16, l: 13, e: 10, total: 221 },
+                    { name: '赤峰世鹏', hSchedule: 33, hLead: 33, hNonTest: 27, a: 106, b: 64, cUnclear: 8, cUnreachable: 9, f: 13, l: 5, e: 11, total: 309 },
                 ],
                 '双鸭山区': [
-                    { name: '双鸭山凯华运通', hSchedule: 11, hLead: 11, hNonTest: 10, a: 37, b: 35, cUnclear: 15, cUnreachable: 15, f: 18, l: 12, e: 10, invalid: 2, total: 135 },
+                    { name: '双鸭山凯华运通', hSchedule: 11, hLead: 11, hNonTest: 10, a: 37, b: 35, cUnclear: 15, cUnreachable: 15, f: 18, l: 12, e: 10, total: 174 },
                 ],
                 '四平区': [
-                    { name: '四平成拓', hSchedule: 14, hLead: 14, hNonTest: 13, a: 86, b: 60, cUnclear: 18, cUnreachable: 19, f: 5, l: 11, e: 10, invalid: 4, total: 375 },
+                    { name: '四平成拓', hSchedule: 14, hLead: 14, hNonTest: 13, a: 86, b: 60, cUnclear: 18, cUnreachable: 19, f: 5, l: 11, e: 10, total: 250 },
                 ],
             }
         },
@@ -508,17 +507,17 @@ store: {
             regionName: '华东二区',
             areas: {
                 '合肥区': [
-                    { name: '合肥伟业', hSchedule: 22, hLead: 22, hNonTest: 19, a: 105, b: 75, cUnclear: 14, cUnreachable: 15, f: 21, l: 7, e: 12, invalid: 7, total: 420 },
-                    { name: '合肥小小宝湾', hSchedule: 14, hLead: 14, hNonTest: 13, a: 59, b: 46, cUnclear: 11, cUnreachable: 11, f: 18, l: 13, e: 8, invalid: 3, total: 247 },
-                    { name: '合肥恒信东顺合肥北', hSchedule: 31, hLead: 31, hNonTest: 28, a: 94, b: 106, cUnclear: 22, cUnreachable: 23, f: 5, l: 7, e: 6, invalid: 4, total: 395 },
+                    { name: '合肥伟业', hSchedule: 22, hLead: 22, hNonTest: 19, a: 105, b: 75, cUnclear: 14, cUnreachable: 15, f: 21, l: 7, e: 12, total: 312 },
+                    { name: '合肥小小宝湾', hSchedule: 14, hLead: 14, hNonTest: 13, a: 59, b: 46, cUnclear: 11, cUnreachable: 11, f: 18, l: 13, e: 8, total: 207 },
+                    { name: '合肥恒信东顺合肥北', hSchedule: 31, hLead: 31, hNonTest: 28, a: 94, b: 106, cUnclear: 22, cUnreachable: 23, f: 5, l: 7, e: 6, total: 353 },
                 ],
                 '连云港区': [
-                    { name: '连云港中信华耀', hSchedule: 38, hLead: 38, hNonTest: 34, a: 120, b: 139, cUnclear: 19, cUnreachable: 19, f: 19, l: 13, e: 5, invalid: 9, total: 482 },
+                    { name: '连云港中信华耀', hSchedule: 38, hLead: 38, hNonTest: 34, a: 120, b: 139, cUnclear: 19, cUnreachable: 19, f: 19, l: 13, e: 5, total: 444 },
                 ],
                 '常州区': [
-                    { name: '常州中天日晟', hSchedule: 6, hLead: 6, hNonTest: 5, a: 30, b: 20, cUnclear: 12, cUnreachable: 13, f: 14, l: 6, e: 5, invalid: 3, total: 123 },
-                    { name: '常州中天', hSchedule: 2, hLead: 2, hNonTest: 1, a: 20, b: 27, cUnclear: 24, cUnreachable: 25, f: 7, l: 10, e: 8, invalid: 10, total: 92 },
-                    { name: '溧阳中天日盛', hSchedule: 10, hLead: 10, hNonTest: 10, a: 53, b: 48, cUnclear: 12, cUnreachable: 13, f: 9, l: 13, e: 2, invalid: 2, total: 179 },
+                    { name: '常州中天日晟', hSchedule: 6, hLead: 6, hNonTest: 5, a: 30, b: 20, cUnclear: 12, cUnreachable: 13, f: 14, l: 6, e: 5, total: 117 },
+                    { name: '常州中天', hSchedule: 2, hLead: 2, hNonTest: 1, a: 20, b: 27, cUnclear: 24, cUnreachable: 25, f: 7, l: 10, e: 8, total: 126 },
+                    { name: '溧阳中天日盛', hSchedule: 10, hLead: 10, hNonTest: 10, a: 53, b: 48, cUnclear: 12, cUnreachable: 13, f: 9, l: 13, e: 2, total: 180 },
                 ],
             }
         },
@@ -526,17 +525,17 @@ store: {
             regionName: '西南区',
             areas: {
                 '昆明区': [
-                    { name: '昆明东风南方经开区', hSchedule: 36, hLead: 36, hNonTest: 31, a: 142, b: 78, cUnclear: 22, cUnreachable: 23, f: 12, l: 4, e: 9, invalid: 3, total: 491 },
-                    { name: '昆明东风南方三佳', hSchedule: 33, hLead: 33, hNonTest: 27, a: 122, b: 142, cUnclear: 24, cUnreachable: 25, f: 21, l: 9, e: 10, invalid: 8, total: 490 },
-                    { name: '昆明东风南方一佳', hSchedule: 11, hLead: 11, hNonTest: 10, a: 46, b: 37, cUnclear: 12, cUnreachable: 13, f: 25, l: 7, e: 10, invalid: 8, total: 161 },
+                    { name: '昆明东风南方经开区', hSchedule: 36, hLead: 36, hNonTest: 31, a: 142, b: 78, cUnclear: 22, cUnreachable: 23, f: 12, l: 4, e: 9, total: 393 },
+                    { name: '昆明东风南方三佳', hSchedule: 33, hLead: 33, hNonTest: 27, a: 122, b: 142, cUnclear: 24, cUnreachable: 25, f: 21, l: 9, e: 10, total: 446 },
+                    { name: '昆明东风南方一佳', hSchedule: 11, hLead: 11, hNonTest: 10, a: 46, b: 37, cUnclear: 12, cUnreachable: 13, f: 25, l: 7, e: 10, total: 182 },
                 ],
                 '重庆区': [
-                    { name: '重庆东风南方渝兴', hSchedule: 7, hLead: 7, hNonTest: 7, a: 73, b: 67, cUnclear: 14, cUnreachable: 13, f: 15, l: 8, e: 10, invalid: 2, total: 305 },
-                    { name: '重庆东风南方西南汽贸城', hSchedule: 5, hLead: 5, hNonTest: 3, a: 33, b: 40, cUnclear: 10, cUnreachable: 9, f: 11, l: 4, e: 8, invalid: 7, total: 150 },
-                    { name: '重庆东风南方盛泰', hSchedule: 19, hLead: 19, hNonTest: 16, a: 72, b: 69, cUnclear: 6, cUnreachable: 7, f: 11, l: 9, e: 8, invalid: 10, total: 249 },
+                    { name: '重庆东风南方渝兴', hSchedule: 7, hLead: 7, hNonTest: 7, a: 73, b: 67, cUnclear: 14, cUnreachable: 13, f: 15, l: 8, e: 10, total: 221 },
+                    { name: '重庆东风南方西南汽贸城', hSchedule: 5, hLead: 5, hNonTest: 3, a: 33, b: 40, cUnclear: 10, cUnreachable: 9, f: 11, l: 4, e: 8, total: 128 },
+                    { name: '重庆东风南方盛泰', hSchedule: 19, hLead: 19, hNonTest: 16, a: 72, b: 69, cUnclear: 6, cUnreachable: 7, f: 11, l: 9, e: 8, total: 236 },
                 ],
                 '安顺区': [
-                    { name: '安顺恒信东顺', hSchedule: 38, hLead: 38, hNonTest: 32, a: 127, b: 141, cUnclear: 5, cUnreachable: 5, f: 16, l: 7, e: 8, invalid: 7, total: 471 },
+                    { name: '安顺恒信东顺', hSchedule: 38, hLead: 38, hNonTest: 32, a: 127, b: 141, cUnclear: 5, cUnreachable: 5, f: 16, l: 7, e: 8, total: 417 },
                 ],
             }
         },
@@ -544,19 +543,19 @@ store: {
             regionName: '华东一区',
             areas: {
                 '泉州区': [
-                    { name: '晋江汇京豪信', hSchedule: 14, hLead: 14, hNonTest: 11, a: 65, b: 32, cUnclear: 17, cUnreachable: 17, f: 15, l: 13, e: 12, invalid: 7, total: 219 },
-                    { name: '泉州亿兴', hSchedule: 16, hLead: 16, hNonTest: 13, a: 130, b: 85, cUnclear: 24, cUnreachable: 25, f: 22, l: 3, e: 8, invalid: 10, total: 450 },
-                    { name: '泉州汇京南环路', hSchedule: 6, hLead: 6, hNonTest: 6, a: 62, b: 103, cUnclear: 9, cUnreachable: 9, f: 19, l: 5, e: 2, invalid: 5, total: 368 },
+                    { name: '晋江汇京豪信', hSchedule: 14, hLead: 14, hNonTest: 11, a: 65, b: 32, cUnclear: 17, cUnreachable: 17, f: 15, l: 13, e: 12, total: 210 },
+                    { name: '泉州亿兴', hSchedule: 16, hLead: 16, hNonTest: 13, a: 130, b: 85, cUnclear: 24, cUnreachable: 25, f: 22, l: 3, e: 8, total: 342 },
+                    { name: '泉州汇京南环路', hSchedule: 6, hLead: 6, hNonTest: 6, a: 62, b: 103, cUnclear: 9, cUnreachable: 9, f: 19, l: 5, e: 2, total: 227 },
                 ],
                 '台州区': [
-                    { name: '台州临海康富', hSchedule: 16, hLead: 16, hNonTest: 14, a: 78, b: 84, cUnclear: 14, cUnreachable: 13, f: 18, l: 7, e: 3, invalid: 8, total: 312 },
-                    { name: '台州铠利', hSchedule: 7, hLead: 7, hNonTest: 5, a: 14, b: 23, cUnclear: 12, cUnreachable: 12, f: 25, l: 4, e: 12, invalid: 1, total: 89 },
-                    { name: '台州刚泰路桥', hSchedule: 8, hLead: 8, hNonTest: 7, a: 102, b: 97, cUnclear: 6, cUnreachable: 5, f: 24, l: 5, e: 5, invalid: 3, total: 466 },
+                    { name: '台州临海康富', hSchedule: 16, hLead: 16, hNonTest: 14, a: 78, b: 84, cUnclear: 14, cUnreachable: 13, f: 18, l: 7, e: 3, total: 263 },
+                    { name: '台州铠利', hSchedule: 7, hLead: 7, hNonTest: 5, a: 14, b: 23, cUnclear: 12, cUnreachable: 12, f: 25, l: 4, e: 12, total: 121 },
+                    { name: '台州刚泰路桥', hSchedule: 8, hLead: 8, hNonTest: 7, a: 102, b: 97, cUnclear: 6, cUnreachable: 5, f: 24, l: 5, e: 5, total: 267 },
                 ],
                 '上海区': [
-                    { name: '上海松江', hSchedule: 14, hLead: 14, hNonTest: 13, a: 82, b: 63, cUnclear: 24, cUnreachable: 24, f: 24, l: 14, e: 3, invalid: 3, total: 318 },
-                    { name: '上海安吉浦东金桥', hSchedule: 7, hLead: 7, hNonTest: 5, a: 35, b: 57, cUnclear: 23, cUnreachable: 23, f: 17, l: 9, e: 5, invalid: 2, total: 239 },
-                    { name: '上海东风南方威铭', hSchedule: 33, hLead: 33, hNonTest: 29, a: 84, b: 68, cUnclear: 14, cUnreachable: 15, f: 24, l: 15, e: 3, invalid: 10, total: 383 },
+                    { name: '上海松江', hSchedule: 14, hLead: 14, hNonTest: 13, a: 82, b: 63, cUnclear: 24, cUnreachable: 24, f: 24, l: 14, e: 3, total: 275 },
+                    { name: '上海安吉浦东金桥', hSchedule: 7, hLead: 7, hNonTest: 5, a: 35, b: 57, cUnclear: 23, cUnreachable: 23, f: 17, l: 9, e: 5, total: 188 },
+                    { name: '上海东风南方威铭', hSchedule: 33, hLead: 33, hNonTest: 29, a: 84, b: 68, cUnclear: 14, cUnreachable: 15, f: 24, l: 15, e: 3, total: 318 },
                 ],
             }
         },
@@ -564,16 +563,16 @@ store: {
             regionName: '华中一区',
             areas: {
                 '潜江区': [
-                    { name: '潜江三环劲通', hSchedule: 20, hLead: 20, hNonTest: 16, a: 71, b: 66, cUnclear: 7, cUnreachable: 7, f: 21, l: 13, e: 7, invalid: 1, total: 257 },
+                    { name: '潜江三环劲通', hSchedule: 20, hLead: 20, hNonTest: 16, a: 71, b: 66, cUnclear: 7, cUnreachable: 7, f: 21, l: 13, e: 7, total: 248 },
                 ],
                 '郑州区': [
-                    { name: '郑州东风南方郑工', hSchedule: 8, hLead: 8, hNonTest: 8, a: 34, b: 38, cUnclear: 10, cUnreachable: 9, f: 18, l: 5, e: 10, invalid: 5, total: 134 },
-                    { name: '郑州威佳宏远', hSchedule: 30, hLead: 30, hNonTest: 26, a: 118, b: 114, cUnclear: 18, cUnreachable: 19, f: 23, l: 7, e: 7, invalid: 4, total: 395 },
-                    { name: '郑州东风南方威耀', hSchedule: 6, hLead: 6, hNonTest: 4, a: 35, b: 27, cUnclear: 20, cUnreachable: 19, f: 23, l: 12, e: 12, invalid: 7, total: 124 },
+                    { name: '郑州东风南方郑工', hSchedule: 8, hLead: 8, hNonTest: 8, a: 34, b: 38, cUnclear: 10, cUnreachable: 9, f: 18, l: 5, e: 10, total: 148 },
+                    { name: '郑州威佳宏远', hSchedule: 30, hLead: 30, hNonTest: 26, a: 118, b: 114, cUnclear: 18, cUnreachable: 19, f: 23, l: 7, e: 7, total: 392 },
+                    { name: '郑州东风南方威耀', hSchedule: 6, hLead: 6, hNonTest: 4, a: 35, b: 27, cUnclear: 20, cUnreachable: 19, f: 23, l: 12, e: 12, total: 164 },
                 ],
                 '宜昌区': [
-                    { name: '宜昌交运麟宏', hSchedule: 17, hLead: 17, hNonTest: 15, a: 66, b: 99, cUnclear: 12, cUnreachable: 11, f: 16, l: 15, e: 6, invalid: 6, total: 333 },
-                    { name: '宜昌交运', hSchedule: 19, hLead: 19, hNonTest: 15, a: 51, b: 33, cUnclear: 22, cUnreachable: 21, f: 11, l: 4, e: 5, invalid: 7, total: 223 },
+                    { name: '宜昌交运麟宏', hSchedule: 17, hLead: 17, hNonTest: 15, a: 66, b: 99, cUnclear: 12, cUnreachable: 11, f: 16, l: 15, e: 6, total: 274 },
+                    { name: '宜昌交运', hSchedule: 19, hLead: 19, hNonTest: 15, a: 51, b: 33, cUnclear: 22, cUnreachable: 21, f: 11, l: 4, e: 5, total: 200 },
                 ],
             }
         },
@@ -650,19 +649,19 @@ drillData: {
         channels: {
             '华东大区': {
                 '上海小区': [
-                    { name: '上海东风南方专营店', hSchedule: 16, hLead: 16, hNonTest: 13, a: 78, b: 95, cUnclear: 21, cUnreachable: 21, f: 18, l: 8, e: 6, invalid: 8, total: 300 },
-                    { name: '上海日产特约店', hSchedule: 13, hLead: 13, hNonTest: 12, a: 65, b: 82, cUnclear: 18, cUnreachable: 17, f: 15, l: 6, e: 5, invalid: 6, total: 252 }
+                    { name: '上海东风南方专营店', hSchedule: 16, hLead: 16, hNonTest: 13, a: 78, b: 95, cUnclear: 21, cUnreachable: 21, f: 18, l: 8, e: 6, total: 292 },
+                    { name: '上海日产特约店', hSchedule: 13, hLead: 13, hNonTest: 12, a: 65, b: 82, cUnclear: 18, cUnreachable: 17, f: 15, l: 6, e: 5, total: 246 }
                 ],
                 '浙江小区': [
-                    { name: '杭州城西专营店', hSchedule: 11, hLead: 11, hNonTest: 10, a: 55, b: 72, cUnclear: 14, cUnreachable: 14, f: 12, l: 5, e: 4, invalid: 5, total: 213 }
+                    { name: '杭州城西专营店', hSchedule: 11, hLead: 11, hNonTest: 10, a: 55, b: 72, cUnclear: 14, cUnreachable: 14, f: 12, l: 5, e: 4, total: 208 }
                 ]
             },
             '华南大区': {
                 '广州小区': [
-                    { name: '广州天河专营店', hSchedule: 15, hLead: 15, hNonTest: 12, a: 72, b: 88, cUnclear: 19, cUnreachable: 19, f: 16, l: 7, e: 5, invalid: 7, total: 275 }
+                    { name: '广州天河专营店', hSchedule: 15, hLead: 15, hNonTest: 12, a: 72, b: 88, cUnclear: 19, cUnreachable: 19, f: 16, l: 7, e: 5, total: 268 }
                 ],
                 '深圳小区': [
-                    { name: '深圳南山专营店', hSchedule: 12, hLead: 12, hNonTest: 11, a: 62, b: 78, cUnclear: 16, cUnreachable: 16, f: 14, l: 6, e: 5, invalid: 6, total: 238 }
+                    { name: '深圳南山专营店', hSchedule: 12, hLead: 12, hNonTest: 11, a: 62, b: 78, cUnclear: 16, cUnreachable: 16, f: 14, l: 6, e: 5, total: 232 }
                 ]
             }
         }
@@ -672,16 +671,16 @@ drillData: {
         channels: {
             '华中大区': {
                 '武汉小区': [
-                    { name: '武汉汉口专营店', hSchedule: 10, hLead: 10, hNonTest: 8, a: 48, b: 62, cUnclear: 12, cUnreachable: 13, f: 12, l: 5, e: 4, invalid: 4, total: 188 },
-                    { name: '武汉武昌专营店', hSchedule: 8, hLead: 8, hNonTest: 6, a: 38, b: 52, cUnclear: 10, cUnreachable: 10, f: 10, l: 4, e: 3, invalid: 3, total: 152 }
+                    { name: '武汉汉口专营店', hSchedule: 10, hLead: 10, hNonTest: 8, a: 48, b: 62, cUnclear: 12, cUnreachable: 13, f: 12, l: 5, e: 4, total: 184 },
+                    { name: '武汉武昌专营店', hSchedule: 8, hLead: 8, hNonTest: 6, a: 38, b: 52, cUnclear: 10, cUnreachable: 10, f: 10, l: 4, e: 3, total: 149 }
                 ]
             },
             '西部大区': {
                 '成都小区': [
-                    { name: '成都武侯专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 42, b: 55, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, invalid: 3, total: 164 }
+                    { name: '成都武侯专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 42, b: 55, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, total: 161 }
                 ],
                 '西安小区': [
-                    { name: '西安雁塔专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 45, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 3, invalid: 2, total: 129 }
+                    { name: '西安雁塔专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 45, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 3, total: 127 }
                 ]
             }
         }
@@ -691,18 +690,18 @@ drillData: {
         channels: {
             '华东大区': {
                 '南京小区': [
-                    { name: '南京鼓楼专营店', hSchedule: 11, hLead: 11, hNonTest: 10, a: 55, b: 72, cUnclear: 15, cUnreachable: 15, f: 12, l: 5, e: 4, invalid: 4, total: 214 }
+                    { name: '南京鼓楼专营店', hSchedule: 11, hLead: 11, hNonTest: 10, a: 55, b: 72, cUnclear: 15, cUnreachable: 15, f: 12, l: 5, e: 4, total: 210 }
                 ],
                 '苏州小区': [
-                    { name: '苏州园区专营店', hSchedule: 10, hLead: 10, hNonTest: 8, a: 48, b: 65, cUnclear: 13, cUnreachable: 13, f: 11, l: 4, e: 3, invalid: 3, total: 188 }
+                    { name: '苏州园区专营店', hSchedule: 10, hLead: 10, hNonTest: 8, a: 48, b: 65, cUnclear: 13, cUnreachable: 13, f: 11, l: 4, e: 3, total: 185 }
                 ]
             },
             '华北大区': {
                 '北京小区': [
-                    { name: '北京海淀专营店', hSchedule: 12, hLead: 12, hNonTest: 11, a: 58, b: 75, cUnclear: 16, cUnreachable: 16, f: 14, l: 5, e: 5, invalid: 5, total: 229 }
+                    { name: '北京海淀专营店', hSchedule: 12, hLead: 12, hNonTest: 11, a: 58, b: 75, cUnclear: 16, cUnreachable: 16, f: 14, l: 5, e: 5, total: 224 }
                 ],
                 '天津小区': [
-                    { name: '天津河西专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 42, b: 58, cUnclear: 12, cUnreachable: 12, f: 10, l: 4, e: 3, invalid: 3, total: 169 }
+                    { name: '天津河西专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 42, b: 58, cUnclear: 12, cUnreachable: 12, f: 10, l: 4, e: 3, total: 166 }
                 ]
             }
         }
@@ -712,13 +711,13 @@ drillData: {
         channels: {
             '华南大区': {
                 '广州小区': [
-                    { name: '广州番禺专营店', hSchedule: 10, hLead: 10, hNonTest: 10, a: 52, b: 68, cUnclear: 14, cUnreachable: 14, f: 12, l: 5, e: 4, invalid: 4, total: 203 },
-                    { name: '广州白云专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 45, b: 60, cUnclear: 12, cUnreachable: 12, f: 10, l: 4, e: 3, invalid: 3, total: 174 }
+                    { name: '广州番禺专营店', hSchedule: 10, hLead: 10, hNonTest: 10, a: 52, b: 68, cUnclear: 14, cUnreachable: 14, f: 12, l: 5, e: 4, total: 199 },
+                    { name: '广州白云专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 45, b: 60, cUnclear: 12, cUnreachable: 12, f: 10, l: 4, e: 3, total: 171 }
                 ]
             },
             '西部大区': {
                 '成都小区': [
-                    { name: '成都成华专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 48, cUnclear: 10, cUnreachable: 10, f: 8, l: 3, e: 3, invalid: 2, total: 139 }
+                    { name: '成都成华专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 48, cUnclear: 10, cUnreachable: 10, f: 8, l: 3, e: 3, total: 137 }
                 ]
             }
         }
@@ -728,15 +727,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '上海小区': [
-                    { name: '上海华新专营店', hSchedule: 13, hLead: 13, hNonTest: 12, a: 65, b: 82, cUnclear: 18, cUnreachable: 17, f: 15, l: 6, e: 5, invalid: 6, total: 252 }
+                    { name: '上海华新专营店', hSchedule: 13, hLead: 13, hNonTest: 12, a: 65, b: 82, cUnclear: 18, cUnreachable: 17, f: 15, l: 6, e: 5, total: 246 }
                 ],
                 '浙江小区': [
-                    { name: '杭州滨江专营店', hSchedule: 10, hLead: 10, hNonTest: 10, a: 52, b: 68, cUnclear: 14, cUnreachable: 14, f: 12, l: 5, e: 4, invalid: 4, total: 203 }
+                    { name: '杭州滨江专营店', hSchedule: 10, hLead: 10, hNonTest: 10, a: 52, b: 68, cUnclear: 14, cUnreachable: 14, f: 12, l: 5, e: 4, total: 199 }
                 ]
             },
             '华中大区': {
                 '长沙小区': [
-                    { name: '长沙岳麓专营店', hSchedule: 8, hLead: 8, hNonTest: 6, a: 38, b: 52, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, invalid: 3, total: 154 }
+                    { name: '长沙岳麓专营店', hSchedule: 8, hLead: 8, hNonTest: 6, a: 38, b: 52, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, total: 151 }
                 ]
             }
         }
@@ -746,18 +745,18 @@ drillData: {
         channels: {
             '华东大区': {
                 '上海小区': [
-                    { name: '上海浦东专营店', hSchedule: 14, hLead: 14, hNonTest: 12, a: 68, b: 85, cUnclear: 18, cUnreachable: 18, f: 14, l: 6, e: 5, invalid: 6, total: 260 }
+                    { name: '上海浦东专营店', hSchedule: 14, hLead: 14, hNonTest: 12, a: 68, b: 85, cUnclear: 18, cUnreachable: 18, f: 14, l: 6, e: 5, total: 254 }
                 ],
                 '南京小区': [
-                    { name: '南京建邺专营店', hSchedule: 10, hLead: 10, hNonTest: 8, a: 48, b: 65, cUnclear: 12, cUnreachable: 13, f: 11, l: 4, e: 3, invalid: 3, total: 187 }
+                    { name: '南京建邺专营店', hSchedule: 10, hLead: 10, hNonTest: 8, a: 48, b: 65, cUnclear: 12, cUnreachable: 13, f: 11, l: 4, e: 3, total: 184 }
                 ]
             },
             '华北大区': {
                 '北京小区': [
-                    { name: '北京朝阳专营店', hSchedule: 12, hLead: 12, hNonTest: 11, a: 60, b: 78, cUnclear: 16, cUnreachable: 16, f: 13, l: 5, e: 4, invalid: 5, total: 232 }
+                    { name: '北京朝阳专营店', hSchedule: 12, hLead: 12, hNonTest: 11, a: 60, b: 78, cUnclear: 16, cUnreachable: 16, f: 13, l: 5, e: 4, total: 227 }
                 ],
                 '天津小区': [
-                    { name: '天津南开专营店', hSchedule: 8, hLead: 8, hNonTest: 6, a: 38, b: 52, cUnclear: 10, cUnreachable: 10, f: 9, l: 3, e: 3, invalid: 3, total: 150 }
+                    { name: '天津南开专营店', hSchedule: 8, hLead: 8, hNonTest: 6, a: 38, b: 52, cUnclear: 10, cUnreachable: 10, f: 9, l: 3, e: 3, total: 147 }
                 ]
             }
         }
@@ -767,15 +766,15 @@ drillData: {
         channels: {
             '华中大区': {
                 '武汉小区': [
-                    { name: '武汉光谷专营店', hSchedule: 10, hLead: 10, hNonTest: 10, a: 50, b: 68, cUnclear: 14, cUnreachable: 14, f: 12, l: 5, e: 4, invalid: 4, total: 201 }
+                    { name: '武汉光谷专营店', hSchedule: 10, hLead: 10, hNonTest: 10, a: 50, b: 68, cUnclear: 14, cUnreachable: 14, f: 12, l: 5, e: 4, total: 197 }
                 ],
                 '长沙小区': [
-                    { name: '长沙芙蓉专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 42, b: 58, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, invalid: 3, total: 167 }
+                    { name: '长沙芙蓉专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 42, b: 58, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, total: 164 }
                 ]
             },
             '华南大区': {
                 '广州小区': [
-                    { name: '广州越秀专营店', hSchedule: 10, hLead: 10, hNonTest: 8, a: 48, b: 62, cUnclear: 12, cUnreachable: 13, f: 11, l: 4, e: 3, invalid: 3, total: 184 }
+                    { name: '广州越秀专营店', hSchedule: 10, hLead: 10, hNonTest: 8, a: 48, b: 62, cUnclear: 12, cUnreachable: 13, f: 11, l: 4, e: 3, total: 181 }
                 ]
             }
         }
@@ -785,15 +784,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '上海小区': [
-                    { name: '上海静安专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 48, cUnclear: 10, cUnreachable: 10, f: 10, l: 4, e: 3, invalid: 3, total: 138 }
+                    { name: '上海静安专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 48, cUnclear: 10, cUnreachable: 10, f: 10, l: 4, e: 3, total: 135 }
                 ],
                 '浙江小区': [
-                    { name: '杭州西湖专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 42, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 3, invalid: 2, total: 119 }
+                    { name: '杭州西湖专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 42, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 3, total: 117 }
                 ]
             },
             '华南大区': {
                 '深圳小区': [
-                    { name: '深圳福田专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 50, cUnclear: 11, cUnreachable: 11, f: 9, l: 4, e: 3, invalid: 3, total: 146 }
+                    { name: '深圳福田专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 50, cUnclear: 11, cUnreachable: 11, f: 9, l: 4, e: 3, total: 143 }
                 ]
             }
         }
@@ -803,15 +802,15 @@ drillData: {
         channels: {
             '华北大区': {
                 '北京小区': [
-                    { name: '北京丰台专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 38, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, invalid: 2, total: 105 }
+                    { name: '北京丰台专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 38, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, total: 103 }
                 ],
                 '石家庄小区': [
-                    { name: '石家庄长安专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 20, b: 35, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, invalid: 2, total: 94 }
+                    { name: '石家庄长安专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 20, b: 35, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, total: 92 }
                 ]
             },
             '西部大区': {
                 '成都小区': [
-                    { name: '成都锦江专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 40, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 109 }
+                    { name: '成都锦江专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 40, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 107 }
                 ]
             }
         }
@@ -821,15 +820,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '宁波小区': [
-                    { name: '宁波海曙专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 32, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, invalid: 2, total: 89 }
+                    { name: '宁波海曙专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 32, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, total: 87 }
                 ],
                 '温州小区': [
-                    { name: '温州鹿城专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 16, b: 28, cUnclear: 6, cUnreachable: 6, f: 6, l: 2, e: 2, invalid: 1, total: 75 }
+                    { name: '温州鹿城专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 16, b: 28, cUnclear: 6, cUnreachable: 6, f: 6, l: 2, e: 2, total: 74 }
                 ]
             },
             '华中大区': {
                 '郑州小区': [
-                    { name: '郑州金水专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 35, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 97 }
+                    { name: '郑州金水专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 35, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 95 }
                 ]
             }
         }
@@ -839,15 +838,15 @@ drillData: {
         channels: {
             '华南大区': {
                 '佛山小区': [
-                    { name: '佛山禅城专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 42, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, invalid: 2, total: 118 }
+                    { name: '佛山禅城专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 42, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, total: 116 }
                 ],
                 '东莞小区': [
-                    { name: '东莞南城专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 35, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, invalid: 2, total: 98 }
+                    { name: '东莞南城专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 35, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, total: 96 }
                 ]
             },
             '华北大区': {
                 '北京小区': [
-                    { name: '北京顺义专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 30, b: 45, cUnclear: 10, cUnreachable: 10, f: 9, l: 3, e: 3, invalid: 2, total: 130 }
+                    { name: '北京顺义专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 30, b: 45, cUnclear: 10, cUnreachable: 10, f: 9, l: 3, e: 3, total: 128 }
                 ]
             }
         }
@@ -857,15 +856,15 @@ drillData: {
         channels: {
             '西部大区': {
                 '重庆小区': [
-                    { name: '重庆渝北专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, invalid: 2, total: 84 }
+                    { name: '重庆渝北专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, total: 82 }
                 ],
                 '昆明小区': [
-                    { name: '昆明盘龙专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 15, b: 25, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, invalid: 1, total: 70 }
+                    { name: '昆明盘龙专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 15, b: 25, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, total: 69 }
                 ]
             },
             '华中大区': {
                 '合肥小区': [
-                    { name: '合肥包河专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 32, cUnclear: 8, cUnreachable: 7, f: 6, l: 3, e: 2, invalid: 2, total: 92 }
+                    { name: '合肥包河专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 32, cUnclear: 8, cUnreachable: 7, f: 6, l: 3, e: 2, total: 90 }
                 ]
             }
         }
@@ -875,15 +874,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '上海小区': [
-                    { name: '上海闵行专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 52, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, invalid: 3, total: 149 }
+                    { name: '上海闵行专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 52, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, total: 146 }
                 ],
                 '无锡小区': [
-                    { name: '无锡新吴专营店', hSchedule: 6, hLead: 6, hNonTest: 4, a: 28, b: 42, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, invalid: 2, total: 119 }
+                    { name: '无锡新吴专营店', hSchedule: 6, hLead: 6, hNonTest: 4, a: 28, b: 42, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, total: 117 }
                 ]
             },
             '华南大区': {
                 '珠海小区': [
-                    { name: '珠海香洲专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 40, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 109 }
+                    { name: '珠海香洲专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 40, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 107 }
                 ]
             }
         }
@@ -893,15 +892,15 @@ drillData: {
         channels: {
             '华北大区': {
                 '青岛小区': [
-                    { name: '青岛市南专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 38, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 107 }
+                    { name: '青岛市南专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 38, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 105 }
                 ],
                 '济南小区': [
-                    { name: '济南历下专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 35, cUnclear: 8, cUnreachable: 7, f: 6, l: 3, e: 2, invalid: 2, total: 97 }
+                    { name: '济南历下专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 35, cUnclear: 8, cUnreachable: 7, f: 6, l: 3, e: 2, total: 95 }
                 ]
             },
             '西部大区': {
                 '西安小区': [
-                    { name: '西安未央专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, invalid: 1, total: 83 }
+                    { name: '西安未央专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, total: 82 }
                 ]
             }
         }
@@ -911,15 +910,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '上海小区': [
-                    { name: '上海徐汇专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 35, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, invalid: 2, total: 98 }
+                    { name: '上海徐汇专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 35, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, total: 96 }
                 ],
                 '南京小区': [
-                    { name: '南京江宁专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 6, cUnreachable: 6, f: 6, l: 2, e: 2, invalid: 1, total: 81 }
+                    { name: '南京江宁专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 6, cUnreachable: 6, f: 6, l: 2, e: 2, total: 80 }
                 ]
             },
             '华南大区': {
                 '厦门小区': [
-                    { name: '厦门湖里专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 24, b: 38, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 106 }
+                    { name: '厦门湖里专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 24, b: 38, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 104 }
                 ]
             }
         }
@@ -929,15 +928,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '浙江小区': [
-                    { name: '杭州拱墅专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, invalid: 1, total: 78 }
+                    { name: '杭州拱墅专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, total: 77 }
                 ],
                 '苏州小区': [
-                    { name: '苏州姑苏专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 15, b: 25, cUnclear: 5, cUnreachable: 5, f: 5, l: 2, e: 2, invalid: 1, total: 68 }
+                    { name: '苏州姑苏专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 15, b: 25, cUnclear: 5, cUnreachable: 5, f: 5, l: 2, e: 2, total: 67 }
                 ]
             },
             '华中大区': {
                 '武汉小区': [
-                    { name: '武汉洪山专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 32, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, invalid: 2, total: 90 }
+                    { name: '武汉洪山专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 32, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, total: 88 }
                 ]
             }
         }
@@ -947,15 +946,15 @@ drillData: {
         channels: {
             '华北大区': {
                 '北京小区': [
-                    { name: '北京昌平专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 24, cUnclear: 5, cUnreachable: 5, f: 5, l: 2, e: 1, invalid: 1, total: 65 }
+                    { name: '北京昌平专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 24, cUnclear: 5, cUnreachable: 5, f: 5, l: 2, e: 1, total: 64 }
                 ],
                 '天津小区': [
-                    { name: '天津滨海专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 12, b: 20, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, invalid: 1, total: 54 }
+                    { name: '天津滨海专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 12, b: 20, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, total: 53 }
                 ]
             },
             '西部大区': {
                 '成都小区': [
-                    { name: '成都高新专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 16, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, invalid: 1, total: 76 }
+                    { name: '成都高新专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 16, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, total: 75 }
                 ]
             }
         }
@@ -965,15 +964,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '上海小区': [
-                    { name: '上海杨浦专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 32, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, invalid: 2, total: 90 }
+                    { name: '上海杨浦专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 32, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, total: 88 }
                 ],
                 '宁波小区': [
-                    { name: '宁波北仑专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, invalid: 1, total: 78 }
+                    { name: '宁波北仑专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, total: 77 }
                 ]
             },
             '华北大区': {
                 '北京小区': [
-                    { name: '北京通州专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 24, b: 38, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 106 }
+                    { name: '北京通州专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 24, b: 38, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 104 }
                 ]
             }
         }
@@ -983,15 +982,15 @@ drillData: {
         channels: {
             '华南大区': {
                 '广州小区': [
-                    { name: '广州增城专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 24, cUnclear: 5, cUnreachable: 5, f: 5, l: 2, e: 1, invalid: 1, total: 65 }
+                    { name: '广州增城专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 24, cUnclear: 5, cUnreachable: 5, f: 5, l: 2, e: 1, total: 64 }
                 ],
                 '深圳小区': [
-                    { name: '深圳龙岗专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 12, b: 20, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, invalid: 1, total: 54 }
+                    { name: '深圳龙岗专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 12, b: 20, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, total: 53 }
                 ]
             },
             '西部大区': {
                 '重庆小区': [
-                    { name: '重庆江北专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 16, b: 26, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, invalid: 1, total: 74 }
+                    { name: '重庆江北专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 16, b: 26, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, total: 73 }
                 ]
             }
         }
@@ -1001,15 +1000,15 @@ drillData: {
         channels: {
             '华中大区': {
                 '郑州小区': [
-                    { name: '郑州二七专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 10, b: 18, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, invalid: 1, total: 50 }
+                    { name: '郑州二七专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 10, b: 18, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, total: 49 }
                 ],
                 '武汉小区': [
-                    { name: '武汉江汉专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 12, b: 22, cUnclear: 5, cUnreachable: 5, f: 4, l: 2, e: 1, invalid: 1, total: 60 }
+                    { name: '武汉江汉专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 12, b: 22, cUnclear: 5, cUnreachable: 5, f: 4, l: 2, e: 1, total: 59 }
                 ]
             },
             '华东大区': {
                 '常州小区': [
-                    { name: '常州新北专营店', hSchedule: 2, hLead: 2, hNonTest: 1, a: 10, b: 16, cUnclear: 4, cUnreachable: 4, f: 3, l: 2, e: 1, invalid: 1, total: 46 }
+                    { name: '常州新北专营店', hSchedule: 2, hLead: 2, hNonTest: 1, a: 10, b: 16, cUnclear: 4, cUnreachable: 4, f: 3, l: 2, e: 1, total: 45 }
                 ]
             }
         }
@@ -1077,18 +1076,18 @@ drillData: {
         channels: {
             '华东大区': {
                 '上海小区': [
-                    { name: '上海东风南方专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 42, b: 55, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, invalid: 3, total: 164 }
+                    { name: '上海东风南方专营店', hSchedule: 9, hLead: 9, hNonTest: 7, a: 42, b: 55, cUnclear: 11, cUnreachable: 11, f: 10, l: 4, e: 3, total: 161 }
                 ],
                 '浙江小区': [
-                    { name: '杭州滨江专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 48, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 3, invalid: 2, total: 137 }
+                    { name: '杭州滨江专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 48, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 3, total: 135 }
                 ]
             },
             '华南大区': {
                 '广州小区': [
-                    { name: '广州天河专营店', hSchedule: 8, hLead: 8, hNonTest: 6, a: 38, b: 50, cUnclear: 10, cUnreachable: 10, f: 9, l: 4, e: 3, invalid: 3, total: 149 }
+                    { name: '广州天河专营店', hSchedule: 8, hLead: 8, hNonTest: 6, a: 38, b: 50, cUnclear: 10, cUnreachable: 10, f: 9, l: 4, e: 3, total: 146 }
                 ],
                 '深圳小区': [
-                    { name: '深圳南山专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 45, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, invalid: 2, total: 128 }
+                    { name: '深圳南山专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 45, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, total: 126 }
                 ]
             }
         }
@@ -1098,13 +1097,13 @@ drillData: {
         channels: {
             '华中大区': {
                 '武汉小区': [
-                    { name: '武汉汉口专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 45, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, invalid: 2, total: 128 },
-                    { name: '武汉武昌专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 40, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, invalid: 2, total: 112 }
+                    { name: '武汉汉口专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 45, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 2, total: 126 },
+                    { name: '武汉武昌专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 40, cUnclear: 8, cUnreachable: 7, f: 7, l: 3, e: 2, total: 110 }
                 ]
             },
             '西部大区': {
                 '成都小区': [
-                    { name: '成都武侯专营店', hSchedule: 6, hLead: 6, hNonTest: 4, a: 30, b: 42, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 118 }
+                    { name: '成都武侯专营店', hSchedule: 6, hLead: 6, hNonTest: 4, a: 30, b: 42, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 116 }
                 ]
             }
         }
@@ -1114,15 +1113,15 @@ drillData: {
         channels: {
             '华北大区': {
                 '北京小区': [
-                    { name: '北京海淀专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 48, cUnclear: 10, cUnreachable: 10, f: 9, l: 4, e: 3, invalid: 3, total: 142 }
+                    { name: '北京海淀专营店', hSchedule: 7, hLead: 7, hNonTest: 6, a: 35, b: 48, cUnclear: 10, cUnreachable: 10, f: 9, l: 4, e: 3, total: 139 }
                 ],
                 '天津小区': [
-                    { name: '天津河西专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 40, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 113 }
+                    { name: '天津河西专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 40, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 111 }
                 ]
             },
             '华东大区': {
                 '南京小区': [
-                    { name: '南京鼓楼专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 38, cUnclear: 8, cUnreachable: 7, f: 6, l: 3, e: 2, invalid: 2, total: 105 }
+                    { name: '南京鼓楼专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 38, cUnclear: 8, cUnreachable: 7, f: 6, l: 3, e: 2, total: 103 }
                 ]
             }
         }
@@ -1132,15 +1131,15 @@ drillData: {
         channels: {
             '西部大区': {
                 '成都小区': [
-                    { name: '成都成华专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 35, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, invalid: 1, total: 94 }
+                    { name: '成都成华专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 22, b: 35, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, total: 93 }
                 ],
                 '西安小区': [
-                    { name: '西安雁塔专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, invalid: 1, total: 80 }
+                    { name: '西安雁塔专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, total: 79 }
                 ]
             },
             '华南大区': {
                 '广州小区': [
-                    { name: '广州白云专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 38, cUnclear: 8, cUnreachable: 7, f: 6, l: 3, e: 2, invalid: 2, total: 105 }
+                    { name: '广州白云专营店', hSchedule: 5, hLead: 5, hNonTest: 4, a: 25, b: 38, cUnclear: 8, cUnreachable: 7, f: 6, l: 3, e: 2, total: 103 }
                 ]
             }
         }
@@ -1150,15 +1149,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '苏州小区': [
-                    { name: '苏州园区专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 40, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, invalid: 2, total: 113 }
+                    { name: '苏州园区专营店', hSchedule: 5, hLead: 5, hNonTest: 5, a: 28, b: 40, cUnclear: 8, cUnreachable: 8, f: 7, l: 3, e: 2, total: 111 }
                 ],
                 '上海小区': [
-                    { name: '上海华新专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 45, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 3, invalid: 2, total: 129 }
+                    { name: '上海华新专营店', hSchedule: 6, hLead: 6, hNonTest: 6, a: 32, b: 45, cUnclear: 9, cUnreachable: 9, f: 8, l: 3, e: 3, total: 127 }
                 ]
             },
             '华北大区': {
                 '石家庄小区': [
-                    { name: '石家庄桥西专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 1, invalid: 1, total: 77 }
+                    { name: '石家庄桥西专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 1, total: 76 }
                 ]
             }
         }
@@ -1168,15 +1167,15 @@ drillData: {
         channels: {
             '华南大区': {
                 '佛山小区': [
-                    { name: '佛山禅城专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, invalid: 2, total: 84 }
+                    { name: '佛山禅城专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 18, b: 30, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, total: 82 }
                 ],
                 '东莞小区': [
-                    { name: '东莞南城专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 15, b: 25, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 1, invalid: 1, total: 69 }
+                    { name: '东莞南城专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 15, b: 25, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 1, total: 68 }
                 ]
             },
             '华东大区': {
                 '上海小区': [
-                    { name: '上海长宁专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 32, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, invalid: 2, total: 90 }
+                    { name: '上海长宁专营店', hSchedule: 4, hLead: 4, hNonTest: 4, a: 20, b: 32, cUnclear: 7, cUnreachable: 7, f: 6, l: 2, e: 2, total: 88 }
                 ]
             }
         }
@@ -1186,15 +1185,15 @@ drillData: {
         channels: {
             '华中大区': {
                 '郑州小区': [
-                    { name: '郑州金水专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 25, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 1, invalid: 1, total: 68 }
+                    { name: '郑州金水专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 25, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 1, total: 67 }
                 ],
                 '合肥小区': [
-                    { name: '合肥包河专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 12, b: 20, cUnclear: 5, cUnreachable: 5, f: 4, l: 2, e: 1, invalid: 1, total: 56 }
+                    { name: '合肥包河专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 12, b: 20, cUnclear: 5, cUnreachable: 5, f: 4, l: 2, e: 1, total: 55 }
                 ]
             },
             '华北大区': {
                 '北京小区': [
-                    { name: '北京大兴专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 16, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, invalid: 1, total: 76 }
+                    { name: '北京大兴专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 16, b: 28, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, total: 75 }
                 ]
             }
         }
@@ -1204,15 +1203,15 @@ drillData: {
         channels: {
             '西部大区': {
                 '昆明小区': [
-                    { name: '昆明盘龙专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 24, cUnclear: 5, cUnreachable: 5, f: 4, l: 2, e: 1, invalid: 1, total: 64 }
+                    { name: '昆明盘龙专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 24, cUnclear: 5, cUnreachable: 5, f: 4, l: 2, e: 1, total: 63 }
                 ],
                 '重庆小区': [
-                    { name: '重庆渝北专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 16, b: 26, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, invalid: 1, total: 74 }
+                    { name: '重庆渝北专营店', hSchedule: 4, hLead: 4, hNonTest: 2, a: 16, b: 26, cUnclear: 6, cUnreachable: 6, f: 5, l: 2, e: 2, total: 73 }
                 ]
             },
             '华南大区': {
                 '厦门小区': [
-                    { name: '厦门湖里专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 12, b: 20, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, invalid: 1, total: 54 }
+                    { name: '厦门湖里专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 12, b: 20, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, total: 53 }
                 ]
             }
         }
@@ -1222,15 +1221,15 @@ drillData: {
         channels: {
             '华东大区': {
                 '南京小区': [
-                    { name: '南京建邺专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 10, b: 18, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, invalid: 1, total: 50 }
+                    { name: '南京建邺专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 10, b: 18, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, total: 49 }
                 ],
                 '上海小区': [
-                    { name: '上海普陀专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 22, cUnclear: 5, cUnreachable: 5, f: 4, l: 2, e: 1, invalid: 1, total: 62 }
+                    { name: '上海普陀专营店', hSchedule: 3, hLead: 3, hNonTest: 2, a: 14, b: 22, cUnclear: 5, cUnreachable: 5, f: 4, l: 2, e: 1, total: 61 }
                 ]
             },
             '华中大区': {
                 '长沙小区': [
-                    { name: '长沙岳麓专营店', hSchedule: 2, hLead: 2, hNonTest: 1, a: 10, b: 16, cUnclear: 4, cUnreachable: 4, f: 3, l: 2, e: 1, invalid: 1, total: 46 }
+                    { name: '长沙岳麓专营店', hSchedule: 2, hLead: 2, hNonTest: 1, a: 10, b: 16, cUnclear: 4, cUnreachable: 4, f: 3, l: 2, e: 1, total: 45 }
                 ]
             }
         }
@@ -1240,15 +1239,15 @@ drillData: {
         channels: {
             '华北大区': {
                 '北京小区': [
-                    { name: '北京昌平专营店', hSchedule: 2, hLead: 2, hNonTest: 1, a: 10, b: 16, cUnclear: 4, cUnreachable: 4, f: 3, l: 2, e: 1, invalid: 1, total: 46 }
+                    { name: '北京昌平专营店', hSchedule: 2, hLead: 2, hNonTest: 1, a: 10, b: 16, cUnclear: 4, cUnreachable: 4, f: 3, l: 2, e: 1, total: 45 }
                 ],
                 '青岛小区': [
-                    { name: '青岛崂山专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 10, b: 18, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, invalid: 1, total: 50 }
+                    { name: '青岛崂山专营店', hSchedule: 2, hLead: 2, hNonTest: 2, a: 10, b: 18, cUnclear: 4, cUnreachable: 4, f: 4, l: 2, e: 1, total: 49 }
                 ]
             },
             '西部大区': {
                 '成都小区': [
-                    { name: '成都高新专营店', hSchedule: 1, hLead: 1, hNonTest: 2, a: 8, b: 14, cUnclear: 3, cUnreachable: 3, f: 3, l: 1, e: 1, invalid: 1, total: 38 }
+                    { name: '成都高新专营店', hSchedule: 1, hLead: 1, hNonTest: 2, a: 8, b: 14, cUnclear: 3, cUnreachable: 3, f: 3, l: 1, e: 1, total: 37 }
                 ]
             }
         }
@@ -1347,19 +1346,18 @@ kpi: {
     },
     pieOverride: {
         '线索级别占比': {
-            centerTotal: '12,345', centerLabel: '新增线索用户',
+            centerTotal: '10,493', centerLabel: '线索等级用户',
             segments: [
-                { color: '#00337c', label: 'H-试驾排程单', count: '1,481', pct: '12%', start: 0, end: 12 },
-                { color: '#0052cc', label: 'H-试驾线索单', count: '1,852', pct: '15%', start: 12, end: 27 },
-                { color: '#0081ff', label: 'H-非试驾线索单', count: '988', pct: '8%', start: 27, end: 35 },
-                { color: '#1a75ff', label: 'A', count: '1,358', pct: '11%', start: 35, end: 46 },
-                { color: '#3b82f6', label: 'B', count: '1,481', pct: '12%', start: 46, end: 58 },
-                { color: '#60a5fa', label: 'C-意向不明', count: '1,111', pct: '9%', start: 58, end: 67 },
-                { color: '#7cc4ff', label: 'C-无法接通', count: '741', pct: '6%', start: 67, end: 73 },
-                { color: '#93c5fd', label: 'F-战败', count: '617', pct: '5%', start: 73, end: 78 },
-                { color: '#bfdbfe', label: 'L-休眠', count: '494', pct: '4%', start: 78, end: 82 },
-                { color: '#cfe2ff', label: 'E-意向含糊', count: '370', pct: '3%', start: 82, end: 85 },
-                { color: '#dbeafe', label: '无效号码', count: '1,852', pct: '15%', start: 85, end: 100 }
+                { color: '#00337c', label: 'H-试驾排程单', count: '1,481', pct: '14.1%', start: 0, end: 14.1 },
+                { color: '#0052cc', label: 'H-试驾线索单', count: '1,852', pct: '17.6%', start: 14.1, end: 31.7 },
+                { color: '#0081ff', label: 'H-非试驾线索单', count: '988', pct: '9.4%', start: 31.7, end: 41.1 },
+                { color: '#1a75ff', label: 'A', count: '1,358', pct: '12.9%', start: 41.1, end: 54 },
+                { color: '#3b82f6', label: 'B', count: '1,481', pct: '14.1%', start: 54, end: 68.1 },
+                { color: '#60a5fa', label: 'C-意向不明', count: '1,111', pct: '10.6%', start: 68.1, end: 78.7 },
+                { color: '#7cc4ff', label: 'C-无法接通', count: '741', pct: '7.1%', start: 78.7, end: 85.8 },
+                { color: '#93c5fd', label: 'F-战败', count: '617', pct: '5.9%', start: 85.8, end: 91.7 },
+                { color: '#bfdbfe', label: 'L-休眠', count: '494', pct: '4.7%', start: 91.7, end: 96.4 },
+                { color: '#cfe2ff', label: 'E-意向含糊', count: '370', pct: '3.6%', start: 96.4, end: 100 }
             ]
         }
     }
@@ -1384,7 +1382,7 @@ download: {
             ['R1-抖音信息流', '抖音', 'N6', '2026-05-19', 'L-休眠', '已接通', '22', '-', '-', '-', '-', '刘十二', '129****8901'],
             ['R7-头条', '头条', 'N7', '2026-05-18', 'E-意向含糊', '空号', '0', '-', '-', '-', '-', '黄十三', '128****2345'],
             ['R4-快手', '快手', 'NX8', '2026-05-17', 'B', '已接通', '37', '-', '-', '-', '-', '杨十四', '127****6789'],
-            ['R8-优酷', '优酷', 'N7', '2026-05-16', '无效号码', '停机', '0', '-', '-', '-', '-', '朱十五', '126****0123'],
+            ['R8-优酷', '优酷', 'N7', '2026-05-16', 'C-无法接通', '停机', '0', '-', '-', '-', '-', '朱十五', '126****0123'],
             ['R5-小红书', '小红书', 'N6', '2026-05-15', 'H-试驾线索单', '已接通', '48', '2026-05-17', '2026-05-19', '-', '-', '马十六', '125****4567'],
             ['R2-懂车帝', '懂车帝', 'N7', '2026-05-14', 'C-无法接通', '已接通', '19', '-', '-', '-', '-', '胡十七', '124****8901'],
             ['R9-知乎内容直投', '知乎', 'NX8', '2026-05-13', 'A', '已接通', '36', '2026-05-15', '-', '-', '-', '林十八', '123****2345'],

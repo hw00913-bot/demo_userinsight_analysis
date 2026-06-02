@@ -496,7 +496,7 @@
                     <tr><td>意向车系</td><td>N7 / N6 / NX8 等</td></tr>
                     <tr><td>R 渠道</td><td>R1 ~ R11 渠道来源编码</td></tr>
                     <tr><td>大项目名称</td><td>所属大项目</td></tr>
-                    <tr><td>线索等级</td><td>H / A / B / C / F / L / E / 无效号码</td></tr>
+                    <tr><td>线索等级</td><td>H-试驾排程单 / H-试驾线索单 / H-非试驾线索单 / A / B / C-意向不明 / C-无法接通 / F-战败 / L-休眠 / E-意向含糊</td></tr>
                     <tr><td>人群分类</td><td>线索 / 到店 / 试驾 / 锁单</td></tr>
                     <tr><td>用户类型</td><td>保客 / 潜客</td></tr>
                     <tr><td>客户标签集合</td><td>智能体打标输出的客户标签（C 系列、R 系列）</td></tr>
@@ -657,7 +657,7 @@
             <h3 class="sub-title">交互行为</h3>
             <ul class="item-list">
                 <li><strong>时间快捷按钮（<code>.date-shortcuts</code>）：</strong>点击「近 7 天」「近 30 天」「近 90 天」任一按钮，高亮选中态并自动更新本分页筛选栏内的日期区间。点击「自定义」展示开始/结束日期输入框。</li>
-                <li><strong>线索等级多选下拉（<code>.custom-multi-select</code>）：</strong>展开面板默认全选 8 项，可逐项勾选/取消。面板内包含「全选」快捷选项，支持一次全选/全清。面板外点击自动关闭。</li>
+                <li><strong>线索等级多选下拉（<code>.custom-multi-select</code>）：</strong>展开面板默认全选 10 项，可逐项勾选/取消。面板内包含「全选」快捷选项，支持一次全选/全清。面板外点击自动关闭。</li>
                 <li><strong>渠道效果筛选：</strong>时间范围、意向车系、线索等级、渠道名称、大区、小区、门店、大项目。</li>
                 <li><strong>培育运营筛选：</strong>时间范围、意向车系、线索等级、大区、小区、门店、标签来源。</li>
                 <li><strong>查询按钮（蓝色 <code>.query-btn</code>）：</strong>点击后触发当前分页筛选反馈。</li>
@@ -667,7 +667,7 @@
             <h3 class="sub-title">默认值</h3>
             <ul class="item-list">
                 <li><strong>时间范围：</strong>默认选中「近 7 天」快捷按钮</li>
-                <li><strong>线索等级：</strong>默认全选（8项，显示「全选 (8项)」）</li>
+                <li><strong>线索等级：</strong>默认全选（10项，显示「全选 (10项)」）</li>
                 <li><strong>其余所有筛选项：</strong>默认「全部」（不限制该维度）</li>
             </ul>
 
@@ -691,7 +691,7 @@
                         <td>渠道效果 / 培育运营</td>
                         <td>线索等级</td>
                         <td>自定义多选下拉</td>
-                        <td>默认全选 8 项，头部显示「全选 (8项)」或「已选 N 项」。下拉面板包含全选复选框 + H / A / B / C / F / L / E / 无效号码。点击面板外部自动关闭。</td>
+                        <td>默认全选 10 项，头部显示「全选 (10项)」或「已选 N 项」。下拉面板包含全选复选框 + H-试驾排程单 / H-试驾线索单 / H-非试驾线索单 / A / B / C-意向不明 / C-无法接通 / F-战败 / L-休眠 / E-意向含糊。点击面板外部自动关闭。</td>
                     </tr>
                     <tr>
                         <td>渠道效果</td>
@@ -747,8 +747,8 @@
                     <tr><td>接通总数</td><td>通话记录中状态为「接通」的数量</td><td>单位：通</td></tr>
                     <tr><td>平均时长</td><td>所有接通通话总时长 / 接通总数</td><td>单位：s</td></tr>
 
-                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">用户分级<br><span style="font-size:11px;color:#0891b2;">kpi-border-cyan</span></td><td>有效用户</td><td>线索级别 ≠ 无效号码的用户数</td><td>主值（人）+ 内联蓝色占比标注如 <code>(68%)</code></td></tr>
-                    <tr><td>无效用户</td><td>线索级别 = 无效号码的用户数</td><td>主值（人）+ 内联灰色占比标注</td></tr>
+                    <tr><td rowspan="3" style="font-weight:700; text-align:center;">用户分级<br><span style="font-size:11px;color:#0891b2;">kpi-border-cyan</span></td><td>有效用户</td><td>通话质量原因大类 = 有效号码的用户数</td><td>主值（人）+ 内联蓝色占比标注如 <code>(68%)</code></td></tr>
+                    <tr><td>无效用户</td><td>通话质量原因大类 = 无效号码的用户数</td><td>主值（人）+ 内联灰色占比标注</td></tr>
                     <tr><td>H/A/B用户</td><td>线索等级 H、A、B 的核心潜客</td><td>主值（人）+ 内联红色占比标注</td></tr>
 
                     <tr><td rowspan="3" style="font-weight:700; text-align:center;">行为转化<br><span style="font-size:11px;color:#059669;">kpi-border-green</span></td><td>到店用户</td><td>产生到店行为的去重用户数</td><td>主值（人）+ 内联绿色到店率</td></tr>
@@ -1213,7 +1213,7 @@
 
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V2.4 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-05-21</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V2.5 &nbsp;|&nbsp; 与 userinsight.html + script.js + style.css 代码同步 &nbsp;|&nbsp; 更新于 2026-06-02</p>
         </div>
 
     </main>

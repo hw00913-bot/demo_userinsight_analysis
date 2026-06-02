@@ -10,7 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260602-3">
+    <link rel="stylesheet" href="style.css?v=20260602-4">
 </head>
 
 <body>
@@ -194,7 +194,7 @@
                                         <label class="filter-label">线索等级:</label>
                                         <div class="custom-multi-select">
                                             <div class="select-header">
-                                                <span class="lead-level-text">全选 (11项)</span>
+                                                <span class="lead-level-text">全选 (10项)</span>
                                                 <i class="fa-solid fa-chevron-down"></i>
                                             </div>
                                             <div class="select-dropdown" style="display: none;">
@@ -209,7 +209,6 @@
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F-战败</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L-休眠</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E-意向含糊</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="invalid" checked> 无效号码</label>
                                             </div>
                                         </div>
                                     </div>
@@ -491,26 +490,25 @@
                                 <div class="content-card">
                                     <div class="card-header">
                                         <h3 class="card-title">线索级别占比</h3>
-                                        <span style="font-size: 12px; color: #94a3b8;">分母：新增线索用户 12,345 人</span>
+                                        <span style="font-size: 12px; color: #94a3b8;">分母：线索等级用户 10,493 人</span>
                                     </div>
                                     <div class="card-body" style="padding: 24px;">
                                         <div style="display: flex; align-items: center; gap: 40px;">
                                             <!-- 饼图 -->
                                             <div style="width: 200px; height: 200px; flex-shrink: 0; border-radius: 50%; background: conic-gradient(
-                                                #00337c 0% 12%,
-                                                #0052cc 12% 27%,
-                                                #0081ff 27% 35%,
-                                                #1a75ff 35% 46%,
-                                                #3b82f6 46% 58%,
-                                                #60a5fa 58% 73%,
-                                                #93c5fd 73% 78%,
-                                                #bfdbfe 78% 82%,
-                                                #cfe2ff 82% 85%,
-                                                #dbeafe 85% 100%
+                                                #00337c 0% 14.1%,
+                                                #0052cc 14.1% 31.7%,
+                                                #0081ff 31.7% 41.1%,
+                                                #1a75ff 41.1% 54%,
+                                                #3b82f6 54% 68.1%,
+                                                #60a5fa 68.1% 78.7%,
+                                                #93c5fd 78.7% 85.8%,
+                                                #bfdbfe 85.8% 91.7%,
+                                                #cfe2ff 91.7% 100%
                                             ); position: relative;">
                                                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90px; height: 90px; background: #fff; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                                    <div style="font-size: 20px; font-weight: 700; color: #1e293b;">12,345</div>
-                                                    <div style="font-size: 10px; color: #6b7280;">新增线索用户</div>
+                                                    <div style="font-size: 20px; font-weight: 700; color: #1e293b;">10,493</div>
+                                                    <div style="font-size: 10px; color: #6b7280;">线索等级用户</div>
                                                 </div>
                                             </div>
                                             <!-- 图例 -->
@@ -568,12 +566,6 @@
                                                     <span style="color: #6b7280; flex: 1;">E</span>
                                                     <span style="font-weight: 600; color: #1e293b;">370人</span>
                                                     <span style="color: #cfe2ff; font-weight: 600;">3%</span>
-                                                </div>
-                                                <div style="display: flex; align-items: center; gap: 6px;">
-                                                    <span style="width: 10px; height: 10px; border-radius: 2px; background: #dbeafe; flex-shrink: 0;"></span>
-                                                    <span style="color: #6b7280; flex: 1;">无效号码</span>
-                                                    <span style="font-weight: 600; color: #1e293b;">1,852人</span>
-                                                    <span style="color: #dbeafe; font-weight: 600;">15%</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -1348,7 +1340,7 @@
                                 <div class="content-card">
                                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
                                         <h3 class="card-title">渠道线索质量</h3>
-                                        <!-- 全量图例：横放（11级，与 MOCK.leadLevels 对齐）-->
+                                        <!-- 全量图例：横放（10级，与 MOCK.leadLevels 对齐）-->
                                         <div class="ce-v-legend" style="flex-wrap: wrap; justify-content: flex-end; max-width: 600px;">
                                             <div class="ce-v-legend-item"><span class="ce-v-legend-dot h-schedule"></span><span>H-试驾排程单</span></div>
                                             <div class="ce-v-legend-item"><span class="ce-v-legend-dot h-lead"></span><span>H-试驾线索单</span></div>
@@ -1360,7 +1352,6 @@
                                             <div class="ce-v-legend-item"><span class="ce-v-legend-dot f"></span><span>F-战败</span></div>
                                             <div class="ce-v-legend-item"><span class="ce-v-legend-dot l"></span><span>L-休眠</span></div>
                                             <div class="ce-v-legend-item"><span class="ce-v-legend-dot e"></span><span>E-意向含糊</span></div>
-                                            <div class="ce-v-legend-item"><span class="ce-v-legend-dot invalid"></span><span>无效号码</span></div>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -1385,7 +1376,6 @@
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot f"></span>F级</div><div>208 (10%)</div></div>
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot l"></span>L级</div><div>104 (5%)</div></div>
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot e"></span>E级</div><div>208 (10%)</div></div>
-                                                        <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot invalid"></span>无效</div><div>312 (15%)</div></div>
                                                     </div>
                                                     <div class="ce-v-stack" style="height: 85%;">
                                                         <div class="ce-v-seg h" style="height: 15%;"></div>
@@ -1395,7 +1385,6 @@
                                                         <div class="ce-v-seg f" style="height: 10%;"></div>
                                                         <div class="ce-v-seg l" style="height: 5%;"></div>
                                                         <div class="ce-v-seg e" style="height: 10%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 15%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R1</span>
                                                 </div>
@@ -1410,7 +1399,6 @@
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot f"></span>F级</div><div>180 (10%)</div></div>
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot l"></span>L级</div><div>90 (5%)</div></div>
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot e"></span>E级</div><div>180 (10%)</div></div>
-                                                        <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot invalid"></span>无效</div><div>270 (15%)</div></div>
                                                     </div>
                                                     <div class="ce-v-stack" style="height: 75%;">
                                                         <div class="ce-v-seg h" style="height: 14%;"></div>
@@ -1420,7 +1408,6 @@
                                                         <div class="ce-v-seg f" style="height: 10%;"></div>
                                                         <div class="ce-v-seg l" style="height: 5%;"></div>
                                                         <div class="ce-v-seg e" style="height: 10%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 16%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R2</span>
                                                 </div>
@@ -1433,7 +1420,6 @@
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot b"></span>B级</div><div>300 (15%)</div></div>
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot c"></span>C级</div><div>400 (20%)</div></div>
                                                         <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot f"></span>F级</div><div>200 (10%)</div></div>
-                                                        <div class="ce-v-tooltip-row"><div class="ce-v-tooltip-label"><span class="ce-v-tooltip-dot invalid"></span>无效</div><div>640 (32%)</div></div>
                                                     </div>
                                                     <div class="ce-v-stack" style="height: 65%;">
                                                         <div class="ce-v-seg h" style="height: 13%;"></div>
@@ -1441,7 +1427,6 @@
                                                         <div class="ce-v-seg b" style="height: 15%;"></div>
                                                         <div class="ce-v-seg c" style="height: 20%;"></div>
                                                         <div class="ce-v-seg f" style="height: 10%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 32%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R3</span>
                                                 </div>
@@ -1453,7 +1438,6 @@
                                                         <div class="ce-v-seg b" style="height: 12%;"></div>
                                                         <div class="ce-v-seg c" style="height: 18%;"></div>
                                                         <div class="ce-v-seg f" style="height: 15%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 35%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R4</span>
                                                 </div>
@@ -1465,7 +1449,6 @@
                                                         <div class="ce-v-seg b" style="height: 13%;"></div>
                                                         <div class="ce-v-seg c" style="height: 17%;"></div>
                                                         <div class="ce-v-seg f" style="height: 15%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 35%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R5</span>
                                                 </div>
@@ -1477,7 +1460,6 @@
                                                         <div class="ce-v-seg b" style="height: 12%;"></div>
                                                         <div class="ce-v-seg c" style="height: 15%;"></div>
                                                         <div class="ce-v-seg f" style="height: 20%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 35%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R6</span>
                                                 </div>
@@ -1489,7 +1471,6 @@
                                                         <div class="ce-v-seg b" style="height: 11%;"></div>
                                                         <div class="ce-v-seg c" style="height: 13%;"></div>
                                                         <div class="ce-v-seg f" style="height: 25%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 35%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R7</span>
                                                 </div>
@@ -1501,7 +1482,6 @@
                                                         <div class="ce-v-seg b" style="height: 10%;"></div>
                                                         <div class="ce-v-seg c" style="height: 12%;"></div>
                                                         <div class="ce-v-seg f" style="height: 28%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 35%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R8</span>
                                                 </div>
@@ -1511,7 +1491,6 @@
                                                         <div class="ce-v-seg h" style="height: 8%;"></div>
                                                         <div class="ce-v-seg c" style="height: 12%;"></div>
                                                         <div class="ce-v-seg f" style="height: 45%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 35%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R9</span>
                                                 </div>
@@ -1521,7 +1500,6 @@
                                                         <div class="ce-v-seg h" style="height: 7%;"></div>
                                                         <div class="ce-v-seg c" style="height: 10%;"></div>
                                                         <div class="ce-v-seg f" style="height: 48%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 35%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R10</span>
                                                 </div>
@@ -1531,7 +1509,6 @@
                                                         <div class="ce-v-seg h" style="height: 6%;"></div>
                                                         <div class="ce-v-seg c" style="height: 9%;"></div>
                                                         <div class="ce-v-seg f" style="height: 50%;"></div>
-                                                        <div class="ce-v-seg invalid" style="height: 35%;"></div>
                                                     </div>
                                                     <span class="ce-v-x-label">R11</span>
                                                 </div>
@@ -2333,7 +2310,7 @@
                                         <label class="filter-label">线索等级:</label>
                                         <div class="custom-multi-select">
                                             <div class="select-header">
-                                                <span class="lead-level-text">全选 (11项)</span>
+                                                <span class="lead-level-text">全选 (10项)</span>
                                                 <i class="fa-solid fa-chevron-down"></i>
                                             </div>
                                             <div class="select-dropdown" style="display: none;">
@@ -2348,7 +2325,6 @@
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F-战败</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L-休眠</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E-意向含糊</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="invalid" checked> 无效号码</label>
                                             </div>
                                         </div>
                                     </div>
@@ -2916,7 +2892,7 @@
                                         <label class="filter-label">线索等级:</label>
                                         <div class="custom-multi-select">
                                             <div class="select-header">
-                                                <span class="lead-level-text">全选 (11项)</span>
+                                                <span class="lead-level-text">全选 (10项)</span>
                                                 <i class="fa-solid fa-chevron-down"></i>
                                             </div>
                                             <div class="select-dropdown" style="display: none;">
@@ -2931,7 +2907,6 @@
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F-战败</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L-休眠</label>
                                                 <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E-意向含糊</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="invalid" checked> 无效号码</label>
                                             </div>
                                         </div>
                                     </div>
@@ -3267,23 +3242,22 @@
                                                 <div class="follow-analysis-title">激活下发线索</div>
                                                 <div class="follow-pie-split">
                                                     <div class="follow-pie-visual">
-                                                        <div class="follow-pie-chart" style="background: conic-gradient(#b91c1c 0 9%, #ef4444 9% 18%, #fb7185 18% 26%, #f59e0b 26% 37%, #3b82f6 37% 47%, #14b8a6 47% 56%, #67e8f9 56% 64%, #8b5cf6 64% 75%, #ec4899 75% 84%, #84cc16 84% 93%, #94a3b8 93% 100%);">
-                                                            <span>5,240</span>
+                                                        <div class="follow-pie-chart" style="background: conic-gradient(#b91c1c 0 9.7%, #ef4444 9.7% 19.4%, #fb7185 19.4% 28%, #f59e0b 28% 39.8%, #3b82f6 39.8% 50.5%, #14b8a6 50.5% 60.2%, #67e8f9 60.2% 68.8%, #8b5cf6 68.8% 80.6%, #ec4899 80.6% 90.3%, #84cc16 90.3% 100%);">
+                                                            <span>4,884</span>
                                                         </div>
                                                         <div class="follow-pie-total">激活下发总数</div>
                                                     </div>
                                                     <div class="follow-pie-legend follow-pie-legend-compact">
-                                                        <div class="follow-legend-row"><i style="background:#b91c1c;"></i><span>H-试驾排程单</span><strong>472人</strong><em>9%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#ef4444;"></i><span>H-试驾线索单</span><strong>472人</strong><em>9%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#fb7185;"></i><span>H-非试驾线索单</span><strong>419人</strong><em>8%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#f59e0b;"></i><span>A</span><strong>576人</strong><em>11%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#3b82f6;"></i><span>B</span><strong>524人</strong><em>10%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#14b8a6;"></i><span>C-意向不明</span><strong>472人</strong><em>9%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#67e8f9;"></i><span>C-无法接通</span><strong>419人</strong><em>8%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#8b5cf6;"></i><span>F-战败</span><strong>576人</strong><em>11%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#ec4899;"></i><span>L-休眠</span><strong>472人</strong><em>9%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#84cc16;"></i><span>E-意向含糊</span><strong>472人</strong><em>9%</em></div>
-                                                        <div class="follow-legend-row"><i style="background:#94a3b8;"></i><span>无效号码</span><strong>366人</strong><em>7%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#b91c1c;"></i><span>H-试驾排程单</span><strong>472人</strong><em>9.7%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#ef4444;"></i><span>H-试驾线索单</span><strong>472人</strong><em>9.7%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#fb7185;"></i><span>H-非试驾线索单</span><strong>419人</strong><em>8.6%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#f59e0b;"></i><span>A</span><strong>576人</strong><em>11.8%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#3b82f6;"></i><span>B</span><strong>524人</strong><em>10.7%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#14b8a6;"></i><span>C-意向不明</span><strong>472人</strong><em>9.7%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#67e8f9;"></i><span>C-无法接通</span><strong>419人</strong><em>8.6%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#8b5cf6;"></i><span>F-战败</span><strong>576人</strong><em>11.8%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#ec4899;"></i><span>L-休眠</span><strong>472人</strong><em>9.7%</em></div>
+                                                        <div class="follow-legend-row"><i style="background:#84cc16;"></i><span>E-意向含糊</span><strong>472人</strong><em>9.7%</em></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -3825,8 +3799,8 @@
         </div>
     </div>
 
-    <script src="mock.js?v=20260602-3"></script>
-    <script src="script.js?v=20260602-3"></script>
+    <script src="mock.js?v=20260602-4"></script>
+    <script src="script.js?v=20260602-4"></script>
 
     <!-- 城市专营店意向等级详情抽屉 -->
     <div class="drawer-overlay" id="cityStoreModal">
