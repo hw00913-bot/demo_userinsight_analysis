@@ -143,8 +143,10 @@ window.addEventListener('DOMContentLoaded', () => {
     initFilterMultiSelects();
     initGlobalFilters();    // 分页内筛选器逻辑
     reorderCultivationDeliveryCharts();
+    enhanceHierarchyHabLabels();
     alignChannelQualityLeadLevels();
     convertCultivationChartsToHorizontal();
+    enhanceOverviewHabLabels();
     initChannelJourneyFilter();
     initMediaJourneyFilter();
     initCultivationScaledCharts();
@@ -162,6 +164,28 @@ function reorderCultivationDeliveryCharts() {
     if (rankRow && rankRow.parentNode === analysisRow.parentNode) {
         analysisRow.parentNode.insertBefore(rankRow, analysisRow.nextSibling);
     }
+}
+
+function enhanceHierarchyHabLabels() {
+    document.querySelectorAll('.ce-hierarchy-row .card-body > div:last-child > div').forEach(row => {
+        const stack = row.children[1];
+        const label = row.children[row.children.length - 1];
+        if (!stack || !label || label.dataset.habEnhanced === 'true') return;
+
+        const match = label.textContent.match(/([\d,]+)人\s*·\s*HAB\s*(\d+)%/);
+        if (!match) return;
+
+        const total = parseInt(match[1].replace(/,/g, ''), 10);
+        const habPercent = match[2];
+        const habCount = Array.from(stack.children).slice(0, 3).reduce((sum, segment) => {
+            return sum + Math.round(total * (parseFloat(segment.style.width) || 0) / 100);
+        }, 0);
+
+        row.style.gridTemplateColumns = '92px minmax(0, 1fr) 126px';
+        label.dataset.habEnhanced = 'true';
+        label.style.whiteSpace = 'nowrap';
+        label.innerHTML = `${total.toLocaleString()}人<br>HAB ${habCount.toLocaleString()}人 · ${habPercent}%`;
+    });
 }
 
 function alignChannelQualityLeadLevels() {
@@ -220,6 +244,44 @@ function convertCultivationChartsToHorizontal() {
             });
         });
     });
+}
+
+function enhanceOverviewHabLabels() {
+    const channelTotals = [2080, 1835, 1591, 1419, 1272, 1125, 1028, 930, 832, 734, 636];
+
+    document.querySelectorAll('#regionVChart .ce-v-bar-item').forEach(item => {
+        const stack = item.querySelector('.ce-v-stack');
+        if (!stack || item.querySelector('.ce-v-stat-label')) return;
+
+        const counts = Array.from(item.querySelectorAll('.ce-v-tooltip-row')).map(row => {
+            const match = row.textContent.match(/([\d,]+)\s*\(/);
+            return match ? parseInt(match[1].replace(/,/g, ''), 10) : 0;
+        });
+        const total = counts.reduce((sum, count) => sum + count, 0);
+        const habCount = counts.slice(0, 3).reduce((sum, count) => sum + count, 0);
+        appendOverviewHabLabel(item, total, habCount);
+    });
+
+    document.querySelectorAll('#channelVChart .ce-v-bar-item').forEach((item, index) => {
+        const stack = item.querySelector('.ce-v-stack');
+        const total = channelTotals[index];
+        if (!stack || !total || item.querySelector('.ce-v-stat-label')) return;
+
+        const habPercent = Array.from(stack.children).slice(0, 5).reduce((sum, segment) => {
+            return sum + (parseFloat(segment.style.width) || 0);
+        }, 0);
+        const habCount = Math.round(total * habPercent / 100);
+        appendOverviewHabLabel(item, total, habCount);
+    });
+}
+
+function appendOverviewHabLabel(item, total, habCount) {
+    if (!total) return;
+
+    const label = document.createElement('span');
+    label.className = 'ce-v-stat-label';
+    label.innerHTML = `${total.toLocaleString()}人<br>HAB ${habCount.toLocaleString()}人 · ${pctStr(habCount, total)}%`;
+    item.appendChild(label);
 }
 
 function parseUserCount(text) {
@@ -973,31 +1035,36 @@ function openFullRanking(type) {
                 <th>大区</th>
                 <th>小区</th>
                 <th style="width: 140px; text-align: right;">新增线索用户</th>
-                <th style="width: 120px; text-align: right;">H占比</th>
-                <th style="width: 120px; text-align: right;">A占比</th>
-                <th style="width: 120px; text-align: right;">B占比</th>
-                <th style="width: 120px; text-align: right;">C/其他</th>
-                <th style="width: 150px; text-align: right;">H/A/B占比</th>
+                <th style="width: 140px; text-align: right;">H人数 / 占比</th>
+                <th style="width: 140px; text-align: right;">A人数 / 占比</th>
+                <th style="width: 140px; text-align: right;">B人数 / 占比</th>
+                <th style="width: 150px; text-align: right;">C/其他人数 / 占比</th>
+                <th style="width: 190px; text-align: right;">H/A/B人数 / 占比</th>
             </tr>
         `;
         areaDeliveryFullData.forEach(item => {
             const hab = item.h + item.a + item.b;
+            const hCount = Math.round(item.count * item.h / 100);
+            const aCount = Math.round(item.count * item.a / 100);
+            const bCount = Math.round(item.count * item.b / 100);
+            const otherCount = item.count - hCount - aCount - bCount;
+            const habCount = hCount + aCount + bCount;
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
                 <td style="font-weight: 500;">${item.region}</td>
                 <td style="font-weight: 500;">${item.area}</td>
                 <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}人</td>
-                <td style="text-align: right;">${item.h}%</td>
-                <td style="text-align: right;">${item.a}%</td>
-                <td style="text-align: right;">${item.b}%</td>
-                <td style="text-align: right;">${item.other}%</td>
+                <td style="text-align: right;">${hCount.toLocaleString()}人 · ${item.h}%</td>
+                <td style="text-align: right;">${aCount.toLocaleString()}人 · ${item.a}%</td>
+                <td style="text-align: right;">${bCount.toLocaleString()}人 · ${item.b}%</td>
+                <td style="text-align: right;">${otherCount.toLocaleString()}人 · ${item.other}%</td>
                 <td style="text-align: right;">
                     <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                         <div style="width: 64px; height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden;">
                             <div style="height: 100%; width: ${hab}%; background: #00337c;"></div>
                         </div>
-                        <strong>${hab}%</strong>
+                        <strong>${habCount.toLocaleString()}人 · ${hab}%</strong>
                     </div>
                 </td>
             `;

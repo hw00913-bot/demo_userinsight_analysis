@@ -3781,7 +3781,7 @@ body {
 
 .ce-v-horizontal .ce-v-bar-item {
     display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
+    grid-template-columns: 44px minmax(0, 1fr) 126px;
     gap: 10px;
     align-items: center;
     width: 100%;
@@ -3814,6 +3814,16 @@ body {
     color: #475569;
     font-size: 12px;
     text-align: right;
+}
+
+.ce-v-horizontal .ce-v-stat-label {
+    grid-column: 3;
+    grid-row: 1;
+    color: #475569;
+    font-size: 11px;
+    line-height: 1.35;
+    text-align: right;
+    white-space: nowrap;
 }
 
 /* Tooltip 样式 */
