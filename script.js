@@ -236,8 +236,7 @@ var LEVEL_COLORS = {
     hSchedule: '#b91c1c', hLead: '#ef4444', hNonTest: '#fb7185',
     a: '#f59e0b', b: '#3b82f6',
     cUnclear: '#14b8a6', cUnreachable: '#67e8f9',
-    f: '#8b5cf6', l: '#ec4899', e: '#84cc16', invalid: '#94a3b8',
-    h: '#00337c', c: '#22c55e', hab: '#059669', other: '#9ca3af'
+    f: '#8b5cf6', l: '#ec4899', e: '#84cc16', invalid: '#94a3b8'
 };
 
 // 与 MOCK.leadLevels 完全对齐
@@ -367,10 +366,6 @@ function updateMultiSelectText(multiSelect) {
             : '已选 ' + checkedCb.length + ' 项';
     }
 }
-
-// 向后兼容别名
-function updateFilterLevelText(multiSelect) { updateMultiSelectText(multiSelect); }
-function updateFilterPlatformText(multiSelect) { updateMultiSelectText(multiSelect); }
 
 function initFilterMultiSelects() {
     document.querySelectorAll('.custom-multi-select').forEach(function(multiSelect) {
@@ -1822,8 +1817,8 @@ function showProjectDrillModal(projectCode) {
  */
 // 兼容旧数据：计算合并的 H 和 C 总量
 function storeLevel(s, key) { return s[key] || 0; }
-function storeHTotal(s) { return storeLevel(s, 'hSchedule') + storeLevel(s, 'hLead') + storeLevel(s, 'hNonTest') || s.h || 0; }
-function storeCTotal(s) { return storeLevel(s, 'cUnclear') + storeLevel(s, 'cUnreachable') || s.c || 0; }
+function storeHTotal(s) { return storeLevel(s, 'hSchedule') + storeLevel(s, 'hLead') + storeLevel(s, 'hNonTest'); }
+function storeCTotal(s) { return storeLevel(s, 'cUnclear') + storeLevel(s, 'cUnreachable'); }
 function storeTotal(s) { return s.total || 0; }
 function storeHabTotal(s) { return storeHTotal(s) + (s.a || 0) + (s.b || 0); }
 
@@ -1833,18 +1828,13 @@ function generateStoreCard(store, areaLabel) {
     var habPct = t > 0 ? (habTotal / t * 100).toFixed(1) : '0.0';
     var subLabel = areaLabel ? '<div style="font-size: 10px; color: #9ca3af;">' + areaLabel + '</div>' : '';
 
-    // 迷你条形图：11级分段
+    // 迷你条形图 + 底部标签行（一次遍历）
     var barSegments = '';
+    var labelRow = '';
     LEVEL_LABELS.forEach(function(lv) {
         var val = store[lv.key] || 0;
         var pct = t > 0 ? (val / t * 100).toFixed(1) : 0;
         barSegments += '<div style="height:100%;background:' + LEVEL_COLORS[lv.key] + ';width:' + pct + '%;" title="' + lv.label + ': ' + val + '"></div>';
-    });
-
-    // 底部标签行
-    var labelRow = '';
-    LEVEL_LABELS.forEach(function(lv) {
-        var val = store[lv.key] || 0;
         labelRow += '<span style="color:' + LEVEL_COLORS[lv.key] + ';">' + lv.label + ':<span style="font-weight:600;">' + val + '</span></span>';
     });
 
