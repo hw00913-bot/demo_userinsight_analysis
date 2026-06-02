@@ -10,7 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260602-4">
+    <link rel="stylesheet" href="style.css?v=20260602-9">
 </head>
 
 <body>
@@ -266,18 +266,23 @@
                             <!-- 渠道效果核心指标 -->
                             <div class="kpi-cards-section">
                                 <div class="kpi-group-row">
-                                    <div class="kpi-group-compact kpi-border-purple" style="flex: 0.9;">
+                                    <div class="kpi-group-compact kpi-border-purple" style="flex: 1.1;">
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-filter"></i> 线索统计</div>
                                         <div class="kpi-metrics-row">
                                             <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">新增线索量</div>
+                                                <div class="kpi-metric-label">全渠道新增线索量</div>
                                                 <div class="kpi-metric-val">22,345<span class="kpi-unit">条</span></div>
                                                 <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 5.2%</div>
                                             </div>
                                             <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">总部培育新增线索</div>
+                                                <div class="kpi-metric-label">总部培育新增线索量</div>
                                                 <div class="kpi-metric-val">12,345<span class="kpi-unit">条</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 4.8%</div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 5.2%</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">总部培育占比</div>
+                                                <div class="kpi-metric-val">20.00<span class="kpi-unit">%</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.5pp</div>
                                             </div>
                                         </div>
                                     </div>
@@ -345,7 +350,7 @@
                                                 <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
                                             </div>
                                             <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B 用户占比</div>
+                                                <div class="kpi-metric-label">H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B占比</div>
                                                 <div class="kpi-metric-val">35<span class="kpi-unit">%</span></div>
                                                 <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
                                             </div>
@@ -2032,7 +2037,7 @@
                                                     <div id="channelJourneyList" style="display:flex; flex-direction:column; gap:8px;"></div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">渠道留资重合度分析</div>
+                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">渠道留资重合度分析-渠道数量</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
                                                         <div onclick="openFullRanking('channelOverlap5plus')" style="display:flex; align-items:center; gap:8px; cursor:pointer;"><span style="width:90px; font-size:12px;">5 个以上</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:11%;height:100%;background:#2563eb;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">6</span></div>
                                                         <div onclick="openFullRanking('channelOverlap5')" style="display:flex; align-items:center; gap:8px; cursor:pointer;"><span style="width:90px; font-size:12px;">5个</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:20%;height:100%;background:#3b82f6;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">11</span></div>
@@ -2122,7 +2127,7 @@
                                                     <div id="mediaJourneyList" style="display:flex; flex-direction:column; gap:8px;"></div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">媒体留资重合度分析</div>
+                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">媒体留资重合度分析-媒体数量</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
                                                         <div onclick="openFullRanking('mediaOverlap5plus')" style="display:flex; align-items:center; gap:8px; cursor:pointer;"><span style="width:90px; font-size:12px;">5 个以上</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:11%;height:100%;background:#2563eb;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">8</span></div>
                                                         <div onclick="openFullRanking('mediaOverlap5')" style="display:flex; align-items:center; gap:8px; cursor:pointer;"><span style="width:90px; font-size:12px;">5个</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:20%;height:100%;background:#3b82f6;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">14</span></div>
@@ -3182,21 +3187,21 @@
                                                         </div>
                                                     </div>
                                                     <div class="follow-mini-chart" style="grid-column: 1 / -1;">
-                                                        <strong>呼叫时段</strong>
+                                                        <strong>呼叫时段（含接通率）</strong>
                                                         <div style="display: flex; gap: 12px;">
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>0-6点</span><div><i style="width: 25%;"></i></div><em>571人 · 5%</em></div>
-                                                                <div class="follow-bar-item"><span>6-8点</span><div><i style="width: 45%;"></i></div><em>1,028人 · 9%</em></div>
-                                                                <div class="follow-bar-item"><span>8-10点</span><div><i style="width: 65%;"></i></div><em>1,485人 · 13%</em></div>
-                                                                <div class="follow-bar-item"><span>10-12点</span><div><i style="width: 90%;"></i></div><em>2,056人 · 18%</em></div>
-                                                                <div class="follow-bar-item"><span>12-14点</span><div><i style="width: 75%;"></i></div><em>1,713人 · 15%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>9点</span><div><i style="width: 56%;"></i></div><em>1,028人 · 9% · 接通率 68%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>10点</span><div><i style="width: 81%;"></i></div><em>1,485人 · 13% · 接通率 72%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>11点</span><div><i style="width: 94%;"></i></div><em>1,713人 · 15% · 接通率 76%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>12点</span><div><i style="width: 69%;"></i></div><em>1,256人 · 11% · 接通率 70%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>1,827人 · 16% · 接通率 78%</em></div>
                                                             </div>
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>14-16点</span><div><i style="width: 100%;"></i></div><em>2,284人 · 20%</em></div>
-                                                                <div class="follow-bar-item"><span>16-18点</span><div><i style="width: 60%;"></i></div><em>1,370人 · 12%</em></div>
-                                                                <div class="follow-bar-item"><span>18-20点</span><div><i style="width: 25%;"></i></div><em>571人 · 5%</em></div>
-                                                                <div class="follow-bar-item"><span>20-22点</span><div><i style="width: 10%;"></i></div><em>228人 · 2%</em></div>
-                                                                <div class="follow-bar-item"><span>22-24点</span><div><i style="width: 5%;"></i></div><em>115人 · 1%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>16点</span><div><i style="width: 88%;"></i></div><em>1,599人 · 14% · 接通率 79%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>17点</span><div><i style="width: 63%;"></i></div><em>1,142人 · 10% · 接通率 74%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>18点</span><div><i style="width: 37%;"></i></div><em>685人 · 6% · 接通率 69%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>19点</span><div><i style="width: 25%;"></i></div><em>457人 · 4% · 接通率 63%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>20点</span><div><i style="width: 13%;"></i></div><em>229人 · 2% · 接通率 58%</em></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3220,18 +3225,18 @@
                                                         <strong>接通时段</strong>
                                                         <div style="display: flex; gap: 12px;">
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>0-6点</span><div><i style="width: 20%;"></i></div><em>307人 · 4%</em></div>
-                                                                <div class="follow-bar-item"><span>6-8点</span><div><i style="width: 40%;"></i></div><em>614人 · 8%</em></div>
-                                                                <div class="follow-bar-item"><span>8-10点</span><div><i style="width: 60%;"></i></div><em>922人 · 12%</em></div>
-                                                                <div class="follow-bar-item"><span>10-12点</span><div><i style="width: 80%;"></i></div><em>1,229人 · 16%</em></div>
-                                                                <div class="follow-bar-item"><span>12-14点</span><div><i style="width: 75%;"></i></div><em>1,152人 · 15%</em></div>
+                                                                <div class="follow-bar-item"><span>9点</span><div><i style="width: 54%;"></i></div><em>614人 · 8%</em></div>
+                                                                <div class="follow-bar-item"><span>10点</span><div><i style="width: 67%;"></i></div><em>768人 · 10%</em></div>
+                                                                <div class="follow-bar-item"><span>11点</span><div><i style="width: 80%;"></i></div><em>922人 · 12%</em></div>
+                                                                <div class="follow-bar-item"><span>12点</span><div><i style="width: 60%;"></i></div><em>691人 · 9%</em></div>
+                                                                <div class="follow-bar-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>1,152人 · 15%</em></div>
                                                             </div>
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>14-16点</span><div><i style="width: 100%;"></i></div><em>1,536人 · 20%</em></div>
-                                                                <div class="follow-bar-item"><span>16-18点</span><div><i style="width: 75%;"></i></div><em>1,152人 · 15%</em></div>
-                                                                <div class="follow-bar-item"><span>18-20点</span><div><i style="width: 30%;"></i></div><em>461人 · 6%</em></div>
-                                                                <div class="follow-bar-item"><span>20-22点</span><div><i style="width: 15%;"></i></div><em>230人 · 3%</em></div>
-                                                                <div class="follow-bar-item"><span>22-24点</span><div><i style="width: 5%;"></i></div><em>77人 · 1%</em></div>
+                                                                <div class="follow-bar-item"><span>16点</span><div><i style="width: 93%;"></i></div><em>1,075人 · 14%</em></div>
+                                                                <div class="follow-bar-item"><span>17点</span><div><i style="width: 73%;"></i></div><em>845人 · 11%</em></div>
+                                                                <div class="follow-bar-item"><span>18点</span><div><i style="width: 47%;"></i></div><em>538人 · 7%</em></div>
+                                                                <div class="follow-bar-item"><span>19点</span><div><i style="width: 33%;"></i></div><em>384人 · 5%</em></div>
+                                                                <div class="follow-bar-item"><span>20点</span><div><i style="width: 20%;"></i></div><em>230人 · 3%</em></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3323,21 +3328,21 @@
                                                         </div>
                                                     </div>
                                                     <div class="follow-mini-chart" style="grid-column: 1 / -1;">
-                                                        <strong>呼叫时段</strong>
+                                                        <strong>呼叫时段（含接通率）</strong>
                                                         <div style="display: flex; gap: 12px;">
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>0-6点</span><div><i style="width: 14%;"></i></div><em>281人 · 3%</em></div>
-                                                                <div class="follow-bar-item"><span>6-8点</span><div><i style="width: 32%;"></i></div><em>655人 · 7%</em></div>
-                                                                <div class="follow-bar-item"><span>8-10点</span><div><i style="width: 55%;"></i></div><em>1,123人 · 12%</em></div>
-                                                                <div class="follow-bar-item"><span>10-12点</span><div><i style="width: 77%;"></i></div><em>1,592人 · 17%</em></div>
-                                                                <div class="follow-bar-item"><span>12-14点</span><div><i style="width: 73%;"></i></div><em>1,498人 · 16%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>9点</span><div><i style="width: 53%;"></i></div><em>842人 · 9% · 接通率 65%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>10点</span><div><i style="width: 71%;"></i></div><em>1,123人 · 12% · 接通率 69%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>11点</span><div><i style="width: 82%;"></i></div><em>1,310人 · 14% · 接通率 73%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>12点</span><div><i style="width: 65%;"></i></div><em>1,030人 · 11% · 接通率 68%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>1,591人 · 17% · 接通率 75%</em></div>
                                                             </div>
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>14-16点</span><div><i style="width: 100%;"></i></div><em>2,059人 · 22%</em></div>
-                                                                <div class="follow-bar-item"><span>16-18点</span><div><i style="width: 64%;"></i></div><em>1,310人 · 14%</em></div>
-                                                                <div class="follow-bar-item"><span>18-20点</span><div><i style="width: 27%;"></i></div><em>562人 · 6%</em></div>
-                                                                <div class="follow-bar-item"><span>20-22点</span><div><i style="width: 9%;"></i></div><em>187人 · 2%</em></div>
-                                                                <div class="follow-bar-item"><span>22-24点</span><div><i style="width: 5%;"></i></div><em>93人 · 1%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>16点</span><div><i style="width: 88%;"></i></div><em>1,404人 · 15% · 接通率 77%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>17点</span><div><i style="width: 65%;"></i></div><em>1,030人 · 11% · 接通率 72%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>18点</span><div><i style="width: 35%;"></i></div><em>562人 · 6% · 接通率 67%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>19点</span><div><i style="width: 18%;"></i></div><em>281人 · 3% · 接通率 61%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>20点</span><div><i style="width: 12%;"></i></div><em>187人 · 2% · 接通率 56%</em></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3361,18 +3366,18 @@
                                                         <strong>接通时段</strong>
                                                         <div style="display: flex; gap: 12px;">
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>0-6点</span><div><i style="width: 15%;"></i></div><em>184人 · 3%</em></div>
-                                                                <div class="follow-bar-item"><span>6-8点</span><div><i style="width: 40%;"></i></div><em>489人 · 8%</em></div>
-                                                                <div class="follow-bar-item"><span>8-10点</span><div><i style="width: 60%;"></i></div><em>734人 · 12%</em></div>
-                                                                <div class="follow-bar-item"><span>10-12点</span><div><i style="width: 80%;"></i></div><em>979人 · 16%</em></div>
-                                                                <div class="follow-bar-item"><span>12-14点</span><div><i style="width: 75%;"></i></div><em>918人 · 15%</em></div>
+                                                                <div class="follow-bar-item"><span>9点</span><div><i style="width: 53%;"></i></div><em>428人 · 7%</em></div>
+                                                                <div class="follow-bar-item"><span>10点</span><div><i style="width: 69%;"></i></div><em>551人 · 9%</em></div>
+                                                                <div class="follow-bar-item"><span>11点</span><div><i style="width: 85%;"></i></div><em>673人 · 11%</em></div>
+                                                                <div class="follow-bar-item"><span>12点</span><div><i style="width: 62%;"></i></div><em>489人 · 8%</em></div>
+                                                                <div class="follow-bar-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>796人 · 13%</em></div>
                                                             </div>
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>14-16点</span><div><i style="width: 100%;"></i></div><em>1,224人 · 20%</em></div>
-                                                                <div class="follow-bar-item"><span>16-18点</span><div><i style="width: 75%;"></i></div><em>918人 · 15%</em></div>
-                                                                <div class="follow-bar-item"><span>18-20点</span><div><i style="width: 30%;"></i></div><em>367人 · 6%</em></div>
-                                                                <div class="follow-bar-item"><span>20-22点</span><div><i style="width: 15%;"></i></div><em>184人 · 3%</em></div>
-                                                                <div class="follow-bar-item"><span>22-24点</span><div><i style="width: 10%;"></i></div><em>123人 · 2%</em></div>
+                                                                <div class="follow-bar-item"><span>16点</span><div><i style="width: 92%;"></i></div><em>734人 · 12%</em></div>
+                                                                <div class="follow-bar-item"><span>17点</span><div><i style="width: 77%;"></i></div><em>612人 · 10%</em></div>
+                                                                <div class="follow-bar-item"><span>18点</span><div><i style="width: 54%;"></i></div><em>428人 · 7%</em></div>
+                                                                <div class="follow-bar-item"><span>19点</span><div><i style="width: 38%;"></i></div><em>306人 · 5%</em></div>
+                                                                <div class="follow-bar-item"><span>20点</span><div><i style="width: 23%;"></i></div><em>184人 · 3%</em></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3799,8 +3804,8 @@
         </div>
     </div>
 
-    <script src="mock.js?v=20260602-4"></script>
-    <script src="script.js?v=20260602-4"></script>
+    <script src="mock.js?v=20260602-9"></script>
+    <script src="script.js?v=20260602-9"></script>
 
     <!-- 城市专营店意向等级详情抽屉 -->
     <div class="drawer-overlay" id="cityStoreModal">

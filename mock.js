@@ -178,7 +178,7 @@ touchMedia: {
     },
     channelOverlap: {
         '5plus': {
-            title: '渠道留资重合度分析：5 个以上',
+            title: '渠道留资重合度分析-渠道数量：5 个以上',
             rows: [
                 { rank: 1, media: 'R1 + R2 + R4 + R6 + R8 + R10', unionCount: 2860, overlapCount: 42, overlapRate: '1.5%' },
                 { rank: 2, media: 'R1 + R3 + R4 + R7 + R9 + R11', unionCount: 2540, overlapCount: 34, overlapRate: '1.3%' },
@@ -193,7 +193,7 @@ touchMedia: {
             ]
         },
         '5': {
-            title: '渠道留资重合度分析：5个',
+            title: '渠道留资重合度分析-渠道数量：5个',
             rows: [
                 { rank: 1, media: 'R1 + R2 + R4 + R6 + R8', unionCount: 2420, overlapCount: 68, overlapRate: '2.8%' },
                 { rank: 2, media: 'R2 + R3 + R5 + R7 + R9', unionCount: 2260, overlapCount: 56, overlapRate: '2.5%' },
@@ -208,7 +208,7 @@ touchMedia: {
             ]
         },
         '4': {
-            title: '渠道留资重合度分析：4 个',
+            title: '渠道留资重合度分析-渠道数量：4 个',
             rows: [
                 { rank: 1, media: 'R1 + R2 + R4 + R6', unionCount: 2180, overlapCount: 126, overlapRate: '5.8%' },
                 { rank: 2, media: 'R2 + R3 + R5 + R8', unionCount: 2020, overlapCount: 104, overlapRate: '5.1%' },
@@ -223,7 +223,7 @@ touchMedia: {
             ]
         },
         '3': {
-            title: '渠道留资重合度分析：3 个',
+            title: '渠道留资重合度分析-渠道数量：3 个',
             rows: [
                 { rank: 1, media: 'R1 + R2 + R4', unionCount: 1960, overlapCount: 196, overlapRate: '10.0%' },
                 { rank: 2, media: 'R2 + R3 + R6', unionCount: 1780, overlapCount: 154, overlapRate: '8.7%' },
@@ -238,7 +238,7 @@ touchMedia: {
             ]
         },
         '2': {
-            title: '渠道留资重合度分析：2 个',
+            title: '渠道留资重合度分析-渠道数量：2 个',
             rows: [
                 { rank: 1, media: 'R4 + R1', unionCount: 1680, overlapCount: 180, overlapRate: '10.7%' },
                 { rank: 2, media: 'R2 + R1', unionCount: 1500, overlapCount: 128, overlapRate: '8.5%' },
@@ -253,7 +253,7 @@ touchMedia: {
             ]
         },
         '1': {
-            title: '渠道留资重合度分析：仅 1 个',
+            title: '渠道留资重合度分析-渠道数量：仅 1 个',
             rows: [
                 { rank: 1, media: 'R1', unionCount: 2460, overlapCount: 2460, overlapRate: '100%' },
                 { rank: 2, media: 'R2', unionCount: 2180, overlapCount: 2180, overlapRate: '100%' },
@@ -271,7 +271,7 @@ touchMedia: {
     },
     mediaOverlap: {
         '5plus': {
-            title: '媒体留资重合度分析：5 个以上',
+            title: '媒体留资重合度分析-媒体数量：5 个以上',
             rows: [
                 { rank: 1, media: '抖音 + 懂车帝 + 百度 + 快手 + 小红书 + 头条', unionCount: 3200, overlapCount: 38, overlapRate: '1.2%' },
                 { rank: 2, media: '抖音 + 懂车帝 + 快手 + 朋友圈 + B站', unionCount: 2860, overlapCount: 28, overlapRate: '1.0%' },
@@ -286,7 +286,7 @@ touchMedia: {
             ]
         },
         '5': {
-            title: '媒体留资重合度分析：5个',
+            title: '媒体留资重合度分析-媒体数量：5个',
             rows: [
                 { rank: 1, media: '抖音 + 懂车帝 + 百度 + 快手 + 小红书', unionCount: 2860, overlapCount: 56, overlapRate: '2.0%' },
                 { rank: 2, media: '懂车帝 + 百度 + 快手 + 朋友圈 + 头条', unionCount: 2600, overlapCount: 46, overlapRate: '1.8%' },
@@ -301,7 +301,7 @@ touchMedia: {
             ]
         },
         '4': {
-            title: '媒体留资重合度分析：4 个',
+            title: '媒体留资重合度分析-媒体数量：4 个',
             rows: [
                 { rank: 1, media: '抖音 + 懂车帝 + 百度 + 快手', unionCount: 2460, overlapCount: 108, overlapRate: '4.4%' },
                 { rank: 2, media: '懂车帝 + 百度 + 快手 + 小红书', unionCount: 2280, overlapCount: 88, overlapRate: '3.9%' },
@@ -316,7 +316,7 @@ touchMedia: {
             ]
         },
         '3': {
-            title: '媒体留资重合度分析：3 个',
+            title: '媒体留资重合度分析-媒体数量：3 个',
             rows: [
                 { rank: 1, media: '抖音 + 懂车帝 + 百度', unionCount: 2200, overlapCount: 176, overlapRate: '8.0%' },
                 { rank: 2, media: '懂车帝 + 百度 + 快手', unionCount: 1960, overlapCount: 142, overlapRate: '7.2%' },
@@ -331,7 +331,7 @@ touchMedia: {
             ]
         },
         '2': {
-            title: '媒体留资重合度分析：2 个',
+            title: '媒体留资重合度分析-媒体数量：2 个',
             rows: [
                 { rank: 1, media: '抖音 + 懂车帝', unionCount: 1880, overlapCount: 168, overlapRate: '8.9%' },
                 { rank: 2, media: '懂车帝 + 百度', unionCount: 1640, overlapCount: 120, overlapRate: '7.3%' },
@@ -346,7 +346,7 @@ touchMedia: {
             ]
         },
         '1': {
-            title: '媒体留资重合度分析：仅 1 个',
+            title: '媒体留资重合度分析-媒体数量：仅 1 个',
             rows: [
                 { rank: 1, media: '抖音', unionCount: 3120, overlapCount: 3120, overlapRate: '100%' },
                 { rank: 2, media: '懂车帝', unionCount: 2540, overlapCount: 2540, overlapRate: '100%' },
@@ -1311,9 +1311,10 @@ rankData: {
 kpi: {
     pageData: {
         'channel-effect': [
-            { border: 'kpi-border-purple', flex: 0.9, icon: 'fa-filter', title: '线索统计', metrics: [
-                { label: '新增线索量', val: '22,345', unit: '条', trend: 'up', tv: '5.2%' },
-                { label: '总部培育新增线索', val: '12,345', unit: '条', trend: 'up', tv: '4.8%' }
+            { border: 'kpi-border-purple', flex: 1.1, icon: 'fa-filter', title: '线索统计', metrics: [
+                { label: '全渠道新增线索量', val: '22,345', unit: '条', trend: 'up', tv: '5.2%' },
+                { label: '总部培育新增线索量', val: '12,345', unit: '条', trend: 'up', tv: '5.2%' },
+                { label: '总部培育占比', val: '20.00', unit: '%', trend: 'up', tv: '0.5pp' }
             ]},
             { border: 'kpi-border-blue', flex: 1.4, icon: 'fa-phone', title: '通话统计（有通话记录）（总部培育+门店虚拟号）', metrics: [
                 { label: '通话总数', val: '9,876', unit: '通', trend: 'up', tv: '3.1%' },
@@ -1330,7 +1331,7 @@ kpi: {
             ]},
             { border: 'kpi-border-blue', flex: 1.6, icon: 'fa-user-check', title: '用户分级（含占比）', metrics: [
                 { label: 'H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B用户', val: '4,321', unit: '人', trend: 'up', tv: '1.2pp' },
-                { label: 'H/A/B 用户占比', val: '35', unit: '%', trend: 'up', tv: '1.2pp' }
+                { label: 'H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B占比', val: '35', unit: '%', trend: 'up', tv: '1.2pp' }
             ]},
             { border: 'kpi-border-green', flex: 1.8, icon: 'fa-arrows-to-dot', title: '行为转化（含占比）', metrics: [
                 { label: '到店数（首次）', val: '2,345', unit: '人', trend: 'up', tv: '2pp' },

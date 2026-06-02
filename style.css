@@ -4517,6 +4517,10 @@ body {
     text-align: right;
 }
 
+.follow-call-time-item {
+    grid-template-columns: 36px minmax(0, 1fr) 166px;
+}
+
 .follow-pie-card {
     display: flex;
     align-items: center;
