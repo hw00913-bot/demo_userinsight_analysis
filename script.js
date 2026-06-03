@@ -303,6 +303,9 @@ function enhanceTouchHabitDeliveryMetrics() {
     const section = document.getElementById('touchHabitAnalysis');
     if (!section) return;
 
+    const dealStoreButton = section.querySelector('button[onclick="openFullRanking(\'dealStore\')"]');
+    const dealStoreCard = dealStoreButton?.closest('div[style*="border"]');
+
     section.querySelectorAll('span').forEach(metric => {
         if (metric.dataset.deliveryEnhanced === 'true') return;
         const match = metric.textContent.trim().match(/^([\d,]+)人\s*·\s*([\d.]+)%$/);
@@ -317,7 +320,11 @@ function enhanceTouchHabitDeliveryMetrics() {
         const deliveries = Math.round(count * rate / 100);
         metric.dataset.deliveryEnhanced = 'true';
         metric.classList.add('touch-habit-metric');
-        metric.innerHTML = `${match[1]}人 · ${match[2]}% · <span class="touch-habit-delivery">交车 ${deliveries.toLocaleString()}人 · ${rate}%</span>`;
+        if (dealStoreCard?.contains(metric)) {
+            metric.innerHTML = `<span class="touch-habit-delivery">交车量 ${deliveries.toLocaleString()}人 · 交车占比 ${rate}%</span>`;
+        } else {
+            metric.innerHTML = `用户量 ${match[1]}人 · <span class="touch-habit-delivery">交车量 ${deliveries.toLocaleString()}人 · 交车占比 ${rate}%</span>`;
+        }
     });
 }
 
