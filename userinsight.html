@@ -102,6 +102,12 @@
                 <div class="header-left">
                     <h1 class="header-title">用户洞察</h1>
                 </div>
+                <div class="header-right">
+                    <button class="stats-info-btn" onclick="openStatsModal()" title="统计口径说明">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>统计说明</span>
+                    </button>
+                </div>
             </header>
 
             <div class="content-container">
@@ -121,7 +127,7 @@
                                     <div class="filter-item">
                                         <label class="filter-label">时间范围:</label>
                                         <div class="date-range-group" data-default-range="30">
-                                            <div class="date-shortcuts">
+                                            <div class="date-shortcuts" data-anno="channel-date-range">
                                                 <button class="shortcut-btn" data-range="7">近7天</button>
                                                 <button class="shortcut-btn active" data-range="30">近30天</button>
                                                 <button class="shortcut-btn" data-range="90">近90天</button>
@@ -136,7 +142,7 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">意向车系:</label>
-                                        <select class="filter-select">
+                                        <select class="filter-select" data-anno="channel-car-series">
                                             <option value="all">全部</option>
                                             <option value="N7">N7</option>
                                             <option value="N6">N6</option>
@@ -146,7 +152,7 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">渠道名称:</label>
-                                        <select class="filter-select">
+                                        <select class="filter-select" data-anno="channel-name">
                                             <option value="all">全部</option>
                                             <option value="R1">R1</option>
                                             <option value="R2">R2</option>
@@ -163,15 +169,15 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">媒体名称:</label>
-                                        <input type="search" class="filter-input filter-search-input" placeholder="输入媒体名称关键字">
+                                        <input type="search" class="filter-input filter-search-input" placeholder="输入媒体名称关键字" data-anno="channel-media-name">
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">大项目:</label>
-                                        <input type="text" class="filter-input" placeholder="输入关键字查询" style="min-width: 160px;">
+                                        <input type="text" class="filter-input" placeholder="输入关键字查询" style="min-width: 160px;" data-anno="channel-project">
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">落地平台:</label>
-                                        <div class="custom-multi-select">
+                                        <div class="custom-multi-select" data-anno="channel-platform">
                                             <div class="select-header">
                                                 <span class="platform-text">全选 (3项)</span>
                                                 <i class="fa-solid fa-chevron-down"></i>
@@ -186,13 +192,13 @@
                                     </div>
                                     <div class="filter-item store-filter-item">
                                         <label class="filter-label">筛选门店:</label>
-                                        <button class="store-filter-trigger" onclick="openStoreFilterModal(this)" data-store-text="全部门店">
+                                        <button class="store-filter-trigger" onclick="openStoreFilterModal(this)" data-store-text="全部门店" data-anno="channel-store-filter">
                                             <i class="fa-solid fa-store"></i> <span>全部门店</span> <i class="fa-solid fa-chevron-down"></i>
                                         </button>
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">线索等级:</label>
-                                        <div class="custom-multi-select">
+                                        <div class="custom-multi-select" data-anno="channel-lead-level">
                                             <div class="select-header">
                                                 <span class="lead-level-text">全选 (10项)</span>
                                                 <i class="fa-solid fa-chevron-down"></i>
@@ -214,7 +220,7 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">原因类型大类:</label>
-                                        <select class="filter-select reason-category-select">
+                                        <select class="filter-select reason-category-select" data-anno="channel-reason-category">
     <option value="all">全部</option>
     <option value="invalid">无效号码</option>
     <option value="unreachable">无法建联</option>
@@ -224,7 +230,7 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">原因类型:</label>
-                                        <select class="filter-select reason-type-select">
+                                        <select class="filter-select reason-type-select" data-anno="channel-reason-type">
     <option value="all">全部</option>
     <option value="empty" data-category="invalid">空号</option>
     <option value="shutdown" data-category="invalid">停机</option>
@@ -241,17 +247,17 @@
                                     </div>
                                     <div class="filter-item">
                                         <label class="filter-label">时间维度切换:</label>
-                                        <select class="filter-select">
+                                        <select class="filter-select" data-anno="channel-time-dimension">
                                             <option value="conversion">转化维度</option>
                                             <option value="lead_date">线索日期</option>
                                         </select>
                                     </div>
                                     <div class="filter-item filter-actions">
-                                        <button class="icon-btn query-btn">
+                                        <button class="icon-btn query-btn" data-anno="channel-query-btn">
                                             <i class="fa-solid fa-search"></i>
                                             <span>查询</span>
                                         </button>
-                                        <button class="icon-btn reset-btn">
+                                        <button class="icon-btn reset-btn" data-anno="channel-reset-btn">
                                             <i class="fa-solid fa-rotate-right"></i>
                                             <span>重置</span>
                                         </button>
@@ -264,7 +270,7 @@
                             </div>
 
                             <!-- 渠道效果核心指标 -->
-                            <div class="kpi-cards-section">
+                            <div class="kpi-cards-section" data-anno="channel-kpi-cards">
                                 <div class="kpi-group-row">
                                     <div class="kpi-group-compact kpi-border-purple" style="flex: 1.1;">
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-filter"></i> 线索统计</div>
@@ -583,7 +589,7 @@
                                 <div class="content-card" style="flex: 1; margin-bottom: 0;">
                                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                                         <div style="display: flex; align-items: center; gap: 16px;">
-                                            <h3 class="card-title">大项目线索质量排名</h3>
+                                            <h3 class="card-title" data-anno="channel-project-ranking">大项目线索质量排名</h3>
                                             <div class="ce-dim-group" id="rankMetricTabs">
                                                 <button class="ce-dim-btn active" data-metric="hab">按 H/A/B 占比</button>
                                                 <button class="ce-dim-btn" data-metric="arrival">按到店率</button>
@@ -782,7 +788,7 @@
                                 <div class="content-card" style="flex: 1; margin-bottom: 0;">
                                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                                         <div style="display: flex; align-items: center; gap: 16px;">
-                                            <h3 class="card-title">媒体线索质量排名</h3>
+                                            <h3 class="card-title" data-anno="channel-media-ranking">媒体线索质量排名</h3>
                                             <div class="ce-dim-group" id="scheduleMetricTabs">
                                                 <button class="ce-dim-btn active" data-metric="hab">按 H/A/B 占比</button>
                                                 <button class="ce-dim-btn" data-metric="arrival">按到店率</button>
@@ -983,7 +989,7 @@
                                 <div class="content-card">
                                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                                         <div style="display: flex; align-items: center; gap: 16px;">
-                                            <h3 class="card-title">城市投放效果</h3>
+                                            <h3 class="card-title" data-anno="channel-city-delivery">城市投放效果</h3>
                                             <div class="ce-dim-group" id="regionTopTabs">
                                                 <button class="ce-dim-btn active" data-top="10">Top 10</button>
                                                 <button class="ce-dim-btn" data-top="20">Top 20</button>
@@ -1344,7 +1350,7 @@
                                 <!-- 渠道线索质量 -->
                                 <div class="content-card">
                                     <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border-color);">
-                                        <h3 class="card-title">渠道线索质量</h3>
+                                        <h3 class="card-title" data-anno="channel-quality-distribution">渠道线索质量</h3>
                                         <!-- 全量图例：横放（10级，与 MOCK.leadLevels 对齐）-->
                                         <div class="ce-v-legend" style="flex-wrap: wrap; justify-content: flex-end; max-width: 600px;">
                                             <div class="ce-v-legend-item"><span class="ce-v-legend-dot h-schedule"></span><span>H-试驾排程单</span></div>
@@ -1746,7 +1752,7 @@
                             <!-- 质量标签分布统计图 -->
                             <div class="content-card" style="margin-top: 20px;">
                                 <div class="card-header">
-                                    <h3 class="card-title">质量标签分布</h3>
+                                    <h3 class="card-title" data-anno="channel-quality-tag">质量标签分布</h3>
                                     <span style="font-size: 12px; color: #94a3b8;">条形图，展示数量和占比</span>
                                 </div>
                                 <div class="card-body" style="padding: 18px 22px;">
@@ -1957,7 +1963,7 @@
                             <!-- 触媒/触店习惯与频率更新分析 -->
                             <div class="content-card" id="touchHabitAnalysis" style="margin-top: 20px;">
                                 <div class="card-header">
-                                    <div class="card-title"><i class="fa-solid fa-chart-bar"></i> 触媒/触店习惯与频率更新分析</div>
+                                    <div class="card-title" data-anno="channel-touch-habit"><i class="fa-solid fa-chart-bar"></i> 触媒/触店习惯与频率更新分析</div>
                                     <span style="font-size: 12px; color: #94a3b8;">条形图按占比从高到低排名，默认展示 TOP10</span>
                                 </div>
                                 <div class="card-body" style="padding: 20px;">
@@ -3895,6 +3901,249 @@
             </div>
         </div>
     </div>
+
+    <!-- 统计口径说明弹窗 -->
+    <style>
+    .stats-info-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 14px;
+        background: #fff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    .stats-info-btn:hover { background: #f1f5f9; border-color: #94a3b8; color: #1e293b; }
+    .stats-info-btn i { color: #3b82f6; font-size: 14px; }
+
+    #stats-drawer-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(15, 23, 42, 0.45);
+        z-index: 100000;
+    }
+    #stats-drawer-overlay.active { display: block; }
+
+    #stats-drawer {
+        position: fixed;
+        top: 0; right: 0;
+        width: 720px;
+        max-width: 92vw;
+        height: 100vh;
+        background: #fff;
+        box-shadow: -8px 0 40px rgba(0,0,0,0.18);
+        z-index: 100001;
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #stats-drawer-overlay.active + #stats-drawer { transform: translateX(0); }
+
+    .stats-drawer-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 28px;
+        border-bottom: 1px solid #e2e8f0;
+        flex-shrink: 0;
+    }
+    .stats-drawer-header h2 { margin: 0; font-size: 20px; color: #1e293b; }
+    .stats-drawer-header h2 i { color: #3b82f6; margin-right: 8px; }
+    .stats-drawer-close {
+        width: 36px; height: 36px; border: none; background: #f1f5f9;
+        border-radius: 8px; font-size: 20px; color: #64748b; cursor: pointer;
+        transition: all 0.15s;
+    }
+    .stats-drawer-close:hover { background: #fee2e2; color: #ef4444; }
+
+    .stats-drawer-body {
+        padding: 24px 28px;
+        overflow-y: auto;
+        flex: 1;
+        font-size: 14px;
+        line-height: 1.8;
+        color: #334155;
+    }
+    .stats-drawer-body h3 {
+        font-size: 16px; color: #1e293b; margin: 24px 0 12px;
+        padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;
+    }
+    .stats-drawer-body h3:first-child { margin-top: 0; }
+    .stats-drawer-body h4 {
+        font-size: 14px; color: #475569; margin: 16px 0 8px;
+    }
+    .stats-drawer-body table {
+        width: 100%; border-collapse: collapse; margin: 8px 0 16px;
+        font-size: 13px;
+    }
+    .stats-drawer-body th {
+        background: #f8fafc; padding: 8px 12px; text-align: left;
+        font-weight: 600; color: #475569; border: 1px solid #e2e8f0;
+    }
+    .stats-drawer-body td {
+        padding: 8px 12px; border: 1px solid #e2e8f0; vertical-align: top;
+    }
+    .stats-drawer-body .def-term { font-weight: 600; color: #1e293b; }
+    </style>
+
+    <div id="stats-drawer-overlay" onclick="closeStatsDrawer()"></div>
+    <div id="stats-drawer">
+        <div class="stats-drawer-header">
+            <h2><i class="fa-solid fa-circle-info"></i> 统计口径说明</h2>
+            <button class="stats-drawer-close" onclick="closeStatsDrawer()">&times;</button>
+        </div>
+        <div class="stats-drawer-body">
+                <h3>渠道效果 — 用户概览（KPI 卡片）</h3>
+
+                <h4>线索统计</h4>
+                <table>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">全渠道新增线索量</td><td>全渠道新增线索，按线索编码去重统计</td><td>条</td></tr>
+                    <tr><td class="def-term">总部培育新增线索量</td><td>总部培育新增线索数，按线索编码去重</td><td>条</td></tr>
+                    <tr><td class="def-term">总部培育占比</td><td>总部培育新增线索量 ÷ 全渠道新增线索量</td><td>%</td></tr>
+                </table>
+
+                <h4>通话统计（总部培育）</h4>
+                <table>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">通话总数</td><td>总部培育虚拟号通话记录总数</td><td>通</td></tr>
+                    <tr><td class="def-term">接通总数</td><td>总部培育虚拟号通话记录中，通话时长 &gt; 0 的记录数</td><td>通</td></tr>
+                    <tr><td class="def-term">平均时长</td><td>已接通通话时长合计 ÷ 接通总数</td><td>秒</td></tr>
+                </table>
+
+                <h4>线索大类（含占比）（总部培育）</h4>
+                <table>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">外呼有效量</td><td>总部培育线索级别 ≠ 无效号码的线索数，按线索编码去重</td><td>条</td></tr>
+                    <tr><td class="def-term">有效号码占比</td><td>外呼有效量 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">无法建联线索</td><td>总部培育外呼无法建联线索数，按线索编码去重</td><td>条</td></tr>
+                    <tr><td class="def-term">无法建联占比</td><td>无法建联线索 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">外呼无效线索</td><td>总部培育线索级别 = 无效号码的线索数，按线索编码去重</td><td>条</td></tr>
+                    <tr><td class="def-term">无效号码占比</td><td>外呼无效线索 ÷ 新增线索量</td><td>%</td></tr>
+                </table>
+
+                <h4>用户分级（含占比）（总部培育）</h4>
+                <table>
+                    <tr><th style="width:200px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">H/A/B 线索量</td><td>总部培育线索等级 ∈ {H-试驾排程单, H-试驾线索单, H-非试驾线索单, A, B} 的线索数<br>总部线索取值优先级：下发级别 &gt; 跟进级别 &gt; 初始级别</td><td>条</td></tr>
+                    <tr><td class="def-term">H/A/B 线索占比</td><td>HAB 线索量 ÷ 新增线索量</td><td>%</td></tr>
+                </table>
+
+                <h4>行为转化（含占比）（全渠道）</h4>
+                <table>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">到店数（首次）</td><td>统计周期内，门店所有客户第一次到店线索量。转化维度按到店时间统计，线索维度按线索创建日期统计</td><td>条</td></tr>
+                    <tr><td class="def-term">到店占比</td><td>到店线索数 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">试驾数</td><td>统计周期内全部试驾量，按车系去重。转化维度按每个车系首次试驾日期，线索维度按线索创建日期</td><td>条</td></tr>
+                    <tr><td class="def-term">试驾占比</td><td>试驾线索数 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">锁单数</td><td>统计周期内剔除作废/销退后的有效锁单量 = 新增锁单量 − 作废/销退量</td><td>条</td></tr>
+                    <tr><td class="def-term">锁单占比</td><td>锁单线索数 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">交车数</td><td>统计周期内剔除销退后的有效交付确认量 = 交付确认台数 − 交车销退台数</td><td>条</td></tr>
+                    <tr><td class="def-term">交车占比</td><td>交车线索数 ÷ 新增线索量</td><td>%</td></tr>
+                </table>
+
+                <h3>渠道效果分析</h3>
+                <h4>效果概览（饼图）</h4>
+                <table>
+                    <tr><th style="width:140px;">分析视角</th><th>指标</th><th>维度</th></tr>
+                    <tr><td class="def-term">意向车系占比</td><td>新增线索量、占比（分母=新增线索量）</td><td>N6 / N7 / 天籁鸿蒙 / NX8</td></tr>
+                    <tr><td class="def-term">线索大类占比</td><td>新增线索量、占比（分母=新增线索量）</td><td>有效号码 / 无效号码 / 无法建联</td></tr>
+                    <tr><td class="def-term">线索级别占比</td><td>新增线索量、占比（分母=新增线索量），与意向车系联动</td><td>H-试驾排程单 / H-试驾线索单 / H-非试驾线索单 / A / B / C-意向不明 / C-无法接通 / F-战败 / L-休眠 / E-意向含糊</td></tr>
+                </table>
+
+                <h4>投放效果（条形图）</h4>
+                <table>
+                    <tr><th style="width:140px;">分析视角</th><th>指标</th><th>维度</th></tr>
+                    <tr><td class="def-term">大区投放效果</td><td>新增线索量、H/A/B 占比</td><td>大区 × 线索级别（H/A/B/C/其他）</td></tr>
+                    <tr><td class="def-term">小区投放效果</td><td>新增线索量、H/A/B 占比</td><td>小区 × 线索级别</td></tr>
+                    <tr><td class="def-term">区域投放效果</td><td>新增线索量、H/A/B 占比</td><td>所在城市（TOP10/20/可自定义）</td></tr>
+                </table>
+
+                <h4>渠道 & 排名（堆叠柱状图 / 条形图）</h4>
+                <table>
+                    <tr><th style="width:160px;">分析视角</th><th>指标</th><th>维度</th></tr>
+                    <tr><td class="def-term">渠道线索质量</td><td>新增线索量</td><td>渠道名称 R1-R11 × 线索级别（H/A/B/C/F/L/E/无效号码），百分百堆叠柱状图</td></tr>
+                    <tr><td class="def-term">大项目线索质量排名</td><td>H/A/B 量及占比、到店量及占比、试驾量及占比、锁单量及占比</td><td>大项目名称，条形图按占比降序（默认TOP10），可切换指标维度，默认按H/A/B占比</td></tr>
+                    <tr><td class="def-term">媒体线索质量排名</td><td>同上（H/A/B、到店、试驾、锁单）</td><td>媒体名称，同上交互逻辑</td></tr>
+                </table>
+
+                <h4>质量标签分布（条形图）</h4>
+                <table>
+                    <tr><th style="width:120px;">大类</th><th style="width:130px;">原因类型</th><th>原因说明</th></tr>
+                    <tr><td rowspan="3">无效号码</td><td>空号/停机</td><td>空号、停机</td></tr>
+                    <tr><td>拦截/黑名单</td><td>黑名单过滤、线路拦截</td></tr>
+                    <tr><td>已接无效</td><td>秘书台号码、语音信箱号码、手机助理号码</td></tr>
+                    <tr><td rowspan="2">无法建联</td><td>休眠失联</td><td>休眠失联</td></tr>
+                    <tr><td>休眠未购</td><td>休眠未购</td></tr>
+                    <tr><td rowspan="2">有效号码</td><td>接通有效</td><td>确认有购车意向、购车意愿明确、购车意愿不明确</td></tr>
+                    <tr><td>意向不明</td><td>意向不明</td></tr>
+                </table>
+
+                <h3>触媒/触店习惯与频率更新分析</h3>
+                <h4>触媒习惯（条形图，按占比 TOP10）</h4>
+                <table>
+                    <tr><th style="width:180px;">指标</th><th>定义</th></tr>
+                    <tr><td class="def-term">留资总数</td><td>各渠道/媒体的用户留资总量，按渠道或媒体维度聚合</td></tr>
+                    <tr><td class="def-term">首次到店（占比）</td><td>首次到店触媒为该渠道/媒体的用户数 ÷ 留资总数</td></tr>
+                    <tr><td class="def-term">留资培育过程</td><td>培育过程中通过该渠道/媒体留资的用户占比</td></tr>
+                    <tr><td class="def-term">预到店培育过程</td><td>到店前培育过程中通过该渠道/媒体触达的用户占比</td></tr>
+                    <tr><td class="def-term">非留资培育过程</td><td>非留资场景下通过该渠道/媒体培育触达的用户占比</td></tr>
+                </table>
+
+                <h4>触店频率（条形图，按占比 TOP10）</h4>
+                <table>
+                    <tr><th style="width:140px;">到店次数</th><th>定义</th></tr>
+                    <tr><td class="def-term">5 个以上</td><td>到店次数 ≥ 6 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">5 个</td><td>到店次数 = 5 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">4 个</td><td>到店次数 = 4 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">3 个</td><td>到店次数 = 3 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">2 个</td><td>到店次数 = 2 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">仅 1 个</td><td>到店次数 = 1 次的用户数量及占比</td></tr>
+                </table>
+
+                <h4>触媒重叠度分析</h4>
+                <table>
+                    <tr><th style="width:180px;">指标</th><th>定义</th></tr>
+                    <tr><td class="def-term">留资渠道数量</td><td>用户留资涉及的渠道个数，用于渠道留资重合度分析</td></tr>
+                    <tr><td class="def-term">重合渠道名称列表</td><td>用户多次留资的渠道列表，如 R1+R2+R4+R6+R8+R10</td></tr>
+                    <tr><td class="def-term">留资媒体数量</td><td>用户留资涉及的媒体个数，用于媒体留资重合度分析</td></tr>
+                    <tr><td class="def-term">重合媒体名称列表</td><td>用户多次留资的媒体列表，如 抖音+懂车帝+百度+快手+小红书+头条</td></tr>
+                </table>
+            </div>
+        </div>
+
+    <script>
+    function openStatsModal() {
+        document.getElementById('stats-drawer-overlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeStatsDrawer() {
+        document.getElementById('stats-drawer-overlay').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.getElementById('stats-drawer-overlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+    </script>
+
+    <!-- 标注系统 -->
+    <link rel="stylesheet" href="annotations-tool/annotation.css">
+    <script>
+      window.AnnotationConfig = { page: "userinsight" };
+    </script>
+    <script src="data/annotations.js"></script>
+    <script src="annotations-tool/annotation-runtime.js"></script>
 
 </body>
 
