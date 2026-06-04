@@ -1316,12 +1316,12 @@ kpi: {
                 { label: '总部培育新增线索量', val: '12,345', unit: '条', trend: 'up', tv: '5.2%' },
                 { label: '总部培育占比', val: '20.00', unit: '%', trend: 'up', tv: '0.5pp' }
             ]},
-            { border: 'kpi-border-blue', flex: 1.4, icon: 'fa-phone', title: '通话统计（有通话记录）（总部培育+门店虚拟号）', metrics: [
+            { border: 'kpi-border-blue', flex: 1.4, icon: 'fa-phone', title: '通话统计（总部培育）', metrics: [
                 { label: '通话总数', val: '9,876', unit: '通', trend: 'up', tv: '3.1%' },
                 { label: '接通总数', val: '8,234', unit: '通', trend: 'up', tv: '2.8%' },
                 { label: '平均时长', val: '30', unit: 's', trend: 'up', tv: '1s' }
             ]},
-            { border: 'kpi-border-cyan', flex: 1.6, icon: 'fa-layer-group', title: '线索大类（含占比）（有通话记录）（总部培育）', metrics: [
+            { border: 'kpi-border-cyan', flex: 1.6, icon: 'fa-layer-group', title: '线索大类（含占比）（总部培育）', metrics: [
                 { label: '外呼有效量', val: '9,876', unit: '人', trend: 'up', tv: '0.5pp' },
                 { label: '有效号码占比', val: '68', unit: '%', trend: 'up', tv: '0.5pp' },
                 { label: '无法建联用户', val: '3,210', unit: '人', trend: 'down', tv: '0.4%' },
@@ -1329,11 +1329,11 @@ kpi: {
                 { label: '外呼无效用户', val: '2,469', unit: '人', trend: 'down', tv: '1.1%' },
                 { label: '无效号码占比', val: '32', unit: '%', trend: 'down', tv: '1.1pp' }
             ]},
-            { border: 'kpi-border-blue', flex: 1.6, icon: 'fa-user-check', title: '用户分级（含占比）', metrics: [
+            { border: 'kpi-border-blue', flex: 1.6, icon: 'fa-user-check', title: '用户分级（含占比）（总部培育）', metrics: [
                 { label: 'H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B用户', val: '4,321', unit: '人', trend: 'up', tv: '1.2pp' },
                 { label: 'H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B占比', val: '35', unit: '%', trend: 'up', tv: '1.2pp' }
             ]},
-            { border: 'kpi-border-green', flex: 1.8, icon: 'fa-arrows-to-dot', title: '行为转化（含占比）', metrics: [
+            { border: 'kpi-border-green', flex: 1.8, icon: 'fa-arrows-to-dot', title: '行为转化（含占比）（全渠道）', metrics: [
                 { label: '到店数（首次）', val: '2,345', unit: '人', trend: 'up', tv: '2pp' },
                 { label: '到店占比', val: '35', unit: '%', trend: 'up', tv: '2pp' },
                 { label: '试驾数', val: '1,234', unit: '人', trend: 'up', tv: '0.8pp' },
