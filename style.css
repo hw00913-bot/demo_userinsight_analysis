@@ -4451,6 +4451,8 @@ body {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .follow-bar-charts-two {
@@ -4489,11 +4491,15 @@ body {
 
 .follow-bar-item {
     display: grid;
-    grid-template-columns: 58px minmax(0, 1fr) 92px;
+    grid-template-columns: 58px minmax(0, 1fr) auto;
     gap: 8px;
     align-items: center;
     font-size: 11px;
     color: #64748b;
+}
+
+.follow-bar-item em {
+    white-space: nowrap;
 }
 
 .follow-bar-item div {

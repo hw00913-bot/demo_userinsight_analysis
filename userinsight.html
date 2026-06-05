@@ -351,12 +351,12 @@
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-user-check"></i> 用户分级（含占比）（总部培育）</div>
                                         <div class="kpi-metrics-row">
                                             <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B用户</div>
+                                                <div class="kpi-metric-label">H/A/B 线索</div>
                                                 <div class="kpi-metric-val">4,321<span class="kpi-unit">人</span></div>
                                                 <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
                                             </div>
                                             <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B占比</div>
+                                                <div class="kpi-metric-label">H/A/B 线索占比</div>
                                                 <div class="kpi-metric-val">35<span class="kpi-unit">%</span></div>
                                                 <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
                                             </div>
@@ -3073,12 +3073,12 @@
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-user-check"></i> 用户分级（含占比）（总部培育）</div>
                                         <div class="kpi-metrics-row">
                                             <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B用户</div>
+                                                <div class="kpi-metric-label">H/A/B 线索</div>
                                                 <div class="kpi-metric-val">4,321<span class="kpi-unit">人</span></div>
                                                 <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
                                             </div>
                                             <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B用户占比</div>
+                                                <div class="kpi-metric-label">H/A/B 线索占比</div>
                                                 <div class="kpi-metric-val">35<span class="kpi-unit">%</span></div>
                                                 <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
                                             </div>
@@ -3275,7 +3275,7 @@
                                         <div class="store-follow-analysis-grid">
                                             <div class="follow-analysis-card">
                                                 <div class="follow-analysis-title">线索跟进</div>
-                                                <div class="follow-bar-charts follow-bar-charts-three">
+                                                <div class="follow-bar-charts">
                                                     <div class="follow-mini-chart">
                                                         <strong>跟进次数</strong>
                                                         <div class="follow-bars">
@@ -3287,6 +3287,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="follow-mini-chart">
+                                                        <strong>按时跟进</strong>
+                                                        <div class="follow-bars">
+                                                            <div class="follow-bar-item"><span>按时</span><div><i style="width: 76%;"></i></div><em>5,198人 · 76%</em></div>
+                                                            <div class="follow-bar-item"><span>超时</span><div><i style="width: 24%;"></i></div><em>1,642人 · 24%</em></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="follow-mini-chart" style="grid-column: 1 / -1;">
                                                         <strong>平均跟进间隔</strong>
                                                         <div class="follow-bars">
                                                             <div class="follow-bar-item"><span>0-5min</span><div><i style="width: 38%;"></i></div><em>2,599人 · 38%</em></div>
@@ -3296,19 +3303,12 @@
                                                             <div class="follow-bar-item"><span>20min以上</span><div><i style="width: 8%;"></i></div><em>547人 · 8%</em></div>
                                                         </div>
                                                     </div>
-                                                    <div class="follow-mini-chart">
-                                                        <strong>按时跟进</strong>
-                                                        <div class="follow-bars">
-                                                            <div class="follow-bar-item"><span>按时</span><div><i style="width: 76%;"></i></div><em>5,198人 · 76%</em></div>
-                                                            <div class="follow-bar-item"><span>超时</span><div><i style="width: 24%;"></i></div><em>1,642人 · 24%</em></div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
 
                                             <div class="follow-analysis-card">
                                                 <div class="follow-analysis-title">呼叫线索</div>
-                                                <div class="follow-bar-charts follow-bar-charts-three">
+                                                <div class="follow-bar-charts">
                                                     <div class="follow-mini-chart">
                                                         <strong>呼叫次数</strong>
                                                         <div class="follow-bars">
@@ -4070,7 +4070,7 @@
                 <h4>渠道 & 排名（堆叠柱状图 / 条形图）</h4>
                 <table>
                     <tr><th style="width:160px;">分析视角</th><th>指标</th><th>维度</th></tr>
-                    <tr><td class="def-term">渠道线索质量</td><td>新增线索量</td><td>渠道名称 R1-R11 × 线索级别（H/A/B/C/F/L/E/无效号码），百分百堆叠柱状图</td></tr>
+                    <tr><td class="def-term">渠道线索质量</td><td>新增线索量</td><td>渠道名称，线索级别（H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B/C-意向不明/C-无法接通/F-战败/L-休眠/E-意向含糊）</td></tr>
                     <tr><td class="def-term">大项目线索质量排名</td><td>H/A/B 量及占比、到店量及占比、试驾量及占比、锁单量及占比</td><td>大项目名称，条形图按占比降序（默认TOP10），可切换指标维度，默认按H/A/B占比</td></tr>
                     <tr><td class="def-term">媒体线索质量排名</td><td>同上（H/A/B、到店、试驾、锁单）</td><td>媒体名称，同上交互逻辑</td></tr>
                 </table>

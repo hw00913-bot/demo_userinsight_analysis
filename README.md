@@ -23,5 +23,4 @@
 - Vanilla JavaScript
 
 ## 在线访问
-
-部署于 GitHub Pages: https://hw00913-bot.github.io/demo_userinsight/
+hw00913-bot.github.io/demo_userinsight/
