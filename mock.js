@@ -1330,8 +1330,8 @@ kpi: {
                 { label: '无效号码占比', val: '32', unit: '%', trend: 'down', tv: '1.1pp' }
             ]},
             { border: 'kpi-border-blue', flex: 1.6, icon: 'fa-user-check', title: '用户分级（含占比）（总部培育）', metrics: [
-                { label: 'H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B用户', val: '4,321', unit: '人', trend: 'up', tv: '1.2pp' },
-                { label: 'H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B占比', val: '35', unit: '%', trend: 'up', tv: '1.2pp' }
+                { label: 'H/A/B 线索', val: '4,321', unit: '人', trend: 'up', tv: '1.2pp' },
+                { label: 'H/A/B 线索占比', val: '35', unit: '%', trend: 'up', tv: '1.2pp' }
             ]},
             { border: 'kpi-border-green', flex: 1.8, icon: 'fa-arrows-to-dot', title: '行为转化（含占比）（全渠道）', metrics: [
                 { label: '到店数（首次）', val: '2,345', unit: '人', trend: 'up', tv: '2pp' },

@@ -2275,10 +2275,18 @@ function renderKpiCards() {
     
     const config = kpiPageData['channel-effect'];
     if (!config) return;
+    const annoKeys = [
+        'channel-kpi-leads',
+        'channel-kpi-call',
+        'channel-kpi-category',
+        'channel-kpi-grade',
+        'channel-kpi-conversion'
+    ];
     
     let html = '';
-    config.forEach(g => {
-        html += `<div class="kpi-group-compact ${g.border}" style="flex: ${g.flex};">
+    config.forEach((g, index) => {
+        const annoAttr = annoKeys[index] ? ` data-anno="${annoKeys[index]}"` : '';
+        html += `<div class="kpi-group-compact ${g.border}"${annoAttr} style="flex: ${g.flex};">
             <div class="kpi-group-title-mini"><i class="fa-solid ${g.icon}"></i> ${g.title}</div>
             <div class="kpi-metrics-row">`;
         g.metrics.forEach(m => {
