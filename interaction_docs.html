@@ -533,7 +533,7 @@
                 </tbody>
             </table>
             <div class="highlight-box" style="margin-top:1rem;">
-                <strong>当前状态：</strong>该项目是静态 HTML 原型，无构建流程、无后端接口。页面数据由 <code>mock.js</code> 和 <code>script.js</code> 中的前端模拟数据驱动，功能说明和标注说明由 <code>data/annotations.js</code> 维护。
+                <strong>当前状态：</strong>该项目是静态 HTML 原型，无构建流程、无后端接口。页面数据由 <code>mock.js</code> 和 <code>script.js</code> 中的前端模拟数据驱动（模拟扎帳宽表与 e3s 基础数据），功能说明和标注说明由 <code>data/annotations.js</code> 维护。
             </div>
         </section>
 
@@ -547,7 +547,7 @@
                     <tr><td><code>main.html</code></td><td>主框架</td><td>左侧菜单，包含「用户洞察」「交互说明」等入口。</td></tr>
                     <tr><td><code>userinsight.html</code></td><td>核心业务页</td><td>三大分页、筛选栏、KPI、图表、统计口径抽屉、弹窗容器、标注系统接入。</td></tr>
                     <tr><td><code>script.js</code></td><td>页面交互逻辑</td><td>分页切换、KPI 动态渲染、图表重绘、下钻弹窗、门店筛选、下载明细、标注动态锚点。</td></tr>
-                    <tr><td><code>mock.js</code></td><td>模拟数据</td><td>KPI、饼图、排行、渠道/媒体/门店等前端演示数据。</td></tr>
+                    <tr><td><code>mock.js</code></td><td>前端模拟数据</td><td>模拟扎帳宽表（KPI/饼图/排行/渠道/媒体）和 e3s（门店/大区/小区）的前端演示数据。</td></tr>
                     <tr><td><code>data/annotations.js</code></td><td>功能标注数据</td><td>当前维护 68 条 <code>userinsight</code> 标注和 1 条 <code>interaction_docs</code> 标注。</td></tr>
                     <tr><td><code>interaction_docs.html</code></td><td>交互说明文档</td><td>当前文档页，自动读取标注数据并渲染功能标注目录。</td></tr>
                 </tbody>
@@ -560,11 +560,16 @@
         <!-- ===================== 三、数据与统计口径 ===================== -->
         <section class="section" id="section-datasource">
             <h2 class="section-title"><i class="fa-solid fa-database"></i>三、数据与统计口径</h2>
-            <h3 class="sub-title">数据来源</h3>
+            <h3 class="sub-title">真实系统数据来源</h3>
             <ul class="item-list">
-                <li>原型数据由 <code>mock.js</code>、<code>script.js</code> 中的对象和数组提供，模拟扎帐宽表、线索标签、通话记录、到店/试驾/锁单/交车等转化数据。</li>
-                <li>标注说明统一由 <code>data/annotations.js</code> 维护，权限范围已统一为「总部管理员和电销主管都有权限查看」。</li>
-                <li>统计口径抽屉中的说明直接写在 <code>userinsight.html</code> 底部，当前仅保留「指标名称」和「指标定义」两列。</li>
+                <li><strong>报表 / 统计图 / KPI 指标数据：</strong>来自数据组维护的 <strong>扎帳宽表</strong>，包含线索编码、通话记录、线索等级分类、到店/试驾/锁单/交车等转化数据。</li>
+                <li><strong>专营店 / 门店基础数据：</strong>来自营销平台 <strong>e3s</strong> 基础数据，包含门店编码、门店名称、大区/小区/城市归属、省份归属等组织架构信息。</li>
+            </ul>
+            <h3 class="sub-title">当前原型数据</h3>
+            <ul class="item-list">
+                <li>原型阶段由 <code>mock.js</code> 和 <code>script.js</code> 中的前端静态数据模拟上述真实数据源，用于演示和验证页面交互逻辑。</li>
+                <li>标注数据统一由 <code>data/annotations.js</code> 维护，68 条标注覆盖三大分页，权限范围已统一为「总部管理员和电销主管都有权限查看」。</li>
+                <li>统计口径抽屉中的说明直接写在 <code>userinsight.html</code> 底部，内容与扎帳宽表的真实字段定义对齐。</li>
             </ul>
             <h3 class="sub-title">核心口径约定</h3>
             <table class="flow-table">
