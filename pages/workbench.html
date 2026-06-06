@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>总部DCC系统 - 培育任务</title>
+    <link rel="stylesheet" href="../assets/css/workbench.css?v=20260606-4">
+</head>
+<body>
+    <div class="dcc-app">
+        <header class="system-header">
+            <div class="browser-actions" aria-hidden="true">
+                <span>←</span>
+                <span class="disabled">→</span>
+                <span>↻</span>
+            </div>
+            <strong>总部DCC系统</strong>
+            <div class="system-actions" aria-hidden="true">
+                <span>⬡</span>
+                <span>•••</span>
+            </div>
+        </header>
+
+        <header class="business-header">
+            <div class="business-title">培育任务</div>
+            <button class="operator-button" type="button">电销员 <span>⌄</span></button>
+        </header>
+
+        <div class="app-shell">
+            <aside class="side-nav">
+                <button class="nav-collapse" type="button" aria-label="收起导航">‹</button>
+                <nav aria-label="主导航">
+                    <a class="nav-item" href="../index.html">首页</a>
+                    <div class="nav-group">
+                        <button class="nav-item nav-parent" type="button">
+                            <span>NEV培育</span><span>⌃</span>
+                        </button>
+                        <div class="nav-children">
+                            <a class="nav-item" href="#">坐席排班</a>
+                            <a class="nav-item active" href="workbench.html">培育任务</a>
+                            <a class="nav-item" href="#">质检看板</a>
+                            <a class="nav-item" href="#">质检申诉</a>
+                        </div>
+                    </div>
+                    <button class="nav-item nav-parent" type="button"><span>营销获客</span><span>⌄</span></button>
+                    <button class="nav-item nav-parent" type="button"><span>客户管理</span><span>⌄</span></button>
+                    <button class="nav-item nav-parent" type="button"><span>统计报表</span><span>⌄</span></button>
+                    <button class="nav-item nav-parent" type="button"><span>缓存管理</span><span>⌄</span></button>
+                </nav>
+            </aside>
+
+            <main class="main-content">
+                <div class="page-tab"><span>任务跟进</span></div>
+
+                <div class="workbench-grid">
+                    <aside class="task-panel panel" data-anno="workbench-task-list">
+                        <div class="task-panel-header">
+                            <button class="list-tab active" type="button">外呼列表</button>
+                            <label class="task-search">
+                                <input type="search" placeholder="手机号搜索">
+                                <button type="button" aria-label="搜索">⌕</button>
+                            </label>
+                            <button class="filter-button" type="button" aria-label="筛选">▼</button>
+                        </div>
+
+                        <div class="task-groups">
+                            <section class="task-group expanded">
+                                <button class="group-heading" type="button" aria-expanded="true">
+                                    <span>新任务(2)</span><span class="group-arrow">⌄</span>
+                                </button>
+                                <div class="task-group-content">
+                                    <article class="task-entry active"
+                                        data-phone="17000000002"
+                                        data-code="305968058184494"
+                                        data-task-code="2026051816410000012">
+                                        <div class="task-entry-main">
+                                            <span class="level-badge">C</span>
+                                            <strong>智能体填单查看回访描述</strong>
+                                        </div>
+                                        <div class="task-meta">
+                                            <span>17000000002</span>
+                                            <time>05-18 16:41</time>
+                                        </div>
+                                        <button class="call-button" type="button">外呼</button>
+                                    </article>
+
+                                    <article class="task-entry"
+                                        data-phone="17000000001"
+                                        data-code="305968058184493"
+                                        data-task-code="2026051816410000011">
+                                        <div class="task-entry-main">
+                                            <span class="level-badge">C</span>
+                                            <strong>智能体填单查看回访描述</strong>
+                                        </div>
+                                        <div class="task-meta">
+                                            <span>17000000001</span>
+                                            <time>05-18 16:41</time>
+                                        </div>
+                                        <button class="call-button" type="button">外呼</button>
+                                    </article>
+                                </div>
+                            </section>
+
+                            <section class="task-group">
+                                <button class="group-heading" type="button" aria-expanded="false">
+                                    <span>当日跟进(0)</span><span class="group-arrow">›</span>
+                                </button>
+                            </section>
+                            <section class="task-group">
+                                <button class="group-heading" type="button" aria-expanded="false">
+                                    <span>逾期任务(0)</span><span class="group-arrow">›</span>
+                                </button>
+                            </section>
+                            <section class="task-group">
+                                <button class="group-heading" type="button" aria-expanded="false">
+                                    <span>未来任务(0)</span><span class="group-arrow">›</span>
+                                </button>
+                            </section>
+                            <section class="task-group">
+                                <button class="group-heading" type="button" aria-expanded="false">
+                                    <span>试驾排程回访任务(0)</span><span class="group-arrow">›</span>
+                                </button>
+                            </section>
+                            <section class="task-group">
+                                <button class="group-heading" type="button" aria-expanded="false">
+                                    <span>试驾排程当日跟进(0)</span><span class="group-arrow">›</span>
+                                </button>
+                            </section>
+                            <section class="task-group">
+                                <button class="group-heading" type="button" aria-expanded="false">
+                                    <span>试驾排程逾期任务(0)</span><span class="group-arrow">›</span>
+                                </button>
+                            </section>
+                            <section class="task-group">
+                                <button class="group-heading" type="button" aria-expanded="false">
+                                    <span>试驾排程未来任务(0)</span><span class="group-arrow">›</span>
+                                </button>
+                            </section>
+                        </div>
+                    </aside>
+
+                    <section class="detail-panel panel">
+                        <header class="detail-title">
+                            <span class="required">*</span>
+                            <h1>智能体填单查看回访描述</h1>
+                            <button class="edit-title" type="button" aria-label="编辑标题">⌕</button>
+                            <span class="title-divider">—</span>
+                            <span class="intent-tag">意向级别：C</span>
+                        </header>
+
+                        <section class="detail-section" data-anno="workbench-lead-info">
+                            <button class="section-title" type="button">
+                                <span>线索信息</span><span>⌄</span>
+                            </button>
+                            <div class="lead-grid">
+                                <dl>
+                                    <div><dt>联系电话：</dt><dd><span data-field="phone">17000000002</span> <button class="copy-button" type="button" data-copy-field="phone">▣</button></dd></div>
+                                    <div><dt>线索类型：</dt><dd>-</dd></div>
+                                    <div><dt>首次线索状态：</dt><dd>培育中</dd></div>
+                                    <div><dt>意向车辆：</dt><dd>456(123)</dd></div>
+                                    <div><dt>跟进次数：</dt><dd>-</dd></div>
+                                    <div><dt>线索状态：</dt><dd>培育中</dd></div>
+                                    <div><dt>意向门店：</dt><dd>重庆东风南方西南汽贸城</dd></div>
+                                    <div><dt>车系车型：</dt><dd data-field="existing-model">-</dd></div>
+                                    <div><dt>VIN码：</dt><dd>-</dd></div>
+                                    <div><dt>线索编码：</dt><dd><span data-field="code">305968058184494</span> <button class="copy-button" type="button" data-copy-field="code">▣</button></dd></div>
+                                    <div><dt>渠道名称：</dt><dd>-</dd></div>
+                                    <div><dt>大项目名：</dt><dd>-</dd></div>
+                                </dl>
+                                <dl>
+                                    <div><dt>IP归属地：</dt><dd>-</dd></div>
+                                    <div><dt>线索来源：</dt><dd>id:1-DNDC-车巴巴</dd></div>
+                                    <div><dt>首次意向级别：</dt><dd>C</dd></div>
+                                    <div><dt>最新意向车系：</dt><dd>-</dd></div>
+                                    <div><dt>留资时间：</dt><dd>2026-05-18 16:41:43</dd></div>
+                                    <div><dt>线索描述：</dt><dd>-</dd></div>
+                                    <div><dt>购车时间：</dt><dd>-</dd></div>
+                                    <div><dt>购车门店：</dt><dd>-</dd></div>
+                                    <div><dt>线索备注：</dt><dd>-</dd></div>
+                                    <div><dt>任务编码：</dt><dd><span data-field="task-code">2026051816410000012</span> <button class="copy-button" type="button" data-copy-field="task-code">▣</button></dd></div>
+                                    <div><dt>媒体名称：</dt><dd>-</dd></div>
+                                    <div><dt>是否AI外呼过：</dt><dd>否</dd></div>
+                                </dl>
+                            </div>
+                        </section>
+
+                        <section class="detail-section revisit-section" data-anno="workbench-revisit-form">
+                            <h2 class="section-title static-title">回访提交</h2>
+                            <form class="revisit-form">
+                                <label class="form-field required-field">
+                                    <span>接触状态</span>
+                                    <select>
+                                        <option value="">请选择</option>
+                                        <option>已接通</option>
+                                        <option>未接通</option>
+                                    </select>
+                                </label>
+                                <label class="form-field">
+                                    <span>性别</span>
+                                    <select>
+                                        <option value=""></option>
+                                        <option>男</option>
+                                        <option>女</option>
+                                    </select>
+                                </label>
+                                <label class="form-field required-field">
+                                    <span>回访结果</span>
+                                    <select>
+                                        <option value="">请选择</option>
+                                        <option>持续跟进</option>
+                                        <option>结束跟进</option>
+                                    </select>
+                                </label>
+                                <label class="form-field">
+                                    <span>意向级别</span>
+                                    <select>
+                                        <option value="">请选择</option>
+                                        <option>C</option>
+                                        <option>B</option>
+                                        <option>A</option>
+                                    </select>
+                                </label>
+                                <label class="form-field">
+                                    <span>备用电话</span>
+                                    <input type="tel" placeholder="请输入">
+                                </label>
+                                <div class="form-field plain-field">
+                                    <span>上次回访时间</span>
+                                    <strong>-</strong>
+                                </div>
+                                <label class="form-field date-field">
+                                    <span>下次回访时间</span>
+                                    <input type="text" placeholder="请选择日期">
+                                    <i aria-hidden="true">▦</i>
+                                </label>
+                                <label class="form-field">
+                                    <span>意向车辆</span>
+                                    <select>
+                                        <option>123</option>
+                                        <option>456</option>
+                                    </select>
+                                </label>
+                            </form>
+                        </section>
+                    </section>
+
+                    <aside class="assistant-panel panel">
+                        <div class="call-toolbar" data-anno="workbench-call-toolbar">
+                            <button class="ready" type="button"><i>↻</i><span>重新登录</span></button>
+                            <button type="button"><i>●</i><span>就绪</span></button>
+                            <button type="button"><i>Ⅱ</i><span>暂停</span></button>
+                            <button type="button"><i>◔</i><span>外拨</span></button>
+                            <button type="button"><i>◔</i><span>接电话</span></button>
+                            <button type="button"><i>☎</i><span>挂电话</span></button>
+                            <button type="button"><i>◔</i><span>保持</span></button>
+                            <button type="button"><i>◀</i><span>静音</span></button>
+                        </div>
+
+                        <div class="assistant-search">
+                            <input type="search" placeholder="请输入问题">
+                            <button type="button">搜索</button>
+                        </div>
+
+                        <div class="assistant-tabs" role="tablist" data-anno="workbench-assistant-tabs">
+                            <button class="active" type="button" role="tab" data-panel="prediction">预测画像</button>
+                            <button type="button" role="tab" data-panel="records">回访记录0</button>
+                            <button type="button" role="tab" data-panel="profile">客户档案</button>
+                            <button type="button" role="tab" data-panel="ai-profile">AI画像</button>
+                        </div>
+
+                        <div class="assistant-content">
+                            <section class="tab-panel prediction-panel active" data-tab-panel="prediction">
+                                <header class="prediction-summary" data-anno="workbench-prediction-summary">
+                                    <div class="summary-heading">
+                                        <span class="prediction-mark">AI</span>
+                                        <strong>客户智能概览</strong>
+                                        <button class="prediction-expand" type="button" aria-expanded="false" data-anno="workbench-prediction-expand">展开 ↗</button>
+                                    </div>
+                                    <p>广州客户，轩逸车主，近期已留资3次，购车意向等级为 <b>H</b>。</p>
+                                    <div class="summary-meta">
+                                        <span>基于内外部标签预测</span>
+                                        <time>更新于 05-18 16:42</time>
+                                    </div>
+                                </header>
+
+                                <div class="prediction-sections">
+                                    <section class="prediction-section" data-anno="workbench-purchase-prediction">
+                                        <button class="prediction-title" type="button" aria-expanded="true">
+                                            <span><i>1</i>购买预测</span><b>⌃</b>
+                                        </button>
+                                        <div class="prediction-body">
+                                            <div class="metric-grid">
+                                                <div><span>购车意向</span><strong>考虑中</strong></div>
+                                                <div><span>有车预测</span><strong data-field="vehicle-prediction">有车</strong></div>
+                                                <div><span>置换意向</span><strong>增购贷款</strong></div>
+                                                <div><span>购车预算</span><strong>10-20万</strong></div>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    <section class="prediction-section" data-anno="workbench-buying-features">
+                                        <button class="prediction-title" type="button" aria-expanded="true">
+                                            <span><i>2</i>买车特点</span><b>⌃</b>
+                                        </button>
+                                        <div class="prediction-body key-value-list">
+                                            <div><span>品牌倾向</span><strong data-field="brand-tendency">双品牌摇摆</strong></div>
+                                            <div class="brand-detail" data-brands="日产,本田"><b>日产</b><b>本田</b></div>
+                                            <div><span>购车用途</span><strong>通勤代步</strong></div>
+                                        </div>
+                                    </section>
+
+                                    <section class="prediction-section" data-anno="workbench-preferences">
+                                        <button class="prediction-title" type="button" aria-expanded="true">
+                                            <span><i>3</i>功能偏好</span><b>⌃</b>
+                                        </button>
+                                        <div class="prediction-body preference-tags">
+                                            <span>内饰</span><span>油耗</span><span>舒适性</span>
+                                        </div>
+                                    </section>
+
+                                    <section class="prediction-section">
+                                        <button class="prediction-title" type="button" aria-expanded="true">
+                                            <span><i>4</i>配置偏好</span><b>⌃</b>
+                                        </button>
+                                        <div class="prediction-body preference-tags">
+                                            <span>智驾</span><span>安全</span><span>操控</span><span>舒适性</span>
+                                        </div>
+                                    </section>
+
+                                    <section class="prediction-section" data-anno="workbench-lead-records">
+                                        <button class="prediction-title" type="button" aria-expanded="true">
+                                            <span><i>5</i>留资记录</span><b>⌃</b>
+                                        </button>
+                                        <div class="prediction-body lead-timeline">
+                                            <article class="lead-record latest">
+                                                <header>
+                                                    <strong>最近一次留资</strong>
+                                                    <time>2026-06-05</time>
+                                                </header>
+                                                <div class="lead-record-fields">
+                                                    <div><span>留资品牌</span><b>本田</b></div>
+                                                    <div><span>意向车系</span><b>思域</b></div>
+                                                    <div class="full-row"><span>留资专营店</span><b>广州东风本田天河店</b></div>
+                                                </div>
+                                            </article>
+                                            <article class="lead-record first">
+                                                <header>
+                                                    <strong>第一次留资</strong>
+                                                </header>
+                                                <div class="channel-path" aria-label="渠道、媒体名称、落地平台">
+                                                    <span><small>渠道</small><b>R4</b></span>
+                                                    <i>›</i>
+                                                    <span><small>媒体名称</small><b>懂车帝</b></span>
+                                                    <i>›</i>
+                                                    <span><small>落地平台</small><b>官网</b></span>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    </section>
+                                </div>
+                            </section>
+
+                            <section class="tab-panel" data-tab-panel="records">
+                                <div class="empty-state">
+                                    <div class="empty-illustration" aria-hidden="true">
+                                        <span class="bubble">•••</span>
+                                        <span class="paper"></span>
+                                        <span class="tray"></span>
+                                    </div>
+                                    <p>暂无回访记录</p>
+                                </div>
+                            </section>
+                            <section class="tab-panel" data-tab-panel="profile">
+                                <div class="empty-state"><p>暂无客户档案</p></div>
+                            </section>
+                            <section class="tab-panel" data-tab-panel="ai-profile">
+                                <div class="empty-state"><p>通话后将自动生成AI画像</p></div>
+                            </section>
+                        </div>
+                    </aside>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="../js/pages/workbench.js?v=20260606-4"></script>
+    <div class="prediction-backdrop" hidden></div>
+    <link rel="stylesheet" href="../annotations/annotation.css">
+    <script>window.AnnotationConfig = { page: "workbench", revision: "20260606" };</script>
+    <script src="../annotations/annotations.js?v=20260606"></script>
+    <script src="../annotations/annotation-runtime.js?v=20260606"></script>
+</body>
+</html>

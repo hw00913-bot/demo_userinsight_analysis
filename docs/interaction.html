@@ -3,451 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用户洞察 · 交互逻辑说明文档</title>
+    <title>用户洞察与培育工作台 · 交互逻辑说明文档</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary: #0081ff;
-            --primary-light: #e6f7ff;
-            --accent: #39cfd0;
-            --text-main: #2c3e50;
-            --text-secondary: #64748b;
-            --bg-body: #f8fafc;
-            --bg-card: #ffffff;
-            --border: #e2e8f0;
-            --sidebar-width: 290px;
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Inter', 'Noto Sans SC', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            display: flex;
-            min-height: 100vh;
-            line-height: 1.7;
-        }
-
-        /* ===== Sidebar ===== */
-        .doc-sidebar {
-            width: var(--sidebar-width);
-            background: var(--bg-card);
-            border-right: 1px solid var(--border);
-            padding: 2rem 1.5rem;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .doc-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 2.5rem;
-            color: var(--primary);
-        }
-        .doc-logo i { font-size: 1.5rem; }
-        .doc-logo span { font-weight: 700; font-size: 1.2rem; letter-spacing: -0.5px; }
-
-        .nav-section-label {
-            font-size: 0.72rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #94a3b8;
-            padding: 0 1rem;
-            margin: 1.5rem 0 0.5rem;
-        }
-
-        .nav-list { list-style: none; }
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0.6rem 1rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            margin-bottom: 2px;
-            transition: all 0.2s ease;
-        }
-        .nav-link i { width: 16px; text-align: center; font-size: 0.85rem; }
-        .nav-link:hover { color: var(--primary); background: var(--primary-light); }
-        .nav-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
-
-        .nav-sub-list { list-style: none; padding-left: 1rem; }
-        .nav-sub-link {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0.4rem 0.8rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.82rem;
-            margin-bottom: 1px;
-            transition: all 0.15s ease;
-        }
-        .nav-sub-link:hover { color: var(--primary); background: var(--primary-light); }
-        .nav-sub-link.active { color: var(--primary); background: var(--primary-light); font-weight: 600; }
-
-        /* ===== Main Content ===== */
-        .doc-main {
-            margin-left: var(--sidebar-width);
-            flex: 1;
-            padding: 3rem 4rem;
-            max-width: 1100px;
-        }
-
-        .doc-header {
-            margin-bottom: 3rem;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 2rem;
-        }
-
-        .doc-tag {
-            background: var(--primary-light);
-            color: var(--primary);
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-
-        .doc-title { font-size: 2.2rem; font-weight: 700; color: #0f172a; margin-bottom: 0.75rem; }
-        .doc-subtitle { color: var(--text-secondary); font-size: 1.05rem; }
-
-        /* ===== Sections ===== */
-        .section {
-            background: var(--bg-card);
-            padding: 2.5rem;
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            margin-bottom: 2.5rem;
-            border: 1px solid var(--border);
-        }
-
-        .section-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #1e293b;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-        .section-title i { color: var(--primary); font-size: 1.15rem; }
-
-        .sub-section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin: 2rem 0 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0.75rem 1rem;
-            background: #f8fafc;
-            border-radius: 10px;
-            border-left: 4px solid var(--primary);
-        }
-        .sub-section-title i { color: var(--primary); font-size: 1rem; }
-        .sub-section-title:first-child { margin-top: 0; }
-
-        h3.sub-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #334155;
-            margin: 1.5rem 0 0.6rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        h3.sub-title::before {
-            content: '';
-            display: inline-block;
-            width: 3px;
-            height: 14px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-
-        ul.item-list {
-            padding-left: 0;
-            list-style: none;
-            margin-bottom: 0.75rem;
-        }
-        ul.item-list li {
-            padding: 0.35rem 0 0.35rem 1.2rem;
-            position: relative;
-            color: #475569;
-            font-size: 0.95rem;
-        }
-        ul.item-list li::before {
-            content: '·';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 1.2rem;
-            top: 0.25rem;
-        }
-
-        .highlight-box {
-            background: #f1f5f9;
-            padding: 0.9rem 1.2rem;
-            border-left: 4px solid var(--primary);
-            border-radius: 4px;
-            font-size: 0.9rem;
-            color: #555;
-            margin: 1rem 0;
-            line-height: 1.6;
-        }
-
-        .warn-box {
-            background: #fffbeb;
-            padding: 0.9rem 1.2rem;
-            border-left: 4px solid #f59e0b;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            color: #78350f;
-            margin: 1rem 0;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 2px 9px;
-            border-radius: 4px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            background: #3b82f6;
-            color: white;
-            margin-left: 8px;
-            vertical-align: middle;
-        }
-        .badge.green { background: #10b981; }
-        .badge.orange { background: #f59e0b; }
-        .badge.red { background: #ef4444; }
-
-        code {
-            background: #f1f5f9;
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: #d946ef;
-            font-size: 0.92em;
-        }
-
-        /* ===== Flow Table ===== */
-        .flow-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 0.75rem;
-            font-size: 0.9rem;
-        }
-        .flow-table th {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            padding: 8px 12px;
-            text-align: left;
-            font-weight: 600;
-            color: #334155;
-        }
-        .flow-table td {
-            border: 1px solid var(--border);
-            padding: 8px 12px;
-            vertical-align: top;
-            color: #475569;
-        }
-        .flow-table tr:hover td { background: #fafbff; }
-
-        /* ===== Version Table ===== */
-        .version-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 1rem;
-            font-size: 0.88rem;
-        }
-        .version-table thead tr {
-            background: linear-gradient(90deg, #0081ff 0%, #36b4f5 100%);
-        }
-        .version-table th {
-            padding: 10px 14px;
-            text-align: left;
-            font-weight: 600;
-            color: #fff;
-            border: none;
-            white-space: nowrap;
-        }
-        .version-table td {
-            border: 1px solid var(--border);
-            padding: 10px 14px;
-            vertical-align: middle;
-            color: #475569;
-            line-height: 1.6;
-        }
-        .version-table tr:nth-child(even) td { background: #f8fafc; }
-        .version-table tr:hover td { background: #eff6ff; }
-        .version-table .ver-num {
-            font-weight: 700;
-            color: var(--primary);
-            font-family: monospace;
-            font-size: 0.95rem;
-        }
-
-        .btn-jump {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background 0.2s, transform 0.15s;
-        }
-        .btn-jump:hover { background: #0070dd; transform: translateY(-1px); }
-
-        .chart-card {
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 1.2rem 1.4rem;
-            margin-bottom: 1.2rem;
-            background: #fafbff;
-        }
-        .chart-card-title {
-            font-size: 0.97rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .chart-card-title i { color: var(--primary); }
-        .chart-card-meta {
-            font-size: 0.82rem;
-            color: #94a3b8;
-            margin-bottom: 0.75rem;
-        }
-        .chart-card ul { margin-bottom: 0; }
-
-        .annotation-toolbar {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .annotation-filter {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 0.45rem 0.7rem;
-            background: #fff;
-            color: #334155;
-            font-size: 0.9rem;
-            min-width: 160px;
-        }
-
-        .annotation-summary {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-
-        .annotation-table td {
-            vertical-align: top;
-        }
-
-        .annotation-title-cell {
-            font-weight: 700;
-            color: #1e293b;
-            min-width: 150px;
-        }
-
-        .annotation-target {
-            display: block;
-            color: #64748b;
-            font-size: 0.78rem;
-            margin-top: 4px;
-            word-break: break-all;
-        }
-
-        .annotation-desc-list {
-            display: grid;
-            gap: 0.35rem;
-        }
-
-        .annotation-desc-row {
-            display: grid;
-            grid-template-columns: 88px minmax(0, 1fr);
-            gap: 8px;
-            font-size: 0.86rem;
-            line-height: 1.55;
-        }
-
-        .annotation-desc-label {
-            color: #64748b;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .annotation-desc-text {
-            color: #334155;
-            word-break: break-word;
-        }
-
-        .annotation-empty {
-            padding: 1rem;
-            color: #94a3b8;
-            text-align: center;
-            border: 1px dashed var(--border);
-            border-radius: 10px;
-            background: #f8fafc;
-        }
-
-        .drill-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 8px;
-            background: #e0f2fe;
-            color: #0369a1;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-left: 6px;
-        }
-
-        /* ===== Footer ===== */
-        .doc-footer {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px dashed var(--border);
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        @media (max-width: 992px) {
-            .doc-sidebar { width: 72px; padding: 10px; }
-            .doc-sidebar .doc-logo span, .nav-link span, .nav-sub-link span, .nav-section-label { display: none; }
-            .doc-main { margin-left: 72px; padding: 2rem; }
-            .annotation-desc-row { grid-template-columns: 1fr; gap: 2px; }
-        }
-    </style>
+    <link rel="stylesheet" href="../assets/css/interaction.css">
 </head>
 <body>
     <!-- Sidebar -->
@@ -497,9 +56,9 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V3.0 · 与当前项目同步（2026-06-05 更新）</span>
-            <h1 class="doc-title">用户洞察 · 交互逻辑说明文档</h1>
-            <p class="doc-subtitle">基于当前 <code>userinsight.html</code>、<code>script.js</code>、<code>mock.js</code> 与 <code>data/annotations.js</code> 更新，覆盖渠道效果、培育运营、用户群体洞察三大分页，以及筛选、统计口径、下载、下钻弹窗和功能标注说明。</p>
+            <span class="doc-tag">版本 V3.1 · 与当前项目同步（2026-06-06 更新）</span>
+            <h1 class="doc-title">用户洞察与培育工作台 · 交互逻辑说明文档</h1>
+            <p class="doc-subtitle">基于当前 <code>pages/userinsight.html</code>、<code>pages/workbench.html</code> 与 <code>annotations/annotations.js</code> 更新，覆盖用户洞察三大分页、培育任务工作台、预测画像及功能标注说明。</p>
         </header>
 
         <!-- ===================== 一、版本说明 ===================== -->
@@ -511,6 +70,11 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td class="ver-num">V3.1</td>
+                        <td>2026-06-06</td>
+                        <td>补充培育工作台预测画像、购买预测、买车特点、偏好标签、留资记录、宽面板展开等 11 条功能标注；标注目录新增“培育工作台”筛选。</td>
+                    </tr>
+                    <tr>
                         <td class="ver-num">V3.0</td>
                         <td>2026-06-05</td>
                         <td>按当前项目全量更新交互说明：页面主结构更新为「渠道效果 / 培育运营 / 用户群体洞察」三大分页；补充统计口径说明抽屉及其三个分页；补充渠道效果新增的意向车系、线索有效、线索级别、大区/小区投放效果标注说明；补充培育运营跟进过程、购车意向、关注点、回访结果；补充用户群体洞察画像分布；同步 68 条用户洞察功能标注和交互说明页自身标注。</td>
@@ -518,7 +82,7 @@
                     <tr>
                         <td class="ver-num">V2.5</td>
                         <td>2026-06-05</td>
-                        <td>交互说明页新增「功能标注内容」章节，从 <code>data/annotations.js</code> 自动渲染用户洞察页面标注，支持按渠道效果、培育运营、用户群体洞察、通用筛选/操作筛选查看。</td>
+                        <td>交互说明页新增「功能标注内容」章节，从 <code>annotations/annotations.js</code> 自动渲染用户洞察页面标注，支持按渠道效果、培育运营、用户群体洞察、通用筛选/操作筛选查看。</td>
                     </tr>
                     <tr>
                         <td class="ver-num">V2.4</td>
@@ -533,7 +97,7 @@
                 </tbody>
             </table>
             <div class="highlight-box" style="margin-top:1rem;">
-                <strong>当前状态：</strong>该项目是静态 HTML 原型，无构建流程、无后端接口。页面数据由 <code>mock.js</code> 和 <code>script.js</code> 中的前端模拟数据驱动（模拟扎帳宽表与 e3s 基础数据），功能说明和标注说明由 <code>data/annotations.js</code> 维护。
+                <strong>当前状态：</strong>该项目是静态 HTML 原型，无构建流程、无后端接口。页面数据由 <code>mock/data.js</code> 和 <code>js/pages/userinsight/</code> 中的前端模拟数据驱动（模拟扎帳宽表与 e3s 基础数据），功能说明和标注说明由 <code>annotations/annotations.js</code> 维护。
             </div>
         </section>
 
@@ -545,15 +109,16 @@
                 <tbody>
                     <tr><td><code>index.html</code></td><td>入口页</td><td>项目入口，导航到主框架。</td></tr>
                     <tr><td><code>main.html</code></td><td>主框架</td><td>左侧菜单，包含「用户洞察」「交互说明」等入口。</td></tr>
-                    <tr><td><code>userinsight.html</code></td><td>核心业务页</td><td>三大分页、筛选栏、KPI、图表、统计口径抽屉、弹窗容器、标注系统接入。</td></tr>
-                    <tr><td><code>script.js</code></td><td>页面交互逻辑</td><td>分页切换、KPI 动态渲染、图表重绘、下钻弹窗、门店筛选、下载明细、标注动态锚点。</td></tr>
-                    <tr><td><code>mock.js</code></td><td>前端模拟数据</td><td>模拟扎帳宽表（KPI/饼图/排行/渠道/媒体）和 e3s（门店/大区/小区）的前端演示数据。</td></tr>
-                    <tr><td><code>data/annotations.js</code></td><td>功能标注数据</td><td>当前维护 68 条 <code>userinsight</code> 标注和 1 条 <code>interaction_docs</code> 标注。</td></tr>
-                    <tr><td><code>interaction_docs.html</code></td><td>交互说明文档</td><td>当前文档页，自动读取标注数据并渲染功能标注目录。</td></tr>
+                    <tr><td><code>pages/userinsight.html</code></td><td>核心业务页</td><td>三大分页、筛选栏、KPI、图表、统计口径抽屉、弹窗容器、标注系统接入。</td></tr>
+                    <tr><td><code>js/pages/userinsight/</code></td><td>页面交互逻辑</td><td>筛选、旅程、KPI 动态渲染、下钻弹窗、门店筛选和下载明细。</td></tr>
+                    <tr><td><code>mock/data.js</code></td><td>前端模拟数据</td><td>模拟扎帳宽表（KPI/饼图/排行/渠道/媒体）和 e3s（门店/大区/小区）的前端演示数据。</td></tr>
+                    <tr><td><code>pages/workbench.html</code></td><td>培育工作台</td><td>任务列表、线索信息、回访提交、坐席工具和客户预测画像。</td></tr>
+                    <tr><td><code>annotations/annotations.js</code></td><td>功能标注数据</td><td>当前维护 68 条 <code>userinsight</code> 标注、11 条 <code>workbench</code> 标注和 1 条 <code>interaction_docs</code> 标注。</td></tr>
+                    <tr><td><code>docs/interaction.html</code></td><td>交互说明文档</td><td>当前文档页，自动读取标注数据并渲染功能标注目录。</td></tr>
                 </tbody>
             </table>
             <div class="highlight-box">
-                <strong>加载顺序：</strong><code>userinsight.html</code> 先加载 <code>mock.js</code> 和 <code>script.js</code>，页面底部再加载 <code>data/annotations.js</code> 与 <code>annotations-tool/annotation-runtime.js</code>。渠道效果 KPI 卡片由 <code>renderKpiCards()</code> 动态生成，标注锚点在动态 HTML 中输出。
+                <strong>加载顺序：</strong><code>pages/userinsight.html</code> 依次加载 Mock、公共工具、导航、页面业务模块和 <code>js/app.js</code>，页面底部再加载标注数据与运行时。
             </div>
         </section>
 
@@ -567,9 +132,9 @@
             </ul>
             <h3 class="sub-title">当前原型数据</h3>
             <ul class="item-list">
-                <li>原型阶段由 <code>mock.js</code> 和 <code>script.js</code> 中的前端静态数据模拟上述真实数据源，用于演示和验证页面交互逻辑。</li>
-                <li>标注数据统一由 <code>data/annotations.js</code> 维护，68 条标注覆盖三大分页，权限范围已统一为「总部管理员和电销主管都有权限查看」。</li>
-                <li>统计口径抽屉中的说明直接写在 <code>userinsight.html</code> 底部，内容与扎帳宽表的真实字段定义对齐。</li>
+                <li>原型阶段由 <code>mock/data.js</code> 和 <code>js/pages/userinsight/</code> 中的前端静态数据模拟上述真实数据源，用于演示和验证页面交互逻辑。</li>
+                <li>标注数据统一由 <code>annotations/annotations.js</code> 维护：68 条用户洞察标注覆盖三大分页，11 条培育工作台标注覆盖电销员任务处理和预测画像。</li>
+                <li>统计口径抽屉中的说明维护在 <code>pages/userinsight.html</code>，内容与扎帳宽表的真实字段定义对齐。</li>
             </ul>
             <h3 class="sub-title">核心口径约定</h3>
             <table class="flow-table">
@@ -745,7 +310,7 @@
         <!-- ===================== 十二、功能标注内容 ===================== -->
         <section class="section" id="section-annotations" data-anno="interaction-annotation-catalog">
             <h2 class="section-title"><i class="fa-solid fa-location-dot"></i>十二、功能标注内容</h2>
-            <p style="color:#475569; font-size:0.95rem; margin-bottom:1.5rem;">本章节同步展示用户洞察页面当前维护的功能标注说明，内容来自 <code>data/annotations.js</code>，与页面右侧标注浮层保持同源。</p>
+            <p style="color:#475569; font-size:0.95rem; margin-bottom:1.5rem;">本章节同步展示用户洞察和培育工作台当前维护的功能标注说明，内容来自 <code>annotations/annotations.js</code>，与页面标注浮层保持同源。</p>
 
             <div class="annotation-toolbar">
                 <select id="annotationGroupFilter" class="annotation-filter" aria-label="标注分组筛选">
@@ -754,6 +319,7 @@
                     <option value="cultivation">培育运营</option>
                     <option value="insight">用户群体洞察</option>
                     <option value="common">通用筛选/操作</option>
+                    <option value="workbench">培育工作台</option>
                 </select>
                 <span id="annotationSummary" class="annotation-summary">标注内容加载中</span>
             </div>
@@ -763,150 +329,21 @@
 
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V3.0 &nbsp;|&nbsp; 与 userinsight.html + script.js + mock.js + data/annotations.js 同步 &nbsp;|&nbsp; 更新于 2026-06-05</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V3.1 &nbsp;|&nbsp; 与 pages/userinsight.html + pages/workbench.html + annotations/annotations.js 同步 &nbsp;|&nbsp; 更新于 2026-06-06</p>
         </div>
 
     </main>
 
-    <script>
-        // 侧边栏高亮当前锚点
-        const links = document.querySelectorAll('.nav-link, .nav-sub-link');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.id;
-                    links.forEach(link => {
-                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-                    });
-                }
-            });
-        }, { threshold: 0.15, rootMargin: '-80px 0px -60% 0px' });
-
-        document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
-
-        // 平滑滚动
-        links.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
-                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        });
-    </script>
+    <script src="../js/pages/interaction-nav.js"></script>
 
     <!-- 标注系统 -->
-    <link rel="stylesheet" href="annotations-tool/annotation.css">
+    <link rel="stylesheet" href="../annotations/annotation.css">
     <script>
       window.AnnotationConfig = { page: "interaction_docs" };
     </script>
-    <script src="data/annotations.js"></script>
-    <script>
-        (function renderAnnotationCatalog() {
-            const catalog = document.getElementById('annotationCatalog');
-            const filter = document.getElementById('annotationGroupFilter');
-            const summary = document.getElementById('annotationSummary');
-            if (!catalog || !filter || !summary) return;
-
-            const data = (window.AnnotationData && window.AnnotationData.userinsight) || [];
-            const fieldLabels = [
-                ['functionDesc', '功能说明'],
-                ['permissionScope', '权限范围'],
-                ['dataSource', '数据来源'],
-                ['valueLogic', '取值逻辑'],
-                ['fieldDesc', '字段说明'],
-                ['interactionDesc', '交互说明'],
-                ['judgeRule', '判断规则'],
-                ['exceptionRule', '异常规则'],
-                ['otherDesc', '其他说明']
-            ];
-
-            function getGroup(item) {
-                const target = item.target || '';
-                const title = item.title || '';
-                if (target.includes('cultivation-')) return 'cultivation';
-                if (target.includes('insight-')) return 'insight';
-                if (target.includes('channel-kpi') || target.includes('channel-touch') || target.includes('channel-project-ranking') ||
-                    target.includes('channel-media-ranking') || target.includes('channel-city-delivery') || target.includes('channel-quality') ||
-                    target.includes('channel-car-series-pie') || target.includes('channel-lead') || target.includes('channel-region') ||
-                    target.includes('channel-district')) return 'channel';
-                if (title.includes('筛选') || title.includes('查询') || title.includes('重置') || title.includes('下载')) return 'common';
-                return 'channel';
-            }
-
-            function groupName(group) {
-                return {
-                    channel: '渠道效果',
-                    cultivation: '培育运营',
-                    insight: '用户群体洞察',
-                    common: '通用筛选/操作'
-                }[group] || '其他';
-            }
-
-            function escapeHtml(value) {
-                return String(value || '')
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#39;')
-                    .replace(/\n/g, '<br>');
-            }
-
-            function render() {
-                const selected = filter.value;
-                const rows = data.filter(item => selected === 'all' || getGroup(item) === selected);
-                summary.textContent = `共 ${rows.length} 条标注${selected === 'all' ? '' : ' · ' + groupName(selected)}`;
-
-                if (!rows.length) {
-                    catalog.innerHTML = '<div class="annotation-empty">暂无标注内容</div>';
-                    return;
-                }
-
-                catalog.innerHTML = `
-                    <table class="flow-table annotation-table">
-                        <thead>
-                            <tr>
-                                <th style="width:72px;">编号</th>
-                                <th style="width:190px;">标注项</th>
-                                <th style="width:130px;">分组</th>
-                                <th>说明内容</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${rows.map(item => `
-                                <tr>
-                                    <td><code>${escapeHtml(item.id)}</code></td>
-                                    <td class="annotation-title-cell">
-                                        ${escapeHtml(item.title || item.sections?.functionName)}
-                                        <span class="annotation-target">${escapeHtml(item.target)}</span>
-                                    </td>
-                                    <td>${groupName(getGroup(item))}</td>
-                                    <td>
-                                        <div class="annotation-desc-list">
-                                            ${fieldLabels.map(([key, label]) => {
-                                                const value = item.sections && item.sections[key];
-                                                if (!value) return '';
-                                                return `
-                                                    <div class="annotation-desc-row">
-                                                        <span class="annotation-desc-label">${label}</span>
-                                                        <span class="annotation-desc-text">${escapeHtml(value)}</span>
-                                                    </div>
-                                                `;
-                                            }).join('')}
-                                        </div>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-            }
-
-            filter.addEventListener('change', render);
-            render();
-        })();
-    </script>
-    <script src="annotations-tool/annotation-runtime.js"></script>
+    <script src="../annotations/annotations.js?v=20260606"></script>
+    <script src="../js/pages/interaction-catalog.js"></script>
+    <script src="../annotations/annotation-runtime.js?v=20260606"></script>
 
 </body>
 </html>

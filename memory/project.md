@@ -1,0 +1,35 @@
+# 项目记忆
+
+## 项目定位
+
+- 项目名称：user_insight_pm v1.0
+- 创建日期：2026-06-05
+- 类型：无构建步骤的静态前端原型
+- 入口：`index.html`
+
+## 运行链路
+
+- `index.html`：密码访问入口。
+- `main.html`：原型导航和 iframe 容器。
+- `pages/userinsight.html`：用户洞察业务页面。
+- `pages/workbench.html`：电销员接收培育任务后使用的客户培育工作台。
+- `docs/interaction.html`：交互说明文档。
+
+## 代码结构
+
+- `assets/css/app.css`：用户洞察样式入口，按顺序导入拆分后的样式模块。
+- `mock/data.js`：业务 Mock 数据及兼容别名。
+- `js/common.js`：公共工具。
+- `js/nav.js`：页面导航。
+- `js/pages/userinsight/`：按筛选、旅程、弹窗、渲染、门店、下载和统计拆分的业务逻辑。
+- `js/app.js`：页面初始化入口。
+- `assets/css/workbench.css`：培育工作台及预测画像样式。
+- `js/pages/workbench.js`：工作台任务切换、预测画像和展开面板交互。
+- `annotations/`：标注数据、样式和运行时。
+
+## 工作原则
+
+- 先理解现有代码和业务逻辑，再修改。
+- 非必要不修改现有板块内容。
+- 业务、Mock、文档、记忆和标注工具分别维护。
+- 保持脚本加载顺序，确保 Mock 和页面函数在初始化入口之前可用。

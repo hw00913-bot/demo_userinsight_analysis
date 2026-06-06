@@ -4,96 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>密码保护 · 产品原型</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            /* 使用与主页面 Logo 一致的渐变色 */
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .lock-card {
-            background: white;
-            padding: 40px;
-            border-radius: 24px;
-            text-align: center;
-            width: 100%;
-            max-width: 380px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-        .lock-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            display: block;
-        }
-        .lock-card h2 {
-            margin-bottom: 12px;
-            color: #1e293b;
-            font-size: 24px;
-        }
-        .lock-card p {
-            color: #64748b;
-            margin-bottom: 32px;
-            font-size: 15px;
-            line-height: 1.5;
-        }
-        .lock-card input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            transition: all 0.2s;
-            text-align: center;
-        }
-        .lock-card input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-        .lock-card button {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .lock-card button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(118, 75, 162, 0.3);
-        }
-        .lock-card button:active {
-            transform: translateY(0);
-        }
-        .error-msg {
-            color: #ef4444;
-            margin-top: 16px;
-            font-size: 14px;
-            height: 20px; /* 固定高度防止抖动 */
-            font-weight: 500;
-        }
-        footer {
-            position: absolute;
-            bottom: 20px;
-            color: rgba(255,255,255,0.7);
-            font-size: 12px;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/index.css">
 </head>
 <body>
     <div class="lock-card">
@@ -111,49 +22,7 @@
         © 2026 产品原型演示中心 · 安全传输已加密
     </footer>
 
-    <script>
-        // 验证逻辑
-        const CORRECT_PASSWORD = "dndc2026";
-        
-        function unlock() {
-            const inputPwd = document.getElementById('passwordInput').value;
-            const errorDiv = document.getElementById('errorMsg');
-            const card = document.querySelector('.lock-card');
-            
-            if (inputPwd === CORRECT_PASSWORD) {
-                // 验证成功，跳转到原型主预览页
-                window.location.href = "main.html";
-            } else {
-                // 验证失败特效
-                errorDiv.textContent = '❌ 密码错误，请重新输入';
-                
-                // 给卡片加一个左右晃动的震动效果
-                card.style.transform = "translateX(10px)";
-                setTimeout(() => card.style.transform = "translateX(-10px)", 50);
-                setTimeout(() => card.style.transform = "translateX(0)", 100);
-                
-                // 清空输入框并聚焦
-                const input = document.getElementById('passwordInput');
-                input.value = '';
-                input.focus();
-                
-                setTimeout(() => { errorDiv.textContent = ''; }, 3000);
-            }
-        }
-        
-        // 绑定点击事件
-        document.getElementById('unlockBtn').addEventListener('click', unlock);
-        
-        // 绑定回车键事件
-        document.getElementById('passwordInput').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') unlock();
-        });
-
-        // 页面加载自动聚焦
-        window.onload = () => {
-            document.getElementById('passwordInput').focus();
-        };
-    </script>
+    <script src="js/pages/index.js"></script>
 
 </body>
 </html>

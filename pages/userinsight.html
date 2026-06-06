@@ -13,7 +13,9 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css?v=20260602-22">
+    <link rel="stylesheet" href="../assets/css/app.css?v=20260602-22">
+    <link rel="stylesheet" href="../assets/css/userinsight-overrides.css?v=20260606-2">
+    <link rel="stylesheet" href="../annotations/annotation.css">
 </head>
 
 <body>
@@ -273,7 +275,7 @@
                             </div>
 
                             <!-- 渠道效果核心指标 -->
-                            <div class="kpi-cards-section">
+                            <div class="kpi-cards-section" data-anno="channel-kpi-cards">
                                 <div class="kpi-group-row">
                                     <div class="kpi-group-compact kpi-border-purple" style="flex: 1.1;">
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-filter"></i> 线索统计</div>
@@ -416,7 +418,7 @@
                             <!-- 第一行：三个饼图 -->
                             <div class="ce-pie-row">
                                 <!-- 意向车系占比 -->
-                                <div class="content-card" data-anno="channel-car-series-pie">
+                                <div class="content-card">
                                     <div class="card-header">
                                         <h3 class="card-title">意向车系占比</h3>
                                     </div>
@@ -460,7 +462,7 @@
                                 </div>
 
                                 <!-- 线索有效占比 -->
-                                <div class="content-card" data-anno="channel-lead-valid-pie">
+                                <div class="content-card">
                                     <div class="card-header">
                                         <h3 class="card-title">线索有效占比</h3>
                                     </div>
@@ -501,7 +503,7 @@
                                 </div>
 
                                 <!-- 线索级别占比 -->
-                                <div class="content-card" data-anno="channel-lead-level-pie">
+                                <div class="content-card">
                                     <div class="card-header">
                                         <h3 class="card-title">线索级别占比</h3>
                                         <span style="font-size: 12px; color: #94a3b8;">分母：线索等级用户 10,493 人</span>
@@ -1534,7 +1536,7 @@
 
                             <!-- 层级投放效果分析图 -->
                             <div class="ce-hierarchy-row" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 20px;">
-                            <div class="content-card" data-anno="channel-region-delivery" style="margin-top: 0;">
+                            <div class="content-card" style="margin-top: 0;">
                                 <div class="card-header">
                                     <h3 class="card-title">大区投放效果</h3>
                                     <span style="font-size: 12px; color: #94a3b8;">指标：新增线索用户、H/A/B占比 · 维度：大区、线索级别</span>
@@ -1642,7 +1644,7 @@
                                 </div>
                             </div>
 
-                            <div class="content-card" data-anno="channel-district-delivery" style="margin-top: 0;">
+                            <div class="content-card" style="margin-top: 0;">
                                 <div class="card-header">
                                     <h3 class="card-title">小区投放效果</h3>
                                     <button class="text-link-btn" onclick="openFullRanking('areaDelivery')" style="font-size: 11px; color: var(--primary-color); border: none; background: none; cursor: pointer; padding: 0;">查看全部 <i class="fa-solid fa-angle-right"></i></button>
@@ -1966,7 +1968,7 @@
                             <!-- 触媒/触店习惯与频率更新分析 -->
                             <div class="content-card" id="touchHabitAnalysis" style="margin-top: 20px;">
                                 <div class="card-header">
-                                    <div class="card-title"><i class="fa-solid fa-chart-bar"></i> 触媒/触店习惯与频率更新分析</div>
+                                    <div class="card-title" data-anno="channel-touch-habit"><i class="fa-solid fa-chart-bar"></i> 触媒/触店习惯与频率更新分析</div>
                                     <span style="font-size: 12px; color: #94a3b8;">条形图按占比从高到低排名，默认展示 TOP10</span>
                                 </div>
                                 <div class="card-body" style="padding: 20px;">
@@ -1977,7 +1979,7 @@
                                                 <div id="touchMediaTab_channel" class="touch-media-tab active" data-touch-tab="channel" onclick="switchTouchMediaTab('channel')">渠道分析</div>
                                                 <div id="touchMediaTab_media" class="touch-media-tab" data-touch-tab="media" onclick="switchTouchMediaTab('media')">媒体分析</div>
                                             </div>
-                                            <div id="touchMediaPanel_channel" data-anno="channel-touch-channel">
+                                            <div id="touchMediaPanel_channel">
                                             <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
                                                     <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">留资总数</div>
@@ -2043,9 +2045,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div id="channelJourneyList" data-anno="channel-touch-channel-journey" style="display:flex; flex-direction:column; gap:8px;"></div>
+                                                    <div id="channelJourneyList" style="display:flex; flex-direction:column; gap:8px;"></div>
                                                 </div>
-                                                <div data-anno="channel-touch-channel-overlap" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;">
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;">
                                                     <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">渠道留资重合度分析-渠道数量</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
                                                         <div onclick="openFullRanking('channelOverlap5plus')" style="display:flex; align-items:center; gap:8px; cursor:pointer;"><span style="width:90px; font-size:12px;">5 个以上</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:11%;height:100%;background:#2563eb;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">6</span></div>
@@ -2058,7 +2060,7 @@
                                                 </div>
                                             </div>
                                             </div>
-                                            <div id="touchMediaPanel_media" data-anno="channel-touch-media" style="display: none;">
+                                            <div id="touchMediaPanel_media" style="display: none;">
                                             <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
                                                     <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">媒体留资总数</div>
@@ -2133,9 +2135,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div id="mediaJourneyList" data-anno="channel-touch-media-journey" style="display:flex; flex-direction:column; gap:8px;"></div>
+                                                    <div id="mediaJourneyList" style="display:flex; flex-direction:column; gap:8px;"></div>
                                                 </div>
-                                                <div data-anno="channel-touch-media-overlap" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;">
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;">
                                                     <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">媒体留资重合度分析-媒体数量</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
                                                         <div onclick="openFullRanking('mediaOverlap5plus')" style="display:flex; align-items:center; gap:8px; cursor:pointer;"><span style="width:90px; font-size:12px;">5 个以上</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:11%;height:100%;background:#2563eb;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">8</span></div>
@@ -2152,7 +2154,7 @@
                                         <div>
                                             <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 12px;">触店习惯</div>
                                             <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px;">
-                                                <div data-anno="channel-touch-assigned-store" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
                                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
                                                         <div style="font-size: 12px; font-weight: 700; color: #334155;">下发专营店</div>
                                                         <button class="text-link-btn" onclick="openFullRanking('assignedStore')" style="font-size: 11px; color: var(--primary-color); border: none; background: none; cursor: pointer; padding: 0;">查看全部 <i class="fa-solid fa-angle-right"></i></button>
@@ -2170,7 +2172,7 @@
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">苏州工业园</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:15%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">360人 · 3%</span></div>
                                                     </div>
                                                 </div>
-                                                <div data-anno="channel-touch-deal-store" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
                                                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
                                                         <div style="font-size: 12px; font-weight: 700; color: #334155;">成交专营店</div>
                                                         <button class="text-link-btn" onclick="openFullRanking('dealStore')" style="font-size: 11px; color: var(--primary-color); border: none; background: none; cursor: pointer; padding: 0;">查看全部 <i class="fa-solid fa-angle-right"></i></button>
@@ -2188,7 +2190,7 @@
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">苏州工业园</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:7%;height:100%;background:#93c5fd;"></div></div><span style="width:70px;text-align:right;font-size:11px;color:#64748b;">50人 · 2.1%</span></div>
                                                     </div>
                                                 </div>
-                                                <div data-anno="channel-touch-store-count" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
                                                     <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">触达专营店数量（去重）</div>
                                                     <div style="display:flex; flex-direction:column; gap:8px;">
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">仅 1 个</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:52%;height:100%;background:#2563eb;"></div></div><span style="width:82px;text-align:right;font-size:11px;color:#64748b;">6,420人 · 52%</span></div>
@@ -2198,7 +2200,7 @@
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">5 个及以上</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:4%;height:100%;background:#bfdbfe;"></div></div><span style="width:82px;text-align:right;font-size:11px;color:#64748b;">493人 · 4%</span></div>
                                                     </div>
                                                 </div>
-                                                <div data-anno="channel-touch-first-deal-store" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
                                                     <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px;">
                                                         <div style="font-size: 12px; font-weight: 700; color: #334155;">首触-成交专营店</div>
                                                         <div style="display:flex; gap:6px;">
@@ -2228,7 +2230,7 @@
                                     <div style="margin-top: 20px;">
                                         <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 12px;">频率和更新</div>
                                         <div>
-                                            <div data-anno="channel-touch-frequency" style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
+                                            <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;">
                                                 <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">留资次数</div>
                                                 <div style="display:flex; flex-direction:column; gap:8px;">
                                                     <div style="display:flex; align-items:center; gap:10px;"><span style="width:90px;font-size:12px;">1次-首次留资</span><div style="flex:1;height:18px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:52%;height:100%;background:#f97316;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">6,420人 · 52%</span></div>
@@ -2242,586 +2244,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                        </div>      <!-- 渠道效果内容区 -->
-                        <div class="tab-pane" id="user-group-insight">
-                            <!-- 用户群体洞察筛选栏 -->
-                            <div class="filter-section">
-                                <div class="filter-row">
-                                    <div class="filter-item">
-                                        <label class="filter-label">时间范围:</label>
-                                        <div class="date-range-group" data-default-range="30">
-                                            <div class="date-shortcuts">
-                                                <button class="shortcut-btn" data-range="7">近7天</button>
-                                                <button class="shortcut-btn active" data-range="30">近30天</button>
-                                                <button class="shortcut-btn" data-range="90">近90天</button>
-                                                <button class="shortcut-btn" data-range="custom">自定义</button>
-                                            </div>
-                                            <div class="date-custom-inputs" style="display: none;">
-                                                <input type="date" class="filter-input date-custom date-custom-start">
-                                                <span class="date-separator">至</span>
-                                                <input type="date" class="filter-input date-custom date-custom-end">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">意向车系:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="N7">N7</option>
-                                            <option value="N6">N6</option>
-                                            <option value="天籁鸿蒙">天籁鸿蒙</option>
-                                            <option value="NX8">NX8</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">渠道名称:</label>
-                                        <select class="filter-select">
-                                            <option value="all">全部</option>
-                                            <option value="R1">R1</option>
-                                            <option value="R2">R2</option>
-                                            <option value="R3">R3</option>
-                                            <option value="R4">R4</option>
-                                            <option value="R5">R5</option>
-                                            <option value="R6">R6</option>
-                                            <option value="R7">R7</option>
-                                            <option value="R8">R8</option>
-                                            <option value="R9">R9</option>
-                                            <option value="R10">R10</option>
-                                            <option value="R11">R11</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">媒体名称:</label>
-                                        <input type="search" class="filter-input filter-search-input" placeholder="输入媒体名称关键字">
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">大项目:</label>
-                                        <input type="text" class="filter-input" placeholder="输入关键字查询" style="min-width: 160px;">
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">落地平台:</label>
-                                        <div class="custom-multi-select">
-                                            <div class="select-header">
-                                                <span class="platform-text">全选 (3项)</span>
-                                                <i class="fa-solid fa-chevron-down"></i>
-                                            </div>
-                                            <div class="select-dropdown" style="display: none;">
-                                                <label class="dropdown-item"><input type="checkbox" class="select-all-platforms" value="all" checked> 全选</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="platform-cb" value="官网" checked> 官网</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="platform-cb" value="小程序" checked> 小程序</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="platform-cb" value="app" checked> app</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="filter-item store-filter-item">
-                                        <label class="filter-label">筛选门店:</label>
-                                        <button class="store-filter-trigger" onclick="openStoreFilterModal(this)" data-store-text="全部门店">
-                                            <i class="fa-solid fa-store"></i> <span>全部门店</span> <i class="fa-solid fa-chevron-down"></i>
-                                        </button>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">线索等级:</label>
-                                        <div class="custom-multi-select">
-                                            <div class="select-header">
-                                                <span class="lead-level-text">全选 (10项)</span>
-                                                <i class="fa-solid fa-chevron-down"></i>
-                                            </div>
-                                            <div class="select-dropdown" style="display: none;">
-                                                <label class="dropdown-item"><input type="checkbox" class="select-all-levels" value="all" checked> 全选</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive_schedule" checked> H-试驾排程单</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive" checked> H-试驾线索单</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_non_test_drive" checked> H-非试驾线索单</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="A" checked> A</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="B" checked> B</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_intent_unclear" checked> C-意向不明</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_unreachable" checked> C-无法接通</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F-战败</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L-休眠</label>
-                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E-意向含糊</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">原因类型大类:</label>
-                                        <select class="filter-select reason-category-select">
-    <option value="all">全部</option>
-    <option value="invalid">无效号码</option>
-    <option value="unreachable">无法建联</option>
-    <option value="valid">有效号码</option>
-                                        </select>
-
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">原因类型:</label>
-                                        <select class="filter-select reason-type-select">
-    <option value="all">全部</option>
-    <option value="empty" data-category="invalid">空号</option>
-    <option value="shutdown" data-category="invalid">停机</option>
-    <option value="block" data-category="invalid">拦截</option>
-    <option value="blacklist" data-category="invalid">黑名单</option>
-    <option value="answered_invalid" data-category="invalid">已接无效</option>
-    <option value="dormant_lost" data-category="unreachable">休眠失联</option>
-    <option value="dormant_notbuy" data-category="unreachable">休眠未购</option>
-    <option value="connected_valid" data-category="valid">接通有效</option>
-    <option value="intent_unclear" data-category="valid">意向不明</option>
-    <option value="cannot_reach" data-category="valid">无法打通</option>
-                                        </select>
-
-                                    </div>
-                                    <div class="filter-item">
-                                        <label class="filter-label">时间维度切换:</label>
-                                        <select class="filter-select">
-                                            <option value="conversion">转化维度</option>
-                                            <option value="lead_date">线索日期</option>
-                                        </select>
-                                    </div>
-                                    <div class="filter-item filter-actions">
-                                        <button class="icon-btn query-btn">
-                                            <i class="fa-solid fa-search"></i>
-                                            <span>查询</span>
-                                        </button>
-                                        <button class="icon-btn reset-btn">
-                                            <i class="fa-solid fa-rotate-right"></i>
-                                            <span>重置</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 用户群体洞察核心指标 -->
-                            <div class="kpi-cards-section">
-                                <div class="kpi-group-row">
-                                    <div class="kpi-group-compact kpi-border-purple" data-anno="insight-kpi-leads" style="flex: 1;">
-                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-filter"></i> 线索统计</div>
-                                        <div class="kpi-metrics-row">
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">新增线索用户（全渠道）</div>
-                                                <div class="kpi-metric-val">32,568<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 6.1%</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">新增线索用户（总部培育）</div>
-                                                <div class="kpi-metric-val">12,345<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 4.8%</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="kpi-group-compact kpi-border-blue" data-anno="insight-kpi-call" style="flex: 1.4;">
-                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-phone"></i> 通话统计（总部培育）</div>
-                                        <div class="kpi-metrics-row">
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">通话总数</div>
-                                                <div class="kpi-metric-val">9,876<span class="kpi-unit">通</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 3.1%</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">接通总数</div>
-                                                <div class="kpi-metric-val">8,234<span class="kpi-unit">通</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 2.8%</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">平均时长</div>
-                                                <div class="kpi-metric-val">30<span class="kpi-unit">s</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1s</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="kpi-group-compact kpi-border-cyan" data-anno="insight-kpi-category" style="flex: 1.6;">
-                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-layer-group"></i> 线索大类（含占比）（总部培育）</div>
-                                        <div class="kpi-metrics-row">
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">外呼有效用户</div>
-                                                <div class="kpi-metric-val">9,876<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.5pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">有效用户占比</div>
-                                                <div class="kpi-metric-val">68<span class="kpi-unit">%</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.5pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">外呼无效用户</div>
-                                                <div class="kpi-metric-val">2,469<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend down"><i class="fa-solid fa-caret-down"></i> 1.1%</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">无效用户占比</div>
-                                                <div class="kpi-metric-val">32<span class="kpi-unit">%</span></div>
-                                                <div class="kpi-metric-trend down"><i class="fa-solid fa-caret-down"></i> 1.1pp</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="kpi-group-compact kpi-border-blue" data-anno="insight-kpi-grade" style="flex: 1.6;">
-                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-user-check"></i> 用户分级（含占比）（总部培育）</div>
-                                        <div class="kpi-metrics-row">
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">H/A/B 线索</div>
-                                                <div class="kpi-metric-val">4,321<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">H/A/B 线索占比</div>
-                                                <div class="kpi-metric-val">35<span class="kpi-unit">%</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="kpi-group-compact kpi-border-green" data-anno="insight-kpi-conversion" style="flex: 1.8;">
-                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-arrows-to-dot"></i> 行为转化（含占比）（全渠道）</div>
-                                        <div class="kpi-metrics-row">
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">到店用户数</div>
-                                                <div class="kpi-metric-val">2,345<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 2pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">到店占比</div>
-                                                <div class="kpi-metric-val">35<span class="kpi-unit">%</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 2pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">试驾用户数</div>
-                                                <div class="kpi-metric-val">1,234<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.8pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">试驾占比</div>
-                                                <div class="kpi-metric-val">12<span class="kpi-unit">%</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.8pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">锁单用户数</div>
-                                                <div class="kpi-metric-val">456<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.3pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">锁单占比</div>
-                                                <div class="kpi-metric-val">5.4<span class="kpi-unit">%</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.3pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">交车用户数</div>
-                                                <div class="kpi-metric-val">218<span class="kpi-unit">人</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.2pp</div>
-                                            </div>
-                                            <div class="kpi-metric-item">
-                                                <div class="kpi-metric-label">交车占比</div>
-                                                <div class="kpi-metric-val">2.6<span class="kpi-unit">%</span></div>
-                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.2pp</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Row 1: 年龄购车分布 + 品牌认知基础（双列） -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                                <!-- 年龄购车分布 -->
-                                <div class="content-card" data-anno="insight-age-purchase">
-                                    <div class="card-header">
-                                        <div class="card-title"><i class="fa-solid fa-chart-column"></i> 年龄购车分布</div>
-                                        <span style="font-size: 12px; color: #94a3b8;">分母：已接通用户数 12,345 人</span>
-                                    </div>
-                                    <div class="card-body" style="padding: 28px 24px; display: flex; justify-content: center;">
-                                        <div style="max-width: 420px; width: 100%;">
-                                            <div style="display: flex; gap: 20px; margin-bottom: 16px; font-size: 12px; color: #64748b;">
-                                                <span><span style="display: inline-block; width: 12px; height: 12px; background: #1e40af; border-radius: 2px; margin-right: 6px; vertical-align: middle;"></span>男</span>
-                                                <span><span style="display: inline-block; width: 12px; height: 12px; background: #93c5fd; border-radius: 2px; margin-right: 6px; vertical-align: middle;"></span>女</span>
-                                            </div>
-                                            <div style="display: flex; align-items: flex-end; gap: 32px; height: 200px; padding: 0 8px;">
-                                                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
-                                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">3,087人<br><span style="color: #1e40af;">25%</span></div>
-                                                    <div style="width: 56px; display: flex; flex-direction: column; align-items: center;">
-                                                        <div style="width: 100%; height: 32px; background: #93c5fd; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #1e40af; font-weight: 600;">10%</div>
-                                                        <div style="width: 100%; height: 43px; background: #1e40af; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #fff; font-weight: 600;">15%</div>
-                                                    </div>
-                                                    <div style="font-size: 12px; font-weight: 600; color: #1e293b; margin-top: 8px;">18-25岁</div>
-                                                </div>
-                                                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
-                                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">5,185人<br><span style="color: #1e40af;">42%</span></div>
-                                                    <div style="width: 56px; display: flex; flex-direction: column; align-items: center;">
-                                                        <div style="width: 100%; height: 53px; background: #93c5fd; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #1e40af; font-weight: 600;">18%</div>
-                                                        <div style="width: 100%; height: 70px; background: #1e40af; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #fff; font-weight: 600;">24%</div>
-                                                    </div>
-                                                    <div style="font-size: 12px; font-weight: 600; color: #1e293b; margin-top: 8px;">25-35岁</div>
-                                                </div>
-                                                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
-                                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">4,073人<br><span style="color: #1e40af;">33%</span></div>
-                                                    <div style="width: 56px; display: flex; flex-direction: column; align-items: center;">
-                                                        <div style="width: 100%; height: 38px; background: #93c5fd; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #1e40af; font-weight: 600;">13%</div>
-                                                        <div style="width: 100%; height: 58px; background: #1e40af; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #fff; font-weight: 600;">20%</div>
-                                                    </div>
-                                                    <div style="font-size: 12px; font-weight: 600; color: #1e293b; margin-top: 8px;">35岁+</div>
-                                                </div>
-                                            </div>
-                                            <div style="height: 1px; background: #e5e7eb; margin: 0 8px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 品牌认知基础 -->
-                                <div class="content-card" data-anno="insight-brand-awareness">
-                                    <div class="card-header">
-                                        <div class="card-title"><i class="fa-solid fa-filter-circle-dollar"></i> 品牌认知基础</div>
-                                        <span style="font-size: 12px; color: #94a3b8;">漏斗图 · 按认知深度从深到浅</span>
-                                    </div>
-                                    <div class="card-body" style="padding: 28px 24px; display: flex; flex-direction: column; align-items: center; gap: 0;">
-                                        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
-                                            <div style="text-align: center; width: 32%;">
-                                                <div style="background: linear-gradient(90deg, #1e3a8a, #1e40af); color: #fff; padding: 12px 20px; border-radius: 8px 8px 0 0;">
-                                                    <div style="font-size: 13px; font-weight: 700;">日产粉丝</div>
-                                                    <div style="font-size: 10px; opacity: 0.85; margin-top: 1px;">认知深度最深</div>
-                                                </div>
-                                                <div style="background: #1e40af; padding: 6px; color: #fff; font-size: 10px; border-radius: 0 0 8px 8px;">1,852人 · 15%</div>
-                                            </div>
-                                            <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 7px solid #1e40af;"></div>
-                                            <div style="text-align: center; width: 50%;">
-                                                <div style="background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; padding: 12px 20px; border-radius: 8px 8px 0 0;">
-                                                    <div style="font-size: 13px; font-weight: 700;">基本了解</div>
-                                                </div>
-                                                <div style="background: #3b82f6; padding: 6px; color: #fff; font-size: 10px; border-radius: 0 0 8px 8px;">4,321人 · 35%</div>
-                                            </div>
-                                            <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 7px solid #3b82f6;"></div>
-                                            <div style="text-align: center; width: 66%;">
-                                                <div style="background: linear-gradient(90deg, #60a5fa, #93c5fd); color: #1e40af; padding: 12px 20px; border-radius: 8px 8px 0 0;">
-                                                    <div style="font-size: 13px; font-weight: 700;">知道但不太了解</div>
-                                                </div>
-                                                <div style="background: #93c5fd; padding: 6px; color: #1e40af; font-size: 10px; border-radius: 0 0 8px 8px;">3,704人 · 30%</div>
-                                            </div>
-                                            <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 7px solid #93c5fd;"></div>
-                                            <div style="text-align: center; width: 84%;">
-                                                <div style="background: linear-gradient(90deg, #bfdbfe, #e0e7ff); color: #3730a3; padding: 12px 20px; border-radius: 8px 8px 0 0;">
-                                                    <div style="font-size: 13px; font-weight: 700;">完全不了解</div>
-                                                    <div style="font-size: 10px; opacity: 0.85; margin-top: 1px;">认知深度最浅</div>
-                                                </div>
-                                                <div style="background: #e0e7ff; padding: 6px; color: #3730a3; font-size: 10px; border-radius: 0 0 8px 8px;">2,469人 · 20%</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Row 2: 收入水平构成 + 家庭构成分布 + 用户类型（三列饼图） -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 20px;">
-                                <!-- 收入水平构成 -->
-                                <div class="content-card" data-anno="insight-income">
-                                    <div class="card-header">
-                                        <div class="card-title"><i class="fa-solid fa-chart-pie"></i> 收入水平构成</div>
-                                    </div>
-                                    <div class="card-body" style="padding: 24px; text-align: center;">
-                                        <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(#2563eb 0% 25%, #3b82f6 25% 70%, #e5e7eb 70% 100%); margin: 0 auto 20px; position: relative;">
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #1e293b;">12,345</div>
-                                        </div>
-                                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; text-align: left; max-width: 200px; margin: 0 auto;">
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #2563eb; flex-shrink: 0;"></span>
-                                                <span style="color: #6b7280; flex: 1;">富裕</span>
-                                                <span style="font-weight: 600; color: #1e293b;">3,086人</span>
-                                                <span style="color: #2563eb; font-weight: 600;">25%</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #3b82f6; flex-shrink: 0;"></span>
-                                                <span style="color: #6b7280; flex: 1;">一般</span>
-                                                <span style="font-weight: 600; color: #1e293b;">5,555人</span>
-                                                <span style="color: #3b82f6; font-weight: 600;">45%</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #e5e7eb; flex-shrink: 0;"></span>
-                                                <span style="color: #6b7280; flex: 1;">未提及</span>
-                                                <span style="font-weight: 600; color: #1e293b;">3,704人</span>
-                                                <span style="color: #94a3b8; font-weight: 600;">30%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 家庭构成分布 -->
-                                <div class="content-card" data-anno="insight-family">
-                                    <div class="card-header">
-                                        <div class="card-title"><i class="fa-solid fa-people-roof"></i> 家庭构成分布</div>
-                                    </div>
-                                    <div class="card-body" style="padding: 24px; text-align: center;">
-                                        <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(#059669 0% 55%, #10b981 55% 85%, #e5e7eb 85% 100%); margin: 0 auto 20px; position: relative;">
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #1e293b;">12,345</div>
-                                        </div>
-                                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; text-align: left; max-width: 200px; margin: 0 auto;">
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #059669; flex-shrink: 0;"></span>
-                                                <span style="color: #6b7280; flex: 1;">1至3人</span>
-                                                <span style="font-weight: 600; color: #1e293b;">6,790人</span>
-                                                <span style="color: #059669; font-weight: 600;">55%</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #10b981; flex-shrink: 0;"></span>
-                                                <span style="color: #6b7280; flex: 1;">4至5人</span>
-                                                <span style="font-weight: 600; color: #1e293b;">3,704人</span>
-                                                <span style="color: #10b981; font-weight: 600;">30%</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #e5e7eb; flex-shrink: 0;"></span>
-                                                <span style="color: #6b7280; flex: 1;">5人以上</span>
-                                                <span style="font-weight: 600; color: #1e293b;">1,851人</span>
-                                                <span style="color: #94a3b8; font-weight: 600;">15%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 用户类型 -->
-                                <div class="content-card" data-anno="insight-user-type">
-                                    <div class="card-header">
-                                        <div class="card-title"><i class="fa-solid fa-user-tag"></i> 用户类型</div>
-                                    </div>
-                                    <div class="card-body" style="padding: 24px; text-align: center;">
-                                        <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(#7c3aed 0% 35%, #a78bfa 35% 100%); margin: 0 auto 20px; position: relative;">
-                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #1e293b;">12,345</div>
-                                        </div>
-                                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; text-align: left; max-width: 200px; margin: 0 auto;">
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #7c3aed; flex-shrink: 0;"></span>
-                                                <span style="color: #6b7280; flex: 1;">保客</span>
-                                                <span style="font-weight: 600; color: #1e293b;">4,321人</span>
-                                                <span style="color: #7c3aed; font-weight: 600;">35%</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 8px;">
-                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #a78bfa; flex-shrink: 0;"></span>
-                                                <span style="color: #6b7280; flex: 1;">潜客</span>
-                                                <span style="font-weight: 600; color: #1e293b;">8,024人</span>
-                                                <span style="color: #a78bfa; font-weight: 600;">65%</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Row 3: 用车场景 + 关注竞品（两列条形图） -->
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                                <!-- 用车场景 -->
-                                <div class="content-card" data-anno="insight-car-scenario">
-                                    <div class="card-header">
-                                        <div class="card-title"><i class="fa-solid fa-car-side"></i> 用车场景</div>
-                                        <span style="font-size: 12px; color: #94a3b8;">按占比降序</span>
-                                    </div>
-                                    <div class="card-body" style="padding: 24px;">
-                                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">城市通勤</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #2563eb; width: 85%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">85%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">10,493人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">家庭出行</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #3b82f6; width: 72%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">72%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">8,888人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">商务接待</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #60a5fa; width: 58%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">58%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">7,160人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">自驾旅行</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #93c5fd; width: 42%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #1e40af; font-size: 11px; font-weight: 600;">42%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">5,185人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">亲子出行</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #bfdbfe; width: 35%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #1e40af; font-size: 11px; font-weight: 600;">35%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">4,321人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">物流运输</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #e0e7ff; width: 15%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #3730a3; font-size: 11px; font-weight: 600;">15%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">1,852人</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- 关注竞品 -->
-                                <div class="content-card" data-anno="insight-competitor">
-                                    <div class="card-header">
-                                        <div class="card-title"><i class="fa-solid fa-binoculars"></i> 关注竞品</div>
-                                        <span style="font-size: 12px; color: #94a3b8;">关注竞品_总部 · 按占比降序</span>
-                                    </div>
-                                    <div class="card-body" style="padding: 24px;">
-                                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">比亚迪</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #ef4444; width: 40%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">40%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">4,938人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">特斯拉</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #f97316; width: 30%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">30%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">3,704人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">理想</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #eab308; width: 24%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">24%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">2,963人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">小鹏</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #22c55e; width: 18%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">18%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">2,222人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">蔚来</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #0284c7; width: 15%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">15%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">1,852人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">问界</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #a855f7; width: 12%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">12%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">1,481人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">极氪</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #d1d5db; width: 8%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #374151; font-size: 11px; font-weight: 600;">8%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">988人</span>
-                                            </div>
-                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
-                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">其他</span>
-                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
-                                                    <div style="height: 100%; background: #e5e7eb; width: 6%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #374151; font-size: 11px; font-weight: 600;">6%</div>
-                                                </div>
-                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">741人</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
                         </div>
 
                         <!-- 培育运营内容区 -->
@@ -3007,7 +2429,7 @@
                             <!-- 培育运营核心指标 -->
                             <div class="kpi-cards-section">
                                 <div class="kpi-group-row">
-                                    <div class="kpi-group-compact kpi-border-purple" data-anno="cultivation-kpi-leads" style="flex: 0.9;">
+                                    <div class="kpi-group-compact kpi-border-purple" style="flex: 0.9;">
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-filter"></i> 线索统计</div>
                                         <div class="kpi-metrics-row">
                                             <div class="kpi-metric-item">
@@ -3017,7 +2439,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="kpi-group-compact kpi-border-blue" data-anno="cultivation-kpi-call" style="flex: 1.4;">
+                                    <div class="kpi-group-compact kpi-border-blue" style="flex: 1.4;">
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-phone"></i> 通话统计（总部培育）</div>
                                         <div class="kpi-metrics-row">
                                             <div class="kpi-metric-item">
@@ -3037,7 +2459,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="kpi-group-compact kpi-border-cyan" data-anno="cultivation-kpi-category" style="flex: 1.6;">
+                                    <div class="kpi-group-compact kpi-border-cyan" style="flex: 1.6;">
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-layer-group"></i> 线索大类（含占比）（总部培育）</div>
                                         <div class="kpi-metrics-row">
                                             <div class="kpi-metric-item">
@@ -3072,7 +2494,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="kpi-group-compact kpi-border-blue" data-anno="cultivation-kpi-grade" style="flex: 1.6;">
+                                    <div class="kpi-group-compact kpi-border-blue" style="flex: 1.6;">
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-user-check"></i> 用户分级（含占比）（总部培育）</div>
                                         <div class="kpi-metrics-row">
                                             <div class="kpi-metric-item">
@@ -3087,7 +2509,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="kpi-group-compact kpi-border-green" data-anno="cultivation-kpi-conversion" style="flex: 1.8;">
+                                    <div class="kpi-group-compact kpi-border-green" style="flex: 1.8;">
                                         <div class="kpi-group-title-mini"><i class="fa-solid fa-arrows-to-dot"></i> 行为转化（含占比）（总部培育）</div>
                                         <div class="kpi-metrics-row">
                                             <div class="kpi-metric-item">
@@ -3136,7 +2558,7 @@
                             </div>
 
                             <!-- 培育跟进过程分析 -->
-                            <div class="content-card" data-anno="cultivation-follow-process" style="margin-bottom: 20px;">
+                            <div class="content-card" style="margin-bottom: 20px;">
                                 <div class="card-header">
                                     <h3 class="card-title">培育跟进过程分析</h3>
                                     <span style="font-size: 12px; color: #94a3b8;">总部培育与门店虚拟号跟进过程 · 次数/时段/时长分布</span>
@@ -3149,7 +2571,7 @@
 
                                     <div id="headquartersFollowPanel" class="follow-process-panel active">
                                         <div class="follow-analysis-grid">
-                                            <div class="follow-analysis-card" data-anno="cultivation-follow-return">
+                                            <div class="follow-analysis-card">
                                                 <div class="follow-analysis-title">回访线索</div>
                                                 <div class="follow-pie-split">
                                                     <div class="follow-pie-visual">
@@ -3168,7 +2590,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="follow-analysis-card follow-analysis-card-wide" data-anno="cultivation-follow-call">
+                                            <div class="follow-analysis-card follow-analysis-card-wide">
                                                 <div class="follow-analysis-title">呼叫线索</div>
                                                 <div class="follow-bar-charts">
                                                     <div class="follow-mini-chart">
@@ -3213,7 +2635,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="follow-analysis-card follow-analysis-card-wide" data-anno="cultivation-follow-connected">
+                                            <div class="follow-analysis-card follow-analysis-card-wide">
                                                 <div class="follow-analysis-title">接通线索</div>
                                                 <div class="follow-bar-charts follow-bar-charts-two">
                                                     <div class="follow-mini-chart">
@@ -3248,7 +2670,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="follow-analysis-card" data-anno="cultivation-follow-delivery">
+                                            <div class="follow-analysis-card">
                                                 <div class="follow-analysis-title">激活下发线索</div>
                                                 <div class="follow-pie-split">
                                                     <div class="follow-pie-visual">
@@ -3402,7 +2824,7 @@
                                 </div>
                                 <div class="kpi-row" style="gap: 20px; margin-bottom: 30px;">
                                     <!-- 购车意向分布 -->
-                                    <div class="content-card" data-anno="cultivation-purchase-intent" style="flex: 1; min-width: 0;">
+                                    <div class="content-card" style="flex: 1; min-width: 0;">
                                         <div class="card-header"><h3 class="card-title">购车意向分布</h3></div>
                                         <div class="card-body" style="height: 160px; padding: 20px;">
                                             <div style="display: flex; flex-direction: column; gap: 20px;">
@@ -3431,7 +2853,7 @@
                                         </div>
                                     </div>
                                     <!-- 购买类型分布 -->
-                                    <div class="content-card" data-anno="cultivation-purchase-type" style="flex: 1; min-width: 0;">
+                                    <div class="content-card" style="flex: 1; min-width: 0;">
                                         <div class="card-header"><h3 class="card-title">购买类型分布</h3></div>
                                         <div class="card-body" style="height: 160px; padding: 20px;">
                                             <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -3467,7 +2889,7 @@
                                         </div>
                                     </div>
                                     <!-- 计划购车分布 -->
-                                    <div class="content-card" data-anno="cultivation-purchase-plan" style="flex: 1; min-width: 0;">
+                                    <div class="content-card" style="flex: 1; min-width: 0;">
                                         <div class="card-header"><h3 class="card-title">计划购车分布</h3></div>
                                         <div class="card-body" style="height: 160px; padding: 20px;">
                                             <div style="display: flex; flex-direction: column; gap: 12px;">
@@ -3518,7 +2940,7 @@
                                 </div>
                                 <div class="kpi-row" style="gap: 20px; margin-bottom: 30px;">
                                     <!-- 整体关注排序 -->
-                                    <div class="content-card" data-anno="cultivation-attention-ranking" style="flex: 1; min-width: 0;">
+                                    <div class="content-card" style="flex: 1; min-width: 0;">
                                         <div class="card-header"><h3 class="card-title">整体关注排序 (按提及率)</h3></div>
                                         <div class="card-body" style="height: 340px; padding: 25px;">
                                             <div style="display: flex; flex-direction: column; gap: 24px;">
@@ -3554,7 +2976,7 @@
                                         </div>
                                     </div>
                                     <!-- 渠道关注点分布 (热力图模拟) -->
-                                    <div class="content-card" data-anno="cultivation-attention-heatmap" style="flex: 1.5; min-width: 0;">
+                                    <div class="content-card" style="flex: 1.5; min-width: 0;">
                                         <div class="card-header">
                                             <h3 class="card-title">渠道关注点热度分布 (Heatmap)</h3>
                                         </div>
@@ -3627,7 +3049,7 @@
                                 </div>
                                 <div style="display: flex; gap: 20px; align-items: flex-start;">
                                     <!-- 回访结果分析 -->
-                                    <div class="content-card" data-anno="cultivation-return-result" style="flex: 1; margin-bottom: 0;">
+                                    <div class="content-card" style="flex: 1; margin-bottom: 0;">
                                         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                                             <h3 class="card-title">回访结果分析</h3>
                                             <button class="text-link-btn" onclick="openFullRanking('resistance')" style="font-size: 11px; color: var(--primary-color); border: none; background: none; cursor: pointer; padding: 0;">查看全部 <i class="fa-solid fa-angle-right"></i></button>
@@ -3730,6 +3152,587 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+                        </div>      <!-- 培育运营内容区 -->
+                        </div>      <!-- 培育运营分页 -->
+                        <div class="tab-pane" id="user-group-insight">
+                            <!-- 用户群体洞察筛选栏 -->
+                            <div class="filter-section">
+                                <div class="filter-row">
+                                    <div class="filter-item">
+                                        <label class="filter-label">时间范围:</label>
+                                        <div class="date-range-group" data-default-range="30">
+                                            <div class="date-shortcuts">
+                                                <button class="shortcut-btn" data-range="7">近7天</button>
+                                                <button class="shortcut-btn active" data-range="30">近30天</button>
+                                                <button class="shortcut-btn" data-range="90">近90天</button>
+                                                <button class="shortcut-btn" data-range="custom">自定义</button>
+                                            </div>
+                                            <div class="date-custom-inputs" style="display: none;">
+                                                <input type="date" class="filter-input date-custom date-custom-start">
+                                                <span class="date-separator">至</span>
+                                                <input type="date" class="filter-input date-custom date-custom-end">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">意向车系:</label>
+                                        <select class="filter-select">
+                                            <option value="all">全部</option>
+                                            <option value="N7">N7</option>
+                                            <option value="N6">N6</option>
+                                            <option value="天籁鸿蒙">天籁鸿蒙</option>
+                                            <option value="NX8">NX8</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">渠道名称:</label>
+                                        <select class="filter-select">
+                                            <option value="all">全部</option>
+                                            <option value="R1">R1</option>
+                                            <option value="R2">R2</option>
+                                            <option value="R3">R3</option>
+                                            <option value="R4">R4</option>
+                                            <option value="R5">R5</option>
+                                            <option value="R6">R6</option>
+                                            <option value="R7">R7</option>
+                                            <option value="R8">R8</option>
+                                            <option value="R9">R9</option>
+                                            <option value="R10">R10</option>
+                                            <option value="R11">R11</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">媒体名称:</label>
+                                        <input type="search" class="filter-input filter-search-input" placeholder="输入媒体名称关键字">
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">大项目:</label>
+                                        <input type="text" class="filter-input" placeholder="输入关键字查询" style="min-width: 160px;">
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">落地平台:</label>
+                                        <div class="custom-multi-select">
+                                            <div class="select-header">
+                                                <span class="platform-text">全选 (3项)</span>
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                            <div class="select-dropdown" style="display: none;">
+                                                <label class="dropdown-item"><input type="checkbox" class="select-all-platforms" value="all" checked> 全选</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="platform-cb" value="官网" checked> 官网</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="platform-cb" value="小程序" checked> 小程序</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="platform-cb" value="app" checked> app</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="filter-item store-filter-item">
+                                        <label class="filter-label">筛选门店:</label>
+                                        <button class="store-filter-trigger" onclick="openStoreFilterModal(this)" data-store-text="全部门店">
+                                            <i class="fa-solid fa-store"></i> <span>全部门店</span> <i class="fa-solid fa-chevron-down"></i>
+                                        </button>
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">线索等级:</label>
+                                        <div class="custom-multi-select">
+                                            <div class="select-header">
+                                                <span class="lead-level-text">全选 (10项)</span>
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </div>
+                                            <div class="select-dropdown" style="display: none;">
+                                                <label class="dropdown-item"><input type="checkbox" class="select-all-levels" value="all" checked> 全选</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive_schedule" checked> H-试驾排程单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_test_drive" checked> H-试驾线索单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="h_non_test_drive" checked> H-非试驾线索单</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="A" checked> A</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="B" checked> B</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_intent_unclear" checked> C-意向不明</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="c_unreachable" checked> C-无法接通</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="F" checked> F-战败</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="L" checked> L-休眠</label>
+                                                <label class="dropdown-item"><input type="checkbox" class="level-cb" value="E" checked> E-意向含糊</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">原因类型大类:</label>
+                                        <select class="filter-select reason-category-select">
+    <option value="all">全部</option>
+    <option value="invalid">无效号码</option>
+    <option value="unreachable">无法建联</option>
+    <option value="valid">有效号码</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">原因类型:</label>
+                                        <select class="filter-select reason-type-select">
+    <option value="all">全部</option>
+    <option value="empty" data-category="invalid">空号</option>
+    <option value="shutdown" data-category="invalid">停机</option>
+    <option value="block" data-category="invalid">拦截</option>
+    <option value="blacklist" data-category="invalid">黑名单</option>
+    <option value="answered_invalid" data-category="invalid">已接无效</option>
+    <option value="dormant_lost" data-category="unreachable">休眠失联</option>
+    <option value="dormant_notbuy" data-category="unreachable">休眠未购</option>
+    <option value="connected_valid" data-category="valid">接通有效</option>
+    <option value="intent_unclear" data-category="valid">意向不明</option>
+    <option value="cannot_reach" data-category="valid">无法打通</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="filter-item">
+                                        <label class="filter-label">时间维度切换:</label>
+                                        <select class="filter-select">
+                                            <option value="conversion">转化维度</option>
+                                            <option value="lead_date">线索日期</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-item filter-actions">
+                                        <button class="icon-btn query-btn">
+                                            <i class="fa-solid fa-search"></i>
+                                            <span>查询</span>
+                                        </button>
+                                        <button class="icon-btn reset-btn">
+                                            <i class="fa-solid fa-rotate-right"></i>
+                                            <span>重置</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 用户群体洞察核心指标 -->
+                            <div class="kpi-cards-section">
+                                <div class="kpi-group-row">
+                                    <div class="kpi-group-compact kpi-border-purple" style="flex: 1;">
+                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-filter"></i> 线索统计</div>
+                                        <div class="kpi-metrics-row">
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">新增线索用户（全渠道）</div>
+                                                <div class="kpi-metric-val">32,568<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 6.1%</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">新增线索用户（总部培育）</div>
+                                                <div class="kpi-metric-val">12,345<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 4.8%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kpi-group-compact kpi-border-blue" style="flex: 1.4;">
+                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-phone"></i> 通话统计（总部培育）</div>
+                                        <div class="kpi-metrics-row">
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">通话总数</div>
+                                                <div class="kpi-metric-val">9,876<span class="kpi-unit">通</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 3.1%</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">接通总数</div>
+                                                <div class="kpi-metric-val">8,234<span class="kpi-unit">通</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 2.8%</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">平均时长</div>
+                                                <div class="kpi-metric-val">30<span class="kpi-unit">s</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1s</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kpi-group-compact kpi-border-cyan" style="flex: 1.6;">
+                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-layer-group"></i> 线索大类（含占比）（总部培育）</div>
+                                        <div class="kpi-metrics-row">
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">外呼有效用户</div>
+                                                <div class="kpi-metric-val">9,876<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.5pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">有效用户占比</div>
+                                                <div class="kpi-metric-val">68<span class="kpi-unit">%</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.5pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">外呼无效用户</div>
+                                                <div class="kpi-metric-val">2,469<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend down"><i class="fa-solid fa-caret-down"></i> 1.1%</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">无效用户占比</div>
+                                                <div class="kpi-metric-val">32<span class="kpi-unit">%</span></div>
+                                                <div class="kpi-metric-trend down"><i class="fa-solid fa-caret-down"></i> 1.1pp</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kpi-group-compact kpi-border-blue" style="flex: 1.6;">
+                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-user-check"></i> 用户分级（含占比）（总部培育）</div>
+                                        <div class="kpi-metrics-row">
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">H/A/B用户</div>
+                                                <div class="kpi-metric-val">4,321<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">H/A/B占比</div>
+                                                <div class="kpi-metric-val">35<span class="kpi-unit">%</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 1.2pp</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kpi-group-compact kpi-border-green" style="flex: 1.8;">
+                                        <div class="kpi-group-title-mini"><i class="fa-solid fa-arrows-to-dot"></i> 行为转化（含占比）（全渠道）</div>
+                                        <div class="kpi-metrics-row">
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">到店用户数</div>
+                                                <div class="kpi-metric-val">2,345<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 2pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">到店占比</div>
+                                                <div class="kpi-metric-val">35<span class="kpi-unit">%</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 2pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">试驾用户数</div>
+                                                <div class="kpi-metric-val">1,234<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.8pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">试驾占比</div>
+                                                <div class="kpi-metric-val">12<span class="kpi-unit">%</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.8pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">锁单用户数</div>
+                                                <div class="kpi-metric-val">456<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.3pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">锁单占比</div>
+                                                <div class="kpi-metric-val">5.4<span class="kpi-unit">%</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.3pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">交车用户数</div>
+                                                <div class="kpi-metric-val">218<span class="kpi-unit">人</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.2pp</div>
+                                            </div>
+                                            <div class="kpi-metric-item">
+                                                <div class="kpi-metric-label">交车占比</div>
+                                                <div class="kpi-metric-val">2.6<span class="kpi-unit">%</span></div>
+                                                <div class="kpi-metric-trend up"><i class="fa-solid fa-caret-up"></i> 0.2pp</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 1: 年龄购车分布 + 品牌认知基础（双列） -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                                <!-- 年龄购车分布 -->
+                                <div class="content-card">
+                                    <div class="card-header">
+                                        <div class="card-title"><i class="fa-solid fa-chart-column"></i> 年龄购车分布</div>
+                                        <span style="font-size: 12px; color: #94a3b8;">分母：已接通用户数 12,345 人</span>
+                                    </div>
+                                    <div class="card-body" style="padding: 28px 24px; display: flex; justify-content: center;">
+                                        <div style="max-width: 420px; width: 100%;">
+                                            <div style="display: flex; gap: 20px; margin-bottom: 16px; font-size: 12px; color: #64748b;">
+                                                <span><span style="display: inline-block; width: 12px; height: 12px; background: #1e40af; border-radius: 2px; margin-right: 6px; vertical-align: middle;"></span>男</span>
+                                                <span><span style="display: inline-block; width: 12px; height: 12px; background: #93c5fd; border-radius: 2px; margin-right: 6px; vertical-align: middle;"></span>女</span>
+                                            </div>
+                                            <div style="display: flex; align-items: flex-end; gap: 32px; height: 200px; padding: 0 8px;">
+                                                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
+                                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">3,087人<br><span style="color: #1e40af;">25%</span></div>
+                                                    <div style="width: 56px; display: flex; flex-direction: column; align-items: center;">
+                                                        <div style="width: 100%; height: 32px; background: #93c5fd; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #1e40af; font-weight: 600;">10%</div>
+                                                        <div style="width: 100%; height: 43px; background: #1e40af; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #fff; font-weight: 600;">15%</div>
+                                                    </div>
+                                                    <div style="font-size: 12px; font-weight: 600; color: #1e293b; margin-top: 8px;">18-25岁</div>
+                                                </div>
+                                                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
+                                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">5,185人<br><span style="color: #1e40af;">42%</span></div>
+                                                    <div style="width: 56px; display: flex; flex-direction: column; align-items: center;">
+                                                        <div style="width: 100%; height: 53px; background: #93c5fd; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #1e40af; font-weight: 600;">18%</div>
+                                                        <div style="width: 100%; height: 70px; background: #1e40af; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #fff; font-weight: 600;">24%</div>
+                                                    </div>
+                                                    <div style="font-size: 12px; font-weight: 600; color: #1e293b; margin-top: 8px;">25-35岁</div>
+                                                </div>
+                                                <div style="flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
+                                                    <div style="font-size: 11px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">4,073人<br><span style="color: #1e40af;">33%</span></div>
+                                                    <div style="width: 56px; display: flex; flex-direction: column; align-items: center;">
+                                                        <div style="width: 100%; height: 38px; background: #93c5fd; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #1e40af; font-weight: 600;">13%</div>
+                                                        <div style="width: 100%; height: 58px; background: #1e40af; border-radius: 4px 4px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 4px; font-size: 9px; color: #fff; font-weight: 600;">20%</div>
+                                                    </div>
+                                                    <div style="font-size: 12px; font-weight: 600; color: #1e293b; margin-top: 8px;">35岁+</div>
+                                                </div>
+                                            </div>
+                                            <div style="height: 1px; background: #e5e7eb; margin: 0 8px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 品牌认知基础 -->
+                                <div class="content-card">
+                                    <div class="card-header">
+                                        <div class="card-title"><i class="fa-solid fa-filter-circle-dollar"></i> 品牌认知基础</div>
+                                        <span style="font-size: 12px; color: #94a3b8;">漏斗图 · 按认知深度从深到浅</span>
+                                    </div>
+                                    <div class="card-body" style="padding: 28px 24px; display: flex; flex-direction: column; align-items: center; gap: 0;">
+                                        <div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="text-align: center; width: 32%;">
+                                                <div style="background: linear-gradient(90deg, #1e3a8a, #1e40af); color: #fff; padding: 12px 20px; border-radius: 8px 8px 0 0;">
+                                                    <div style="font-size: 13px; font-weight: 700;">日产粉丝</div>
+                                                    <div style="font-size: 10px; opacity: 0.85; margin-top: 1px;">认知深度最深</div>
+                                                </div>
+                                                <div style="background: #1e40af; padding: 6px; color: #fff; font-size: 10px; border-radius: 0 0 8px 8px;">1,852人 · 15%</div>
+                                            </div>
+                                            <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 7px solid #1e40af;"></div>
+                                            <div style="text-align: center; width: 50%;">
+                                                <div style="background: linear-gradient(90deg, #2563eb, #3b82f6); color: #fff; padding: 12px 20px; border-radius: 8px 8px 0 0;">
+                                                    <div style="font-size: 13px; font-weight: 700;">基本了解</div>
+                                                </div>
+                                                <div style="background: #3b82f6; padding: 6px; color: #fff; font-size: 10px; border-radius: 0 0 8px 8px;">4,321人 · 35%</div>
+                                            </div>
+                                            <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 7px solid #3b82f6;"></div>
+                                            <div style="text-align: center; width: 66%;">
+                                                <div style="background: linear-gradient(90deg, #60a5fa, #93c5fd); color: #1e40af; padding: 12px 20px; border-radius: 8px 8px 0 0;">
+                                                    <div style="font-size: 13px; font-weight: 700;">知道但不太了解</div>
+                                                </div>
+                                                <div style="background: #93c5fd; padding: 6px; color: #1e40af; font-size: 10px; border-radius: 0 0 8px 8px;">3,704人 · 30%</div>
+                                            </div>
+                                            <div style="width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-top: 7px solid #93c5fd;"></div>
+                                            <div style="text-align: center; width: 84%;">
+                                                <div style="background: linear-gradient(90deg, #bfdbfe, #e0e7ff); color: #3730a3; padding: 12px 20px; border-radius: 8px 8px 0 0;">
+                                                    <div style="font-size: 13px; font-weight: 700;">完全不了解</div>
+                                                    <div style="font-size: 10px; opacity: 0.85; margin-top: 1px;">认知深度最浅</div>
+                                                </div>
+                                                <div style="background: #e0e7ff; padding: 6px; color: #3730a3; font-size: 10px; border-radius: 0 0 8px 8px;">2,469人 · 20%</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 2: 收入水平构成 + 家庭构成分布 + 用户类型（三列饼图） -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 20px;">
+                                <!-- 收入水平构成 -->
+                                <div class="content-card">
+                                    <div class="card-header">
+                                        <div class="card-title"><i class="fa-solid fa-chart-pie"></i> 收入水平构成</div>
+                                    </div>
+                                    <div class="card-body" style="padding: 24px; text-align: center;">
+                                        <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(#2563eb 0% 25%, #3b82f6 25% 70%, #e5e7eb 70% 100%); margin: 0 auto 20px; position: relative;">
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #1e293b;">12,345</div>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; text-align: left; max-width: 200px; margin: 0 auto;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #2563eb; flex-shrink: 0;"></span>
+                                                <span style="color: #6b7280; flex: 1;">富裕</span>
+                                                <span style="font-weight: 600; color: #1e293b;">3,086人</span>
+                                                <span style="color: #2563eb; font-weight: 600;">25%</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #3b82f6; flex-shrink: 0;"></span>
+                                                <span style="color: #6b7280; flex: 1;">一般</span>
+                                                <span style="font-weight: 600; color: #1e293b;">5,555人</span>
+                                                <span style="color: #3b82f6; font-weight: 600;">45%</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #e5e7eb; flex-shrink: 0;"></span>
+                                                <span style="color: #6b7280; flex: 1;">未提及</span>
+                                                <span style="font-weight: 600; color: #1e293b;">3,704人</span>
+                                                <span style="color: #94a3b8; font-weight: 600;">30%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 家庭构成分布 -->
+                                <div class="content-card">
+                                    <div class="card-header">
+                                        <div class="card-title"><i class="fa-solid fa-people-roof"></i> 家庭构成分布</div>
+                                    </div>
+                                    <div class="card-body" style="padding: 24px; text-align: center;">
+                                        <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(#059669 0% 55%, #10b981 55% 85%, #e5e7eb 85% 100%); margin: 0 auto 20px; position: relative;">
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #1e293b;">12,345</div>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; text-align: left; max-width: 200px; margin: 0 auto;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #059669; flex-shrink: 0;"></span>
+                                                <span style="color: #6b7280; flex: 1;">1至3人</span>
+                                                <span style="font-weight: 600; color: #1e293b;">6,790人</span>
+                                                <span style="color: #059669; font-weight: 600;">55%</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #10b981; flex-shrink: 0;"></span>
+                                                <span style="color: #6b7280; flex: 1;">4至5人</span>
+                                                <span style="font-weight: 600; color: #1e293b;">3,704人</span>
+                                                <span style="color: #10b981; font-weight: 600;">30%</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #e5e7eb; flex-shrink: 0;"></span>
+                                                <span style="color: #6b7280; flex: 1;">5人以上</span>
+                                                <span style="font-weight: 600; color: #1e293b;">1,851人</span>
+                                                <span style="color: #94a3b8; font-weight: 600;">15%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 用户类型 -->
+                                <div class="content-card">
+                                    <div class="card-header">
+                                        <div class="card-title"><i class="fa-solid fa-user-tag"></i> 用户类型</div>
+                                    </div>
+                                    <div class="card-body" style="padding: 24px; text-align: center;">
+                                        <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(#7c3aed 0% 35%, #a78bfa 35% 100%); margin: 0 auto 20px; position: relative;">
+                                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #1e293b;">12,345</div>
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px; text-align: left; max-width: 200px; margin: 0 auto;">
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #7c3aed; flex-shrink: 0;"></span>
+                                                <span style="color: #6b7280; flex: 1;">保客</span>
+                                                <span style="font-weight: 600; color: #1e293b;">4,321人</span>
+                                                <span style="color: #7c3aed; font-weight: 600;">35%</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 8px;">
+                                                <span style="width: 10px; height: 10px; border-radius: 2px; background: #a78bfa; flex-shrink: 0;"></span>
+                                                <span style="color: #6b7280; flex: 1;">潜客</span>
+                                                <span style="font-weight: 600; color: #1e293b;">8,024人</span>
+                                                <span style="color: #a78bfa; font-weight: 600;">65%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 3: 用车场景 + 关注竞品（两列条形图） -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                                <!-- 用车场景 -->
+                                <div class="content-card">
+                                    <div class="card-header">
+                                        <div class="card-title"><i class="fa-solid fa-car-side"></i> 用车场景</div>
+                                        <span style="font-size: 12px; color: #94a3b8;">按占比降序</span>
+                                    </div>
+                                    <div class="card-body" style="padding: 24px;">
+                                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">城市通勤</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #2563eb; width: 85%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">85%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">10,493人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">家庭出行</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #3b82f6; width: 72%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">72%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">8,888人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">商务接待</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #60a5fa; width: 58%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">58%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">7,160人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">自驾旅行</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #93c5fd; width: 42%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #1e40af; font-size: 11px; font-weight: 600;">42%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">5,185人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">亲子出行</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #bfdbfe; width: 35%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #1e40af; font-size: 11px; font-weight: 600;">35%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">4,321人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 72px; text-align: right; color: #6b7280; flex-shrink: 0;">物流运输</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #e0e7ff; width: 15%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #3730a3; font-size: 11px; font-weight: 600;">15%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">1,852人</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 关注竞品 -->
+                                <div class="content-card">
+                                    <div class="card-header">
+                                        <div class="card-title"><i class="fa-solid fa-binoculars"></i> 关注竞品</div>
+                                        <span style="font-size: 12px; color: #94a3b8;">关注竞品_总部 · 按占比降序</span>
+                                    </div>
+                                    <div class="card-body" style="padding: 24px;">
+                                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">比亚迪</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #ef4444; width: 40%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">40%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">4,938人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">特斯拉</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #f97316; width: 30%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">30%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">3,704人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">理想</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #eab308; width: 24%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">24%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">2,963人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">小鹏</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #22c55e; width: 18%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">18%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">2,222人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">蔚来</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #0284c7; width: 15%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">15%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">1,852人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">问界</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #a855f7; width: 12%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #fff; font-size: 11px; font-weight: 600;">12%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">1,481人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">极氪</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #d1d5db; width: 8%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #374151; font-size: 11px; font-weight: 600;">8%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">988人</span>
+                                            </div>
+                                            <div style="display: flex; align-items: center; gap: 12px; font-size: 13px;">
+                                                <span style="width: 48px; text-align: right; color: #6b7280; flex-shrink: 0;">其他</span>
+                                                <div style="flex: 1; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
+                                                    <div style="height: 100%; background: #e5e7eb; width: 6%; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; color: #374151; font-size: 11px; font-weight: 600;">6%</div>
+                                                </div>
+                                                <span style="font-weight: 600; color: #1e293b; width: 70px; flex-shrink: 0;">741人</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                             </div>
                         </div>
 
@@ -3809,8 +3812,16 @@
         </div>
     </div>
 
-    <script src="mock.js?v=20260602-22"></script>
-    <script src="script.js?v=20260602-22"></script>
+    <script src="../mock/data.js?v=20260605-01"></script>
+    <script src="../js/common.js?v=20260605-01"></script>
+    <script src="../js/nav.js?v=20260605-01"></script>
+    <script src="../js/pages/userinsight/filters.js?v=20260605-03"></script>
+    <script src="../js/pages/userinsight/journeys.js?v=20260605-03"></script>
+    <script src="../js/pages/userinsight/dialogs.js?v=20260605-03"></script>
+    <script src="../js/pages/userinsight/dashboard.js?v=20260605-03"></script>
+    <script src="../js/pages/userinsight/stores.js?v=20260605-03"></script>
+    <script src="../js/pages/userinsight/downloads.js?v=20260605-03"></script>
+    <script src="../js/app.js?v=20260605-01"></script>
 
     <!-- 城市专营店意向等级详情抽屉 -->
     <div class="drawer-overlay" id="cityStoreModal">
@@ -3906,137 +3917,6 @@
     </div>
 
     <!-- 统计口径说明弹窗 -->
-    <style>
-    .stats-info-btn {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 7px 14px;
-        background: #fff;
-        border: 1.5px solid #e2e8f0;
-        border-radius: 8px;
-        color: #475569;
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        white-space: nowrap;
-    }
-    .stats-info-btn:hover { background: #f1f5f9; border-color: #94a3b8; color: #1e293b; }
-    .stats-info-btn i { color: #3b82f6; font-size: 14px; }
-
-    #stats-drawer-overlay {
-        display: none;
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(15, 23, 42, 0.45);
-        z-index: 100000;
-    }
-    #stats-drawer-overlay.active { display: block; }
-
-    #stats-drawer {
-        position: fixed;
-        top: 0; right: 0;
-        width: 720px;
-        max-width: 92vw;
-        height: 100vh;
-        background: #fff;
-        box-shadow: -8px 0 40px rgba(0,0,0,0.18);
-        z-index: 100001;
-        display: flex;
-        flex-direction: column;
-        transform: translateX(100%);
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    #stats-drawer-overlay.active + #stats-drawer { transform: translateX(0); }
-
-    .stats-drawer-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 20px 28px;
-        border-bottom: 1px solid #e2e8f0;
-        flex-shrink: 0;
-    }
-    .stats-drawer-header h2 { margin: 0; font-size: 20px; color: #1e293b; }
-    .stats-drawer-header h2 i { color: #3b82f6; margin-right: 8px; }
-    .stats-drawer-close {
-        width: 36px; height: 36px; border: none; background: #f1f5f9;
-        border-radius: 8px; font-size: 20px; color: #64748b; cursor: pointer;
-        transition: all 0.15s;
-    }
-    .stats-drawer-close:hover { background: #fee2e2; color: #ef4444; }
-
-    .stats-drawer-body {
-        padding: 24px 28px;
-        overflow-y: auto;
-        flex: 1;
-        font-size: 14px;
-        line-height: 1.8;
-        color: #334155;
-    }
-    .stats-drawer-body h3 {
-        font-size: 16px; color: #1e293b; margin: 24px 0 12px;
-        padding-bottom: 8px; border-bottom: 2px solid #e2e8f0;
-    }
-    .stats-drawer-body h3:first-child { margin-top: 0; }
-    .stats-drawer-body h4 {
-        font-size: 14px; color: #475569; margin: 16px 0 8px;
-    }
-    .stats-drawer-body table {
-        width: 100%; border-collapse: collapse; margin: 8px 0 16px;
-        font-size: 13px;
-    }
-    .stats-drawer-body th {
-        background: #f8fafc; padding: 8px 12px; text-align: left;
-        font-weight: 600; color: #475569; border: 1px solid #e2e8f0;
-    }
-    .stats-drawer-body td {
-        padding: 8px 12px; border: 1px solid #e2e8f0; vertical-align: top;
-    }
-    .stats-drawer-body .def-term { font-weight: 600; color: #1e293b; }
-    .stats-tabs {
-        position: sticky;
-        top: -24px;
-        z-index: 2;
-        display: flex;
-        gap: 8px;
-        padding: 0 0 14px;
-        margin: -2px 0 16px;
-        background: #fff;
-        border-bottom: 1px solid #e2e8f0;
-    }
-    .stats-tab-btn {
-        border: 1px solid #dbe4ef;
-        background: #f8fafc;
-        color: #475569;
-        border-radius: 8px;
-        padding: 8px 14px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.15s;
-    }
-    .stats-tab-btn:hover { border-color: #93c5fd; color: #2563eb; }
-    .stats-tab-btn.active {
-        background: #2563eb;
-        border-color: #2563eb;
-        color: #fff;
-    }
-    .stats-tab-panel { display: none; }
-    .stats-tab-panel.active { display: block; }
-    .stats-note {
-        margin: 4px 0 10px;
-        color: #475569;
-        font-size: 13px;
-    }
-    .stats-danger {
-        margin: 4px 0 10px;
-        color: #dc2626;
-        font-size: 13px;
-        font-weight: 600;
-    }
-    </style>
 
     <div id="stats-drawer-overlay" onclick="closeStatsDrawer()"></div>
     <div id="stats-drawer">
@@ -4044,236 +3924,184 @@
             <h2><i class="fa-solid fa-circle-info"></i> 统计口径说明</h2>
             <button class="stats-drawer-close" onclick="closeStatsDrawer()">&times;</button>
         </div>
+        <div class="stats-tabs" role="tablist">
+            <button class="stats-tab active" type="button" role="tab" data-stats-tab="channel" onclick="switchStatsTab('channel')">渠道效果</button>
+            <button class="stats-tab" type="button" role="tab" data-stats-tab="cultivation" onclick="switchStatsTab('cultivation')">培育运营</button>
+            <button class="stats-tab" type="button" role="tab" data-stats-tab="insight" onclick="switchStatsTab('insight')">用户群体洞察</button>
+        </div>
         <div class="stats-drawer-body">
-            <div class="stats-tabs" role="tablist" aria-label="统计口径说明分页">
-                <button class="stats-tab-btn active" type="button" data-stats-tab="channel" onclick="switchStatsTab('channel')">渠道效果</button>
-                <button class="stats-tab-btn" type="button" data-stats-tab="cultivation" onclick="switchStatsTab('cultivation')">培育运营</button>
-                <button class="stats-tab-btn" type="button" data-stats-tab="insight" onclick="switchStatsTab('insight')">用户群体洞察</button>
-            </div>
-            <div class="stats-tab-panel active" data-stats-panel="channel">
+            <section class="stats-panel active" data-stats-panel="channel">
                 <h3>渠道效果 — 用户概览（KPI 卡片）</h3>
 
                 <h4>线索统计</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">全渠道新增线索量</td><td>全渠道新增线索，按线索编码去重统计。</td></tr>
-                    <tr><td class="def-term">总部培育新增线索量</td><td>总部培育新增线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">总部培育占比</td><td>总部培育新增线索量 ÷ 全渠道新增线索量。</td></tr>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">全渠道新增线索量</td><td>全渠道新增线索，按线索编码去重统计</td><td>条</td></tr>
+                    <tr><td class="def-term">总部培育新增线索量</td><td>总部培育新增线索数，按线索编码去重</td><td>条</td></tr>
+                    <tr><td class="def-term">总部培育占比</td><td>总部培育新增线索量 ÷ 全渠道新增线索量</td><td>%</td></tr>
                 </table>
 
                 <h4>通话统计（总部培育）</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">通话总数</td><td>总部培育虚拟号通话记录总数。</td></tr>
-                    <tr><td class="def-term">接通总数</td><td>总部培育虚拟号通话记录中，通话时长大于 0 的记录数。</td></tr>
-                    <tr><td class="def-term">平均时长</td><td>已接通通话时长合计 ÷ 接通总数。</td></tr>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">通话总数</td><td>总部培育虚拟号通话记录总数</td><td>通</td></tr>
+                    <tr><td class="def-term">接通总数</td><td>总部培育虚拟号通话记录中，通话时长 &gt; 0 的记录数</td><td>通</td></tr>
+                    <tr><td class="def-term">平均时长</td><td>已接通通话时长合计 ÷ 接通总数</td><td>秒</td></tr>
                 </table>
 
                 <h4>线索大类（含占比）（总部培育）</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">外呼有效量</td><td>总部培育线索级别不等于无效号码的线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">有效号码占比</td><td>外呼有效量 ÷ 新增线索量。</td></tr>
-                    <tr><td class="def-term">无法建联线索</td><td>总部培育外呼无法建联线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">无法建联占比</td><td>无法建联线索 ÷ 新增线索量。</td></tr>
-                    <tr><td class="def-term">外呼无效线索</td><td>总部培育线索级别等于无效号码的线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">无效号码占比</td><td>外呼无效线索 ÷ 新增线索量。</td></tr>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">外呼有效量</td><td>总部培育线索级别 ≠ 无效号码的线索数，按线索编码去重</td><td>条</td></tr>
+                    <tr><td class="def-term">有效号码占比</td><td>外呼有效量 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">无法建联线索</td><td>总部培育外呼无法建联线索数，按线索编码去重</td><td>条</td></tr>
+                    <tr><td class="def-term">无法建联占比</td><td>无法建联线索 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">外呼无效线索</td><td>总部培育线索级别 = 无效号码的线索数，按线索编码去重</td><td>条</td></tr>
+                    <tr><td class="def-term">无效号码占比</td><td>外呼无效线索 ÷ 新增线索量</td><td>%</td></tr>
                 </table>
 
                 <h4>用户分级（含占比）（总部培育）</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">H/A/B 线索量</td><td>总部培育线索等级属于 H-试驾排程单、H-试驾线索单、H-非试驾线索单、A、B 的线索数。总部线索取值优先级：下发级别 &gt; 跟进级别 &gt; 初始级别。</td></tr>
-                    <tr><td class="def-term">H/A/B 线索占比</td><td>H/A/B 线索量 ÷ 新增线索量。</td></tr>
+                    <tr><th style="width:200px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">H/A/B 线索量</td><td>总部培育线索等级 ∈ {H-试驾排程单, H-试驾线索单, H-非试驾线索单, A, B} 的线索数<br>总部线索取值优先级：下发级别 &gt; 跟进级别 &gt; 初始级别</td><td>条</td></tr>
+                    <tr><td class="def-term">H/A/B 线索占比</td><td>HAB 线索量 ÷ 新增线索量</td><td>%</td></tr>
                 </table>
 
                 <h4>行为转化（含占比）（全渠道）</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">到店数（首次）</td><td>统计周期内，门店所有客户第一次到店线索量。转化维度按到店时间统计，线索维度按线索创建日期统计。</td></tr>
-                    <tr><td class="def-term">到店占比</td><td>到店线索数 ÷ 新增线索量。</td></tr>
-                    <tr><td class="def-term">试驾数</td><td>统计周期内全部试驾量，按车系去重。转化维度按每个车系首次试驾日期统计，线索维度按线索创建日期统计。</td></tr>
-                    <tr><td class="def-term">试驾占比</td><td>试驾线索数 ÷ 新增线索量。</td></tr>
-                    <tr><td class="def-term">锁单数</td><td>统计周期内剔除作废和销退后的有效锁单量，等于新增锁单量减作废/销退量。</td></tr>
-                    <tr><td class="def-term">锁单占比</td><td>锁单线索数 ÷ 新增线索量。</td></tr>
-                    <tr><td class="def-term">交车数</td><td>统计周期内剔除销退后的有效交付确认量，等于交付确认台数减交车销退台数。</td></tr>
-                    <tr><td class="def-term">交车占比</td><td>交车线索数 ÷ 新增线索量。</td></tr>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">到店数（首次）</td><td>统计周期内，门店所有客户第一次到店线索量。转化维度按到店时间统计，线索维度按线索创建日期统计</td><td>条</td></tr>
+                    <tr><td class="def-term">到店占比</td><td>到店线索数 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">试驾数</td><td>统计周期内全部试驾量，按车系去重。转化维度按每个车系首次试驾日期，线索维度按线索创建日期</td><td>条</td></tr>
+                    <tr><td class="def-term">试驾占比</td><td>试驾线索数 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">锁单数</td><td>统计周期内剔除作废/销退后的有效锁单量 = 新增锁单量 − 作废/销退量</td><td>条</td></tr>
+                    <tr><td class="def-term">锁单占比</td><td>锁单线索数 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><td class="def-term">交车数</td><td>统计周期内剔除销退后的有效交付确认量 = 交付确认台数 − 交车销退台数</td><td>条</td></tr>
+                    <tr><td class="def-term">交车占比</td><td>交车线索数 ÷ 新增线索量</td><td>%</td></tr>
                 </table>
 
                 <h3>渠道效果分析</h3>
+                <h4>效果概览（饼图）</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">意向车系占比</td><td>各意向车系的新增线索量及占比，占比分母为新增线索量。</td></tr>
-                    <tr><td class="def-term">线索大类占比</td><td>有效号码、无效号码、无法建联等线索大类的新增线索量及占比，占比分母为新增线索量。</td></tr>
-                    <tr><td class="def-term">线索级别占比</td><td>各线索级别的新增线索量及占比，占比分母为新增线索量，并与意向车系筛选联动。</td></tr>
-                    <tr><td class="def-term">大区投放效果</td><td>按大区统计新增线索量和 H/A/B 占比。</td></tr>
-                    <tr><td class="def-term">小区投放效果</td><td>按小区统计新增线索量和 H/A/B 占比。</td></tr>
-                    <tr><td class="def-term">区域投放效果</td><td>按所在城市统计新增线索量和 H/A/B 占比。</td></tr>
-                    <tr><td class="def-term">渠道线索质量</td><td>按渠道名称统计新增线索量，并按线索级别拆分。</td></tr>
-                    <tr><td class="def-term">大项目线索质量排名</td><td>按大项目统计 H/A/B 量及占比、到店量及占比、试驾量及占比、锁单量及占比。</td></tr>
-                    <tr><td class="def-term">媒体线索质量排名</td><td>按媒体统计 H/A/B 量及占比、到店量及占比、试驾量及占比、锁单量及占比。</td></tr>
-                    <tr><td class="def-term">质量标签分布</td><td>按无效号码、无法建联、有效号码等大类及原因类型统计线索分布。</td></tr>
+                    <tr><th style="width:140px;">分析视角</th><th>指标</th><th>维度</th></tr>
+                    <tr><td class="def-term">意向车系占比</td><td>新增线索量、占比（分母=新增线索量）</td><td>N6 / N7 / 天籁鸿蒙 / NX8</td></tr>
+                    <tr><td class="def-term">线索大类占比</td><td>新增线索量、占比（分母=新增线索量）</td><td>有效号码 / 无效号码 / 无法建联</td></tr>
+                    <tr><td class="def-term">线索级别占比</td><td>新增线索量、占比（分母=新增线索量），与意向车系联动</td><td>H-试驾排程单 / H-试驾线索单 / H-非试驾线索单 / A / B / C-意向不明 / C-无法接通 / F-战败 / L-休眠 / E-意向含糊</td></tr>
+                </table>
+
+                <h4>投放效果（条形图）</h4>
+                <table>
+                    <tr><th style="width:140px;">分析视角</th><th>指标</th><th>维度</th></tr>
+                    <tr><td class="def-term">大区投放效果</td><td>新增线索量、H/A/B 占比</td><td>大区 × 线索级别（H/A/B/C/其他）</td></tr>
+                    <tr><td class="def-term">小区投放效果</td><td>新增线索量、H/A/B 占比</td><td>小区 × 线索级别</td></tr>
+                    <tr><td class="def-term">区域投放效果</td><td>新增线索量、H/A/B 占比</td><td>所在城市（TOP10/20/可自定义）</td></tr>
+                </table>
+
+                <h4>渠道 & 排名（堆叠柱状图 / 条形图）</h4>
+                <table>
+                    <tr><th style="width:160px;">分析视角</th><th>指标</th><th>维度</th></tr>
+                    <tr><td class="def-term">渠道线索质量</td><td>新增线索量</td><td>渠道名称，线索级别（H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B/C-意向不明/C-无法接通/F-战败/L-休眠/E-意向含糊）</td></tr>
+                    <tr><td class="def-term">大项目线索质量排名</td><td>H/A/B 量及占比、到店量及占比、试驾量及占比、锁单量及占比</td><td>大项目名称，条形图按占比降序（默认TOP10），可切换指标维度，默认按H/A/B占比</td></tr>
+                    <tr><td class="def-term">媒体线索质量排名</td><td>同上（H/A/B、到店、试驾、锁单）</td><td>媒体名称，同上交互逻辑</td></tr>
+                </table>
+
+                <h4>质量标签分布（条形图）</h4>
+                <table>
+                    <tr><th style="width:120px;">大类</th><th style="width:130px;">原因类型</th><th>原因说明</th></tr>
+                    <tr><td rowspan="3">无效号码</td><td>空号/停机</td><td>空号、停机</td></tr>
+                    <tr><td>拦截/黑名单</td><td>黑名单过滤、线路拦截</td></tr>
+                    <tr><td>已接无效</td><td>秘书台号码、语音信箱号码、手机助理号码</td></tr>
+                    <tr><td rowspan="2">无法建联</td><td>休眠失联</td><td>休眠失联</td></tr>
+                    <tr><td>休眠未购</td><td>休眠未购</td></tr>
+                    <tr><td rowspan="2">有效号码</td><td>接通有效</td><td>确认有购车意向、购车意愿明确、购车意愿不明确</td></tr>
+                    <tr><td>意向不明</td><td>意向不明</td></tr>
                 </table>
 
                 <h3>触媒/触店习惯与频率更新分析</h3>
+                <h4>触媒习惯（条形图，按占比 TOP10）</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">留资总数</td><td>各渠道或媒体的用户留资总量，按渠道或媒体维度聚合。</td></tr>
-                    <tr><td class="def-term">首次到店占比</td><td>首次到店触媒为该渠道或媒体的用户数 ÷ 留资总数。</td></tr>
-                    <tr><td class="def-term">留资培育过程</td><td>培育过程中通过该渠道或媒体留资的用户占比。</td></tr>
-                    <tr><td class="def-term">预到店培育过程</td><td>到店前培育过程中通过该渠道或媒体触达的用户占比。</td></tr>
-                    <tr><td class="def-term">非留资培育过程</td><td>非留资场景下通过该渠道或媒体培育触达的用户占比。</td></tr>
-                    <tr><td class="def-term">触店频率</td><td>按用户到店次数分组统计用户数量及占比。</td></tr>
-                    <tr><td class="def-term">留资渠道数量</td><td>用户留资涉及的渠道个数，用于渠道留资重合度分析。</td></tr>
-                    <tr><td class="def-term">重合渠道名称列表</td><td>用户多次留资的渠道组合列表。</td></tr>
-                    <tr><td class="def-term">留资媒体数量</td><td>用户留资涉及的媒体个数，用于媒体留资重合度分析。</td></tr>
-                    <tr><td class="def-term">重合媒体名称列表</td><td>用户多次留资的媒体组合列表。</td></tr>
-                </table>
-            </div>
-            <div class="stats-tab-panel" data-stats-panel="cultivation">
-                <h3>培育运营 — 按线索维度</h3>
-                <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">新增线索量（总部培育）</td><td>总部培育新增线索总条数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">通话总数</td><td>总部培育 + 门店虚拟号通话记录总数。</td></tr>
-                    <tr><td class="def-term">接通总数</td><td>总部培育 + 门店虚拟号通话记录总数，按已接通统计，通话时长大于 0。</td></tr>
-                    <tr><td class="def-term">平均时长</td><td>总部培育 + 门店虚拟号已接通通话时长合计 ÷ 接通总数。</td></tr>
-                    <tr><td class="def-term">外呼有效量</td><td>总部培育线索级别不等于无效号码的线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">有效号码占比</td><td>总部培育外呼有效线索 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">无法建联线索</td><td>总部培育外呼无法建联线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">无法建联占比</td><td>总部培育外呼无法建联线索 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">外呼无效量</td><td>总部培育线索级别等于无效号码的线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">无效号码占比</td><td>总部培育外呼无效线索 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">H/A/B 用户</td><td>总部培育线索等级属于 H-试驾排程单、H-试驾线索单、H-非试驾线索单、A、B 的线索数。</td></tr>
-                    <tr><td class="def-term">H/A/B 用户占比</td><td>总部培育线索等级属于 H-试驾排程单、H-试驾线索单、H-非试驾线索单、A、B 的线索数 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">到店数（首次）</td><td>统计周期内，总部培育线索第一次到店线索量。转化日期按到店时间统计，线索日期按线索创建日期统计。</td></tr>
-                    <tr><td class="def-term">到店占比</td><td>到店线索数 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">试驾数</td><td>统计周期内，总部培育线索产生的试驾量，按车系去重。转化日期按每个车系首次试驾日期统计，线索日期按线索创建日期统计。</td></tr>
-                    <tr><td class="def-term">试驾占比</td><td>试驾线索数 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">锁单数</td><td>统计周期内，总部培育线索剔除作废/销退后的有效锁单量，即该周期内产生的新锁单量减去该周期内产生的作废/销退量。</td></tr>
-                    <tr><td class="def-term">锁单占比</td><td>锁单线索数 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">交车数</td><td>统计周期内，总部培育线索剔除销退后的有效交付确认量，即该周期内完成交付确认的车辆台数减去该周期内发生交车销退的车辆台数。</td></tr>
-                    <tr><td class="def-term">交车占比</td><td>交车线索数 ÷ 新增线索数。</td></tr>
+                    <tr><th style="width:180px;">指标</th><th>定义</th></tr>
+                    <tr><td class="def-term">留资总数</td><td>各渠道/媒体的用户留资总量，按渠道或媒体维度聚合</td></tr>
+                    <tr><td class="def-term">首次到店（占比）</td><td>首次到店触媒为该渠道/媒体的用户数 ÷ 留资总数</td></tr>
+                    <tr><td class="def-term">留资培育过程</td><td>培育过程中通过该渠道/媒体留资的用户占比</td></tr>
+                    <tr><td class="def-term">预到店培育过程</td><td>到店前培育过程中通过该渠道/媒体触达的用户占比</td></tr>
+                    <tr><td class="def-term">非留资培育过程</td><td>非留资场景下通过该渠道/媒体培育触达的用户占比</td></tr>
                 </table>
 
-                <h3>3.2 培育跟进过程分析</h3>
+                <h4>触店频率（条形图，按占比 TOP10）</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">总部回访线索</td><td>总部培育回访的线索量和占比。</td></tr>
-                    <tr><td class="def-term">总部呼叫线索</td><td>总部培育呼叫的线索量和占比，接通率。</td></tr>
-                    <tr><td class="def-term">总部接通线索</td><td>总部培育接通的线索量和占比。</td></tr>
-                    <tr><td class="def-term">激活下发线索</td><td>总部培育激活下发的线索量和占比。</td></tr>
-                    <tr><td class="def-term">门店跟进线索</td><td>总部培育线索中，门店跟进的线索量和占比。</td></tr>
-                    <tr><td class="def-term">门店虚拟号呼叫线索</td><td>总部培育线索中，门店呼叫的线索量和占比，接通率。</td></tr>
-                    <tr><td class="def-term">门店虚拟号接通线索</td><td>总部培育线索中，门店接通的线索量和占比。</td></tr>
+                    <tr><th style="width:140px;">到店次数</th><th>定义</th></tr>
+                    <tr><td class="def-term">5 个以上</td><td>到店次数 ≥ 6 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">5 个</td><td>到店次数 = 5 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">4 个</td><td>到店次数 = 4 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">3 个</td><td>到店次数 = 3 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">2 个</td><td>到店次数 = 2 次的用户数量及占比</td></tr>
+                    <tr><td class="def-term">仅 1 个</td><td>到店次数 = 1 次的用户数量及占比</td></tr>
                 </table>
 
-                <h3>3.3 购车意向分布</h3>
-                <p class="stats-note">用到的标签：购车意向、计划购车时间、购买形态</p>
-                <p class="stats-danger">对象：有效用户（线索级别=H/A/B/C/F/L/E），排除线索级别=无效号码。</p>
+                <h4>触媒重叠度分析</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">购车意向分布</td><td>按购车意向统计用户数和占比，占比分母为已接通用户数。</td></tr>
-                    <tr><td class="def-term">购买类型分布</td><td>按购买形态统计用户数和占比，占比分母为已接通用户数。</td></tr>
-                    <tr><td class="def-term">计划购车分布</td><td>按计划购车时间统计用户数和占比，占比分母为已接通用户数。</td></tr>
+                    <tr><th style="width:180px;">指标</th><th>定义</th></tr>
+                    <tr><td class="def-term">留资渠道数量</td><td>用户留资涉及的渠道个数，用于渠道留资重合度分析</td></tr>
+                    <tr><td class="def-term">重合渠道名称列表</td><td>用户多次留资的渠道列表，如 R1+R2+R4+R6+R8+R10</td></tr>
+                    <tr><td class="def-term">留资媒体数量</td><td>用户留资涉及的媒体个数，用于媒体留资重合度分析</td></tr>
+                    <tr><td class="def-term">重合媒体名称列表</td><td>用户多次留资的媒体列表，如 抖音+懂车帝+百度+快手+小红书+头条</td></tr>
+                </table>
+            </section>
+
+            <section class="stats-panel" data-stats-panel="cultivation">
+                <h3>培育运营 — 核心统计口径</h3>
+                <h4>培育线索与通话</h4>
+                <table>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">新增培育线索量</td><td>统计周期内进入总部培育范围的新增线索，按线索编码去重。</td><td>条</td></tr>
+                    <tr><td class="def-term">通话总数</td><td>总部培育坐席产生的通话记录总数。</td><td>通</td></tr>
+                    <tr><td class="def-term">接通总数</td><td>通话时长大于 0 的培育通话记录数。</td><td>通</td></tr>
+                    <tr><td class="def-term">接通率</td><td>接通总数 ÷ 通话总数。</td><td>%</td></tr>
                 </table>
 
-                <h3>3.4 关注点 TOP 排名</h3>
-                <p class="stats-note">用到的标签：所有关注类（关注 XXX）、询问 XXX、购车关注点、金融因子、用车场景、关注竞品</p>
-                <p class="stats-danger">对象：有效用户（线索级别=H/A/B/C/F/L/E），排除线索级别=无效号码。</p>
+                <h4>培育过程与结果</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">整体关注排序</td><td>按价格与优惠、产品与配置、服务与售后、竞品对比四类关注维度统计关注用户数和占比，占比分母为已接通用户数。</td></tr>
-                    <tr><td class="def-term">渠道关注点分布</td><td>按渠道名称和关注维度统计关注用户数和占比，占比分母为已接通用户数。</td></tr>
-                    <tr><td class="def-term">价格与优惠</td><td>任一相关标签为“是”或有值即算关注，包括店内活动、补贴价格、贷款内容、车辆价格、店内优惠、全款优惠、贷款服务、活动期限、活动范围、其他优惠、活动参与方式、活动车型、金融因子，或购车关注点包含“价格”。</td></tr>
-                    <tr><td class="def-term">产品与配置</td><td>任一相关标签为“是”或有值即算关注，包括本品新车配置（智能化、舒适性、动力、辅助驾驶任一）、新能源车型，或购车关注点包含安全性、保值、品牌、能耗、环保、养护。</td></tr>
-                    <tr><td class="def-term">服务与售后</td><td>任一相关标签为“是”或有值即算关注，包括评价内容、上牌政策、保养服务、售后服务、保险业务、置换服务，或购车关注点包含“服务”。</td></tr>
-                    <tr><td class="def-term">竞品对比</td><td>关注竞品车型即算关注。</td></tr>
-                    <tr><td class="def-term">关注占比计算规则</td><td>每个客户对每个维度只判断是否关注。群体中某维度的关注占比 = 关注该维度的客户数 ÷ 有效客户总数。排名按关注占比从高到低，不受子标签数量影响。</td></tr>
+                    <tr><th style="width:180px;">分析视角</th><th>定义</th></tr>
+                    <tr><td class="def-term">培育跟进过程</td><td>按培育次数、跟进状态和跟进时间分析任务处理进度。</td></tr>
+                    <tr><td class="def-term">购车意向分布</td><td>按当前最新意向等级统计客户或线索数量及占比。</td></tr>
+                    <tr><td class="def-term">关注点 TOP</td><td>从通话标签中聚合客户关注点，按提及次数或客户数排序。</td></tr>
+                    <tr><td class="def-term">回访结果排名</td><td>按最新回访结果统计数量及占比，用于识别主要培育结果。</td></tr>
+                </table>
+            </section>
+
+            <section class="stats-panel" data-stats-panel="insight">
+                <h3>用户群体洞察 — 核心统计口径</h3>
+                <h4>用户统计</h4>
+                <table>
+                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
+                    <tr><td class="def-term">新增线索用户</td><td>统计周期内新增线索按手机号去重后的用户数。</td><td>人</td></tr>
+                    <tr><td class="def-term">有效号码用户</td><td>线索大类为有效号码的用户数，按手机号去重。</td><td>人</td></tr>
+                    <tr><td class="def-term">H/A/B 用户</td><td>最新线索等级属于 H、A、B 范围的用户数，按手机号去重。</td><td>人</td></tr>
+                    <tr><td class="def-term">行为转化用户</td><td>发生到店、试驾、锁单或交车行为的去重用户数。</td><td>人</td></tr>
                 </table>
 
-                <h3>3.4 回访结果排名</h3>
-                <p class="stats-danger">对象：有效、无效用户（线索级别=H/A/B/C/F/L/无效号码）。</p>
+                <h4>画像分布</h4>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">回访结果分析</td><td>按回访结果和原因统计用户数、占比和环比，占比分母为打了线索质量标签的用户。回访结果包括战败、休眠未购；原因包括等待期长、价格因素、品牌偏好、金融方案、产品设计和配置、服务不满、资金不足、半年内不购车、家人不同意、征信不通过、驾照没考到、关注竞品车型等。</td></tr>
+                    <tr><th style="width:180px;">分析视角</th><th>定义</th></tr>
+                    <tr><td class="def-term">年龄购车分布</td><td>按年龄段统计用户数和占比。</td></tr>
+                    <tr><td class="def-term">品牌认知</td><td>按用户品牌认知或偏好标签统计分布。</td></tr>
+                    <tr><td class="def-term">收入与家庭构成</td><td>按收入水平、婚育及家庭结构标签统计用户画像。</td></tr>
+                    <tr><td class="def-term">用户类型与用车场景</td><td>按首购、增购、换购及通勤、家庭、商务等场景统计。</td></tr>
+                    <tr><td class="def-term">关注竞品</td><td>按用户关注的竞品品牌或车系统计人数和占比。</td></tr>
                 </table>
-            </div>
-            <div class="stats-tab-panel" data-stats-panel="insight">
-                <h3>用户群体洞察 — 用户概览（KPI 卡片）</h3>
-
-                <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">新增线索用户（全渠道）</td><td>全渠道新增线索用户数，按手机号去重。</td></tr>
-                    <tr><td class="def-term">新增线索用户（总部培育）</td><td>总部培育新增线索用户数，按手机号去重。</td></tr>
-                    <tr><td class="def-term">通话总数</td><td>总部培育通话记录总数。</td></tr>
-                    <tr><td class="def-term">接通总数</td><td>总部培育通话记录总数，按已接通统计（通话时长大于 0）。</td></tr>
-                    <tr><td class="def-term">平均时长</td><td>总部培育已接通通话时长合计 ÷ 接通总数。</td></tr>
-                    <tr><td class="def-term">外呼有效用户</td><td>线索级别不等于无效号码的用户数，按手机号去重。</td></tr>
-                    <tr><td class="def-term">有效用户占比</td><td>外呼有效用户 ÷ 新增线索用户。</td></tr>
-                    <tr><td class="def-term">外呼无效用户</td><td>线索级别等于无效号码的用户数，按手机号去重。</td></tr>
-                    <tr><td class="def-term">无效用户占比</td><td>外呼无效用户 ÷ 新增线索用户。</td></tr>
-                    <tr><td class="def-term">H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B 用户</td><td>线索等级属于 H、A、B 的用户数。</td></tr>
-                    <tr><td class="def-term">H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B 用户占比</td><td>线索等级属于 H、A、B 的用户数 ÷ 新增线索用户。</td></tr>
-                    <tr><td class="def-term">到店用户数</td><td>全渠道，有过到店行为的去重用户数（按手机号去重）。</td></tr>
-                    <tr><td class="def-term">到店占比</td><td>到店用户数 ÷ 新增线索用户。</td></tr>
-                    <tr><td class="def-term">试驾用户数</td><td>全渠道，有过试驾行为的去重用户数（按手机号去重）。</td></tr>
-                    <tr><td class="def-term">试驾占比</td><td>试驾用户数 ÷ 新增线索用户。</td></tr>
-                    <tr><td class="def-term">锁单用户数</td><td>全渠道，有过锁单行为的去重用户数（按手机号去重）。</td></tr>
-                    <tr><td class="def-term">锁单占比</td><td>锁单用户数 ÷ 新增线索用户。</td></tr>
-                    <tr><td class="def-term">交车用户数</td><td>全渠道，有过交车行为的去重用户数（按手机号去重）。</td></tr>
-                    <tr><td class="def-term">交车占比</td><td>交车用户数 ÷ 新增线索用户。</td></tr>
-                </table>
-
-                <h3>画像分布</h3>
-                <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">年龄购车分布</td><td>用户数、占比（分母是已接通用户数，下同）。</td></tr>
-                    <tr><td class="def-term">品牌认知基础</td><td>用户数、占比。</td></tr>
-                    <tr><td class="def-term">收入水平构成</td><td>用户数、占比。</td></tr>
-                    <tr><td class="def-term">家庭构成分布</td><td>用户数、占比。</td></tr>
-                    <tr><td class="def-term">用户类型</td><td>用户数、占比。</td></tr>
-                    <tr><td class="def-term">用车场景</td><td>用户数、占比。</td></tr>
-                    <tr><td class="def-term">关注竞品</td><td>用户数、占比。</td></tr>
-                </table>
+            </section>
             </div>
         </div>
-    </div>
 
-    <script>
-    function switchStatsTab(tabKey) {
-        document.querySelectorAll('.stats-tab-btn').forEach(function(btn) {
-            btn.classList.toggle('active', btn.dataset.statsTab === tabKey);
-        });
-        document.querySelectorAll('.stats-tab-panel').forEach(function(panel) {
-            panel.classList.toggle('active', panel.dataset.statsPanel === tabKey);
-        });
-        var body = document.querySelector('.stats-drawer-body');
-        if (body) body.scrollTop = 0;
-    }
-    function openStatsModal() {
-        document.getElementById('stats-drawer-overlay').classList.add('active');
-        document.body.style.overflow = 'hidden';
-    }
-    function closeStatsDrawer() {
-        document.getElementById('stats-drawer-overlay').classList.remove('active');
-        document.body.style.overflow = '';
-    }
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            document.getElementById('stats-drawer-overlay').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    });
-    </script>
+    <script src="../js/pages/userinsight/stats.js?v=20260606-2"></script>
 
     <!-- 标注系统 -->
-    <link rel="stylesheet" href="annotations-tool/annotation.css">
     <script>
       window.AnnotationConfig = { page: "userinsight" };
     </script>
-    <script src="data/annotations.js"></script>
-    <script src="annotations-tool/annotation-runtime.js"></script>
+    <script src="../annotations/annotations.js"></script>
+    <script src="../annotations/annotation-runtime.js"></script>
 
 </body>
 

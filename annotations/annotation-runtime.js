@@ -1,7 +1,7 @@
 /**
  * 标注运行时 — 页面标注展示、查看、编辑、导出
  * 依赖：window.AnnotationConfig, 标注数据（window.AnnotationData 或旧格式全局变量）
- * 样式：annotations-tool/annotation.css
+ * 样式：annotations/annotation.css
  */
 (function () {
   'use strict';
@@ -12,7 +12,7 @@
 
   var PAGE_KEY = config.page;
   var DATA_KEY = config.dataKey || null;
-  var CACHE_KEY = 'anno_cache_' + PAGE_KEY;
+  var CACHE_KEY = 'anno_cache_' + PAGE_KEY + (config.revision ? '_' + config.revision : '');
   var OVERLAY_ID = 'anno-overlay';
   var TOGGLE_ID = 'anno-toggle-btn';
   var POPUP_ID = 'anno-popup';
@@ -58,6 +58,7 @@
   var markers = [];
   var renderingMarkers = false;
   var renderTimer = null;
+  var markerDrag = null;
 
   function createToggleBtn() {
     if (document.getElementById(TOGGLE_ID)) return;
@@ -89,6 +90,11 @@
   }
 
   function calcMarkerPosition(targetEl, position) {
+    // 手动拖拽过的位置优先（固定像素坐标，不受页面滚动影响）
+    if (position && position.manualLeft !== undefined && position.manualTop !== undefined) {
+      return { left: position.manualLeft, top: position.manualTop };
+    }
+
     var rect = targetEl.getBoundingClientRect();
     var placement = (position && position.placement) || 'top-right';
     var offsetX = (position && position.offsetX) || 0;
@@ -151,19 +157,53 @@
 
       var pos = calcMarkerPosition(targetEl, anno.position);
 
+      // 使用 let 确保每个 marker 的闭包捕获独立的值
       var marker = document.createElement('div');
+      (function (marker, anno) {
       marker.className = 'anno-marker';
+      // 手动拖拽过的标注点添加视觉标识
+      if (anno.position && anno.position.manualLeft !== undefined) {
+        marker.classList.add('anno-manual');
+      }
       marker.textContent = anno.id;
       marker.style.left = pos.left + 'px';
       marker.style.top = pos.top + 'px';
       marker.setAttribute('data-anno-id', anno.id);
-      marker.addEventListener('click', function (e) {
+      marker.title = '拖拽调整位置 | 双击重置';
+
+      // 拖拽起点
+      marker.addEventListener('mousedown', function (e) {
+        if (e.button !== 0) return; // 只响应左键
         e.stopPropagation();
-        var id = this.getAttribute('data-anno-id');
-        openPopup(id);
+        markerDrag = {
+          marker: marker,
+          anno: anno,
+          startX: e.clientX,
+          startY: e.clientY,
+          startLeft: parseInt(marker.style.left, 10) || 0,
+          startTop: parseInt(marker.style.top, 10) || 0,
+          moved: false
+        };
+        marker.style.zIndex = '99989';
+        marker.style.transition = 'none';
+        document.body.style.userSelect = 'none';
       });
+
+      // 双击重置为自动计算位置
+      marker.addEventListener('dblclick', function (e) {
+        e.stopPropagation();
+        if (anno.position) {
+          delete anno.position.manualLeft;
+          delete anno.position.manualTop;
+        }
+        saveAnnotations(annotations);
+        renderMarkers();
+        showToast('标注点位置已重置');
+      });
+
       overlay.appendChild(marker);
       markers.push({ el: marker, anno: anno, targetEl: targetEl });
+      })(marker, anno);
     }
     renderingMarkers = false;
   }
@@ -182,11 +222,57 @@
         continue;
       }
       m.el.style.display = '';
+      // 手动拖拽过的标注点保持固定位置，不跟随页面滚动重新计算
+      if (m.anno.position && m.anno.position.manualLeft !== undefined) {
+        continue;
+      }
       var pos = calcMarkerPosition(m.targetEl, m.anno.position);
       m.el.style.left = pos.left + 'px';
       m.el.style.top = pos.top + 'px';
     }
   }
+
+  // ===== 标注点拖拽 =====
+  document.addEventListener('mousemove', function (e) {
+    if (!markerDrag) return;
+    var dx = e.clientX - markerDrag.startX;
+    var dy = e.clientY - markerDrag.startY;
+    // 移动距离 > 3px 才算拖拽，避免误触
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+      markerDrag.moved = true;
+    }
+    if (markerDrag.moved) {
+      markerDrag.marker.style.left = Math.max(0, markerDrag.startLeft + dx) + 'px';
+      markerDrag.marker.style.top = Math.max(0, markerDrag.startTop + dy) + 'px';
+    }
+  });
+
+  document.addEventListener('mouseup', function () {
+    if (!markerDrag) return;
+    var marker = markerDrag.marker;
+    var anno = markerDrag.anno;
+    var moved = markerDrag.moved;
+
+    marker.style.zIndex = '99981';
+    marker.style.transition = '';
+    document.body.style.userSelect = '';
+
+    if (moved) {
+      // 保存手动位置
+      if (!anno.position) anno.position = {};
+      anno.position.manualLeft = parseInt(marker.style.left, 10);
+      anno.position.manualTop = parseInt(marker.style.top, 10);
+      marker.classList.add('anno-manual');
+      saveAnnotations(annotations);
+      showToast('标注点位置已更新');
+    } else {
+      // 没有移动 = 点击，打开弹窗
+      var id = marker.getAttribute('data-anno-id');
+      openPopup(id);
+    }
+
+    markerDrag = null;
+  });
 
   // ===== 显示/隐藏切换 =====
   function toggleAnnotations() {
@@ -405,6 +491,7 @@
     document.body.appendChild(textarea);
     textarea.select();
     try {
+      // 旧浏览器兼容：Clipboard API 不可用时的唯一回退方案
       document.execCommand('copy');
       showToast('标注数据已复制到剪贴板');
     } catch (e) {

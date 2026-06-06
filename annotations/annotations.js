@@ -1639,7 +1639,217 @@ window.AnnotationData = {
       "desc": "1. 功能名称：小区投放效果<br>2. 功能说明：按小区维度展示投放效果，用于对比不同小区的新增线索量和 H/A/B 线索质量表现。<br>3. 权限范围：总部管理员和电销主管都有权限查看<br>4. 数据来源：扎帐宽表（数据组维护）；线索标签、通话记录、到店试驾成交等转化数据。<br>5. 取值逻辑：按小区聚合新增线索用户数，并按线索等级拆分 H、A、B 和其他等级；H/A/B 占比=H/A/B 用户数/新增线索用户数。<br>6. 字段说明：小区、新增线索用户数、H级、A级、B级、其他、H/A/B 占比。<br>7. 交互说明：支持 Top 10 / Top 20 切换，图表随筛选条件刷新。<br>8. 判断规则：<br>9. 异常规则：筛选条件无匹配数据时展示空态或 0 值；占比分母为 0 时占比展示为 0%。<br>10. 其他说明："
     }
   ],
-  "workbench": [],
+  "workbench": [
+    {
+      "id": "W01",
+      "page": "workbench",
+      "target": "[data-anno='workbench-task-list']",
+      "position": { "placement": "top-left", "offsetX": 0, "offsetY": 0 },
+      "title": "外呼任务列表",
+      "sections": {
+        "functionName": "外呼任务列表",
+        "functionDesc": "展示电销员待处理的培育任务，并按新任务、当日跟进、逾期任务、未来任务和试驾排程任务分组。",
+        "permissionScope": "电销员查看本人有权限处理的任务。",
+        "dataSource": "培育任务数据；当前原型使用页面静态演示数据，真实接口及字段映射待确认。",
+        "valueLogic": "按任务状态和计划跟进时间归入对应分组；任务卡展示客户名称、手机号、任务时间、意向等级和外呼入口。",
+        "fieldDesc": "任务分组、任务名称、手机号、任务时间、意向等级、外呼按钮。",
+        "interactionDesc": "点击任务卡切换当前客户并刷新中部线索信息；点击分组标题展开或收起任务；点击外呼进入坐席呼叫流程。",
+        "judgeRule": "默认选中第一条新任务并展开新任务分组。",
+        "exceptionRule": "分组无任务时展示数量 0；任务数据加载失败时应展示空态和重试入口。",
+        "otherDesc": ""
+      }
+    },
+    {
+      "id": "W02",
+      "page": "workbench",
+      "target": "[data-anno='workbench-lead-info']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "线索信息",
+      "sections": {
+        "functionName": "线索信息",
+        "functionDesc": "集中展示当前培育任务对应的客户、线索、意向车辆、来源和任务基础信息。",
+        "permissionScope": "电销员查看当前任务关联的线索信息。",
+        "dataSource": "线索主数据、任务数据和渠道留资数据；当前原型为静态演示值。",
+        "valueLogic": "根据左侧当前选中任务加载对应线索；手机号、线索编码和任务编码支持复制。",
+        "fieldDesc": "联系电话、线索状态、意向门店、已有车型、线索来源、留资时间、任务编码等。",
+        "interactionDesc": "切换左侧任务时同步刷新当前客户字段；点击复制图标复制对应编码或手机号。",
+        "judgeRule": "无值字段统一展示“-”。",
+        "exceptionRule": "字段缺失不得使用预测值回填为已确认事实。",
+        "otherDesc": "已有车型字段参与“有车预测”展示值联动。"
+      }
+    },
+    {
+      "id": "W03",
+      "page": "workbench",
+      "target": "[data-anno='workbench-revisit-form']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "回访提交",
+      "sections": {
+        "functionName": "回访提交",
+        "functionDesc": "记录电销员本次客户接触结果，并维护后续跟进所需信息。",
+        "permissionScope": "电销员可维护本人当前处理任务的回访信息。",
+        "dataSource": "电销员人工填写；真实保存接口待确认。",
+        "valueLogic": "提交接触状态、回访结果、性别、意向级别、备用电话、下次回访时间和意向车辆。",
+        "fieldDesc": "接触状态和回访结果必填；其余字段按业务情况填写。",
+        "interactionDesc": "选择或输入回访信息后提交；后续应根据回访结果更新任务状态和客户档案。",
+        "judgeRule": "必填项未完成时不得提交。",
+        "exceptionRule": "保存失败时保留当前输入并提示重试，避免电销员重复录入。",
+        "otherDesc": ""
+      }
+    },
+    {
+      "id": "W04",
+      "page": "workbench",
+      "target": "[data-anno='workbench-call-toolbar']",
+      "position": { "placement": "bottom-left", "offsetX": 0, "offsetY": 0 },
+      "title": "坐席通话工具",
+      "sections": {
+        "functionName": "坐席通话工具",
+        "functionDesc": "提供坐席重新登录、就绪、暂停、外拨、接听、挂断、保持和静音操作。",
+        "permissionScope": "已登录坐席系统的电销员。",
+        "dataSource": "坐席系统状态和通话控制接口；当前原型仅展示控件。",
+        "valueLogic": "各操作是否可用由坐席登录状态和当前通话状态决定。",
+        "fieldDesc": "重新登录、就绪、暂停、外拨、接电话、挂电话、保持、静音。",
+        "interactionDesc": "点击对应按钮切换坐席或通话状态；预测画像展开时工具条隐藏。",
+        "judgeRule": "未登录时仅重新登录可用；非通话状态下挂断、保持和静音应禁用。",
+        "exceptionRule": "接口失败时恢复操作前状态并显示失败原因。",
+        "otherDesc": ""
+      }
+    },
+    {
+      "id": "W05",
+      "page": "workbench",
+      "target": "[data-anno='workbench-assistant-tabs']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "客户辅助信息页签",
+      "sections": {
+        "functionName": "客户辅助信息页签",
+        "functionDesc": "在预测画像、回访记录、客户档案和 AI 画像之间切换，分别支持事前判断、过程记录、人工沉淀和通话后总结。",
+        "permissionScope": "电销员查看当前任务关联的客户辅助信息。",
+        "dataSource": "预测标签、回访记录、客户档案和通话分析结果。",
+        "valueLogic": "默认展示预测画像；各页签数据按当前客户手机号或客户标识加载。",
+        "fieldDesc": "预测画像、回访记录、客户档案、AI画像。",
+        "interactionDesc": "点击页签切换右侧内容区域，不影响中部回访表单已填写内容。",
+        "judgeRule": "首次进入工作台默认激活预测画像。",
+        "exceptionRule": "某类数据为空时展示对应空态，不隐藏页签。",
+        "otherDesc": ""
+      }
+    },
+    {
+      "id": "W06",
+      "page": "workbench",
+      "target": "[data-anno='workbench-prediction-summary']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "客户智能概览",
+      "sections": {
+        "functionName": "客户智能概览",
+        "functionDesc": "在首次联系前汇总客户归属地、已有车型、留资频次和购车意向等级，帮助电销员快速形成客户印象。",
+        "permissionScope": "电销员查看当前任务客户的预测概览。",
+        "dataSource": "内部标签、外部标签及智能体输出标签；具体标签来源和服务接口待确认。",
+        "valueLogic": "将可用标签整理为一句自然语言概览；当前原型示例为广州客户、轩逸车主、近期留资3次、购车意向等级 H。",
+        "fieldDesc": "客户归属地、已有车型、近期留资次数、购车意向等级、更新时间。",
+        "interactionDesc": "默认在右侧窄栏展示；点击“展开”查看宽版完整预测画像。",
+        "judgeRule": "仅展示有可靠输入的字段；预测信息不得写成已人工确认事实。",
+        "exceptionRule": "预测数据不足时展示可用字段，并明确提示暂未形成完整画像。",
+        "otherDesc": "当前原型未展示标签来源颜色标识。"
+      }
+    },
+    {
+      "id": "W07",
+      "page": "workbench",
+      "target": "[data-anno='workbench-prediction-expand']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "预测画像展开",
+      "sections": {
+        "functionName": "预测画像展开",
+        "functionDesc": "将右侧预测画像从窄栏切换为 560px 宽面板，提升全量字段的阅读效率。",
+        "permissionScope": "电销员。",
+        "dataSource": "前端交互状态。",
+        "valueLogic": "展开时固定显示在页面右侧并增加遮罩，同时隐藏坐席通话工具；收起后恢复原布局。",
+        "fieldDesc": "展开 / 收起状态。",
+        "interactionDesc": "点击“展开”打开宽面板；点击“收起”、遮罩或按 Esc 关闭。",
+        "judgeRule": "同一时间仅允许一个预测画像宽面板。",
+        "exceptionRule": "关闭后保留各预测分组的折叠状态。",
+        "otherDesc": ""
+      }
+    },
+    {
+      "id": "W08",
+      "page": "workbench",
+      "target": "[data-anno='workbench-purchase-prediction']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "购买预测",
+      "sections": {
+        "functionName": "购买预测",
+        "functionDesc": "展示客户当前购车意向、有车预测、置换意向和购车预算。",
+        "permissionScope": "电销员。",
+        "dataSource": "内部标签、外部标签、智能体输出及线索基础字段；真实字段映射待确认。",
+        "valueLogic": "当前示例为购车意向“考虑中”、置换意向“增购贷款”、预算“10-20万”。有车预测与已有车型联动：已有车型为空或“-”时显示“有车”，已有车型非空时显示“无车”。",
+        "fieldDesc": "购车意向、有车预测、置换意向、购车预算。",
+        "interactionDesc": "点击模块标题展开或收起内容。",
+        "judgeRule": "联动时优先读取线索信息中的已有车型。",
+        "exceptionRule": "预测服务无结果时字段展示“暂未预测”，不得默认填充高意向。",
+        "otherDesc": ""
+      }
+    },
+    {
+      "id": "W09",
+      "page": "workbench",
+      "target": "[data-anno='workbench-buying-features']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "买车特点",
+      "sections": {
+        "functionName": "买车特点",
+        "functionDesc": "展示客户品牌倾向和预测购车用途，不区分本品与竞品。",
+        "permissionScope": "电销员。",
+        "dataSource": "客户行为标签和智能体预测标签；真实数据接口待确认。",
+        "valueLogic": "品牌数量为2时显示“双品牌摇摆”，超过2个时显示“多品牌摇摆”；品牌名称以标签展示。",
+        "fieldDesc": "品牌倾向、品牌列表、购车用途。",
+        "interactionDesc": "点击模块标题展开或收起内容。",
+        "judgeRule": "品牌去重后再计算品牌数量。",
+        "exceptionRule": "仅有1个品牌时应直接展示品牌倾向，不显示摇摆描述；当前原型尚未实现该分支。",
+        "otherDesc": "门店竞争度、关注车系排名和关注品牌排名已从预测画像移除。"
+      }
+    },
+    {
+      "id": "W10",
+      "page": "workbench",
+      "target": "[data-anno='workbench-preferences']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "客户偏好标签",
+      "sections": {
+        "functionName": "客户偏好标签",
+        "functionDesc": "以标签形式展示功能偏好和配置偏好，帮助电销员快速选择沟通重点。",
+        "permissionScope": "电销员。",
+        "dataSource": "客户行为标签、外部标签和智能体输出标签；真实字段映射待确认。",
+        "valueLogic": "功能偏好当前展示内饰、油耗、舒适性；配置偏好当前展示智驾、安全、操控、舒适性。",
+        "fieldDesc": "功能偏好标签、配置偏好标签。",
+        "interactionDesc": "各分组支持独立展开或收起。",
+        "judgeRule": "同一分组内标签应去重；无偏好时展示“暂未预测”。",
+        "exceptionRule": "标签数量过多时换行展示，不横向溢出。",
+        "otherDesc": ""
+      }
+    },
+    {
+      "id": "W11",
+      "page": "workbench",
+      "target": "[data-anno='workbench-lead-records']",
+      "position": { "placement": "top-right", "offsetX": 0, "offsetY": 0 },
+      "title": "客户留资记录",
+      "sections": {
+        "functionName": "客户留资记录",
+        "functionDesc": "对比最近一次留资信息和第一次留资来源，辅助判断客户近期兴趣与最初来源。",
+        "permissionScope": "电销员。",
+        "dataSource": "渠道留资记录；真实接口及客户去重标识待确认。",
+        "valueLogic": "最近一次留资按留资时间倒序取最新记录，展示日期、品牌、意向车系和留资专营店；第一次留资按时间正序取首条记录，只展示渠道、媒体名称和落地平台，不展示时间。",
+        "fieldDesc": "最近一次：日期、品牌、意向车系、专营店；第一次：渠道、媒体名称、落地平台。",
+        "interactionDesc": "窄栏纵向展示两张卡片；预测画像展开后两张卡片并排展示。",
+        "judgeRule": "最近和第一次为同一条记录时仍按两个业务视角展示，具体去重规则待业务确认。",
+        "exceptionRule": "字段缺失时对应值展示“-”；无留资记录时展示空态。",
+        "otherDesc": "当前第一次留资示例链路为 R4 → 懂车帝 → 官网。"
+      }
+    }
+  ],
   "interaction_docs": [
     {
       "id": "1",
@@ -1653,17 +1863,17 @@ window.AnnotationData = {
       "title": "功能标注内容目录",
       "sections": {
         "functionName": "功能标注内容目录",
-        "functionDesc": "在交互说明页集中展示用户洞察页面当前维护的功能标注内容，便于查看标注项、权限范围、数据来源、取值逻辑、字段说明和交互说明。",
+        "functionDesc": "在交互说明页集中展示用户洞察和培育工作台当前维护的功能标注内容，便于查看标注项、权限范围、数据来源、取值逻辑、字段说明和交互说明。",
         "permissionScope": "总部管理员和电销主管都有权限查看",
-        "dataSource": "data/annotations.js 中 userinsight 标注数据。",
-        "valueLogic": "页面加载时读取 userinsight 标注数组，并按目标锚点和标题自动归类为渠道效果、培育运营、用户群体洞察、通用筛选/操作。",
+        "dataSource": "annotations/annotations.js 中 userinsight 和 workbench 标注数据。",
+        "valueLogic": "页面加载时合并 userinsight 和 workbench 标注数组，并归类为渠道效果、培育运营、用户群体洞察、通用筛选/操作和培育工作台。",
         "fieldDesc": "编号、标注项、分组、说明内容。说明内容包含功能说明、权限范围、数据来源、取值逻辑、字段说明、交互说明、判断规则、异常规则和其他说明。",
-        "interactionDesc": "通过下拉筛选切换全部标注、渠道效果、培育运营、用户群体洞察和通用筛选/操作。",
-        "judgeRule": "展示内容与 data/annotations.js 同源；标注数据变更后刷新交互说明页即可同步。",
+        "interactionDesc": "通过下拉筛选切换全部标注、渠道效果、培育运营、用户群体洞察、通用筛选/操作和培育工作台。",
+        "judgeRule": "展示内容与 annotations/annotations.js 同源；标注数据变更后刷新交互说明页即可同步。",
         "exceptionRule": "标注数据为空时展示“暂无标注内容”。",
         "otherDesc": ""
       },
-      "desc": "1. 功能名称：功能标注内容目录<br>2. 功能说明：在交互说明页集中展示用户洞察页面当前维护的功能标注内容，便于查看标注项、权限范围、数据来源、取值逻辑、字段说明和交互说明。<br>3. 权限范围：总部管理员和电销主管都有权限查看<br>4. 数据来源：data/annotations.js 中 userinsight 标注数据。<br>5. 取值逻辑：页面加载时读取 userinsight 标注数组，并按目标锚点和标题自动归类为渠道效果、培育运营、用户群体洞察、通用筛选/操作。<br>6. 字段说明：编号、标注项、分组、说明内容。说明内容包含功能说明、权限范围、数据来源、取值逻辑、字段说明、交互说明、判断规则、异常规则和其他说明。<br>7. 交互说明：通过下拉筛选切换全部标注、渠道效果、培育运营、用户群体洞察和通用筛选/操作。<br>8. 判断规则：展示内容与 data/annotations.js 同源；标注数据变更后刷新交互说明页即可同步。<br>9. 异常规则：标注数据为空时展示“暂无标注内容”。<br>10. 其他说明："
+      "desc": "1. 功能名称：功能标注内容目录<br>2. 功能说明：在交互说明页集中展示用户洞察和培育工作台当前维护的功能标注内容。<br>3. 权限范围：总部管理员和电销主管都有权限查看<br>4. 数据来源：annotations/annotations.js 中 userinsight 和 workbench 标注数据。<br>5. 取值逻辑：页面加载时合并 userinsight 和 workbench 标注数组并按业务分组。<br>6. 字段说明：编号、标注项、分组、说明内容。<br>7. 交互说明：通过下拉筛选切换全部标注及各业务分组。<br>8. 判断规则：展示内容与 annotations/annotations.js 同源。<br>9. 异常规则：标注数据为空时展示“暂无标注内容”。<br>10. 其他说明："
     }
   ]
 };

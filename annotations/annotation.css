@@ -63,7 +63,7 @@
   font-weight: 700;
   line-height: 24px;
   text-align: center;
-  cursor: pointer;
+  cursor: grab;
   box-shadow: 0 2px 6px rgba(255, 77, 79, 0.35);
   z-index: 99981;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -74,6 +74,16 @@
 .anno-marker:hover {
   transform: scale(1.2);
   box-shadow: 0 4px 16px rgba(255, 77, 79, 0.5);
+}
+
+.anno-marker:active {
+  cursor: grabbing;
+}
+
+/* 手动拖拽过的标注点加虚线边框标识 */
+.anno-marker.anno-manual {
+  border: 2px dashed rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 6px rgba(255, 77, 79, 0.35), 0 0 0 3px rgba(255, 77, 79, 0.15);
 }
 
 /* 标注弹窗 */
