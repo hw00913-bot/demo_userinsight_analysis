@@ -257,6 +257,11 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 - 新增通用函数优先考虑复用（参考 `renderDrillContent`、`generateStoreCard`、`initRankInteraction`、`initFilterMultiSelects` 模式）
 - 筛选栏修改需同步 3 个 Tab（使用 `replace_all: true`）
 - 线索等级显示必须与 `MOCK.leadLevels` 对齐，优先使用 `LEVEL_LABELS` 动态渲染
+- 接到问题先判断属于哪类问题，优先建立通用检查而非逐个修复
+- 修改 HTML 结构前必须定位到具体行号和元素 ID，不能凭统计数字推断；改完立刻运行 `node tools/validate-project.js`
+- 业务口径（标签名、筛选条件、计算规则）代码中没有时，不能凭空猜测，需要用户提供或确认
+- 发现问题时同步检查三个 Tab（渠道效果/培育运营/用户群体洞察）是否有相同问题
+- 用户指出"内容在文件里"时，先搜索特征词定位再操作，搜索范围包括注释、隐藏元素、其他文件和 git 历史
 
 ## 工程约束
 

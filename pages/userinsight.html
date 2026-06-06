@@ -3930,82 +3930,60 @@
             <button class="stats-tab" type="button" role="tab" data-stats-tab="insight" onclick="switchStatsTab('insight')">用户群体洞察</button>
         </div>
         <div class="stats-drawer-body">
-            <section class="stats-panel active" data-stats-panel="channel">
-                <h3>渠道效果 — 用户概览（KPI 卡片）</h3>
-
-                <h4>线索统计</h4>
+                        <section class="stats-panel active" data-stats-panel="channel">
+                <h3>渠道效果 — 按线索维度</h3>
                 <table>
-                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
-                    <tr><td class="def-term">全渠道新增线索量</td><td>全渠道新增线索，按线索编码去重统计</td><td>条</td></tr>
-                    <tr><td class="def-term">总部培育新增线索量</td><td>总部培育新增线索数，按线索编码去重</td><td>条</td></tr>
-                    <tr><td class="def-term">总部培育占比</td><td>总部培育新增线索量 ÷ 全渠道新增线索量</td><td>%</td></tr>
-                </table>
-
-                <h4>通话统计（总部培育）</h4>
-                <table>
-                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
-                    <tr><td class="def-term">通话总数</td><td>总部培育虚拟号通话记录总数</td><td>通</td></tr>
-                    <tr><td class="def-term">接通总数</td><td>总部培育虚拟号通话记录中，通话时长 &gt; 0 的记录数</td><td>通</td></tr>
-                    <tr><td class="def-term">平均时长</td><td>已接通通话时长合计 ÷ 接通总数</td><td>秒</td></tr>
-                </table>
-
-                <h4>线索大类（含占比）（总部培育）</h4>
-                <table>
-                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
-                    <tr><td class="def-term">外呼有效量</td><td>总部培育线索级别 ≠ 无效号码的线索数，按线索编码去重</td><td>条</td></tr>
-                    <tr><td class="def-term">有效号码占比</td><td>外呼有效量 ÷ 新增线索量</td><td>%</td></tr>
-                    <tr><td class="def-term">无法建联线索</td><td>总部培育外呼无法建联线索数，按线索编码去重</td><td>条</td></tr>
-                    <tr><td class="def-term">无法建联占比</td><td>无法建联线索 ÷ 新增线索量</td><td>%</td></tr>
-                    <tr><td class="def-term">外呼无效线索</td><td>总部培育线索级别 = 无效号码的线索数，按线索编码去重</td><td>条</td></tr>
-                    <tr><td class="def-term">无效号码占比</td><td>外呼无效线索 ÷ 新增线索量</td><td>%</td></tr>
-                </table>
-
-                <h4>用户分级（含占比）（总部培育）</h4>
-                <table>
-                    <tr><th style="width:200px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
-                    <tr><td class="def-term">H/A/B 线索量</td><td>总部培育线索等级 ∈ {H-试驾排程单, H-试驾线索单, H-非试驾线索单, A, B} 的线索数<br>总部线索取值优先级：下发级别 &gt; 跟进级别 &gt; 初始级别</td><td>条</td></tr>
-                    <tr><td class="def-term">H/A/B 线索占比</td><td>HAB 线索量 ÷ 新增线索量</td><td>%</td></tr>
-                </table>
-
-                <h4>行为转化（含占比）（全渠道）</h4>
-                <table>
-                    <tr><th style="width:180px;">指标名称</th><th>定义</th><th style="width:60px;">单位</th></tr>
-                    <tr><td class="def-term">到店数（首次）</td><td>统计周期内，门店所有客户第一次到店线索量。转化维度按到店时间统计，线索维度按线索创建日期统计</td><td>条</td></tr>
-                    <tr><td class="def-term">到店占比</td><td>到店线索数 ÷ 新增线索量</td><td>%</td></tr>
-                    <tr><td class="def-term">试驾数</td><td>统计周期内全部试驾量，按车系去重。转化维度按每个车系首次试驾日期，线索维度按线索创建日期</td><td>条</td></tr>
-                    <tr><td class="def-term">试驾占比</td><td>试驾线索数 ÷ 新增线索量</td><td>%</td></tr>
-                    <tr><td class="def-term">锁单数</td><td>统计周期内剔除作废/销退后的有效锁单量 = 新增锁单量 − 作废/销退量</td><td>条</td></tr>
-                    <tr><td class="def-term">锁单占比</td><td>锁单线索数 ÷ 新增线索量</td><td>%</td></tr>
-                    <tr><td class="def-term">交车数</td><td>统计周期内剔除销退后的有效交付确认量 = 交付确认台数 − 交车销退台数</td><td>条</td></tr>
-                    <tr><td class="def-term">交车占比</td><td>交车线索数 ÷ 新增线索量</td><td>%</td></tr>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">全渠道新增线索量</td><td>全渠道新增线索，按线索编码去重统计。</td></tr>
+                    <tr><td class="def-term">总部培育新增线索量</td><td>总部培育新增线索数，按线索编码去重。</td></tr>
+                    <tr><td class="def-term">总部培育占比</td><td>总部培育新增线索量 ÷ 全渠道新增线索量。</td></tr>
+                    <tr><td class="def-term">通话总数</td><td>总部培育虚拟号通话记录总数。</td></tr>
+                    <tr><td class="def-term">接通总数</td><td>总部培育虚拟号通话记录中，通话时长大于 0 的记录数。</td></tr>
+                    <tr><td class="def-term">平均时长</td><td>总部培育虚拟号已接通通话时长合计 ÷ 接通总数。</td></tr>
+                    <tr><td class="def-term">外呼有效量</td><td>总部培育线索级别 ≠ 无效号码的线索数，按线索编码去重。</td></tr>
+                    <tr><td class="def-term">有效号码占比</td><td>总部培育外呼有效线索 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">无法建联线索</td><td>总部培育外呼无法建联线索数，按线索编码去重。</td></tr>
+                    <tr><td class="def-term">无法建联占比</td><td>总部培育外呼无法建联线索 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">外呼无效线索</td><td>总部培育线索级别 = 无效号码的线索数，按线索编码去重。</td></tr>
+                    <tr><td class="def-term">无效号码占比</td><td>总部培育外呼无效线索 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">H/A/B 线索</td><td>总部培育线索等级 ∈ {H-试驾排程单, H-试驾线索单, H-非试驾线索单, A, B} 的线索数。总部线索取值优先级：下发级别 &gt; 跟进级别 &gt; 初始级别。</td></tr>
+                    <tr><td class="def-term">H/A/B 线索占比</td><td>H/A/B 线索数 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">到店数（首次）</td><td>统计周期内，门店所有客户第一次到店线索量。转化维度按到店时间统计，线索维度按线索创建日期统计。</td></tr>
+                    <tr><td class="def-term">到店占比</td><td>到店线索数 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">试驾数</td><td>统计周期内全部试驾量，按车系去重。转化维度按每个车系首次试驾日期，线索维度按线索创建日期。</td></tr>
+                    <tr><td class="def-term">试驾占比</td><td>试驾线索数 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">锁单数</td><td>统计周期内剔除作废/销退后的有效锁单量 = 新增锁单量 − 作废/销退量。</td></tr>
+                    <tr><td class="def-term">锁单占比</td><td>锁单线索数 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">交车数</td><td>统计周期内剔除销退后的有效交付确认量 = 交付确认台数 − 交车销退台数。</td></tr>
+                    <tr><td class="def-term">交车占比</td><td>交车线索数 ÷ 新增线索量。</td></tr>
                 </table>
 
                 <h3>渠道效果分析</h3>
                 <h4>效果概览（饼图）</h4>
                 <table>
-                    <tr><th style="width:140px;">分析视角</th><th>指标</th><th>维度</th></tr>
-                    <tr><td class="def-term">意向车系占比</td><td>新增线索量、占比（分母=新增线索量）</td><td>N6 / N7 / 天籁鸿蒙 / NX8</td></tr>
-                    <tr><td class="def-term">线索大类占比</td><td>新增线索量、占比（分母=新增线索量）</td><td>有效号码 / 无效号码 / 无法建联</td></tr>
-                    <tr><td class="def-term">线索级别占比</td><td>新增线索量、占比（分母=新增线索量），与意向车系联动</td><td>H-试驾排程单 / H-试驾线索单 / H-非试驾线索单 / A / B / C-意向不明 / C-无法接通 / F-战败 / L-休眠 / E-意向含糊</td></tr>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">意向车系占比</td><td>新增线索量、占比，分母 = 新增线索量。维度：N6 / N7 / 天籁鸿蒙 / NX8。</td></tr>
+                    <tr><td class="def-term">线索大类（含占比）</td><td>新增线索量、占比，分母 = 新增线索量。维度：有效号码 / 无效号码 / 无法建联。</td></tr>
+                    <tr><td class="def-term">线索级别占比</td><td>新增线索量、占比，分母 = 新增线索量。维度：H-试驾排程单 / H-试驾线索单 / H-非试驾线索单 / A / B / C-意向不明 / C-无法接通 / F-战败 / L-休眠 / E-意向含糊。</td></tr>
                 </table>
 
                 <h4>投放效果（条形图）</h4>
                 <table>
-                    <tr><th style="width:140px;">分析视角</th><th>指标</th><th>维度</th></tr>
-                    <tr><td class="def-term">大区投放效果</td><td>新增线索量、H/A/B 占比</td><td>大区 × 线索级别（H/A/B/C/其他）</td></tr>
-                    <tr><td class="def-term">小区投放效果</td><td>新增线索量、H/A/B 占比</td><td>小区 × 线索级别</td></tr>
-                    <tr><td class="def-term">区域投放效果</td><td>新增线索量、H/A/B 占比</td><td>所在城市（TOP10/20/可自定义）</td></tr>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">大区投放效果</td><td>新增线索量、H/A/B 占比。维度：大区 × 线索级别（H/A/B/C/其他）。</td></tr>
+                    <tr><td class="def-term">小区投放效果</td><td>新增线索量、H/A/B 占比。维度：小区 × 线索级别。</td></tr>
+                    <tr><td class="def-term">区域投放效果</td><td>新增线索量、H/A/B 占比。维度：所在城市（TOP10/20/可自定义）。</td></tr>
                 </table>
 
                 <h4>渠道 & 排名（堆叠柱状图 / 条形图）</h4>
                 <table>
-                    <tr><th style="width:160px;">分析视角</th><th>指标</th><th>维度</th></tr>
-                    <tr><td class="def-term">渠道线索质量</td><td>新增线索量</td><td>渠道名称，线索级别（H-试驾排程单/H-试驾线索单/H-非试驾线索单/A/B/C-意向不明/C-无法接通/F-战败/L-休眠/E-意向含糊）</td></tr>
-                    <tr><td class="def-term">大项目线索质量排名</td><td>H/A/B 量及占比、到店量及占比、试驾量及占比、锁单量及占比</td><td>大项目名称，条形图按占比降序（默认TOP10），可切换指标维度，默认按H/A/B占比</td></tr>
-                    <tr><td class="def-term">媒体线索质量排名</td><td>同上（H/A/B、到店、试驾、锁单）</td><td>媒体名称，同上交互逻辑</td></tr>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">渠道线索质量</td><td>新增线索量。维度：渠道名称 × 线索级别（10级）。</td></tr>
+                    <tr><td class="def-term">大项目线索质量排名</td><td>H/A/B 量及占比、到店量及占比、试驾量及占比、锁单量及占比。条形图按占比降序（默认TOP10），可切换指标维度，默认按 H/A/B 占比。</td></tr>
+                    <tr><td class="def-term">媒体线索质量排名</td><td>H/A/B 量及占比、到店量及占比、试驾量及占比、锁单量及占比。同上交互逻辑。</td></tr>
                 </table>
 
-                <h4>质量标签分布（条形图）</h4>
+                <h3>质量标签分布</h3>
                 <table>
                     <tr><th style="width:120px;">大类</th><th style="width:130px;">原因类型</th><th>原因说明</th></tr>
                     <tr><td rowspan="3">无效号码</td><td>空号/停机</td><td>空号、停机</td></tr>
@@ -4018,34 +3996,41 @@
                 </table>
 
                 <h3>触媒/触店习惯与频率更新分析</h3>
-                <h4>触媒习惯（条形图，按占比 TOP10）</h4>
+                <h4>触媒习惯 — 渠道维度</h4>
                 <table>
-                    <tr><th style="width:180px;">指标</th><th>定义</th></tr>
-                    <tr><td class="def-term">留资总数</td><td>各渠道/媒体的用户留资总量，按渠道或媒体维度聚合</td></tr>
-                    <tr><td class="def-term">首次到店（占比）</td><td>首次到店触媒为该渠道/媒体的用户数 ÷ 留资总数</td></tr>
-                    <tr><td class="def-term">留资培育过程</td><td>培育过程中通过该渠道/媒体留资的用户占比</td></tr>
-                    <tr><td class="def-term">预到店培育过程</td><td>到店前培育过程中通过该渠道/媒体触达的用户占比</td></tr>
-                    <tr><td class="def-term">非留资培育过程</td><td>非留资场景下通过该渠道/媒体培育触达的用户占比</td></tr>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">留资总数</td><td>各渠道的用户留资总量，按渠道维度聚合。指标：留资数、交车、占比（分母 = 留资数）、留资成交率。</td></tr>
+                    <tr><td class="def-term">首次留资渠道（首触去重）</td><td>首次留资为该渠道的用户。指标：新增线索量、交车、占比（分母 = 新增线索量）、线索成交率。</td></tr>
+                    <tr><td class="def-term">最后留资渠道</td><td>最后留资为该渠道的用户。指标：新增线索量、交车、占比（分母 = 新增线索量）、线索成交率。</td></tr>
+                    <tr><td class="def-term">首次到末次留资渠道</td><td>首次留资和末次留资之间的渠道流转排名。指标：新增线索量、交车、占比（分母 = 新增线索量）、线索成交率。</td></tr>
+                    <tr><td class="def-term">渠道留资重合度分析-渠道数量</td><td>按留资渠道数量分组统计。指标：新增用户数。</td></tr>
+                    <tr><td class="def-term">渠道留资重合度分析</td><td>多渠道留资用户的重合度。指标：并集用户数、重合用户数、重合率。</td></tr>
                 </table>
 
-                <h4>触店频率（条形图，按占比 TOP10）</h4>
+                <h4>触媒习惯 — 媒体维度</h4>
                 <table>
-                    <tr><th style="width:140px;">到店次数</th><th>定义</th></tr>
-                    <tr><td class="def-term">5 个以上</td><td>到店次数 ≥ 6 次的用户数量及占比</td></tr>
-                    <tr><td class="def-term">5 个</td><td>到店次数 = 5 次的用户数量及占比</td></tr>
-                    <tr><td class="def-term">4 个</td><td>到店次数 = 4 次的用户数量及占比</td></tr>
-                    <tr><td class="def-term">3 个</td><td>到店次数 = 3 次的用户数量及占比</td></tr>
-                    <tr><td class="def-term">2 个</td><td>到店次数 = 2 次的用户数量及占比</td></tr>
-                    <tr><td class="def-term">仅 1 个</td><td>到店次数 = 1 次的用户数量及占比</td></tr>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">媒体留资总数</td><td>各媒体的用户留资总量，按媒体维度聚合。指标：留资数、交车、占比（分母 = 留资数）、留资成交率。</td></tr>
+                    <tr><td class="def-term">首次留资媒体（首触去重）</td><td>首次留资为该媒体的用户。指标：新增线索量、交车、占比（分母 = 新增线索量）、线索成交率。</td></tr>
+                    <tr><td class="def-term">最后留资媒体</td><td>最后留资为该媒体的用户。指标：新增线索量、交车、占比（分母 = 新增线索量）、线索成交率。</td></tr>
+                    <tr><td class="def-term">首触-末次媒体排名 TOP10/全部</td><td>首次留资媒体与末次留资媒体之间的流转排名。指标：新增线索量、交车、占比（分母 = 新增线索量）、线索成交率。</td></tr>
+                    <tr><td class="def-term">媒体留资重合度分析-媒体数量</td><td>按留资媒体数量分组统计。指标：新增用户数。</td></tr>
+                    <tr><td class="def-term">媒体留资重合度分析</td><td>多媒体留资用户的重合度。指标：并集用户数、重合用户数、重合率。</td></tr>
                 </table>
 
-                <h4>触媒重叠度分析</h4>
+                <h4>触店习惯 — 专营店维度</h4>
                 <table>
-                    <tr><th style="width:180px;">指标</th><th>定义</th></tr>
-                    <tr><td class="def-term">留资渠道数量</td><td>用户留资涉及的渠道个数，用于渠道留资重合度分析</td></tr>
-                    <tr><td class="def-term">重合渠道名称列表</td><td>用户多次留资的渠道列表，如 R1+R2+R4+R6+R8+R10</td></tr>
-                    <tr><td class="def-term">留资媒体数量</td><td>用户留资涉及的媒体个数，用于媒体留资重合度分析</td></tr>
-                    <tr><td class="def-term">重合媒体名称列表</td><td>用户多次留资的媒体列表，如 抖音+懂车帝+百度+快手+小红书+头条</td></tr>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">下发专营店</td><td>按线索下发到的专营店统计。指标：新增线索量、交车、占比（分母 = 新增线索量）。</td></tr>
+                    <tr><td class="def-term">成交专营店</td><td>按最终成交的专营店统计。指标：交车量、交车占比（分母 = 交车量）。</td></tr>
+                    <tr><td class="def-term">触达专营店数量（去重）</td><td>用户接触过的专营店数量分组统计。指标：新增用户数、交车、占比（分母 = 新增线索用户）、成交率。</td></tr>
+                    <tr><td class="def-term">首触-成交专营店排名 TOP10/全部</td><td>首次接触专营店与最终成交专营店的流转路径。指标：新增用户数、交车、占比（分母 = 新增线索用户）、成交率。</td></tr>
+                </table>
+
+                <h4>频率和更新 — 留资次数</h4>
+                <table>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">留资次数</td><td>按用户留资次数分组统计。指标：新增用户数、交车、占比（分母 = 留资用户数）。</td></tr>
                 </table>
             </section>
 
@@ -4053,73 +4038,100 @@
                 <h3>培育运营 — 按线索维度</h3>
                 <table>
                     <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">新增线索量（总部培育）</td><td>总部培育新增线索总条数，按线索编码去重。</td></tr>
+                    <tr><td class="def-term">新增线索量（总部培育）</td><td>总部培育新增线索数，按线索编码去重。</td></tr>
                     <tr><td class="def-term">通话总数</td><td>总部培育 + 门店虚拟号通话记录总数。</td></tr>
                     <tr><td class="def-term">接通总数</td><td>总部培育 + 门店虚拟号通话记录中，通话时长大于 0 的记录数。</td></tr>
                     <tr><td class="def-term">平均时长</td><td>总部培育 + 门店虚拟号已接通通话时长合计 ÷ 接通总数。</td></tr>
-                    <tr><td class="def-term">外呼有效量</td><td>总部培育线索级别不等于无效号码的线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">有效号码占比</td><td>总部培育外呼有效线索 ÷ 新增线索数。</td></tr>
+                    <tr><td class="def-term">外呼有效量</td><td>总部培育线索级别 ≠ 无效号码的线索数，按线索编码去重。</td></tr>
+                    <tr><td class="def-term">有效号码占比</td><td>总部培育外呼有效线索 ÷ 新增线索量。</td></tr>
                     <tr><td class="def-term">无法建联线索</td><td>总部培育外呼无法建联线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">无法建联占比</td><td>总部培育外呼无法建联线索 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">外呼无效量</td><td>总部培育线索级别等于无效号码的线索数，按线索编码去重。</td></tr>
-                    <tr><td class="def-term">无效号码占比</td><td>总部培育外呼无效线索 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">H/A/B 用户</td><td>总部培育线索等级属于 H-试驾排程单、H-试驾线索单、H-非试驾线索单、A、B 的线索数。</td></tr>
-                    <tr><td class="def-term">H/A/B 用户占比</td><td>H/A/B 用户数 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">到店数（首次）</td><td>统计周期内，总部培育线索第一次到店线索量。转化日期按到店时间统计，线索日期按线索创建日期统计。</td></tr>
-                    <tr><td class="def-term">到店占比</td><td>到店线索数 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">试驾数</td><td>统计周期内，总部培育线索产生的试驾量，按车系去重。转化日期按每个车系首次试驾日期统计，线索日期按线索创建日期统计。</td></tr>
-                    <tr><td class="def-term">试驾占比</td><td>试驾线索数 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">锁单数</td><td>统计周期内，总部培育线索剔除作废/销退后的有效锁单量，即新增锁单量减去作废/销退量。</td></tr>
-                    <tr><td class="def-term">锁单占比</td><td>锁单线索数 ÷ 新增线索数。</td></tr>
-                    <tr><td class="def-term">交车数</td><td>统计周期内，总部培育线索剔除销退后的有效交付确认量，即交付确认台数减去交车销退台数。</td></tr>
-                    <tr><td class="def-term">交车占比</td><td>交车线索数 ÷ 新增线索数。</td></tr>
+                    <tr><td class="def-term">无法建联占比</td><td>总部培育外呼无法建联线索 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">外呼无效量</td><td>总部培育线索级别 = 无效号码的线索数，按线索编码去重。</td></tr>
+                    <tr><td class="def-term">无效号码占比</td><td>总部培育外呼无效线索 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">H/A/B 线索</td><td>总部培育线索等级 ∈ {H-试驾排程单, H-试驾线索单, H-非试驾线索单, A, B} 的线索数。总部线索取值优先级：下发级别 &gt; 跟进级别 &gt; 初始级别。</td></tr>
+                    <tr><td class="def-term">H/A/B 线索占比</td><td>H/A/B 线索数 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">到店数（首次）</td><td>统计周期内，总部培育线索第一次到店线索量。转化维度按到店时间统计，线索维度按线索创建日期统计。</td></tr>
+                    <tr><td class="def-term">到店占比</td><td>到店线索数 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">试驾数</td><td>统计周期内，总部培育线索产生的试驾量，按车系去重。转化维度按每个车系首次试驾日期，线索维度按线索创建日期。</td></tr>
+                    <tr><td class="def-term">试驾占比</td><td>试驾线索数 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">锁单数</td><td>统计周期内，总部培育线索剔除作废/销退后的有效锁单量 = 新增锁单量 − 作废/销退量。</td></tr>
+                    <tr><td class="def-term">锁单占比</td><td>锁单线索数 ÷ 新增线索量。</td></tr>
+                    <tr><td class="def-term">交车数</td><td>统计周期内，总部培育线索剔除销退后的有效交付确认量 = 交付确认台数 − 交车销退台数。</td></tr>
+                    <tr><td class="def-term">交车占比</td><td>交车线索数 ÷ 新增线索量。</td></tr>
                 </table>
 
-                <h3>3.2 培育跟进过程分析</h3>
+                <h3>培育跟进过程分析</h3>
+                <h4>总部培育跟进过程</h4>
                 <table>
                     <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">总部回访线索</td><td>总部培育回访的线索量和占比。</td></tr>
-                    <tr><td class="def-term">总部呼叫线索</td><td>总部培育呼叫的线索量和占比、接通率。</td></tr>
-                    <tr><td class="def-term">总部接通线索</td><td>总部培育接通的线索量和占比。</td></tr>
+                    <tr><td class="def-term">回访线索</td><td>总部培育回访的线索量和占比。</td></tr>
+                    <tr><td class="def-term">呼叫线索</td><td>总部培育呼叫的线索量和占比，含接通率。</td></tr>
+                    <tr><td class="def-term">接通线索</td><td>总部培育接通的线索量和占比。</td></tr>
                     <tr><td class="def-term">激活下发线索</td><td>总部培育激活下发的线索量和占比。</td></tr>
-                    <tr><td class="def-term">门店跟进线索</td><td>总部培育线索中，门店跟进的线索量和占比。</td></tr>
-                    <tr><td class="def-term">门店虚拟号呼叫线索</td><td>总部培育线索中，门店呼叫的线索量和占比、接通率。</td></tr>
-                    <tr><td class="def-term">门店虚拟号接通线索</td><td>总部培育线索中，门店接通的线索量和占比。</td></tr>
                 </table>
 
-                <h3>3.3 购车意向分布</h3>
+                <h4>门店虚拟号跟进过程</h4>
+                <table>
+                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
+                    <tr><td class="def-term">跟进线索</td><td>总部培育线索中，门店跟进的线索量和占比。</td></tr>
+                    <tr><td class="def-term">呼叫线索</td><td>总部培育线索中，门店呼叫的线索量和占比，含接通率。</td></tr>
+                    <tr><td class="def-term">接通线索</td><td>总部培育线索中，门店接通的线索量和占比。</td></tr>
+                </table>
+
+                <h3>购车意向分布</h3>
                 <p class="stats-note">用到的标签：购车意向、计划购车时间、购买形态</p>
-                <p class="stats-danger">对象：有效用户（线索级别=H/A/B/C/F/L/E），排除线索级别=无效号码。</p>
+                <p class="stats-danger">对象：有效用户（线索级别 = H/A/B/C/F/L/E），排除线索级别 = 无效号码。</p>
                 <table>
                     <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">购车意向分布</td><td>按购车意向统计用户数和占比，占比分母为已接通用户数。</td></tr>
-                    <tr><td class="def-term">购买类型分布</td><td>按购买形态统计用户数和占比，占比分母为已接通用户数。</td></tr>
-                    <tr><td class="def-term">计划购车分布</td><td>按计划购车时间统计用户数和占比，占比分母为已接通用户数。</td></tr>
+                    <tr><td class="def-term">购车意向分布</td><td>按购车意向统计用户数和占比，分母 = 已接通用户数。</td></tr>
+                    <tr><td class="def-term">购买类型分布</td><td>按购买形态统计用户数和占比，分母 = 已接通用户数。</td></tr>
+                    <tr><td class="def-term">计划购车分布</td><td>按计划购车时间统计用户数和占比，分母 = 已接通用户数。</td></tr>
                 </table>
 
-                <h3>3.4 关注点 TOP 排名</h3>
+                <h3>关注点 TOP 排名</h3>
                 <p class="stats-note">用到的标签：所有关注类（关注 XXX）、询问 XXX、购车关注点、金融因子、用车场景、关注竞品</p>
-                <p class="stats-danger">对象：有效用户（线索级别=H/A/B/C/F/L/E），排除线索级别=无效号码。</p>
+                <p class="stats-danger">对象：有效用户（线索级别 = H/A/B/C/F/L/E），排除线索级别 = 无效号码。</p>
                 <table>
                     <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">整体关注排序</td><td>按价格与优惠、产品与配置、服务与售后、竞品对比四类关注维度统计关注用户数和占比，占比分母为已接通用户数。</td></tr>
-                    <tr><td class="def-term">渠道关注点分布</td><td>按渠道名称和关注维度统计关注用户数和占比，占比分母为已接通用户数。</td></tr>
-                    <tr><td class="def-term">价格与优惠</td><td>任一相关标签为“是”或有值即算关注，包括店内活动、补贴价格、贷款内容、车辆价格、店内优惠、全款优惠、贷款服务、活动期限、活动范围、其他优惠、活动参与方式、活动车型、金融因子，或购车关注点包含“价格”。</td></tr>
-                    <tr><td class="def-term">产品与配置</td><td>任一相关标签为“是”或有值即算关注，包括本品新车配置、新能源车型，或购车关注点包含安全性、保值、品牌、能耗、环保、养护。</td></tr>
-                    <tr><td class="def-term">服务与售后</td><td>任一相关标签为“是”或有值即算关注，包括评价内容、上牌政策、保养服务、售后服务、保险业务、置换服务，或购车关注点包含“服务”。</td></tr>
-                    <tr><td class="def-term">竞品对比</td><td>关注竞品车型即算关注。</td></tr>
-                    <tr><td class="def-term">关注占比计算规则</td><td>每个客户对每个维度只判断是否关注。某维度关注占比 = 关注该维度的客户数 ÷ 有效客户总数，排名按关注占比从高到低。</td></tr>
+                    <tr><td class="def-term">整体关注排序</td><td>按价格与优惠、产品与配置、服务与售后、竞品对比四类关注维度统计关注用户数和占比，分母 = 已接通用户数。</td></tr>
+                    <tr><td class="def-term">渠道关注点分布</td><td>按渠道名称和关注维度统计关注用户数和占比，分母 = 已接通用户数。</td></tr>
+                    <tr><td class="def-term">价格与优惠</td><td>任一相关标签为"是"或有值即算关注：关注店内活动 = 是、关注补贴价格 = 是、关注贷款内容 = 是、关注车辆价格 = 是、关注店内优惠 = 是、关注全款优惠 = 是、关注贷款服务 = 是、询问活动期限 = 是、询问活动覆盖范围 ≠ 空、询问其他优惠 = 是、询问活动参与方式 = 是、询问参与活动车型 = 是、金融因子 = 是、购车关注点包含"价格"。</td></tr>
+                    <tr><td class="def-term">产品与配置</td><td>任一相关标签为"是"或有值即算关注：关注本品牌新车配置（智能化/舒适性/动力/辅助驾驶任一）、关注新能源车型 = 是、购车关注点包含（安全性/保值/品牌/能耗/环保/养护）。</td></tr>
+                    <tr><td class="def-term">服务与售后</td><td>任一相关标签为"是"或有值即算关注：关注评估内容 = 是、关注上牌政策 = 是、关注保养服务 = 是、关注售后服务 = 是、关注保险业务 = 是、询问置换服务 = 是、购车关注点包含"服务"。</td></tr>
+                    <tr><td class="def-term">竞品对比</td><td>关注竞品 ≠ 空即算关注。</td></tr>
+                    <tr><td class="def-term">关注占比计算规则</td><td>每个客户对每个维度只判断是否关注。某维度关注占比 = 关注该维度的客户数 ÷ 有效客户总数。排名按关注占比从高到低，不受子标签数量影响。</td></tr>
                 </table>
 
-                <h3>3.5 回访结果排名</h3>
-                <p class="stats-danger">对象：有效、无效用户（线索级别=H/A/B/C/F/L/无效号码）。</p>
+                <h3>回访结果分析</h3>
+                <p class="stats-danger">对象：有效、无效用户（线索级别 = H/A/B/C/F/L/无效号码）。</p>
                 <table>
-                    <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">回访结果分析</td><td>按回访结果和原因统计用户数、占比和环比，占比分母为打了线索质量标签的用户。回访结果包括战败、休眠未购；原因包括等待期长、价格因素、品牌偏好、金融方案、产品设计和配置、服务不满、资金不足、半年内不购车、家人不同意、征信不通过、驾照没考到、关注竞品车型等。</td></tr>
+                    <tr><th style="width:140px;">回访结果</th><th>原因</th><th>指标定义</th></tr>
+                    <tr><td rowspan="6">战败</td><td>等待期长</td><td rowspan="14">新增线索量、占比（分母 = 打了线索质量标签的线索）、环比。列表显示：回访结果、原因、线索量、占比、环比。</td></tr>
+                    <tr><td>价格因素</td></tr>
+                    <tr><td>品牌偏好</td></tr>
+                    <tr><td>金融方案</td></tr>
+                    <tr><td>产品设计和配置</td></tr>
+                    <tr><td>服务不满</td></tr>
+                    <tr><td rowspan="7">休眠未购</td><td>资金不足</td></tr>
+                    <tr><td>半年内不购车</td></tr>
+                    <tr><td>家人不同意</td></tr>
+                    <tr><td>征信不通过</td></tr>
+                    <tr><td>驾照没考到</td></tr>
+                    <tr><td>关注竞品车型</td></tr>
+                    <tr><td>其他</td></tr>
+                    <tr><td>其他</td><td>其他原因</td></tr>
+                </table>
+
+                <h3>首次触达到成交门店分析</h3>
+                <table>
+                    <tr><th style="width:220px;">指标</th><th>定义</th></tr>
+                    <tr><td class="def-term">首触门店</td><td>用户首次留资或首次到店时接触的专营店。数据来源：营销平台 e3s 基础数据。</td></tr>
+                    <tr><td class="def-term">成交门店</td><td>用户最终完成购车（交车/锁单）的专营店，支持多选。数据来源：营销平台 e3s 基础数据。</td></tr>
+                    <tr><td class="def-term">首触 → 成交门店统计</td><td>按"首触门店 → 成交门店"路径统计用户流转数量、占比、交车量及交车占比。</td></tr>
                 </table>
             </section>
 
-            <section class="stats-panel" data-stats-panel="insight">
+<section class="stats-panel" data-stats-panel="insight">
                 <h3>用户群体洞察 — 核心统计口径</h3>
                 <h4>用户统计</h4>
                 <table>
