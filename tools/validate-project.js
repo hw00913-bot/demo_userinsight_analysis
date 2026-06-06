@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const { spawnSync } = require('child_process');
 
 const root = path.resolve(__dirname, '..');
@@ -170,12 +171,70 @@ function validateHtmlStructure(errors) {
     });
 }
 
+function validateAnnotationTargets(errors) {
+    const annotationFile = path.join(root, 'annotations/annotations.js');
+    const sandbox = { window: {} };
+    const pageFiles = {
+        index: 'index.html',
+        main: 'main.html',
+        userinsight: 'pages/userinsight.html',
+        workbench: 'pages/workbench.html',
+        interaction_docs: 'docs/interaction.html'
+    };
+
+    try {
+        vm.runInNewContext(fs.readFileSync(annotationFile, 'utf8'), sandbox, {
+            filename: annotationFile
+        });
+    } catch (error) {
+        errors.push(`annotations/annotations.js: unable to load annotation data: ${error.message}`);
+        return;
+    }
+
+    const annotationData = sandbox.window.AnnotationData || {};
+    Object.entries(annotationData).forEach(([page, annotations]) => {
+        const relativePath = pageFiles[page];
+        if (!relativePath || !Array.isArray(annotations) || !annotations.length) return;
+
+        const content = fs.readFileSync(path.join(root, relativePath), 'utf8');
+        annotations.forEach(annotation => {
+            const target = String(annotation.target || '');
+            const dataAttributeMatch = target.match(
+                /^\[data-anno=(?:"([^"]+)"|'([^']+)')\]$/
+            );
+            const idMatch = target.match(/^#([A-Za-z][\w:-]*)$/);
+            if (!dataAttributeMatch && !idMatch) {
+                errors.push(
+                    `annotations/annotations.js: unsupported target for ${page} annotation ${annotation.id}: ${annotation.target}`
+                );
+                return;
+            }
+
+            const key = dataAttributeMatch
+                ? dataAttributeMatch[1] || dataAttributeMatch[2]
+                : idMatch[1];
+            const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const attributeName = dataAttributeMatch ? 'data-anno' : 'id';
+            const occurrences = (content.match(
+                new RegExp(`${attributeName}=(?:"${escapedKey}"|'${escapedKey}')`, 'g')
+            ) || []).length;
+
+            if (occurrences === 0) {
+                errors.push(`${relativePath}: missing annotation target ${target}`);
+            } else if (occurrences > 1) {
+                errors.push(`${relativePath}: duplicate annotation target ${target}`);
+            }
+        });
+    });
+}
+
 const errors = [];
 validateRequiredPaths(errors);
 validateHtmlReferences(errors);
 validateCssReferences(errors);
 validateHtmlStructure(errors);
 validateJavaScript(errors);
+validateAnnotationTargets(errors);
 
 if (errors.length) {
     console.error('Project validation failed:\n');

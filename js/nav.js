@@ -17,5 +17,9 @@ document.querySelectorAll('.tab-btn[data-tab]').forEach(btn => {
         btn.classList.add('active');
         const targetPane = document.getElementById(tabId);
         if (targetPane) targetPane.classList.add('active');
+
+        if (window.AnnotationRuntime) {
+            requestAnimationFrame(() => window.AnnotationRuntime.refresh());
+        }
     });
 });
