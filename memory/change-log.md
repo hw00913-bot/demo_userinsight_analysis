@@ -31,3 +31,25 @@
 - 修复用户群体洞察分页被嵌套在培育运营面板内导致空白的问题。
 - 恢复统计口径说明的渠道效果、培育运营、用户群体洞察三个分页及主页面联动。
 - 将 HTML 校验从全文件 `<div>` 数量比较升级为层级栈检查，并校验用户洞察三个主分页必须直属 `.tab-content`。
+
+## 2026-06-07
+
+- 修复 `js/pages/userinsight/downloads.js` 中已废弃的 `unescape` 函数，替换为 UTF-8 手动编码。
+- 修复 `js/pages/userinsight/filters.js` 中自定义日期范围验证，增加空值和 Invalid Date 检查。
+- 将 `js/app.js` 中 `setTimeout(50)` 改为双重 `requestAnimationFrame` 以确保样式就绪。
+- 为标注标记新增拖动功能（`annotations/annotation-runtime.js`）：mousedown/move/up + dblclick 复位，使用 IIFE 闭包修复 for 循环中 var 作用域问题。
+- 为培育运营 Tab 新增 16 个 `data-anno` 属性，覆盖此前缺失的标注目标。
+- 重构统计口径说明面板：渠道效果（统一表格 + 触媒习惯/触店习惯/频率更新）、培育运营（KPI 口径更新、总部/门店拆分、回访分析重构）。
+- 修复用户群体洞察 Tab 空白问题（分页被嵌套在培育运营面板内）。
+- README.md 新增 5 条修改原则：问题分类优先、HTML 定位到行号、业务口径不猜测、三 Tab 同步检查、内容在文件时先搜索。
+
+## 2026-06-07
+
+- README.md 根目录结构表全量更新：修正行数、补充缺失文件（stats.js、annotations/、memory/、CSS 模块等）。
+- README.md MOCK 模块从 12 个更正为 15 个，新增模块说明表。
+- README.md 初始化函数列表补充 3 个缺失函数（enhanceHierarchyHabLabels、enhanceOverviewHabLabels、enhanceTouchHabitDeliveryMetrics）。
+- README.md 核心工具函数从平铺列表改为表格，标注每个函数的实际所在文件。
+- README.md 弹窗数量从 7 个更新为 8 个（新增统计口径抽屉）。
+- README.md 脚本加载顺序更新为 13 步完整列表，修正"app.js 最后加载"的旧说法。
+- README.md 新增 CSS 模块结构表和标注系统验证项。
+- 项目 memory/ 工作原则新增：项目记忆优先更新到项目文件夹、修改前读取 memory/ 文件。

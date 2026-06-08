@@ -11,21 +11,32 @@
 
 ## 根目录结构
 
-| 文件 | 行数 | 说明 |
-|------|------|------|
-| `index.html` | ~130 | 密码验证入口，通过后跳转 `main.html` |
-| `main.html` | ~130 | 原型演示容器，顶部 Tab + iframe 加载看板或文档 |
-| `pages/userinsight.html` | ~4,000 | 核心看板页面，包含三个主 Tab 和弹窗容器 |
-| `docs/interaction.html` | — | 产品交互逻辑说明文档（V3.0） |
-| `pages/workbench.html` | — | 独立工作台页面，使用独立样式和逻辑 |
-| `assets/css/app.css` | — | 看板样式入口，按顺序导入 CSS 模块 |
-| `js/pages/userinsight/` | — | 看板筛选、旅程、弹窗、渲染、门店和下载模块 |
-| `js/app.js` | — | 页面初始化入口 |
-| `js/common.js` | — | 公共工具函数 |
+| 文件/目录 | 行数 | 说明 |
+|-----------|------|------|
+| `index.html` | ~30 | 密码验证入口，通过后跳转 `main.html` |
+| `main.html` | ~30 | 原型演示容器，顶部 Tab + iframe 加载看板或文档 |
+| `pages/userinsight.html` | ~4,200 | 核心看板页面，包含三个主 Tab、统计口径抽屉和弹窗容器 |
+| `pages/workbench.html` | ~400 | 独立工作台页面，使用独立样式和逻辑 |
+| `docs/interaction.html` | — | 产品交互逻辑说明文档（含标注目录） |
+| `docs/decisions.md` | — | 架构决策记录 |
+| `docs/requirements.md` | — | 需求说明 |
+| `assets/css/app.css` | — | 看板样式入口，按顺序 `@import` 7 个 CSS 模块 |
+| `assets/css/userinsight-overrides.css` | — | 看板样式覆盖（直接在 HTML 中加载） |
+| `mock/data.js` | ~1,400 | `MOCK` 命名空间，15 个数据模块 + 向后兼容别名 |
+| `js/common.js` | — | 公共工具函数（`formatDate`） |
 | `js/nav.js` | — | 左侧导航和主分页切换 |
-| `mock/data.js` | ~1,400 | `MOCK` 命名空间，12 个数据模块 + 向后兼容别名 |
+| `js/app.js` | — | 页面初始化入口，`DOMContentLoaded` 集中调度 |
+| `js/pages/index.js` | — | 密码验证页逻辑 |
+| `js/pages/main.js` | — | 主容器导航注册 |
+| `js/pages/interaction-catalog.js` | — | 交互说明页标注目录渲染 |
+| `js/pages/interaction-nav.js` | — | 交互说明页导航高亮 |
+| `js/pages/workbench.js` | — | 工作台页面逻辑 |
+| `js/pages/userinsight/` | — | 看板业务模块（筛选/旅程/弹窗/渲染/门店/下载/统计） |
+| `annotations/` | — | 标注系统：数据定义（`annotations.js`）、运行时（`annotation-runtime.js`）、样式（`annotation.css`） |
+| `memory/` | — | 项目记忆：业务规则、变更记录、待确认事项、工作原则 |
+| `tools/validate-project.js` | — | 项目验证脚本：HTML 结构校验、标注目标校验、资源引用检查 |
 | `CLAUDE.md` | — | AI 工具入口，指向本 README |
-| `pm_tools/` | — | 辅助工具目录 |
+| `pm_tools/` | — | 产品经理辅助工具（文档转换、交互说明生成等） |
 
 ## 运行方式
 
@@ -103,7 +114,7 @@ node tools/validate-project.js
 
 *分类和清洗方式仅在培育运营 Tab 显示。
 
-### 弹窗/抽屉（7 个）
+### 弹窗/抽屉（8 个）
 
 | 弹窗 ID | 标题 | 触发方式 |
 |---------|------|---------|
@@ -114,8 +125,9 @@ node tools/validate-project.js
 | `projectDrillModal` | 大项目线索质量分布 | 大项目排名列表点击 |
 | `scheduleDrillModal` | 媒体线索质量分布 | 媒体排名列表点击 |
 | `rankingModal` | 全量排行榜 | 全量排行按钮点击 |
+| `stats-drawer` | 统计口径说明 | 页面右上角「统计口径」链接 |
 
-所有弹窗通过 `data-modal-id` 属性委托关闭，点击遮罩也可关闭。`storeFilterOverlay` 使用独立的关闭逻辑。
+所有弹窗通过 `data-modal-id` 属性委托关闭，点击遮罩也可关闭。`storeFilterOverlay` 和 `stats-drawer` 使用独立的关闭逻辑。
 
 ## JavaScript 逻辑地图
 
@@ -128,26 +140,35 @@ initDateRange()                     // 日期范围快捷选择 + 自定义
 initFilterMultiSelects()            // 多选下拉通用初始化（线索等级/落地平台/分类/清洗方式）
 initGlobalFilters()                 // 查询/重置按钮
 reorderCultivationDeliveryCharts()  // 培育运营图表顺序重排
+enhanceHierarchyHabLabels()         // 门店层级 HAB 标签增强
 alignChannelQualityLeadLevels()     // 渠道线索质量图例 + 堆叠段渲染为10级
 convertCultivationChartsToHorizontal() // 纵向堆叠图 → 横向条形图
+enhanceOverviewHabLabels()          // 概览 HAB 标签增强
 initChannelJourneyFilter()          // 渠道旅程筛选（首次/末次留资渠道联动）
 initMediaJourneyFilter()            // 媒体旅程筛选（首次/末次留资媒体联动）
+enhanceTouchHabitDeliveryMetrics()  // 触媒习惯交车指标增强
 initCultivationScaledCharts()       // 培育运营图表缩放
 initRankInteraction({...})          // 大项目排名交互（参数化）
 initRankInteraction({...})          // 媒体质量排名交互（参数化）
-initStoreFilters()                  // 门店筛选弹窗预初始化
-initDynamicRender()                 // KPI卡片 + 饼图动态渲染
+initStoreFilters()                  // 门店筛选弹窗预初始化（延迟执行）
+initDynamicRender()                 // KPI卡片 + 饼图动态渲染（延迟执行）
 ```
 
 ### 核心工具函数
-- `formatDate(date)` / `formatTimestamp(date)` — 日期格式化
-- `parseUserCount(text)` — 从文本提取人数
-- `pctNum(part, total)` / `pctStr(part, total)` — 百分比计算
-- `findCard(title, options)` — 按标题查找卡片
-- `closeModal(id)` — 通用弹窗关闭
-- `showNotification(msg, type)` — Toast 提示
-- `resetDateRange(group)` / `resetGlobalFilters(section)` — 筛选重置
-- `trendHtml(trend, tv)` — 趋势 HTML 渲染
+
+| 函数 | 所在文件 | 说明 |
+|------|---------|------|
+| `formatDate(date)` | `js/common.js` | 日期格式化为 YYYY-MM-DD |
+| `formatTimestamp(date)` | `js/pages/userinsight/downloads.js` | 时间戳格式化 |
+| `parseUserCount(text)` | `js/pages/userinsight/filters.js` | 从文本提取人数 |
+| `pctNum(part, total)` | `js/pages/userinsight/filters.js` | 百分比数值计算 |
+| `pctStr(part, total)` | `js/pages/userinsight/filters.js` | 百分比字符串 |
+| `findCard(title, options)` | `js/pages/userinsight/filters.js` | 按标题查找卡片 |
+| `closeModal(id)` | `js/pages/userinsight/dialogs.js` | 通用弹窗关闭 |
+| `showNotification(msg, type)` | `js/pages/userinsight/filters.js` | Toast 提示 |
+| `resetDateRange(group)` | `js/pages/userinsight/filters.js` | 日期筛选重置 |
+| `resetGlobalFilters(section)` | `js/pages/userinsight/filters.js` | 全局筛选重置 |
+| `trendHtml(trend, tv)` | `js/pages/userinsight/dashboard.js` | 趋势 HTML 渲染 |
 
 ### 10级线索等级体系
 
@@ -231,9 +252,28 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 
 ## 数据和状态约定
 
-- 数据全部为 Mock，来源：`mock/data.js`（`MOCK` 命名空间，12 个模块）+ HTML 内静态节点
-- `MOCK` 模块：`TOTAL_CULTIVATION_USERS`、`channels`、`intentSeries`、`leadLevels`、`focusSubTags`、`quality`、`resistance`、`areaDelivery`、`touchMedia`、`store`、`project`、`schedule`、`kpi`、`download`、`hierarchy`
-- 向后兼容别名：`const qualityFullData = MOCK.quality.fullData;` 等，新代码直接使用 `MOCK.xxx.xxx`
+- 数据全部为 Mock，来源：`mock/data.js`（`MOCK` 命名空间，15 个模块）+ HTML 内静态节点
+- `MOCK` 一级模块（共 15 个）：
+
+| 模块 | 说明 |
+|------|------|
+| `MOCK.TOTAL_CULTIVATION_USERS` | 培育用户总数常量 |
+| `MOCK.channels` | 渠道列表 (R1-R11) |
+| `MOCK.intentSeries` | 意向车系列表 |
+| `MOCK.leadLevels` | 10 级线索等级标签 |
+| `MOCK.focusSubTags` | 用户关注点二级细分标签 |
+| `MOCK.quality` | 线索质量 — 通话原因分析 `.fullData` |
+| `MOCK.resistance` | 战败/休眠 — 原因分析 `.fullData` |
+| `MOCK.areaDelivery` | 区域交付 — 大区排行 `.fullData` |
+| `MOCK.touchMedia` | 触媒习惯 — `.channelJourney` `.mediaJourney` `.channelOverlap` `.mediaOverlap` |
+| `MOCK.store` | 门店数据 — `.cityData` `.regionChannel` `.fullData` |
+| `MOCK.project` | 大项目 — `.drillData` `.rankData` (hab/arrival/testdrive/order) |
+| `MOCK.schedule` | 媒体质量排名 — `.drillData` `.rankData` (hab/arrival/testdrive/order) |
+| `MOCK.kpi` | KPI 卡片 — `.pageData` `.pieOverride` |
+| `MOCK.download` | 下载明细 — `.channelEffectDetail` |
+| `MOCK.hierarchy` | 层级关系 — 大区→小区→省份→城市→县区→门店树形结构 |
+
+- 向后兼容别名（共 17 个）：`const qualityFullData = MOCK.quality.fullData;` 等，新代码直接使用 `MOCK.xxx.xxx`
 - 筛选栏不执行真实过滤，仅模拟 loading/刷新反馈
 - 趋势数值使用随机波动，不保证前后一致
 - 弹窗通过 `.classList.add('active')` / `.remove('active')` 控制显示
@@ -243,7 +283,24 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 - 主色 `--primary-color: #0081ff`，定义在 `assets/css/app.css :root`
 - 布局：后台系统风格 — 左侧 sidebar + 顶部 header + 白色卡片 + 浅灰背景
 - 图标：Font Awesome 6.4.0；字体：Google Fonts Inter / Noto Sans SC
-- 筛选/图表等存在较多 inline style（原型遗留），新增样式优先放 `assets/css/app.css`
+- 筛选/图表等存在较多 inline style（原型遗留），新增样式优先放对应 CSS 模块
+
+### CSS 模块结构
+
+`assets/css/app.css` 按以下顺序 `@import`：
+
+```css
+@import url("./base.css");         /* 基础布局与变量 */
+@import url("./filters.css");      /* 筛选栏样式 */
+@import url("./components.css");   /* 通用组件 */
+@import url("./insight.css");      /* 用户群体洞察 */
+@import url("./diagnosis.css");     /* 培育运营诊断 */
+@import url("./channel.css");      /* 渠道效果 */
+@import url("./store-filter.css"); /* 门店筛选弹窗 */
+```
+
+此外，`pages/userinsight.html` 直接加载 `userinsight-overrides.css`（看板样式覆盖），其他页面各自引用对应 CSS（`index.css`、`main.css`、`interaction.css`、`workbench.css`）。
+
 - 关键组件类名：`.app-container`、`.sidebar`、`.main-wrapper`、`.filter-section`、`.content-card`、`.card-header`、`.drawer-overlay`、`.drawer-container`、`.custom-multi-select`、`.journey-search-select`、`.ce-v-chart-container`、`.ce-h-bar-item`、`.follow-analysis-card`、`.rank-badge`、`.status-tag`
 
 ## 修改原则
@@ -262,11 +319,25 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 - 业务口径（标签名、筛选条件、计算规则）代码中没有时，不能凭空猜测，需要用户提供或确认
 - 发现问题时同步检查三个 Tab（渠道效果/培育运营/用户群体洞察）是否有相同问题
 - 用户指出"内容在文件里"时，先搜索特征词定位再操作，搜索范围包括注释、隐藏元素、其他文件和 git 历史
+- 修改前先读取项目 `memory/` 文件夹了解业务规则、项目结构和历史变更；修改中积累的新认知及时更新到对应记忆文件（`project.md`、`business-rules.md`、`change-log.md`、`open-items.md`），不要仅依赖个人目录缓存
 
 ## 工程约束
 
-- 页面采用经典脚本加载，必须保持 `pages/userinsight.html` 中的脚本顺序。
-- `mock/data.js` 必须先于用户洞察业务模块加载，`js/app.js` 必须最后加载。
+- 页面采用经典脚本加载，必须保持 `pages/userinsight.html` 中的脚本顺序：
+  1. `mock/data.js` — Mock 数据命名空间
+  2. `js/common.js` — 公共工具函数
+  3. `js/nav.js` — 导航切换
+  4. `js/pages/userinsight/filters.js` — 筛选模块
+  5. `js/pages/userinsight/journeys.js` — 旅程与排名
+  6. `js/pages/userinsight/dialogs.js` — 弹窗逻辑
+  7. `js/pages/userinsight/dashboard.js` — KPI 动态渲染
+  8. `js/pages/userinsight/stores.js` — 门店筛选
+  9. `js/pages/userinsight/downloads.js` — 下载功能
+  10. `js/app.js` — 初始化入口（集中调度所有 init 函数）
+  11. `js/pages/userinsight/stats.js` — 统计口径抽屉
+  12. `annotations/annotations.js` — 标注数据
+  13. `annotations/annotation-runtime.js` — 标注运行时渲染
+- `mock/data.js` 必须先于所有业务模块加载；标注系统最后加载。
 - 页面保留大量 inline `onclick`，相关函数必须继续暴露在全局作用域。
 - 下钻数据使用 `hSchedule`、`hLead`、`hNonTest`、`cUnclear`、`cUnreachable`，不要恢复为旧版 `h` / `c`。
 - 门店卡片柱长需要按当前数据范围的最大总量归一化。
@@ -281,12 +352,15 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 - `pages/userinsight.html` — 三个主 Tab 切换、日期快捷选择、查询按钮 Toast 反馈、重置按钮
 - 筛选栏 — 所有多选下拉展开/收起、全选/取消、文本更新；门店筛选弹窗树形菜单 + 搜索
 - 排行切换 — Top 10/20、HAB/到店/试驾/锁单指标切换
-- 弹窗 — 7 个弹窗的打开、关闭、点击遮罩关闭、Tab 切换
+- 弹窗 — 8 个弹窗/抽屉的打开、关闭、点击遮罩关闭、Tab 切换
+- 统计口径抽屉 — 三个 Tab 切换（渠道效果/培育运营/用户群体洞察）、页面内统计口径链接联动打开
 - 下钻 — 大项目/媒体/大区/城市的区域→小区→门店层级导航，门店卡片柱长反映总量差异
 - 触媒/触店 Tab 切换 + 旅程筛选联动
 - 培育运营关注点二级下钻 + 总部/门店跟进过程切换
 - 全量排行榜多种类型切换
 - 下载明细按钮异步下载 CSV
+- 标注系统 — 标注标记渲染、悬停显示详情、拖动标记位置、双击复位
+- `node tools/validate-project.js` — 通过所有校验（HTML 结构 / 标注目标 / 本地资源）
 
 ## 已知风险
 
@@ -296,4 +370,6 @@ initDynamicRender()                 // KPI卡片 + 饼图动态渲染
 - 静态密码仅用于原型演示，不具备真实安全性
 - 网络受限时 CDN 图标和字体可能无法加载
 - `pages/workbench.html` 完全独立，不共享用户洞察页面的业务脚本、Mock 数据和主样式
-- 脚本加载顺序以 `pages/userinsight.html` 中声明的模块顺序为准，`js/app.js` 最后加载
+- 脚本加载顺序以 `pages/userinsight.html` 中声明的模块顺序为准，标注系统最后加载
+- `js/app.js` 不是最后一个脚本——`stats.js` 和标注系统在其之后加载，因为这些模块依赖 DOM 完全就绪
+- 标注系统运行时通过 `data-anno` 属性在 DOM 中查找锚点，修改 HTML 结构时需确保标注锚点不被破坏

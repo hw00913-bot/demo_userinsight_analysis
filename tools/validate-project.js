@@ -198,6 +198,18 @@ function validateAnnotationTargets(errors) {
 
         const content = fs.readFileSync(path.join(root, relativePath), 'utf8');
         annotations.forEach(annotation => {
+            const valueLogic = annotation.sections && annotation.sections.valueLogic;
+            const descValueLogic = String(annotation.desc || '').match(
+                /5\. 取值逻辑：([\s\S]*?)<br>6\./
+            );
+            if (page === 'userinsight' &&
+                typeof valueLogic === 'string' &&
+                (!descValueLogic || descValueLogic[1] !== valueLogic)) {
+                errors.push(
+                    `annotations/annotations.js: ${page} annotation ${annotation.id} has inconsistent valueLogic and desc`
+                );
+            }
+
             const target = String(annotation.target || '');
             const dataAttributeMatch = target.match(
                 /^\[data-anno=(?:"([^"]+)"|'([^']+)')\]$/
