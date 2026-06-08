@@ -1322,32 +1322,32 @@ kpi: {
                 { label: '平均时长', val: '30', unit: 's', trend: 'up', tv: '1s' }
             ]},
             { border: 'kpi-border-cyan', flex: 1.6, icon: 'fa-layer-group', title: '线索大类（含占比）（总部培育）', metrics: [
-                { label: '外呼有效量', val: '9,876', unit: '人', trend: 'up', tv: '0.5pp' },
+                { label: '外呼有效量', val: '9,876', unit: '条', trend: 'up', tv: '0.5pp' },
                 { label: '有效号码占比', val: '68', unit: '%', trend: 'up', tv: '0.5pp' },
-                { label: '无法建联用户', val: '3,210', unit: '人', trend: 'down', tv: '0.4%' },
+                { label: '无法建联线索', val: '3,210', unit: '条', trend: 'down', tv: '0.4%' },
                 { label: '无法建联占比', val: '18', unit: '%', trend: 'down', tv: '0.4pp' },
-                { label: '外呼无效用户', val: '2,469', unit: '人', trend: 'down', tv: '1.1%' },
+                { label: '外呼无效线索', val: '2,469', unit: '条', trend: 'down', tv: '1.1%' },
                 { label: '无效号码占比', val: '32', unit: '%', trend: 'down', tv: '1.1pp' }
             ]},
-            { border: 'kpi-border-blue', flex: 1.6, icon: 'fa-user-check', title: '用户分级（含占比）（总部培育）', metrics: [
-                { label: 'H/A/B 线索', val: '4,321', unit: '人', trend: 'up', tv: '1.2pp' },
+            { border: 'kpi-border-blue', flex: 1.6, icon: 'fa-user-check', title: '线索分级（含占比）（总部培育）', metrics: [
+                { label: 'H/A/B 线索', val: '4,321', unit: '条', trend: 'up', tv: '1.2pp' },
                 { label: 'H/A/B 线索占比', val: '35', unit: '%', trend: 'up', tv: '1.2pp' }
             ]},
             { border: 'kpi-border-green', flex: 1.8, icon: 'fa-arrows-to-dot', title: '行为转化（含占比）（全渠道）', metrics: [
-                { label: '到店数（首次）', val: '2,345', unit: '人', trend: 'up', tv: '2pp' },
+                { label: '到店数（首次）', val: '2,345', unit: '条', trend: 'up', tv: '2pp' },
                 { label: '到店占比', val: '35', unit: '%', trend: 'up', tv: '2pp' },
-                { label: '试驾数', val: '1,234', unit: '人', trend: 'up', tv: '0.8pp' },
+                { label: '试驾数', val: '1,234', unit: '条', trend: 'up', tv: '0.8pp' },
                 { label: '试驾占比', val: '12', unit: '%', trend: 'up', tv: '0.8pp' },
-                { label: '锁单数', val: '456', unit: '人', trend: 'up', tv: '0.3pp' },
+                { label: '锁单数', val: '456', unit: '条', trend: 'up', tv: '0.3pp' },
                 { label: '锁单占比', val: '5.4', unit: '%', trend: 'up', tv: '0.3pp' },
-                { label: '交车数', val: '218', unit: '人', trend: 'up', tv: '0.2pp' },
+                { label: '交车数', val: '218', unit: '条', trend: 'up', tv: '0.2pp' },
                 { label: '交车占比', val: '2.6', unit: '%', trend: 'up', tv: '0.2pp' }
             ]}
         ]
     },
     pieOverride: {
         '线索级别占比': {
-            centerTotal: '10,493', centerLabel: '线索等级用户',
+            centerTotal: '10,493', centerLabel: '线索量',
             segments: [
                 { color: '#00337c', label: 'H-试驾排程单', count: '1,481', pct: '14.1%', start: 0, end: 14.1 },
                 { color: '#0052cc', label: 'H-试驾线索单', count: '1,852', pct: '17.6%', start: 14.1, end: 31.7 },

@@ -55,7 +55,7 @@ function renderLeadLevelPie() {
         `<div style="display:flex;align-items:center;gap:6px;">
             <span style="width:10px;height:10px;border-radius:2px;background:${seg.color};flex-shrink:0;"></span>
             <span style="color:#6b7280;flex:1;">${seg.label}</span>
-            <span style="font-weight:600;color:#1e293b;">${seg.count}人</span>
+            <span style="font-weight:600;color:#1e293b;">${seg.count}条</span>
             <span style="color:${seg.color};font-weight:600;">${seg.pct}</span>
         </div>`
     ).join('');

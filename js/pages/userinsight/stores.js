@@ -540,18 +540,18 @@ function renderFirstTouchDealStoreResult() {
         return '<div class="store-result-row">'
             + '<span class="store-result-path" title="' + firstStore + ' → ' + row.dealStore + '">' + firstStore + ' → ' + row.dealStore + '</span>'
             + '<div class="store-result-bar"><div class="store-result-bar-fill" style="width:' + width + '%;"></div></div>'
-            + '<span class="store-result-value">' + row.count.toLocaleString() + ' 人 · ' + percent + '% · 交车 ' + deliveries.toLocaleString() + ' 人 · ' + deliveryRate + '%</span>'
+            + '<span class="store-result-value">' + row.count.toLocaleString() + ' 条 · ' + percent + '% · 交车 ' + deliveries.toLocaleString() + ' 条 · ' + deliveryRate + '%</span>'
             + '</div>';
     }).join('');
 
     content.innerHTML = '<div class="store-result-summary">'
         + '<div class="store-result-summary-card store-result-summary-card-wide"><span class="store-result-summary-label">首触专营店</span><strong class="store-result-summary-value">' + firstStore + '</strong></div>'
         + '<div class="store-result-summary-card"><span class="store-result-summary-label">成交专营店</span><strong class="store-result-summary-value">' + dealStores.length + ' 家</strong></div>'
-        + '<div class="store-result-summary-card"><span class="store-result-summary-label">统计用户数</span><strong class="store-result-summary-value">' + total.toLocaleString() + ' 人</strong></div>'
+        + '<div class="store-result-summary-card"><span class="store-result-summary-label">统计线索量</span><strong class="store-result-summary-value">' + total.toLocaleString() + ' 条</strong></div>'
         + '</div>'
         + '<div class="store-result-list-card">'
         + '<div class="store-result-list-title"><strong>成交专营店统计</strong><span>共 ' + dealStores.length + ' 家</span></div>'
-        + '<div class="store-result-list-header"><span>首触 → 成交专营店</span><span>用户数分布</span><span>用户数 / 占比 / 交车数 / 交车占比</span></div>'
+        + '<div class="store-result-list-header"><span>首触 → 成交专营店</span><span>线索量分布</span><span>线索量 / 占比 / 交车数 / 交车占比</span></div>'
         + '<div class="store-result-list">' + rowsHtml + '</div>'
         + '</div>';
 }

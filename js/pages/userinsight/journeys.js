@@ -87,7 +87,7 @@ function renderChannelJourneyList() {
                 <div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
                     <div style="width:${width}%;height:100%;background:#2563eb;"></div>
                 </div>
-                <span style="width:76px;text-align:right;font-size:11px;color:#64748b;">${row.count.toLocaleString()}人 · ${row.percent}%</span>
+                <span style="width:76px;text-align:right;font-size:11px;color:#64748b;">${row.count.toLocaleString()}条 · ${row.percent}%</span>
             </div>
         `;
     }).join('');
@@ -211,7 +211,7 @@ function renderMediaJourneyList() {
                 <div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;">
                     <div style="width:${width}%;height:100%;background:#2563eb;"></div>
                 </div>
-                <span style="width:76px;text-align:right;font-size:11px;color:#64748b;">${row.count.toLocaleString()}人 · ${row.percent}%</span>
+                <span style="width:76px;text-align:right;font-size:11px;color:#64748b;">${row.count.toLocaleString()}条 · ${row.percent}%</span>
             </div>
         `;
     }).join('');
@@ -300,20 +300,20 @@ function initRankInteraction(config) {
                     var otherW = barPct - hW - aW - bW;
                     barHtml = `
                         <div class="ce-h-stack">
-                            <div class="ce-h-seg h" style="width: ${hW}%;" title="H: ${hCount}人"></div>
-                            <div class="ce-h-seg a" style="width: ${aW}%;" title="A: ${aCount}人"></div>
-                            <div class="ce-h-seg b" style="width: ${bW}%;" title="B: ${bCount}人"></div>
+                            <div class="ce-h-seg h" style="width: ${hW}%;" title="H: ${hCount}条"></div>
+                            <div class="ce-h-seg a" style="width: ${aW}%;" title="A: ${aCount}条"></div>
+                            <div class="ce-h-seg b" style="width: ${bW}%;" title="B: ${bCount}条"></div>
                             <div class="ce-h-seg other" style="width: ${otherW}%;"></div>
                         </div>
                     `;
-                    barHtml += '<span class="ce-h-total">' + labelText + ': ' + item.val + ' (' + count.toLocaleString() + '人)</span>';
+                    barHtml += '<span class="ce-h-total">' + labelText + ': ' + item.val + ' (' + count.toLocaleString() + '条)</span>';
                 } else {
                     barHtml = `
                         <div class="ce-h-stack">
                             <div class="ce-h-seg a" style="width: ${barPct}%;"></div>
                         </div>
                     `;
-                    barHtml += '<span class="ce-h-total">' + labelText + ': ' + item.val + ' (' + count.toLocaleString() + '人)</span>';
+                    barHtml += '<span class="ce-h-total">' + labelText + ': ' + item.val + ' (' + count.toLocaleString() + '条)</span>';
                 }
 
                 const code = item[config.dataProp];

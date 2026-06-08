@@ -127,7 +127,7 @@ function enhanceHierarchyHabLabels() {
         const label = row.children[row.children.length - 1];
         if (!stack || !label || label.dataset.habEnhanced === 'true') return;
 
-        const match = label.textContent.match(/([\d,]+)人\s*·\s*HAB\s*(\d+)%/);
+        const match = label.textContent.match(/([\d,]+)条\s*·\s*HAB\s*(\d+)%/);
         if (!match) return;
 
         const total = parseInt(match[1].replace(/,/g, ''), 10);
@@ -139,7 +139,7 @@ function enhanceHierarchyHabLabels() {
         row.style.gridTemplateColumns = '92px minmax(0, 1fr) 126px';
         label.dataset.habEnhanced = 'true';
         label.style.whiteSpace = 'nowrap';
-        label.innerHTML = `${total.toLocaleString()}人<br>HAB ${habCount.toLocaleString()}人 · ${habPercent}%`;
+        label.innerHTML = `${total.toLocaleString()}条<br>HAB ${habCount.toLocaleString()}条 · ${habPercent}%`;
     });
 }
 
@@ -235,12 +235,12 @@ function appendOverviewHabLabel(item, total, habCount) {
 
     const label = document.createElement('span');
     label.className = 'ce-v-stat-label';
-    label.innerHTML = `${total.toLocaleString()}人<br>HAB ${habCount.toLocaleString()}人 · ${pctStr(habCount, total)}%`;
+    label.innerHTML = `${total.toLocaleString()}条<br>HAB ${habCount.toLocaleString()}条 · ${pctStr(habCount, total)}%`;
     item.appendChild(label);
 }
 
 function parseUserCount(text) {
-    const match = String(text || '').match(/([\d,]+)\s*人/);
+    const match = String(text || '').match(/([\d,]+)\s*条/);
     return match ? parseInt(match[1].replace(/,/g, ''), 10) : 0;
 }
 
@@ -262,7 +262,7 @@ function enhanceTouchHabitDeliveryMetrics() {
 
     section.querySelectorAll('span').forEach(metric => {
         if (metric.dataset.deliveryEnhanced === 'true') return;
-        const match = metric.textContent.trim().match(/^([\d,]+)人\s*·\s*([\d.]+)%$/);
+        const match = metric.textContent.trim().match(/^([\d,]+)条\s*·\s*([\d.]+)%$/);
         if (!match) return;
 
         const row = metric.parentElement;
@@ -275,9 +275,9 @@ function enhanceTouchHabitDeliveryMetrics() {
         metric.dataset.deliveryEnhanced = 'true';
         metric.classList.add('touch-habit-metric');
         if (dealStoreCard?.contains(metric)) {
-            metric.innerHTML = `<span class="touch-habit-delivery">交车量 ${deliveries.toLocaleString()}人 · 交车占比 ${rate}%</span>`;
+            metric.innerHTML = `<span class="touch-habit-delivery">交车量 ${deliveries.toLocaleString()}条 · 交车占比 ${rate}%</span>`;
         } else {
-            metric.innerHTML = `用户量 ${match[1]}人 · <span class="touch-habit-delivery">交车量 ${deliveries.toLocaleString()}人 · 交车占比 ${rate}%</span>`;
+            metric.innerHTML = `线索量 ${match[1]}条 · <span class="touch-habit-delivery">交车量 ${deliveries.toLocaleString()}条 · 交车占比 ${rate}%</span>`;
         }
     });
 }
@@ -386,7 +386,7 @@ function scaleCultivationVerticalChannelChart() {
         const ratio = Math.max(0.18, total / max);
         bar.dataset.scaledTotal = 'true';
         bar.style.height = Math.round(200 * ratio) + 'px';
-        bar.title = `${label}：${total.toLocaleString()}人`;
+        bar.title = `${label}：${total.toLocaleString()}条`;
     });
 }
 

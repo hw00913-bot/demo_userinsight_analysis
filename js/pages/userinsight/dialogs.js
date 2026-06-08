@@ -20,7 +20,7 @@ function openFocusDrillDown(category) {
                 <div style="flex: 1; height: 8px; background: #f3f4f6; border-radius: 4px; overflow: hidden;">
                     <div style="width: ${item.rate}%; height: 100%; background: #3b82f6;"></div>
                 </div>
-                <span style="width: 120px; font-size: 11px; font-weight: 600; color: #111827;">${item.rate}% (${userCount.toLocaleString()}人)</span>
+                <span style="width: 120px; font-size: 11px; font-weight: 600; color: #111827;">${item.rate}% (${userCount.toLocaleString()}条)</span>
             </div>
         `;
     });
@@ -64,7 +64,7 @@ function openFullRanking(type) {
                 <th style="width: 60px; text-align: center;">排名</th>
                 <th style="width: 140px;">原因类型</th>
                 <th>具体原因标签</th>
-                <th style="width: 120px; text-align: right;">用户数</th>
+                <th style="width: 120px; text-align: right;">线索量</th>
                 <th style="width: 120px; text-align: right;">占比</th>
                 <th style="width: 120px; text-align: right;">环比</th>
             </tr>
@@ -90,7 +90,7 @@ function openFullRanking(type) {
                 <th style="width: 60px; text-align: center;">排名</th>
                 <th style="width: 140px;">回访结果</th>
                 <th>具体原因</th>
-                <th style="width: 120px; text-align: right;">用户数</th>
+                <th style="width: 120px; text-align: right;">线索量</th>
                 <th style="width: 120px; text-align: right;">占比</th>
                 <th style="width: 120px; text-align: right;">环比</th>
             </tr>
@@ -116,12 +116,12 @@ function openFullRanking(type) {
                 <th style="width: 60px; text-align: center;">排名</th>
                 <th>大区</th>
                 <th>小区</th>
-                <th style="width: 140px; text-align: right;">新增线索用户</th>
-                <th style="width: 140px; text-align: right;">H人数 / 占比</th>
-                <th style="width: 140px; text-align: right;">A人数 / 占比</th>
-                <th style="width: 140px; text-align: right;">B人数 / 占比</th>
-                <th style="width: 150px; text-align: right;">C/其他人数 / 占比</th>
-                <th style="width: 190px; text-align: right;">H/A/B人数 / 占比</th>
+                <th style="width: 140px; text-align: right;">新增线索量</th>
+                <th style="width: 140px; text-align: right;">H线索量 / 占比</th>
+                <th style="width: 140px; text-align: right;">A线索量 / 占比</th>
+                <th style="width: 140px; text-align: right;">B线索量 / 占比</th>
+                <th style="width: 150px; text-align: right;">C/其他线索量 / 占比</th>
+                <th style="width: 190px; text-align: right;">H/A/B线索量 / 占比</th>
             </tr>
         `;
         areaDeliveryFullData.forEach(item => {
@@ -136,17 +136,17 @@ function openFullRanking(type) {
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
                 <td style="font-weight: 500;">${item.region}</td>
                 <td style="font-weight: 500;">${item.area}</td>
-                <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}人</td>
-                <td style="text-align: right;">${hCount.toLocaleString()}人 · ${item.h}%</td>
-                <td style="text-align: right;">${aCount.toLocaleString()}人 · ${item.a}%</td>
-                <td style="text-align: right;">${bCount.toLocaleString()}人 · ${item.b}%</td>
-                <td style="text-align: right;">${otherCount.toLocaleString()}人 · ${item.other}%</td>
+                <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}条</td>
+                <td style="text-align: right;">${hCount.toLocaleString()}条 · ${item.h}%</td>
+                <td style="text-align: right;">${aCount.toLocaleString()}条 · ${item.a}%</td>
+                <td style="text-align: right;">${bCount.toLocaleString()}条 · ${item.b}%</td>
+                <td style="text-align: right;">${otherCount.toLocaleString()}条 · ${item.other}%</td>
                 <td style="text-align: right;">
                     <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px;">
                         <div style="width: 64px; height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden;">
                             <div style="height: 100%; width: ${hab}%; background: #00337c;"></div>
                         </div>
-                        <strong>${habCount.toLocaleString()}人 · ${hab}%</strong>
+                        <strong>${habCount.toLocaleString()}条 · ${hab}%</strong>
                     </div>
                 </td>
             `;
@@ -160,8 +160,8 @@ function openFullRanking(type) {
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
                 <th>重合渠道名称列表</th>
-                <th style="width: 140px; text-align: right;">并集用户数</th>
-                <th style="width: 140px; text-align: right;">重合用户数</th>
+                <th style="width: 140px; text-align: right;">并集线索量</th>
+                <th style="width: 140px; text-align: right;">重合线索量</th>
                 <th style="width: 120px; text-align: right;">重合率</th>
             </tr>
         `;
@@ -170,8 +170,8 @@ function openFullRanking(type) {
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
                 <td style="font-weight: 500;">${item.media}</td>
-                <td style="text-align: right; font-weight: 600;">${item.unionCount.toLocaleString()}人</td>
-                <td style="text-align: right; font-weight: 600;">${item.overlapCount.toLocaleString()}人</td>
+                <td style="text-align: right; font-weight: 600;">${item.unionCount.toLocaleString()}条</td>
+                <td style="text-align: right; font-weight: 600;">${item.overlapCount.toLocaleString()}条</td>
                 <td style="text-align: right;">${item.overlapRate}</td>
             `;
             tbody.appendChild(row);
@@ -184,8 +184,8 @@ function openFullRanking(type) {
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
                 <th>重合媒体名称列表</th>
-                <th style="width: 140px; text-align: right;">并集用户数</th>
-                <th style="width: 140px; text-align: right;">重合用户数</th>
+                <th style="width: 140px; text-align: right;">并集线索量</th>
+                <th style="width: 140px; text-align: right;">重合线索量</th>
                 <th style="width: 120px; text-align: right;">重合率</th>
             </tr>
         `;
@@ -194,8 +194,8 @@ function openFullRanking(type) {
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
                 <td style="font-weight: 500;">${item.media}</td>
-                <td style="text-align: right; font-weight: 600;">${item.unionCount.toLocaleString()}人</td>
-                <td style="text-align: right; font-weight: 600;">${item.overlapCount.toLocaleString()}人</td>
+                <td style="text-align: right; font-weight: 600;">${item.unionCount.toLocaleString()}条</td>
+                <td style="text-align: right; font-weight: 600;">${item.overlapCount.toLocaleString()}条</td>
                 <td style="text-align: right;">${item.overlapRate}</td>
             `;
             tbody.appendChild(row);
@@ -208,7 +208,7 @@ function openFullRanking(type) {
             <tr>
                 <th style="width: 60px; text-align: center;">排名</th>
                 <th>专营店名称</th>
-                <th style="width: 140px; text-align: right;">用户数</th>
+                <th style="width: 140px; text-align: right;">线索量</th>
                 <th style="width: 120px; text-align: right;">占比</th>
             </tr>
         `;
@@ -217,7 +217,7 @@ function openFullRanking(type) {
             row.innerHTML = `
                 <td style="text-align: center;"><span class="rank-badge ${item.rank <= 3 ? 'rank-' + item.rank : ''}">${item.rank}</span></td>
                 <td style="font-weight: 500;">${item.name}</td>
-                <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}人</td>
+                <td style="text-align: right; font-weight: 600;">${item.count.toLocaleString()}条</td>
                 <td style="text-align: right;">${item.percent}</td>
             `;
             tbody.appendChild(row);
@@ -298,12 +298,12 @@ function openFullRanking(type) {
                             <div style="height: 100%; background: #00337c; width: ${hab};"></div>
                         </div>
                         <span style="font-weight: 600; min-width: 45px;">${hab}</span>
-                        <span style="font-size: 11px; color: #6b7280;">(${habCount.toLocaleString()}人)</span>
+                        <span style="font-size: 11px; color: #6b7280;">(${habCount.toLocaleString()}条)</span>
                     </div>
                 </td>
-                <td style="text-align: right;">${arrival} <span style="font-size: 11px; color: #6b7280;">(${arrivalCount.toLocaleString()}人)</span></td>
-                <td style="text-align: right;">${testdrive} <span style="font-size: 11px; color: #6b7280;">(${testdriveCount.toLocaleString()}人)</span></td>
-                <td style="text-align: right;">${order} <span style="font-size: 11px; color: #6b7280;">(${orderCount.toLocaleString()}人)</span></td>
+                <td style="text-align: right;">${arrival} <span style="font-size: 11px; color: #6b7280;">(${arrivalCount.toLocaleString()}条)</span></td>
+                <td style="text-align: right;">${testdrive} <span style="font-size: 11px; color: #6b7280;">(${testdriveCount.toLocaleString()}条)</span></td>
+                <td style="text-align: right;">${order} <span style="font-size: 11px; color: #6b7280;">(${orderCount.toLocaleString()}条)</span></td>
             `;
             tbody.appendChild(row);
         }
