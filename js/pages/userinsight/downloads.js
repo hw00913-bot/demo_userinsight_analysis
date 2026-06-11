@@ -357,7 +357,7 @@ function buildLeadDimensionSheet(data) {
     var headers = [
         '线索id', '创建时间', '意向车系', '渠道名称', '媒体名称', '大项目', '落地平台',
         '大区', '小区', '专营店编码', '专营店名称', '省份', '城市', '线索等级',
-        '原因类型大类', '原因类型', '原因说明', '线索排程量', '新增到店量', '试驾量',
+        '原因类型大类', '原因类型', '原因说明', '线索量', '有效线索量', '线索排程量', '新增到店量', '试驾量',
         '锁单量', '交车量'
     ];
     var storeSamples = [
@@ -395,6 +395,8 @@ function buildLeadDimensionSheet(data) {
             callStatus === '已接通' ? '有效建联' : '无法建联',
             callStatus,
             callStatus === '已接通' ? '用户已接通并完成线索培育' : '号码状态或通话状态导致未有效建联',
+            1,
+            callStatus === '已接通' ? 1 : 0,
             hasSchedule,
             hasArrival,
             hasTestDrive,

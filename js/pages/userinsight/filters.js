@@ -65,9 +65,9 @@ function initDateRange() {
                 return;
             }
 
-            const maxRange = 90 * 24 * 60 * 60 * 1000;
+            const maxRange = 365 * 24 * 60 * 60 * 1000;
             if (end - start > maxRange) {
-                alert('统计日期区间最大可选 90 天范围');
+                alert('统计日期区间最大可选 1 年范围');
                 if (changedInput === 'start') {
                     const newEnd = new Date(start.getTime() + maxRange);
                     endInput.value = formatDate(newEnd > today ? today : newEnd);
