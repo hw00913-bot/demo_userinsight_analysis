@@ -2055,22 +2055,15 @@
                                                     </div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 2;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">首次到末次留资渠道</div>
-                                                    <div style="display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-bottom:10px;">
-                                                        <label style="font-size:12px; color:#64748b;">首次留资渠道
-                                                            <select id="firstJourneyChannel" class="filter-select" style="margin-left:4px; padding:4px 24px 4px 8px; min-width:72px;"></select>
-                                                        </label>
-                                                        <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#64748b;">末次留资渠道
-                                                            <div id="lastJourneyChannel" class="journey-multi-select">
-                                                                <div class="select-header">
-                                                                    <span class="journey-channel-text">全选 (11项)</span>
-                                                                    <i class="fa-solid fa-chevron-down"></i>
-                                                                </div>
-                                                                <div class="select-dropdown" style="display:none;"></div>
-                                                            </div>
-                                                        </div>
+                                                    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom: 10px;">
+                                                        <div style="font-size: 12px; font-weight: 700; color: #334155;">首次到末次留资渠道</div>
                                                     </div>
-                                                    <div id="channelJourneyList" data-anno="channel-touch-channel-journey" style="display:flex; flex-direction:column; gap:8px;"></div>
+                                                    <div data-anno="channel-touch-channel-journey" style="display:flex; min-height: 118px; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:18px 0;text-align:center;font-size:12px;color:#64748b;">
+                                                        <div style="font-size:13px; font-weight:600; color:#64748b;">分析首次留资渠道到末次留资渠道的流向</div>
+                                                        <button onclick="openJourneySankey('channel')" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; min-width:150px; height:36px; padding:0 18px; border:1px solid #1d4ed8; border-radius:6px; background:#2563eb; color:#fff; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 8px 18px rgba(37,99,235,0.22);">
+                                                            查看桑基图 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;" data-anno="channel-touch-channel-overlap">
                                                     <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 4px;">渠道留资重合度分析-渠道数量</div>
@@ -2134,34 +2127,15 @@
                                                     </div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 2;">
-                                                    <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">首次到末次留资媒体</div>
-                                                    <div style="display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-bottom:10px;">
-                                                        <label style="font-size:12px; color:#64748b;">首次留资媒体
-                                                            <div id="firstJourneyMedia" class="journey-search-select" style="margin-left:4px;">
-                                                                <div class="journey-search-control">
-                                                                    <input type="search" class="journey-search-input" placeholder="搜索媒体" autocomplete="off">
-                                                                    <i class="fa-solid fa-chevron-down"></i>
-                                                                </div>
-                                                                <div class="journey-search-dropdown" style="display:none;"></div>
-                                                            </div>
-                                                        </label>
-                                                        <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#64748b;">末次留资媒体
-                                                            <div id="lastJourneyMedia" class="journey-multi-select">
-                                                                <div class="select-header">
-                                                                    <span class="journey-media-text">全选 (11项)</span>
-                                                                    <i class="fa-solid fa-chevron-down"></i>
-                                                                </div>
-                                                                <div class="select-dropdown" style="display:none;">
-                                                                    <div class="journey-dropdown-search">
-                                                                        <i class="fa-solid fa-search"></i>
-                                                                        <input type="search" placeholder="搜索媒体" autocomplete="off">
-                                                                    </div>
-                                                                    <div class="journey-dropdown-options"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom: 10px;">
+                                                        <div style="font-size: 12px; font-weight: 700; color: #334155;">首次到末次留资媒体</div>
                                                     </div>
-                                                    <div id="mediaJourneyList" data-anno="channel-touch-media-journey" style="display:flex; flex-direction:column; gap:8px;"></div>
+                                                    <div data-anno="channel-touch-media-journey" style="display:flex; min-height: 118px; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:18px 0;text-align:center;font-size:12px;color:#64748b;">
+                                                        <div style="font-size:13px; font-weight:600; color:#64748b;">分析首次留资媒体到末次留资媒体的流向</div>
+                                                        <button onclick="openJourneySankey('media')" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; min-width:150px; height:36px; padding:0 18px; border:1px solid #1d4ed8; border-radius:6px; background:#2563eb; color:#fff; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 8px 18px rgba(37,99,235,0.22);">
+                                                            查看桑基图 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px; order: 1;" data-anno="channel-touch-media-overlap">
                                                     <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 4px;">媒体留资重合度分析-媒体数量</div>
@@ -2227,28 +2201,15 @@
                                                         <div style="display:flex; align-items:center; gap:8px;"><span style="width:86px; font-size:12px;">5 个及以上</span><div style="flex:1;height:16px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:4%;height:100%;background:#bfdbfe;"></div></div><span style="width:82px;text-align:right;font-size:11px;color:#64748b;">493条 · 4%</span></div>
                                                     </div>
                                                 </div>
-                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;" data-anno="channel-touch-first-deal-store">
-                                                    <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px;">
+                                                <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 18px 20px;" data-anno="channel-touch-first-deal-store">
+                                                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;">
                                                         <div style="font-size: 12px; font-weight: 700; color: #334155;">首触-成交专营店</div>
-                                                        <div style="display:flex; gap:6px;">
-                                                            <button class="store-analysis-query-btn" onclick="queryFirstTouchDealStoreAnalysis()">查询</button>
-                                                            <button class="store-analysis-reset-btn" onclick="resetFirstTouchDealStoreAnalysis()">重置</button>
-                                                        </div>
                                                     </div>
-                                                    <div style="display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center; margin-bottom:10px;">
-                                                        <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#64748b;">首触专营店
-                                                            <button class="store-filter-trigger store-analysis-trigger" onclick="openStoreFilterModal(this)" data-store-filter-mode="firstTouch" data-store-text="请选择门店">
-                                                                <i class="fa-solid fa-store"></i> <span>请选择门店</span> <i class="fa-solid fa-chevron-down"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div style="display:flex; align-items:center; gap:4px; font-size:12px; color:#64748b;">成交专营店
-                                                            <button class="store-filter-trigger store-analysis-trigger" onclick="openStoreFilterModal(this)" data-store-filter-mode="deal" data-store-text="请选择门店">
-                                                                <i class="fa-solid fa-store"></i> <span>请选择门店</span> <i class="fa-solid fa-chevron-down"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div id="firstTouchDealStoreList" style="display:flex; flex-direction:column; gap:8px;">
-                                                        <div style="padding:16px 0;text-align:center;font-size:12px;color:#94a3b8;">请选择门店进行分析</div>
+                                                    <div id="firstTouchDealStoreList" style="display:flex; min-height:118px; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:18px 0;text-align:center;font-size:12px;color:#64748b;">
+                                                        <div style="font-size:13px; font-weight:600; color:#64748b;">分析首触专营店到成交专营店的流向</div>
+                                                        <button onclick="openFirstTouchDealStoreSankey()" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; min-width:150px; height:36px; padding:0 18px; border:1px solid #1d4ed8; border-radius:6px; background:#2563eb; color:#fff; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 8px 18px rgba(37,99,235,0.22);">
+                                                            查看桑基图 <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2258,7 +2219,7 @@
                                         <div style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 12px;">频率和更新</div>
                                         <div>
                                             <div style="border: 1px solid #e5e7eb; border-radius: 8px; padding: 12px;" data-anno="channel-touch-frequency">
-                                                <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">留资次数</div>
+                                                <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 10px;">留资频次与转换表现</div>
                                                 <div style="display:flex; flex-direction:column; gap:8px;">
                                                     <div style="display:flex; align-items:center; gap:10px;"><span style="width:90px;font-size:12px;">1次-首次留资</span><div style="flex:1;height:18px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:52%;height:100%;background:#f97316;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">6,420条 · 52%</span></div>
                                                     <div style="display:flex; align-items:center; gap:10px;"><span style="width:90px;font-size:12px;">2次-二次留资</span><div style="flex:1;height:18px;background:#f1f5f9;border-radius:4px;overflow:hidden;"><div style="width:24%;height:100%;background:#fb923c;"></div></div><span style="width:76px;text-align:right;font-size:11px;color:#64748b;">2,963条 · 24%</span></div>
@@ -2623,7 +2584,7 @@
 
                                     <div id="headquartersFollowPanel" class="follow-process-panel active">
                                         <div class="follow-analysis-grid">
-                                            <div class="follow-analysis-card">
+                                            <div class="follow-analysis-card follow-card-return">
                                                 <div class="follow-analysis-title" data-anno="cultivation-follow-return">回访线索</div>
                                                 <div class="follow-pie-split">
                                                     <div class="follow-pie-visual">
@@ -2642,94 +2603,97 @@
                                                 </div>
                                             </div>
 
-                                            <div class="follow-analysis-card follow-analysis-card-wide">
+                                            <div class="follow-analysis-card follow-analysis-card-wide follow-card-call">
                                                 <div class="follow-analysis-title" data-anno="cultivation-follow-call">呼叫线索</div>
                                                 <div class="follow-bar-charts">
-                                                    <div class="follow-mini-chart">
-                                                        <strong>呼叫次数</strong>
-                                                        <div class="follow-bars">
-                                                            <div class="follow-bar-item"><span>1次</span><div><i style="width: 28%;"></i></div><em>3,198条 · 28%</em></div>
-                                                            <div class="follow-bar-item"><span>2次</span><div><i style="width: 30%;"></i></div><em>3,426条 · 30%</em></div>
-                                                            <div class="follow-bar-item"><span>3次</span><div><i style="width: 22%;"></i></div><em>2,512条 · 22%</em></div>
-                                                            <div class="follow-bar-item"><span>4次</span><div><i style="width: 12%;"></i></div><em>1,370条 · 12%</em></div>
-                                                            <div class="follow-bar-item"><span>5次以上</span><div><i style="width: 8%;"></i></div><em>914条 · 8%</em></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="follow-mini-chart">
-                                                        <strong>通话时长</strong>
-                                                        <div class="follow-bars">
-                                                            <div class="follow-bar-item"><span>10s</span><div><i style="width: 14%;"></i></div><em>1,599条 · 14%</em></div>
-                                                            <div class="follow-bar-item"><span>20s</span><div><i style="width: 22%;"></i></div><em>2,512条 · 22%</em></div>
-                                                            <div class="follow-bar-item"><span>40s</span><div><i style="width: 34%;"></i></div><em>3,883条 · 34%</em></div>
-                                                            <div class="follow-bar-item"><span>60s</span><div><i style="width: 20%;"></i></div><em>2,284条 · 20%</em></div>
-                                                            <div class="follow-bar-item"><span>80s以上</span><div><i style="width: 10%;"></i></div><em>1,142条 · 10%</em></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="follow-mini-chart" style="grid-column: 1 / -1;">
-                                                        <strong>呼叫时段（含接通率）</strong>
-                                                        <div style="display: flex; gap: 12px;">
-                                                            <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item follow-call-time-item"><span>9点</span><div><i style="width: 56%;"></i></div><em>1,028条 · 9% · 接通率 68%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>10点</span><div><i style="width: 81%;"></i></div><em>1,485条 · 13% · 接通率 72%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>11点</span><div><i style="width: 94%;"></i></div><em>1,713条 · 15% · 接通率 76%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>12点</span><div><i style="width: 69%;"></i></div><em>1,256条 · 11% · 接通率 70%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>1,827条 · 16% · 接通率 78%</em></div>
+                                                    <div class="follow-mini-chart follow-data-mode follow-call-combo" style="grid-column: 1 / -1;">
+                                                        <div class="follow-call-combo-section">
+                                                            <strong>呼叫次数</strong>
+                                                            <div class="follow-mini-meta">呼叫线索 11,420条 · 呼叫 28,760次 · 人均 2.5次</div>
+                                                            <div class="follow-bars">
+                                                                <div class="follow-bar-item"><span>1次</span><div><i style="width: 28%;"></i></div><em>线索 3,198条 · 呼叫 3,198次 · 28%</em></div>
+                                                                <div class="follow-bar-item"><span>2次</span><div><i style="width: 30%;"></i></div><em>线索 3,426条 · 呼叫 6,852次 · 30%</em></div>
+                                                                <div class="follow-bar-item"><span>3次</span><div><i style="width: 22%;"></i></div><em>线索 2,512条 · 呼叫 7,536次 · 22%</em></div>
+                                                                <div class="follow-bar-item"><span>4次</span><div><i style="width: 12%;"></i></div><em>线索 1,370条 · 呼叫 5,480次 · 12%</em></div>
+                                                                <div class="follow-bar-item"><span>5次以上</span><div><i style="width: 8%;"></i></div><em>线索 914条 · 呼叫 5,694次 · 8%</em></div>
                                                             </div>
-                                                            <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item follow-call-time-item"><span>16点</span><div><i style="width: 88%;"></i></div><em>1,599条 · 14% · 接通率 79%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>17点</span><div><i style="width: 63%;"></i></div><em>1,142条 · 10% · 接通率 74%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>18点</span><div><i style="width: 37%;"></i></div><em>685条 · 6% · 接通率 69%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>19点</span><div><i style="width: 25%;"></i></div><em>457条 · 4% · 接通率 63%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>20点</span><div><i style="width: 13%;"></i></div><em>229条 · 2% · 接通率 58%</em></div>
+                                                        </div>
+                                                        <div class="follow-call-combo-section">
+                                                            <strong>通话时长</strong>
+                                                            <div class="follow-mini-meta">呼叫线索 11,420条 · 呼叫 28,760次</div>
+                                                            <div class="follow-bars">
+                                                                <div class="follow-bar-item"><span>10s</span><div><i style="width: 14%;"></i></div><em>线索 1,210条 · 呼叫 1,599次 · 14%</em></div>
+                                                                <div class="follow-bar-item"><span>20s</span><div><i style="width: 22%;"></i></div><em>线索 1,886条 · 呼叫 2,512次 · 22%</em></div>
+                                                                <div class="follow-bar-item"><span>40s</span><div><i style="width: 34%;"></i></div><em>线索 2,706条 · 呼叫 3,883次 · 34%</em></div>
+                                                                <div class="follow-bar-item"><span>60s</span><div><i style="width: 20%;"></i></div><em>线索 1,782条 · 呼叫 2,284次 · 20%</em></div>
+                                                                <div class="follow-bar-item"><span>80s以上</span><div><i style="width: 10%;"></i></div><em>线索 936条 · 呼叫 1,142次 · 10%</em></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="follow-call-combo-section follow-call-period-section">
+                                                            <strong>呼叫时段（含接通率）</strong>
+                                                            <div class="follow-mini-meta">呼叫线索 11,420条 · 呼叫 28,760次 · 通话接通率 49.7%</div>
+                                                            <div class="follow-bars follow-period-grid">
+                                                                <div class="follow-bar-item follow-call-time-item"><span>9点</span><div><i style="width: 56%;"></i></div><em>线索 742条 · 呼叫 1,028次 · 9% · 接通率 68%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>10点</span><div><i style="width: 81%;"></i></div><em>线索 1,015条 · 呼叫 1,485次 · 13% · 接通率 72%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>11点</span><div><i style="width: 94%;"></i></div><em>线索 1,184条 · 呼叫 1,713次 · 15% · 接通率 76%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>12点</span><div><i style="width: 69%;"></i></div><em>线索 869条 · 呼叫 1,256次 · 11% · 接通率 70%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>线索 1,263条 · 呼叫 1,827次 · 16% · 接通率 78%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>16点</span><div><i style="width: 88%;"></i></div><em>线索 1,128条 · 呼叫 1,599次 · 14% · 接通率 79%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>17点</span><div><i style="width: 63%;"></i></div><em>线索 806条 · 呼叫 1,142次 · 10% · 接通率 74%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>18点</span><div><i style="width: 37%;"></i></div><em>线索 491条 · 呼叫 685次 · 6% · 接通率 69%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>19点</span><div><i style="width: 25%;"></i></div><em>线索 318条 · 呼叫 457次 · 4% · 接通率 63%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>20点</span><div><i style="width: 13%;"></i></div><em>线索 151条 · 呼叫 229次 · 2% · 接通率 58%</em></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="follow-analysis-card follow-analysis-card-wide">
+                                            <div class="follow-analysis-card follow-analysis-card-wide follow-card-connected">
                                                 <div class="follow-analysis-title" data-anno="cultivation-follow-connected">接通线索</div>
                                                 <div class="follow-bar-charts follow-bar-charts-two">
-                                                    <div class="follow-mini-chart">
+                                                    <div class="follow-mini-chart follow-data-mode">
                                                         <strong>接通次数</strong>
+                                                        <div class="follow-mini-meta">接通线索 8,055条 · 接通 14,280次 · 呼叫 28,760次 · 线索接通率 70.5%</div>
                                                         <div class="follow-bars">
-                                                            <div class="follow-bar-item"><span>1次</span><div><i style="width: 42%;"></i></div><em>3,226条 · 42%</em></div>
-                                                            <div class="follow-bar-item"><span>2次</span><div><i style="width: 25%;"></i></div><em>1,920条 · 25%</em></div>
-                                                            <div class="follow-bar-item"><span>3次</span><div><i style="width: 17%;"></i></div><em>1,306条 · 17%</em></div>
-                                                            <div class="follow-bar-item"><span>4次</span><div><i style="width: 10%;"></i></div><em>1,142条 · 10%</em></div>
-                                                            <div class="follow-bar-item"><span>5次以上</span><div><i style="width: 6%;"></i></div><em>461条 · 6%</em></div>
+                                                            <div class="follow-bar-item"><span>1次</span><div><i style="width: 42%;"></i></div><em>线索3,226条 · 接通3,226次 · 呼叫4,575次 · 42%</em></div>
+                                                            <div class="follow-bar-item"><span>2次</span><div><i style="width: 25%;"></i></div><em>线索1,920条 · 接通3,840次 · 呼叫5,485次 · 25%</em></div>
+                                                            <div class="follow-bar-item"><span>3次</span><div><i style="width: 17%;"></i></div><em>线索1,306条 · 接通3,918次 · 呼叫5,596次 · 17%</em></div>
+                                                            <div class="follow-bar-item"><span>4次</span><div><i style="width: 10%;"></i></div><em>线索1,142条 · 接通4,568次 · 呼叫6,526次 · 10%</em></div>
+                                                            <div class="follow-bar-item"><span>5次以上</span><div><i style="width: 6%;"></i></div><em>线索461条 · 接通2,728次 · 呼叫6,578次 · 6%</em></div>
                                                         </div>
                                                     </div>
-                                                    <div class="follow-mini-chart">
+                                                    <div class="follow-mini-chart follow-data-mode follow-connected-period">
                                                         <strong>接通时段</strong>
-                                                        <div style="display: flex; gap: 12px;">
+                                                        <div class="follow-mini-meta">接通线索 8,055条 · 接通 14,280次 · 呼叫 28,760次</div>
+                                                        <div class="follow-connected-period-columns">
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>9点</span><div><i style="width: 54%;"></i></div><em>614条 · 8%</em></div>
-                                                                <div class="follow-bar-item"><span>10点</span><div><i style="width: 67%;"></i></div><em>768条 · 10%</em></div>
-                                                                <div class="follow-bar-item"><span>11点</span><div><i style="width: 80%;"></i></div><em>922条 · 12%</em></div>
-                                                                <div class="follow-bar-item"><span>12点</span><div><i style="width: 60%;"></i></div><em>691条 · 9%</em></div>
-                                                                <div class="follow-bar-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>1,152条 · 15%</em></div>
+                                                                <div class="follow-bar-item"><span>9点</span><div><i style="width: 54%;"></i></div><em>接通614次 · 呼叫1,028次 · 8%</em></div>
+                                                                <div class="follow-bar-item"><span>10点</span><div><i style="width: 67%;"></i></div><em>接通768次 · 呼叫1,485次 · 10%</em></div>
+                                                                <div class="follow-bar-item"><span>11点</span><div><i style="width: 80%;"></i></div><em>接通922次 · 呼叫1,713次 · 12%</em></div>
+                                                                <div class="follow-bar-item"><span>12点</span><div><i style="width: 60%;"></i></div><em>接通691次 · 呼叫1,256次 · 9%</em></div>
+                                                                <div class="follow-bar-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>接通1,152次 · 呼叫1,827次 · 15%</em></div>
                                                             </div>
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>16点</span><div><i style="width: 93%;"></i></div><em>1,075条 · 14%</em></div>
-                                                                <div class="follow-bar-item"><span>17点</span><div><i style="width: 73%;"></i></div><em>845条 · 11%</em></div>
-                                                                <div class="follow-bar-item"><span>18点</span><div><i style="width: 47%;"></i></div><em>538条 · 7%</em></div>
-                                                                <div class="follow-bar-item"><span>19点</span><div><i style="width: 33%;"></i></div><em>384条 · 5%</em></div>
-                                                                <div class="follow-bar-item"><span>20点</span><div><i style="width: 20%;"></i></div><em>230条 · 3%</em></div>
+                                                                <div class="follow-bar-item"><span>16点</span><div><i style="width: 93%;"></i></div><em>接通1,075次 · 呼叫1,599次 · 14%</em></div>
+                                                                <div class="follow-bar-item"><span>17点</span><div><i style="width: 73%;"></i></div><em>接通845次 · 呼叫1,142次 · 11%</em></div>
+                                                                <div class="follow-bar-item"><span>18点</span><div><i style="width: 47%;"></i></div><em>接通538次 · 呼叫685次 · 7%</em></div>
+                                                                <div class="follow-bar-item"><span>19点</span><div><i style="width: 33%;"></i></div><em>接通384次 · 呼叫457次 · 5%</em></div>
+                                                                <div class="follow-bar-item"><span>20点</span><div><i style="width: 20%;"></i></div><em>接通230次 · 呼叫329次 · 3%</em></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="follow-analysis-card">
-                                                <div class="follow-analysis-title" data-anno="cultivation-follow-delivery">激活下发线索</div>
+                                            <div class="follow-analysis-card follow-card-delivery">
+                                                <div class="follow-analysis-title" data-anno="cultivation-follow-delivery">下发线索</div>
                                                 <div class="follow-pie-split">
                                                     <div class="follow-pie-visual">
                                                         <div class="follow-pie-chart" style="background: conic-gradient(#b91c1c 0 9.7%, #ef4444 9.7% 19.4%, #fb7185 19.4% 28%, #f59e0b 28% 39.8%, #3b82f6 39.8% 50.5%, #14b8a6 50.5% 60.2%, #67e8f9 60.2% 68.8%, #8b5cf6 68.8% 80.6%, #ec4899 80.6% 90.3%, #84cc16 90.3% 100%);">
                                                             <span>4,884</span>
                                                         </div>
-                                                        <div class="follow-pie-total">激活下发总数</div>
+                                                        <div class="follow-pie-total">下发总数</div>
                                                     </div>
                                                     <div class="follow-pie-legend follow-pie-legend-compact">
                                                         <div class="follow-legend-row"><i style="background:#b91c1c;"></i><span>H-试驾排程单</span><strong>472条</strong><em>9.7%</em></div>
@@ -2750,9 +2714,9 @@
 
                                     <div id="storeFollowPanel" class="follow-process-panel">
                                         <div class="store-follow-analysis-grid">
-                                            <div class="follow-analysis-card">
+                                            <div class="follow-analysis-card store-card-follow">
                                                 <div class="follow-analysis-title">线索跟进</div>
-                                                <div class="follow-bar-charts">
+                                                <div class="follow-bar-charts store-follow-triple">
                                                     <div class="follow-mini-chart">
                                                         <strong>跟进次数</strong>
                                                         <div class="follow-bars">
@@ -2770,7 +2734,7 @@
                                                             <div class="follow-bar-item"><span>超时</span><div><i style="width: 24%;"></i></div><em>1,642条 · 24%</em></div>
                                                         </div>
                                                     </div>
-                                                    <div class="follow-mini-chart" style="grid-column: 1 / -1;">
+                                                    <div class="follow-mini-chart">
                                                         <strong>平均跟进间隔</strong>
                                                         <div class="follow-bars">
                                                             <div class="follow-bar-item"><span>0-5min</span><div><i style="width: 38%;"></i></div><em>2,599条 · 38%</em></div>
@@ -2783,80 +2747,83 @@
                                                 </div>
                                             </div>
 
-                                            <div class="follow-analysis-card">
+                                            <div class="follow-analysis-card store-card-call">
                                                 <div class="follow-analysis-title">呼叫线索</div>
                                                 <div class="follow-bar-charts">
-                                                    <div class="follow-mini-chart">
-                                                        <strong>呼叫次数</strong>
-                                                        <div class="follow-bars">
-                                                            <div class="follow-bar-item"><span>1次</span><div><i style="width: 24%;"></i></div><em>2,246条 · 24%</em></div>
-                                                            <div class="follow-bar-item"><span>2次</span><div><i style="width: 30%;"></i></div><em>2,808条 · 30%</em></div>
-                                                            <div class="follow-bar-item"><span>3次</span><div><i style="width: 24%;"></i></div><em>2,246条 · 24%</em></div>
-                                                            <div class="follow-bar-item"><span>4次</span><div><i style="width: 14%;"></i></div><em>1,310条 · 14%</em></div>
-                                                            <div class="follow-bar-item"><span>5次以上</span><div><i style="width: 8%;"></i></div><em>749条 · 8%</em></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="follow-mini-chart">
-                                                        <strong>通话时长</strong>
-                                                        <div class="follow-bars">
-                                                            <div class="follow-bar-item"><span>10s</span><div><i style="width: 16%;"></i></div><em>1,498条 · 16%</em></div>
-                                                            <div class="follow-bar-item"><span>20s</span><div><i style="width: 24%;"></i></div><em>2,246条 · 24%</em></div>
-                                                            <div class="follow-bar-item"><span>40s</span><div><i style="width: 32%;"></i></div><em>2,995条 · 32%</em></div>
-                                                            <div class="follow-bar-item"><span>60s</span><div><i style="width: 18%;"></i></div><em>1,685条 · 18%</em></div>
-                                                            <div class="follow-bar-item"><span>80s以上</span><div><i style="width: 10%;"></i></div><em>936条 · 10%</em></div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="follow-mini-chart" style="grid-column: 1 / -1;">
-                                                        <strong>呼叫时段（含接通率）</strong>
-                                                        <div style="display: flex; gap: 12px;">
-                                                            <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item follow-call-time-item"><span>9点</span><div><i style="width: 53%;"></i></div><em>842条 · 9% · 接通率 65%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>10点</span><div><i style="width: 71%;"></i></div><em>1,123条 · 12% · 接通率 69%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>11点</span><div><i style="width: 82%;"></i></div><em>1,310条 · 14% · 接通率 73%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>12点</span><div><i style="width: 65%;"></i></div><em>1,030条 · 11% · 接通率 68%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>1,591条 · 17% · 接通率 75%</em></div>
+                                                    <div class="follow-mini-chart follow-data-mode follow-call-combo" style="grid-column: 1 / -1;">
+                                                        <div class="follow-call-combo-section">
+                                                            <strong>呼叫次数</strong>
+                                                            <div class="follow-mini-meta">呼叫线索 9,359条 · 呼叫 22,840次 · 人均 2.4次</div>
+                                                            <div class="follow-bars">
+                                                                <div class="follow-bar-item"><span>1次</span><div><i style="width: 24%;"></i></div><em>线索 2,246条 · 呼叫 2,246次 · 24%</em></div>
+                                                                <div class="follow-bar-item"><span>2次</span><div><i style="width: 30%;"></i></div><em>线索 2,808条 · 呼叫 5,616次 · 30%</em></div>
+                                                                <div class="follow-bar-item"><span>3次</span><div><i style="width: 24%;"></i></div><em>线索 2,246条 · 呼叫 6,738次 · 24%</em></div>
+                                                                <div class="follow-bar-item"><span>4次</span><div><i style="width: 14%;"></i></div><em>线索 1,310条 · 呼叫 5,240次 · 14%</em></div>
+                                                                <div class="follow-bar-item"><span>5次以上</span><div><i style="width: 8%;"></i></div><em>线索 749条 · 呼叫 3,000次 · 8%</em></div>
                                                             </div>
-                                                            <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item follow-call-time-item"><span>16点</span><div><i style="width: 88%;"></i></div><em>1,404条 · 15% · 接通率 77%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>17点</span><div><i style="width: 65%;"></i></div><em>1,030条 · 11% · 接通率 72%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>18点</span><div><i style="width: 35%;"></i></div><em>562条 · 6% · 接通率 67%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>19点</span><div><i style="width: 18%;"></i></div><em>281条 · 3% · 接通率 61%</em></div>
-                                                                <div class="follow-bar-item follow-call-time-item"><span>20点</span><div><i style="width: 12%;"></i></div><em>187条 · 2% · 接通率 56%</em></div>
+                                                        </div>
+                                                        <div class="follow-call-combo-section">
+                                                            <strong>通话时长</strong>
+                                                            <div class="follow-mini-meta">呼叫线索 9,359条 · 呼叫 22,840次</div>
+                                                            <div class="follow-bars">
+                                                                <div class="follow-bar-item"><span>10s</span><div><i style="width: 16%;"></i></div><em>线索 1,118条 · 呼叫 1,498次 · 16%</em></div>
+                                                                <div class="follow-bar-item"><span>20s</span><div><i style="width: 24%;"></i></div><em>线索 1,684条 · 呼叫 2,246次 · 24%</em></div>
+                                                                <div class="follow-bar-item"><span>40s</span><div><i style="width: 32%;"></i></div><em>线索 2,153条 · 呼叫 2,995次 · 32%</em></div>
+                                                                <div class="follow-bar-item"><span>60s</span><div><i style="width: 18%;"></i></div><em>线索 1,236条 · 呼叫 1,685次 · 18%</em></div>
+                                                                <div class="follow-bar-item"><span>80s以上</span><div><i style="width: 10%;"></i></div><em>线索 702条 · 呼叫 936次 · 10%</em></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="follow-call-combo-section follow-call-period-section">
+                                                            <strong>呼叫时段（含接通率）</strong>
+                                                            <div class="follow-mini-meta">呼叫线索 9,359条 · 呼叫 22,840次 · 通话接通率 46.6%</div>
+                                                            <div class="follow-bars follow-period-grid">
+                                                                <div class="follow-bar-item follow-call-time-item"><span>9点</span><div><i style="width: 53%;"></i></div><em>线索 612条 · 呼叫 842次 · 9% · 接通率 65%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>10点</span><div><i style="width: 71%;"></i></div><em>线索 812条 · 呼叫 1,123次 · 12% · 接通率 69%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>11点</span><div><i style="width: 82%;"></i></div><em>线索 948条 · 呼叫 1,310次 · 14% · 接通率 73%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>12点</span><div><i style="width: 65%;"></i></div><em>线索 746条 · 呼叫 1,030次 · 11% · 接通率 68%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>线索 1,112条 · 呼叫 1,591次 · 17% · 接通率 75%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>16点</span><div><i style="width: 88%;"></i></div><em>线索 985条 · 呼叫 1,404次 · 15% · 接通率 77%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>17点</span><div><i style="width: 65%;"></i></div><em>线索 725条 · 呼叫 1,030次 · 11% · 接通率 72%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>18点</span><div><i style="width: 35%;"></i></div><em>线索 394条 · 呼叫 562次 · 6% · 接通率 67%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>19点</span><div><i style="width: 18%;"></i></div><em>线索 196条 · 呼叫 281次 · 3% · 接通率 61%</em></div>
+                                                                <div class="follow-bar-item follow-call-time-item"><span>20点</span><div><i style="width: 12%;"></i></div><em>线索 128条 · 呼叫 187次 · 2% · 接通率 56%</em></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div class="follow-analysis-card">
+                                            <div class="follow-analysis-card store-card-connected">
                                                 <div class="follow-analysis-title">接通线索</div>
                                                 <div class="follow-bar-charts follow-bar-charts-two">
-                                                    <div class="follow-mini-chart">
+                                                    <div class="follow-mini-chart follow-data-mode">
                                                         <strong>接通次数</strong>
+                                                        <div class="follow-mini-meta">接通线索 6,120条 · 接通 10,640次 · 呼叫 22,840次 · 线索接通率 65.4%</div>
                                                         <div class="follow-bars">
-                                                            <div class="follow-bar-item"><span>1次</span><div><i style="width: 39%;"></i></div><em>2,387条 · 39%</em></div>
-                                                            <div class="follow-bar-item"><span>2次</span><div><i style="width: 27%;"></i></div><em>1,652条 · 27%</em></div>
-                                                            <div class="follow-bar-item"><span>3次</span><div><i style="width: 18%;"></i></div><em>1,102条 · 18%</em></div>
-                                                            <div class="follow-bar-item"><span>4次</span><div><i style="width: 10%;"></i></div><em>612条 · 10%</em></div>
-                                                            <div class="follow-bar-item"><span>5次以上</span><div><i style="width: 6%;"></i></div><em>367条 · 6%</em></div>
+                                                            <div class="follow-bar-item"><span>1次</span><div><i style="width: 39%;"></i></div><em>线索2,387条 · 接通2,387次 · 呼叫3,685次 · 39%</em></div>
+                                                            <div class="follow-bar-item"><span>2次</span><div><i style="width: 27%;"></i></div><em>线索1,652条 · 接通3,304次 · 呼叫5,028次 · 27%</em></div>
+                                                            <div class="follow-bar-item"><span>3次</span><div><i style="width: 18%;"></i></div><em>线索1,102条 · 接通3,306次 · 呼叫5,148次 · 18%</em></div>
+                                                            <div class="follow-bar-item"><span>4次</span><div><i style="width: 10%;"></i></div><em>线索612条 · 接通2,448次 · 呼叫4,023次 · 10%</em></div>
+                                                            <div class="follow-bar-item"><span>5次以上</span><div><i style="width: 6%;"></i></div><em>线索367条 · 接通1,195次 · 呼叫4,956次 · 6%</em></div>
                                                         </div>
                                                     </div>
-                                                    <div class="follow-mini-chart">
+                                                    <div class="follow-mini-chart follow-data-mode follow-connected-period">
                                                         <strong>接通时段</strong>
-                                                        <div style="display: flex; gap: 12px;">
+                                                        <div class="follow-mini-meta">接通线索 6,120条 · 接通 10,640次 · 呼叫 22,840次</div>
+                                                        <div class="follow-connected-period-columns">
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>9点</span><div><i style="width: 53%;"></i></div><em>428条 · 7%</em></div>
-                                                                <div class="follow-bar-item"><span>10点</span><div><i style="width: 69%;"></i></div><em>551条 · 9%</em></div>
-                                                                <div class="follow-bar-item"><span>11点</span><div><i style="width: 85%;"></i></div><em>673条 · 11%</em></div>
-                                                                <div class="follow-bar-item"><span>12点</span><div><i style="width: 62%;"></i></div><em>489条 · 8%</em></div>
-                                                                <div class="follow-bar-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>796条 · 13%</em></div>
+                                                                <div class="follow-bar-item"><span>9点</span><div><i style="width: 53%;"></i></div><em>接通428次 · 呼叫842次 · 7%</em></div>
+                                                                <div class="follow-bar-item"><span>10点</span><div><i style="width: 69%;"></i></div><em>接通551次 · 呼叫1,123次 · 9%</em></div>
+                                                                <div class="follow-bar-item"><span>11点</span><div><i style="width: 85%;"></i></div><em>接通673次 · 呼叫1,310次 · 11%</em></div>
+                                                                <div class="follow-bar-item"><span>12点</span><div><i style="width: 62%;"></i></div><em>接通489次 · 呼叫1,030次 · 8%</em></div>
+                                                                <div class="follow-bar-item"><span>15点</span><div><i style="width: 100%;"></i></div><em>接通796次 · 呼叫1,591次 · 13%</em></div>
                                                             </div>
                                                             <div class="follow-bars" style="flex: 1;">
-                                                                <div class="follow-bar-item"><span>16点</span><div><i style="width: 92%;"></i></div><em>734条 · 12%</em></div>
-                                                                <div class="follow-bar-item"><span>17点</span><div><i style="width: 77%;"></i></div><em>612条 · 10%</em></div>
-                                                                <div class="follow-bar-item"><span>18点</span><div><i style="width: 54%;"></i></div><em>428条 · 7%</em></div>
-                                                                <div class="follow-bar-item"><span>19点</span><div><i style="width: 38%;"></i></div><em>306条 · 5%</em></div>
-                                                                <div class="follow-bar-item"><span>20点</span><div><i style="width: 23%;"></i></div><em>184条 · 3%</em></div>
+                                                                <div class="follow-bar-item"><span>16点</span><div><i style="width: 92%;"></i></div><em>接通734次 · 呼叫1,404次 · 12%</em></div>
+                                                                <div class="follow-bar-item"><span>17点</span><div><i style="width: 77%;"></i></div><em>接通612次 · 呼叫1,030次 · 10%</em></div>
+                                                                <div class="follow-bar-item"><span>18点</span><div><i style="width: 54%;"></i></div><em>接通428次 · 呼叫562次 · 7%</em></div>
+                                                                <div class="follow-bar-item"><span>19点</span><div><i style="width: 38%;"></i></div><em>接通306次 · 呼叫381次 · 5%</em></div>
+                                                                <div class="follow-bar-item"><span>20点</span><div><i style="width: 23%;"></i></div><em>接通184次 · 呼叫187次 · 3%</em></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -3094,16 +3061,16 @@
                                     </div>
                                 </div>
 
-                                <!-- 4. 回访结果分析 -->
+                                <!-- 4. 战败、休眠原因分析 -->
                                 <div class="cultivation-section-header">
                                     <i class="fa-solid fa-shield-halved"></i>
-                                    回访结果分析
+                                    战败、休眠原因分析
                                 </div>
                                 <div style="display: flex; gap: 20px; align-items: flex-start;">
-                                    <!-- 回访结果分析 -->
+                                    <!-- 战败、休眠原因分析 -->
                                     <div class="content-card" style="flex: 1; margin-bottom: 0;">
                                         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                                            <h3 class="card-title" data-anno="cultivation-return-result">回访结果分析</h3>
+                                            <h3 class="card-title" data-anno="cultivation-return-result">战败、休眠原因分析</h3>
                                             <button class="text-link-btn" onclick="openFullRanking('resistance')" style="font-size: 11px; color: var(--primary-color); border: none; background: none; cursor: pointer; padding: 0;">查看全部 <i class="fa-solid fa-angle-right"></i></button>
                                         </div>
                                         <div class="card-body" style="padding: 0; overflow: hidden;">
@@ -3506,7 +3473,7 @@
 
                             <!-- 已确认的用户画像维度；品牌倾向、门店竞争度待定，暂不展示 -->
                             <div class="insight-profile-grid">
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-residence">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-location-dot"></i> 常驻地</div><span class="insight-chart-note">城市 Top 20</span></div>
                                     <div class="card-body insight-bars">
                                         <div><span>广州</span><i><b style="width:86%"></b></i><strong>2,864人 · 23.2%</strong></div>
@@ -3520,7 +3487,7 @@
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-user-tag"></i> 用户类型</div><span class="insight-chart-note">保客 / 潜客</span></div>
                                     <div class="card-body insight-split"><div class="insight-ring" style="--ring:conic-gradient(#7c3aed 0 35%,#c4b5fd 35% 100%)"><b>12,345</b><small>用户</small></div><div class="insight-key"><span><i style="background:#7c3aed"></i>保客 <b>35%</b></span><span><i style="background:#c4b5fd"></i>潜客 <b>65%</b></span></div></div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-owned-series">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-car"></i> 现有车系</div><span class="insight-chart-note">具体车系名称</span></div>
                                     <div class="card-body insight-bars">
                                         <div><span>轩逸</span><i><b style="width:78%"></b></i><strong>2,716人 · 22%</strong></div>
@@ -3530,23 +3497,23 @@
                                         <div><span>其他车系</span><i><b style="width:32%"></b></i><strong>1,111人 · 9%</strong></div>
                                     </div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-lead-times">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-file-circle-plus"></i> 留资次数</div><span class="insight-chart-note">1、2、3、4、5次以上</span></div>
                                     <div class="card-body insight-columns"><div><span>5,185</span><b style="height:88%"></b><small>1次</small></div><div><span>3,210</span><b style="height:62%"></b><small>2次</small></div><div><span>1,852</span><b style="height:40%"></b><small>3次</small></div><div><span>1,111</span><b style="height:27%"></b><small>4次</small></div><div><span>987</span><b style="height:22%"></b><small>5次以上</small></div></div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-intention-level">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-signal"></i> 意向等级</div><span class="insight-chart-note">H/A/B/C/F/L/E</span></div>
                                     <div class="card-body insight-levels"><div><i style="width:16%;background:#ef4444"></i><i style="width:19%;background:#f59e0b"></i><i style="width:22%;background:#3b82f6"></i><i style="width:18%;background:#14b8a6"></i><i style="width:10%;background:#8b5cf6"></i><i style="width:9%;background:#ec4899"></i><i style="width:6%;background:#84cc16"></i></div><p>H 16%　A 19%　B 22%　C 18%　F 10%　L 9%　E 6%</p></div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-purchase-intent">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-cart-shopping"></i> 购车意向</div><span class="insight-chart-note">明确 / 考虑中 / 无意向</span></div>
                                     <div class="card-body insight-split"><div class="insight-ring" style="--ring:conic-gradient(#2563eb 0 38%,#60a5fa 38% 82%,#e2e8f0 82% 100%)"><b>12,345</b><small>用户</small></div><div class="insight-key"><span><i style="background:#2563eb"></i>明确 <b>38%</b></span><span><i style="background:#60a5fa"></i>考虑中 <b>44%</b></span><span><i style="background:#e2e8f0"></i>无意向 <b>18%</b></span></div></div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-car-probability">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-car-rear"></i> 有车概率</div><span class="insight-chart-note">用户数、占比</span></div>
                                     <div class="card-body insight-split"><div class="insight-ring" style="--ring:conic-gradient(#059669 0 62%,#d1fae5 62% 100%)"><b>62%</b><small>预测有车</small></div><div class="insight-key"><span><i style="background:#059669"></i>有车 <b>7,654人</b></span><span><i style="background:#d1fae5"></i>无车 <b>4,691人</b></span></div></div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-replacement-intent">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-arrow-right-arrow-left"></i> 置换意向</div><span class="insight-chart-note">置换 / 增购 / 新车</span></div>
                                     <div class="card-body insight-bars">
                                         <div><span>置换贷款</span><i><b style="width:72%"></b></i><strong>3,704人 · 30%</strong></div>
@@ -3556,15 +3523,15 @@
                                         <div><span>新车贷款</span><i><b style="width:31%"></b></i><strong>1,605人 · 13%</strong></div>
                                     </div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-budget">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-wallet"></i> 购车预算</div><span class="insight-chart-note">预算区间</span></div>
                                     <div class="card-body insight-columns insight-columns-six"><div><span>12%</span><b style="height:34%"></b><small>10万以下</small></div><div><span>31%</span><b style="height:85%"></b><small>10-15万</small></div><div><span>27%</span><b style="height:74%"></b><small>16-20万</small></div><div><span>16%</span><b style="height:46%"></b><small>21-25万</small></div><div><span>9%</span><b style="height:28%"></b><small>26-30万</small></div><div><span>5%</span><b style="height:17%"></b><small>30万以上</small></div></div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-function-preference">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-sliders"></i> 功能偏好</div><span class="insight-chart-note">用户数、占比</span></div>
                                     <div class="card-body insight-tags"><span>舒适性 58%</span><span>油耗 52%</span><span>智能驾驶 46%</span><span>空间 43%</span><span>动力 38%</span><span>外观 35%</span><span>内饰 31%</span><span>安全性 29%</span></div>
                                 </div>
-                                <div class="content-card insight-profile-card">
+                                <div class="content-card insight-profile-card" data-anno="insight-config-preference">
                                     <div class="card-header"><div class="card-title"><i class="fa-solid fa-gears"></i> 配置偏好</div><span class="insight-chart-note">用户数、占比</span></div>
                                     <div class="card-body insight-tags"><span>智驾 62%</span><span>安全 55%</span><span>操控 47%</span><span>舒适性 44%</span><span>智能座舱 39%</span><span>辅助驾驶 33%</span><span>影音娱乐 27%</span></div>
                                 </div>
@@ -4074,11 +4041,24 @@
         </div>
     </div>
 
+    <!-- 留资路径桑基图抽屉 -->
+    <div id="journeySankeyModal" class="drawer-overlay">
+        <div class="drawer-container sankey-drawer">
+            <div class="drawer-header">
+                <h3 class="drawer-title" id="journeySankeyModalTitle">路径桑基图</h3>
+                <button class="drawer-close" data-modal-id="journeySankeyModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="drawer-body sankey-drawer-body">
+                <div id="journeySankeyModalContent"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- 首触-成交专营店统计结果抽屉 -->
     <div id="firstTouchDealStoreModal" class="drawer-overlay">
         <div class="drawer-container store-result-drawer">
             <div class="drawer-header">
-                <h3 class="drawer-title">首触-成交专营店统计结果</h3>
+                <h3 class="drawer-title">首触-成交专营店桑基图</h3>
                 <button class="drawer-close" data-modal-id="firstTouchDealStoreModal"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="drawer-body store-result-drawer-body">
@@ -4198,10 +4178,10 @@
                     <tr><td class="def-term">首触-成交专营店排名 TOP10/全部</td><td>首次接触专营店与最终成交专营店的流转路径。指标：新增线索量、交车、占比（分母 = 新增线索量）、成交率。</td></tr>
                 </table>
 
-                <h4>频率和更新 — 留资次数</h4>
+                <h4>频率和更新 — 留资频次与转换表现</h4>
                 <table>
                     <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
-                    <tr><td class="def-term">留资次数</td><td>按线索编码留资次数分组统计。指标：新增线索量、交车、占比（分母 = 留资线索量）。</td></tr>
+                    <tr><td class="def-term">留资频次与转换表现</td><td>按线索编码留资次数分组统计。指标：新增线索量、交车、占比（分母 = 留资线索量）。</td></tr>
                 </table>
             </section>
 
@@ -4236,17 +4216,17 @@
                 <table>
                     <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
                     <tr><td class="def-term">回访线索</td><td>总部培育回访的线索量和占比。</td></tr>
-                    <tr><td class="def-term">呼叫线索</td><td>总部培育呼叫的线索量和占比，含接通率。</td></tr>
-                    <tr><td class="def-term">接通线索</td><td>总部培育接通的线索量和占比。</td></tr>
-                    <tr><td class="def-term">激活下发线索</td><td>总部培育激活下发的线索量和占比。</td></tr>
+                    <tr><td class="def-term">呼叫线索</td><td>总部培育发生过至少 1 次外呼的去重线索数；同时展示呼叫次数、单线索平均呼叫次数和线索呼叫率。</td></tr>
+                    <tr><td class="def-term">接通线索</td><td>总部培育外呼中发生过至少 1 次接通的去重线索数；同时展示接通次数、通话接通率（接通次数 ÷ 呼叫次数）和线索接通率（接通线索 ÷ 呼叫线索）。</td></tr>
+                    <tr><td class="def-term">下发线索</td><td>总部培育下发的线索量和占比。</td></tr>
                 </table>
 
                 <h4>门店虚拟号跟进过程</h4>
                 <table>
                     <tr><th style="width:220px;">指标名称</th><th>指标定义</th></tr>
                     <tr><td class="def-term">跟进线索</td><td>总部培育线索中，门店跟进的线索量和占比。</td></tr>
-                    <tr><td class="def-term">呼叫线索</td><td>总部培育线索中，门店呼叫的线索量和占比，含接通率。</td></tr>
-                    <tr><td class="def-term">接通线索</td><td>总部培育线索中，门店接通的线索量和占比。</td></tr>
+                    <tr><td class="def-term">呼叫线索</td><td>总部培育线索中，门店虚拟号发生过至少 1 次呼叫的去重线索数；同时展示门店虚拟号呼叫次数和单线索平均呼叫次数。</td></tr>
+                    <tr><td class="def-term">接通线索</td><td>总部培育线索中，门店虚拟号发生过至少 1 次接通的去重线索数；同时展示接通次数、通话接通率（接通次数 ÷ 呼叫次数）和线索接通率（接通线索 ÷ 呼叫线索）。</td></tr>
                 </table>
 
                 <h3>购车意向分布</h3>
@@ -4273,7 +4253,7 @@
                     <tr><td class="def-term">关注占比计算规则</td><td>每条线索对每个维度只判断是否关注。某维度关注占比 = 关注该维度的线索量 ÷ 有效线索量。排名按关注占比从高到低，不受子标签数量影响。</td></tr>
                 </table>
 
-                <h3>回访结果分析</h3>
+                <h3>战败、休眠原因分析</h3>
                 <p class="stats-danger">对象：有效、无效线索（线索级别 = H/A/B/C/F/L/无效号码）。</p>
                 <table>
                     <tr><th style="width:140px;">回访结果</th><th>原因</th><th>指标定义</th></tr>
@@ -4313,31 +4293,39 @@
                     <tr><td class="def-term">行为转化用户</td><td>发生到店、试驾、锁单或交车行为的去重用户数。</td><td>人</td></tr>
                 </table>
 
-                <h4>画像分布</h4>
+                <h4>用户基础</h4>
                 <table>
-                    <tr><th style="width:180px;">分析视角</th><th>定义</th></tr>
-                    <tr><td class="def-term">常驻地</td><td>按城市统计用户数和占比，默认展示 Top 20，并按占比降序排列。</td></tr>
-                    <tr><td class="def-term">现有车系与留资次数</td><td>按现有具体车系、留资次数分组统计用户数和占比。</td></tr>
-                    <tr><td class="def-term">意向与购车预测</td><td>按意向等级、购车意向、有车概率、置换意向和购车预算统计用户数和占比。</td></tr>
-                    <tr><td class="def-term">功能与配置偏好</td><td>按功能偏好和配置偏好标签统计用户数和占比，并按占比降序排列。</td></tr>
-                    <tr><td class="def-term">年龄购车分布</td><td>按年龄段统计用户数和占比。</td></tr>
-                    <tr><td class="def-term">品牌认知基础</td><td>按品牌认知程度统计用户数和占比，采用漏斗图展示。</td></tr>
-                    <tr><td class="def-term">收入与家庭构成</td><td>按收入水平、婚育及家庭结构标签统计用户画像。</td></tr>
-                    <tr><td class="def-term">用户类型与用车场景</td><td>按首购、增购、换购及通勤、家庭、商务等场景统计。</td></tr>
-                    <tr><td class="def-term">关注竞品</td><td>按用户关注的竞品品牌或车系统计人数和占比。</td></tr>
+                    <tr><th style="width:120px;">分类</th><th style="width:240px;">分析视角</th><th>统计说明</th></tr>
+                    <tr><td class="def-term" rowspan="17">用户基础</td><td class="def-term">常驻地</td><td>用户数、占比（分母是已接通用户数，下同）</td></tr>
+                    <tr><td class="def-term">用户类型</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">现有车系</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">留资次数</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">意向等级</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">购车意向</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">有车概率</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">置换意向</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">购车预算</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">功能偏好</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">配置偏好</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">年龄购车分布</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">品牌认知基础</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">收入水平构成</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">家庭构成分布</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">用车场景</td><td>用户数、占比</td></tr>
+                    <tr><td class="def-term">关注竞品</td><td>用户数、占比</td></tr>
                 </table>
             </section>
             </div>
         </div>
 
-    <script src="../js/pages/userinsight/stats.js?v=20260606-2"></script>
+    <script src="../js/pages/userinsight/stats.js?v=20260616-insight-stats"></script>
 
     <!-- 标注系统 -->
     <script>
-      window.AnnotationConfig = { page: "userinsight", revision: "20260608-value-logic" };
+      window.AnnotationConfig = { page: "userinsight", revision: "20260616-ads-source" };
     </script>
-    <script src="../annotations/annotations.js?v=20260608-lead-dimension"></script>
-    <script src="../annotations/annotation-runtime.js"></script>
+    <script src="../annotations/annotations.js?v=20260616-ads-source"></script>
+    <script src="../annotations/annotation-runtime.js?v=20260616-save-endpoint"></script>
 
 </body>
 

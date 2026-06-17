@@ -1024,7 +1024,7 @@
 
 .follow-analysis-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.24fr) minmax(0, 0.76fr);
     gap: 14px;
     align-items: stretch;
     margin-bottom: 16px;
@@ -1038,11 +1038,28 @@
     background: #fff;
 }
 
+.follow-card-return,
+.follow-card-call {
+    grid-column: 1 / -1;
+}
+
+.follow-card-connected,
+.follow-card-delivery {
+    grid-column: auto;
+}
+
 .follow-analysis-title {
     margin-bottom: 10px;
     color: #0f172a;
     font-size: 13px;
     font-weight: 800;
+}
+
+.follow-mini-meta {
+    margin: -3px 0 8px;
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.45;
 }
 
 .follow-bar-charts {
@@ -1057,6 +1074,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.follow-card-connected .follow-bar-charts-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.store-card-connected .follow-bar-charts-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 .follow-bar-charts-three {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -1065,6 +1090,16 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
+}
+
+.store-card-follow,
+.store-card-call,
+.store-card-connected {
+    grid-column: 1 / -1;
+}
+
+.store-follow-triple {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .follow-mini-chart {
@@ -1079,6 +1114,38 @@
     margin-bottom: 8px;
     color: #334155;
     font-size: 12px;
+}
+
+.follow-call-combo {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 0.8fr) minmax(0, 1.75fr);
+    gap: 12px;
+}
+
+.follow-call-combo-section {
+    min-width: 0;
+}
+
+.follow-period-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.follow-period-grid .follow-call-time-item {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 4px;
+    padding: 7px 8px;
+}
+
+.follow-period-grid .follow-call-time-item span {
+    font-size: 11px;
+    line-height: 1;
+}
+
+.follow-period-grid .follow-call-time-item em {
+    line-height: 1.35;
 }
 
 .follow-bars {
@@ -1119,6 +1186,99 @@
     font-style: normal;
     font-weight: 700;
     text-align: right;
+}
+
+.follow-data-mode .follow-bars {
+    gap: 6px;
+}
+
+.follow-data-mode .follow-bar-item,
+.follow-data-mode .follow-call-time-item {
+    grid-template-columns: minmax(42px, 68px) minmax(0, 1fr);
+    gap: 10px;
+    padding: 8px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.follow-data-mode .follow-bar-item div {
+    display: none;
+}
+
+.follow-data-mode .follow-bar-item span {
+    color: #334155;
+    font-weight: 800;
+}
+
+.follow-data-mode .follow-bar-item em {
+    color: #475569;
+    font-weight: 600;
+    line-height: 1.35;
+    text-align: left;
+    white-space: normal;
+}
+
+.follow-connected-period-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    justify-content: start;
+}
+
+.follow-connected-period .follow-bars {
+    gap: 6px;
+    width: 100%;
+}
+
+.follow-connected-period .follow-bar-item {
+    grid-template-columns: 26px minmax(0, 1fr);
+    gap: 4px;
+    padding: 7px 6px;
+    width: 100%;
+}
+
+.follow-connected-period .follow-bar-item em {
+    white-space: nowrap;
+    font-size: 9.5px;
+}
+
+.follow-card-connected .follow-mini-chart:first-child .follow-bar-item em {
+    white-space: nowrap;
+}
+
+.follow-card-connected .follow-mini-chart:first-child .follow-bar-item {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 6px;
+    padding: 7px 8px;
+}
+
+.follow-card-connected .follow-mini-chart:first-child .follow-bar-item em {
+    font-size: 10.5px;
+}
+
+.store-card-connected .follow-mini-chart:first-child .follow-bar-item {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 6px;
+    padding: 7px 8px;
+}
+
+.store-card-connected .follow-mini-chart:first-child .follow-bar-item em {
+    font-size: 10.5px;
+    white-space: nowrap;
+}
+
+.follow-data-mode .follow-period-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.follow-data-mode .follow-period-grid .follow-call-time-item {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 4px;
+    padding: 7px 8px;
 }
 
 .follow-call-time-item {
@@ -1207,6 +1367,96 @@
     gap: 18px;
     align-items: center;
     min-height: 168px;
+}
+
+.follow-card-return .follow-pie-split {
+    grid-template-columns: 184px minmax(0, 1fr);
+    gap: 16px;
+    min-height: 126px;
+}
+
+.follow-card-return .follow-pie-visual {
+    padding: 8px;
+}
+
+.follow-card-return .follow-pie-chart {
+    flex-basis: 98px;
+    width: 98px;
+    height: 98px;
+}
+
+.follow-card-return .follow-pie-chart::after {
+    inset: 25px;
+}
+
+.follow-card-return .follow-pie-legend {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.follow-card-return .follow-legend-row {
+    grid-template-columns: 10px minmax(44px, 1fr);
+    gap: 6px 8px;
+    align-content: start;
+    padding: 8px 10px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #f8fafc;
+}
+
+.follow-card-return .follow-legend-row strong,
+.follow-card-return .follow-legend-row em {
+    grid-column: 2;
+    text-align: left;
+}
+
+.follow-card-delivery .follow-pie-legend-compact {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.follow-card-delivery .follow-legend-row {
+    grid-template-columns: 10px minmax(0, 1fr) 58px 34px;
+    gap: 6px;
+}
+
+@media (max-width: 900px) {
+    .follow-analysis-grid,
+    .follow-bar-charts,
+    .follow-bar-charts-two,
+    .store-follow-analysis-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .follow-card-return .follow-pie-split {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .follow-card-return .follow-pie-legend {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .follow-call-combo {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .follow-call-period-section {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 560px) {
+    .follow-card-return .follow-pie-legend {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .follow-call-combo,
+    .follow-period-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .follow-call-period-section {
+        grid-column: auto;
+    }
 }
 
 .follow-pie-visual {

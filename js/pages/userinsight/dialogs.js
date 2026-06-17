@@ -616,7 +616,7 @@ document.addEventListener('click', (e) => {
 
 // 点击弹窗/抽屉外部关闭
 document.addEventListener('click', (e) => {
-    ['cityStoreModal','regionChannelModal','projectDrillModal','scheduleDrillModal','rankingModal','focusDrillDownModal','firstTouchDealStoreModal'].forEach(id => {
+    ['cityStoreModal','regionChannelModal','projectDrillModal','scheduleDrillModal','rankingModal','focusDrillDownModal','journeySankeyModal','firstTouchDealStoreModal'].forEach(id => {
         if (e.target === document.getElementById(id)) closeModal(id);
     });
 });

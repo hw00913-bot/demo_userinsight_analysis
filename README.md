@@ -33,6 +33,7 @@
 | `js/pages/workbench.js` | — | 工作台页面逻辑 |
 | `js/pages/userinsight/` | — | 看板业务模块（筛选/旅程/弹窗/渲染/门店/下载/统计） |
 | `annotations/` | — | 标注系统：数据定义（`annotations.js`）、运行时（`annotation-runtime.js`）、样式（`annotation.css`） |
+| `annotation-save-server.js` | — | 本地标注保存服务：静态托管页面，并将编辑后的标注回写到 `annotations/annotations.js` |
 | `memory/` | — | 项目记忆：业务规则、变更记录、待确认事项、工作原则 |
 | `tools/validate-project.js` | — | 项目验证脚本：HTML 结构校验、标注目标校验、资源引用检查 |
 | `CLAUDE.md` | — | AI 工具入口，指向本 README |
@@ -51,6 +52,14 @@ python3 -m http.server 8000
 ```bash
 node tools/validate-project.js
 ```
+
+编辑标注并回写 `annotations/annotations.js` 时，使用本地保存服务：
+```bash
+node annotation-save-server.js
+# 访问 http://127.0.0.1:5178/pages/workbench.html
+```
+
+普通静态服务只能浏览页面；标注弹窗里的“保存”会先写入浏览器缓存。启动 `annotation-save-server.js` 后，`file://` 打开的静态页面和 `http://127.0.0.1:5178/` 打开的页面都会把保存结果同步回写 JS 文件。
 
 注意：依赖 CDN 加载 Font Awesome 6.4.0 和 Google Fonts (Inter / Noto Sans SC)，离线时图标/字体可能降级。
 
@@ -74,7 +83,7 @@ node tools/validate-project.js
 - 大项目线索质量排名（水平条形图，支持 HAB/到店/试驾/锁单切换，柱长按总量归一化）
 - 媒体线索质量排名（同上）
 - 大区投放效果、小区投放效果、质量标签分布
-- 触媒/触店习惯与频率更新：渠道分析 + 媒体分析（首次/末次留资、重合度、旅程筛选）、专营店分析、留资次数；标准人数柱状图均展示交车数和交车占比
+- 触媒/触店习惯与频率更新：渠道分析 + 媒体分析（首次/末次留资、重合度、旅程筛选）、专营店分析、留资频次与转换表现；标准人数柱状图均展示交车数和交车占比
 
 **2. 培育运营 (cultivation-op)**
 - 筛选栏（结构同渠道效果 + 分类多选 + 清洗方式多选）
@@ -83,9 +92,9 @@ node tools/validate-project.js
 - 总部培育跟进过程 & 门店虚拟号跟进过程（Tab 切换）
   - 呼叫线索：呼叫次数、通话时长、呼叫时段（9/10/11/12/15/16/17/18/19/20 点，左右两列，含接通率）
   - 接通线索：接通次数、接通时段（9/10/11/12/15/16/17/18/19/20 点）
-  - 激活下发线索：10级饼图
+  - 下发线索：10级饼图
 - 用户关注点卡片（价格/产品/服务/竞品），可点击二级下钻
-- 回访结果分析
+- 战败、休眠原因分析
 - 首次触达到成交门店分析
 
 **3. 用户群体洞察 (user-group-insight)**

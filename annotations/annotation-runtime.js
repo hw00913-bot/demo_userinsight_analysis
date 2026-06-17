@@ -13,6 +13,10 @@
   var PAGE_KEY = config.page;
   var DATA_KEY = config.dataKey || null;
   var CACHE_KEY = 'anno_cache_' + PAGE_KEY + (config.revision ? '_' + config.revision : '');
+  var DEFAULT_SAVE_ENDPOINT = window.location.protocol === 'file:'
+    ? 'http://127.0.0.1:5178/__annotations/save'
+    : '/__annotations/save';
+  var SAVE_ENDPOINT = config.saveEndpoint || DEFAULT_SAVE_ENDPOINT;
   var OVERLAY_ID = 'anno-overlay';
   var TOGGLE_ID = 'anno-toggle-btn';
   var POPUP_ID = 'anno-popup';
@@ -36,6 +40,32 @@
 
   function saveAnnotations(annotations) {
     localStorage.setItem(CACHE_KEY, JSON.stringify(annotations));
+  }
+
+  function syncAnnotationsToFile(annotations, successMessage) {
+    if (!window.fetch || !SAVE_ENDPOINT) {
+      showToast('已保存到浏览器缓存');
+      return;
+    }
+
+    fetch(SAVE_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        page: PAGE_KEY,
+        revision: config.revision || '',
+        annotations: annotations
+      })
+    }).then(function (response) {
+      if (!response.ok) {
+        throw new Error('HTTP ' + response.status);
+      }
+      return response.json();
+    }).then(function () {
+      if (successMessage) showToast(successMessage);
+    }).catch(function (error) {
+      showToast('未回写 annotations.js：请确认保存服务已启动 ' + SAVE_ENDPOINT + '（' + (error && error.message ? error.message : '请求失败') + '）');
+    });
   }
 
   function getSourceAnnotations() {
@@ -197,8 +227,8 @@
           delete anno.position.manualTop;
         }
         saveAnnotations(annotations);
+        syncAnnotationsToFile(annotations, '标注点位置已重置并回写 annotations.js');
         renderMarkers();
-        showToast('标注点位置已重置');
       });
 
       overlay.appendChild(marker);
@@ -264,7 +294,7 @@
       anno.position.manualTop = parseInt(marker.style.top, 10);
       marker.classList.add('anno-manual');
       saveAnnotations(annotations);
-      showToast('标注点位置已更新');
+      syncAnnotationsToFile(annotations, '标注点位置已更新并回写 annotations.js');
     } else {
       // 没有移动 = 点击，打开弹窗
       var id = marker.getAttribute('data-anno-id');
@@ -464,10 +494,10 @@
 
     // 保存到缓存
     saveAnnotations(annotations);
+    syncAnnotationsToFile(annotations, '已保存并回写 annotations.js');
 
     // 回到查看态
     renderPopupView(popupEl, anno);
-    showToast('已保存到浏览器缓存');
   }
 
   function copyAnnotationData(anno) {

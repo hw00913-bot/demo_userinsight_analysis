@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const updateVehiclePrediction = () => {
         const model = existingModel?.textContent.trim();
-        vehiclePrediction.textContent = model && model !== "-" ? "无车" : "有车";
+        vehiclePrediction.textContent = model && model !== "-" ? "有车" : "无车";
     };
 
     updateVehiclePrediction();

@@ -13,7 +13,9 @@ var storeFilterState = {
 
 var firstTouchDealStoreState = {
     firstTouchStore: '',
-    dealStores: {}
+    dealStores: {},
+    targetRange: '20',
+    targetPage: 1
 };
 
 // ====== 弹窗开关 ======
@@ -320,6 +322,7 @@ function checkAllStores(tab, check) {
 
 // ====== 模糊搜索门店 ======
 var allStoreNames = null;
+var firstTouchStoreSourceRows = null;
 function getAllStoreNames() {
     if (allStoreNames) return allStoreNames;
     allStoreNames = [];
@@ -338,6 +341,18 @@ function getAllStoreNames() {
     });
     allStoreNames.sort();
     return allStoreNames;
+}
+
+function getFirstTouchStoreSourceRows() {
+    if (firstTouchStoreSourceRows) return firstTouchStoreSourceRows;
+    var stores = getAllStoreNames();
+    firstTouchStoreSourceRows = stores.map(function(store) {
+        var total = stores.reduce(function(sum, target) {
+            return target === store ? sum : sum + storeJourneyCount(store, target);
+        }, 0);
+        return { store: store, total: total };
+    }).sort(function(a, b) { return b.total - a.total; });
+    return firstTouchStoreSourceRows;
 }
 
 function searchStores(query) {
@@ -471,6 +486,9 @@ function updateFirstTouchDealStoreState() {
     firstTouchDealStoreState.firstTouchStore = Object.keys(storeFilterState.selectionsByContext.firstTouch)[0] || '';
     firstTouchDealStoreState.dealStores = Object.assign({}, storeFilterState.selectionsByContext.deal);
     renderFirstTouchDealStorePlaceholder();
+    if (document.getElementById('firstTouchDealStoreModal')?.classList.contains('active')) {
+        renderFirstTouchDealStoreResult();
+    }
 }
 
 function resetFirstTouchDealStoreAnalysis() {
@@ -502,22 +520,57 @@ function renderFirstTouchDealStorePlaceholder() {
     var list = document.getElementById('firstTouchDealStoreList');
     if (!list) return;
 
-    var firstStore = firstTouchDealStoreState.firstTouchStore;
-    var dealStores = Object.keys(firstTouchDealStoreState.dealStores);
-    var text = !firstStore || dealStores.length === 0 ? '请选择门店进行分析' : '筛选条件已更新，请点击查询';
-    list.innerHTML = '<div style="padding:16px 0;text-align:center;font-size:12px;color:#94a3b8;">' + text + '</div>';
+    list.style.cssText = 'display:flex; min-height:118px; flex-direction:column; align-items:center; justify-content:center; gap:14px; padding:18px 0;text-align:center;font-size:12px;color:#64748b;';
+    list.innerHTML = '<div style="font-size:13px; font-weight:600; color:#64748b;">分析首触专营店到成交专营店的流向</div>'
+        + '<button onclick="openFirstTouchDealStoreSankey()" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; min-width:150px; height:36px; padding:0 18px; border:1px solid #1d4ed8; border-radius:6px; background:#2563eb; color:#fff; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 8px 18px rgba(37,99,235,0.22);">'
+        + '查看桑基图 <i class="fa-solid fa-arrow-up-right-from-square"></i>'
+        + '</button>';
+}
+
+function getFirstTouchDealStoreRows(firstStore, range) {
+    var stores = getAllStoreNames().filter(function(store) { return store !== firstStore; });
+    var allRows = stores.map(function(dealStore) {
+        var leads = storeJourneyCount(firstStore, dealStore);
+        var dealRate = touchHabitDeliveryRate(firstStore + dealStore);
+        return {
+            source: firstStore,
+            target: dealStore,
+            leads: leads,
+            deliveries: Math.round(leads * dealRate / 100),
+            dealRate: dealRate
+        };
+    }).filter(function(row) {
+        return row.leads > 0;
+    }).sort(function(a, b) { return b.leads - a.leads; });
+
+    if (range === 'all') return allRows;
+
+    var limit = range === '50' ? 50 : 20;
+    var visibleRows = allRows.slice(0, limit);
+    var otherRows = allRows.slice(limit);
+    var otherLeads = otherRows.reduce(function(sum, row) { return sum + row.leads; }, 0);
+    if (otherLeads > 0) {
+        var otherDeliveries = otherRows.reduce(function(sum, row) { return sum + row.deliveries; }, 0);
+        visibleRows.push({
+            source: firstStore,
+            target: '其他专营店',
+            leads: otherLeads,
+            deliveries: otherDeliveries,
+            dealRate: otherLeads > 0 ? +(otherDeliveries / otherLeads * 100).toFixed(1) : 0
+        });
+    }
+    return visibleRows;
+}
+
+function openFirstTouchDealStoreSankey() {
+    var modal = document.getElementById('firstTouchDealStoreModal');
+    if (!modal) return;
+    renderFirstTouchDealStoreResult();
+    modal.classList.add('active');
 }
 
 function queryFirstTouchDealStoreAnalysis() {
-    var firstStore = firstTouchDealStoreState.firstTouchStore;
-    var dealStores = Object.keys(firstTouchDealStoreState.dealStores);
-    if (!firstStore || dealStores.length === 0) {
-        showNotification('请选择首触专营店和成交专营店后再查询', 'info');
-        return;
-    }
-
-    renderFirstTouchDealStoreResult();
-    document.getElementById('firstTouchDealStoreModal').classList.add('active');
+    openFirstTouchDealStoreSankey();
 }
 
 function renderFirstTouchDealStoreResult() {
@@ -525,35 +578,98 @@ function renderFirstTouchDealStoreResult() {
     if (!content) return;
 
     var firstStore = firstTouchDealStoreState.firstTouchStore;
-    var dealStores = Object.keys(firstTouchDealStoreState.dealStores);
-    var rows = dealStores.map(function(dealStore) {
-        return { dealStore: dealStore, count: storeJourneyCount(firstStore, dealStore) };
-    }).sort(function(a, b) { return b.count - a.count; });
-    var maxCount = Math.max.apply(null, rows.map(function(row) { return row.count; }));
-    var total = rows.reduce(function(sum, row) { return sum + row.count; }, 0);
+    var allStores = getAllStoreNames();
+    var range = firstTouchDealStoreState.targetRange || '20';
+    var pageSize = 50;
+    var sourceRows = getFirstTouchStoreSourceRows().slice(0, 20);
+    var activeStore = firstStore;
+    var allTargetRows = firstStore ? getFirstTouchDealStoreRows(firstStore, 'all') : [];
+    var totalPages = range === 'all' ? Math.max(1, Math.ceil(allTargetRows.length / pageSize)) : 1;
+    if (firstTouchDealStoreState.targetPage > totalPages) firstTouchDealStoreState.targetPage = totalPages;
+    var currentPage = Math.max(1, firstTouchDealStoreState.targetPage || 1);
+    var rows = firstStore
+        ? (range === 'all'
+            ? allTargetRows.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+            : getFirstTouchDealStoreRows(firstStore, range))
+        : [];
+    var total = rows.reduce(function(sum, row) { return sum + row.leads; }, 0);
 
-    var rowsHtml = rows.map(function(row) {
-        var width = Math.max(4, Math.round(row.count / maxCount * 100));
-        var percent = pctStr(row.count, total);
-        var deliveryRate = touchHabitDeliveryRate(firstStore + row.dealStore);
-        var deliveries = Math.round(row.count * deliveryRate / 100);
-        return '<div class="store-result-row">'
-            + '<span class="store-result-path" title="' + firstStore + ' → ' + row.dealStore + '">' + firstStore + ' → ' + row.dealStore + '</span>'
-            + '<div class="store-result-bar"><div class="store-result-bar-fill" style="width:' + width + '%;"></div></div>'
-            + '<span class="store-result-value">' + row.count.toLocaleString() + ' 条 · ' + percent + '% · 交车 ' + deliveries.toLocaleString() + ' 条 · ' + deliveryRate + '%</span>'
-            + '</div>';
-    }).join('');
-
-    content.innerHTML = '<div class="store-result-summary">'
-        + '<div class="store-result-summary-card store-result-summary-card-wide"><span class="store-result-summary-label">首触专营店</span><strong class="store-result-summary-value">' + firstStore + '</strong></div>'
-        + '<div class="store-result-summary-card"><span class="store-result-summary-label">成交专营店</span><strong class="store-result-summary-value">' + dealStores.length + ' 家</strong></div>'
-        + '<div class="store-result-summary-card"><span class="store-result-summary-label">统计线索量</span><strong class="store-result-summary-value">' + total.toLocaleString() + ' 条</strong></div>'
+    content.innerHTML = '<div class="store-sankey-layout">'
+        + '<aside class="store-sankey-sidebar">'
+        + '<div class="store-sankey-sidebar-title"><strong>首触专营店 Top20</strong><span>点击门店切换流向</span></div>'
+        + '<div class="store-sankey-source-list">'
+        + sourceRows.map(function(row) {
+            return '<button class="media-sankey-source store-sankey-source' + (row.store === activeStore ? ' active' : '') + '" data-store="' + sankeyEscape(row.store) + '" type="button">'
+                + '<span>' + sankeyEscape(row.store) + '</span>'
+                + '<strong>' + row.total.toLocaleString() + '条</strong>'
+                + '</button>';
+        }).join('')
         + '</div>'
-        + '<div class="store-result-list-card">'
-        + '<div class="store-result-list-title"><strong>成交专营店统计</strong><span>共 ' + dealStores.length + ' 家</span></div>'
-        + '<div class="store-result-list-header"><span>首触 → 成交专营店</span><span>线索量分布</span><span>线索量 / 占比 / 交车数 / 交车占比</span></div>'
-        + '<div class="store-result-list">' + rowsHtml + '</div>'
+        + '</aside>'
+        + '<section class="store-sankey-main">'
+        + '<div class="store-sankey-toolbar">'
+        + '<div class="store-sankey-selector">'
+        + '<span>首触专营店</span>'
+        + '<button class="store-filter-trigger store-analysis-trigger" onclick="openStoreFilterModal(this)" data-store-filter-mode="firstTouch" data-store-text="请选择门店">'
+        + '<i class="fa-solid fa-store"></i> <span>' + (firstStore || '请选择门店') + '</span> <i class="fa-solid fa-chevron-down"></i>'
+        + '</button>'
+        + '</div>'
+        + '<div class="store-sankey-toolbar-meta">'
+        + '<strong>' + (firstStore ? firstStore : '请选择首触专营店') + '</strong>'
+        + '<span>' + (firstStore ? '从全部 ' + Math.max(allStores.length - 1, 0).toLocaleString() + ' 家成交专营店中按线索量展示流向' + (range === 'all' ? '，当前第 ' + currentPage + '/' + totalPages + ' 页' : '') : '使用顶部同款门店筛选弹窗选择首触门店，或点击左侧 Top20 门店') + '</span>'
+        + '</div>'
+        + '<div class="media-sankey-range store-sankey-range" role="group" aria-label="成交专营店展示范围">'
+        + '<button type="button" data-range="20" class="' + (range === '20' ? 'active' : '') + '">Top 20</button>'
+        + '<button type="button" data-range="50" class="' + (range === '50' ? 'active' : '') + '">Top 50</button>'
+        + '<button type="button" data-range="all" class="' + (range === 'all' ? 'active' : '') + '">全部</button>'
+        + '</div>'
+        + '</div>'
+        + (range === 'all' && firstStore ? '<div class="store-sankey-pager">'
+            + '<span>全部成交专营店：' + allTargetRows.length.toLocaleString() + ' 家，当前展示 ' + (((currentPage - 1) * pageSize) + 1).toLocaleString() + '-' + Math.min(currentPage * pageSize, allTargetRows.length).toLocaleString() + '</span>'
+            + '<div>'
+            + '<button type="button" data-page="prev" ' + (currentPage <= 1 ? 'disabled' : '') + '>上一页</button>'
+            + '<strong>' + currentPage + ' / ' + totalPages + '</strong>'
+            + '<button type="button" data-page="next" ' + (currentPage >= totalPages ? 'disabled' : '') + '>下一页</button>'
+            + '</div>'
+            + '</div>' : '')
+        + '<div id="firstTouchDealStoreSankeyContent"></div>'
+        + '</section>'
         + '</div>';
+
+    if (window.renderSankeyView) {
+        window.renderSankeyView(document.getElementById('firstTouchDealStoreSankeyContent'), {
+            rows: rows,
+            sourceLabel: '首触专营店',
+            targetLabel: '成交专营店',
+        chartTitle: '首触-成交专营店',
+            emptyMessage: firstStore ? '暂无首触-成交专营店路径数据' : '请选择首触专营店'
+        });
+    }
+
+    var selectorTrigger = content.querySelector('.store-analysis-trigger[data-store-filter-mode="firstTouch"]');
+    if (selectorTrigger && firstStore) selectorTrigger.classList.add('has-selection');
+    content.querySelectorAll('.store-sankey-range button').forEach(function(button) {
+        button.addEventListener('click', function() {
+            firstTouchDealStoreState.targetRange = button.dataset.range;
+            firstTouchDealStoreState.targetPage = 1;
+            renderFirstTouchDealStoreResult();
+        });
+    });
+    content.querySelectorAll('.store-sankey-pager button').forEach(function(button) {
+        button.addEventListener('click', function() {
+            firstTouchDealStoreState.targetPage += button.dataset.page === 'next' ? 1 : -1;
+            renderFirstTouchDealStoreResult();
+        });
+    });
+    content.querySelectorAll('.store-sankey-source').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var store = button.dataset.store;
+            storeFilterState.selectionsByContext.firstTouch = {};
+            storeFilterState.selectionsByContext.firstTouch[store] = true;
+            firstTouchDealStoreState.firstTouchStore = store;
+            renderFirstTouchDealStoreResult();
+        });
+    });
 }
 
 function initStoreFilters() {

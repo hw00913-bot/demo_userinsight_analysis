@@ -56,7 +56,7 @@
     <!-- Main Content -->
     <main class="doc-main">
         <header class="doc-header" id="intro">
-            <span class="doc-tag">版本 V3.1 · 与当前项目同步（2026-06-06 更新）</span>
+            <span class="doc-tag">版本 V3.2 · 与当前项目同步（2026-06-16 更新）</span>
             <h1 class="doc-title">用户洞察与培育工作台 · 交互逻辑说明文档</h1>
             <p class="doc-subtitle">基于当前 <code>pages/userinsight.html</code>、<code>pages/workbench.html</code> 与 <code>annotations/annotations.js</code> 更新，覆盖用户洞察三大分页、培育任务工作台、预测画像及功能标注说明。</p>
         </header>
@@ -69,6 +69,11 @@
                     <tr><th style="width:100px;">版本号</th><th style="width:120px;">更新日期</th><th>变更内容</th></tr>
                 </thead>
                 <tbody>
+                    <tr>
+                        <td class="ver-num">V3.2</td>
+                        <td>2026-06-16</td>
+                        <td>用户群体洞察补齐画像卡片标注锚点，新增常驻地、现有车系、留资次数、意向等级、购车意向、有车概率、置换意向、购车预算、功能偏好、配置偏好 10 条功能标注。</td>
+                    </tr>
                     <tr>
                         <td class="ver-num">V3.1</td>
                         <td>2026-06-06</td>
@@ -113,7 +118,7 @@
                     <tr><td><code>js/pages/userinsight/</code></td><td>页面交互逻辑</td><td>筛选、旅程、KPI 动态渲染、下钻弹窗、门店筛选和下载明细。</td></tr>
                     <tr><td><code>mock/data.js</code></td><td>前端模拟数据</td><td>模拟扎帳宽表（KPI/饼图/排行/渠道/媒体）和 e3s（门店/大区/小区）的前端演示数据。</td></tr>
                     <tr><td><code>pages/workbench.html</code></td><td>培育工作台</td><td>任务列表、线索信息、回访提交、坐席工具和客户预测画像。</td></tr>
-                    <tr><td><code>annotations/annotations.js</code></td><td>功能标注数据</td><td>当前维护 68 条 <code>userinsight</code> 标注、11 条 <code>workbench</code> 标注和 1 条 <code>interaction_docs</code> 标注。</td></tr>
+                    <tr><td><code>annotations/annotations.js</code></td><td>功能标注数据</td><td>当前维护 78 条 <code>userinsight</code> 标注、7 条 <code>workbench</code> 标注和 1 条 <code>interaction_docs</code> 标注。</td></tr>
                     <tr><td><code>docs/interaction.html</code></td><td>交互说明文档</td><td>当前文档页，自动读取标注数据并渲染功能标注目录。</td></tr>
                 </tbody>
             </table>
@@ -127,13 +132,22 @@
             <h2 class="section-title"><i class="fa-solid fa-database"></i>三、数据与统计口径</h2>
             <h3 class="sub-title">真实系统数据来源</h3>
             <ul class="item-list">
-                <li><strong>报表 / 统计图 / KPI 指标数据：</strong>来自数据组维护的 <strong>扎帳宽表</strong>，包含线索编码、通话记录、线索等级分类、到店/试驾/锁单/交车等转化数据。</li>
+                <li><strong>报表 / 统计图 / KPI 指标数据：</strong>来自数据组维护的 ADS 表源，包含线索编码、通话记录、线索等级分类、到店/试驾/锁单/交车等转化数据。</li>
                 <li><strong>专营店 / 门店基础数据：</strong>来自营销平台 <strong>e3s</strong> 基础数据，包含门店编码、门店名称、大区/小区/城市归属、省份归属等组织架构信息。</li>
             </ul>
+            <h3 class="sub-title">ADS 表源分工</h3>
+            <table class="flow-table">
+                <thead><tr><th style="width:260px;">表源</th><th>适用范围</th><th>统计基盘</th></tr></thead>
+                <tbody>
+                    <tr><td><code>ADS1-线索维度-渠道&培育</code></td><td>渠道效果、培育运营、门店虚拟号跟进、线索后效相关标注。</td><td>全渠道 NEV 线索，按线索及后效统计，线索类指标多按线索编码去重。</td></tr>
+                    <tr><td><code>ADS2-用户维度-用户洞察</code></td><td>用户群体洞察 KPI、画像标签、购车预测、偏好、家庭/收入/场景等标注。</td><td>总部培育用户，按手机号去重统计。</td></tr>
+                    <tr><td><code>ADS3-留资维度-渠道重合分析</code></td><td>触媒/触店习惯中的首次/末次留资渠道、媒体及重合度分析标注。</td><td>全渠道留资用户，用于多渠道/多媒体留资重合分析。</td></tr>
+                </tbody>
+            </table>
             <h3 class="sub-title">当前原型数据</h3>
             <ul class="item-list">
                 <li>原型阶段由 <code>mock/data.js</code> 和 <code>js/pages/userinsight/</code> 中的前端静态数据模拟上述真实数据源，用于演示和验证页面交互逻辑。</li>
-                <li>标注数据统一由 <code>annotations/annotations.js</code> 维护：68 条用户洞察标注覆盖三大分页，11 条培育工作台标注覆盖电销员任务处理和预测画像。</li>
+                <li>标注数据统一由 <code>annotations/annotations.js</code> 维护：78 条用户洞察标注覆盖三大分页，7 条培育工作台标注聚焦预测画像功能。</li>
                 <li>统计口径抽屉中的说明维护在 <code>pages/userinsight.html</code>，内容与扎帳宽表的真实字段定义对齐。</li>
             </ul>
             <h3 class="sub-title">核心口径约定</h3>
@@ -216,7 +230,7 @@
                 <thead><tr><th style="width:160px;">口径页签</th><th>包含内容</th></tr></thead>
                 <tbody>
                     <tr><td>渠道效果</td><td>用户概览 KPI、渠道效果分析、触媒/触店习惯与频率更新分析。</td></tr>
-                    <tr><td>培育运营</td><td>按线索维度 KPI、培育跟进过程分析、购车意向分布、关注点 TOP 排名、回访结果排名。</td></tr>
+                    <tr><td>培育运营</td><td>按线索维度 KPI、培育跟进过程分析、购车意向分布、关注点 TOP 排名、战败、休眠原因排名。</td></tr>
                     <tr><td>用户群体洞察</td><td>用户概览 KPI，以及地域、车辆、留资、意向、预算、偏好、年龄、收入、家庭、场景和竞品画像。</td></tr>
                 </tbody>
             </table>
@@ -243,7 +257,8 @@
                     <li>渠道线索质量可打开 <code>regionChannelModal</code>。</li>
                     <li>大项目/媒体排名可打开 <code>projectDrillModal</code> 或 <code>scheduleDrillModal</code>。</li>
                     <li>查看全部调用 <code>openFullRanking(type)</code> 打开全量排行榜。</li>
-                    <li>首触-成交专营店查询可打开 <code>firstTouchDealStoreModal</code>。</li>
+                    <li>首次到末次留资渠道/媒体一级页面仅保留功能入口；渠道打开 <code>journeySankeyModal</code> 后顶部展示 4 个 KPI 卡片，点击左侧渠道查看到右侧渠道的桑基流向；媒体打开后采用与首触-成交专营店一致的左侧 Top20 + 右侧 Top20/Top50/全部分页交互。</li>
+                    <li>首触-成交专营店一级页面仅保留功能入口，点击后打开 <code>firstTouchDealStoreModal</code>；抽屉内左侧为首触专营店 Top20，顶部首触选择复用全局门店筛选弹窗，右侧成交专营店支持 Top20/Top50/全部分页。</li>
                 </ul>
             </div>
         </section>
@@ -255,16 +270,17 @@
                 <div class="chart-card-title"><i class="fa-solid fa-phone-volume"></i> 培育跟进过程</div>
                 <ul class="item-list">
                     <li>顶部为总部培育与门店虚拟号跟进过程页签，调用 <code>switchCultivationFollowProcess()</code> 切换。</li>
-                    <li>总部培育包含回访线索、呼叫线索、接通线索、激活下发线索。</li>
-                    <li>门店虚拟号包含线索跟进、呼叫线索、接通线索等过程分析。</li>
+                    <li>总部培育包含回访线索、呼叫线索、接通线索、下发线索；呼叫线索按呼叫次数、通话时长、呼叫时段同一行展示。</li>
+                    <li>门店虚拟号包含线索跟进、呼叫线索、接通线索等过程分析；线索跟进按跟进次数、按时跟进、平均跟进间隔三等分同一行展示。</li>
+                    <li>呼叫线索和接通线索采用线索维度 + 通话维度双口径：主值为去重线索数，副指标展示呼叫次数、接通次数、通话接通率和线索接通率；接通次数和接通时段细项也展示对应呼叫次数。</li>
                 </ul>
             </div>
             <div class="chart-card">
-                <div class="chart-card-title"><i class="fa-solid fa-car-side"></i> 购车意向、关注点与回访结果</div>
+                <div class="chart-card-title"><i class="fa-solid fa-car-side"></i> 购车意向、关注点与战败、休眠原因</div>
                 <ul class="item-list">
                     <li>购车意向分布包含购车意向、购买类型、计划购车三个卡片。</li>
                     <li>关注点 Top 排名包含整体关注排序和渠道关注点热度分布，热力图单元格支持关注点下钻。</li>
-                    <li>回访结果分析展示战败、休眠未购等回访结论和具体原因，支持查看全部。</li>
+                    <li>战败、休眠原因分析展示战败、休眠未购等回访结论和具体原因，支持查看全部。</li>
                 </ul>
             </div>
         </section>
@@ -304,7 +320,8 @@
                     <tr><td><code>projectDrillModal</code></td><td>大项目排名点击</td><td>大项目线索质量下钻，层级高于全量排行榜。</td></tr>
                     <tr><td><code>scheduleDrillModal</code></td><td>媒体排名点击</td><td>媒体质量下钻，结构与项目下钻一致。</td></tr>
                     <tr><td><code>rankingModal</code></td><td>查看全部</td><td>支持 quality、resistance、project、schedule、assignedStore、dealStore 等类型全量榜单。</td></tr>
-                    <tr><td><code>firstTouchDealStoreModal</code></td><td>首触-成交专营店查询结果</td><td>展示首触专营店与成交专营店关系分析。</td></tr>
+                    <tr><td><code>journeySankeyModal</code></td><td>首次到末次留资渠道/媒体桑基图</td><td>渠道支持点击左侧渠道后连接右侧渠道并展示新增线索量、占比、交车量和线索成交率；媒体左侧展示首次媒体 Top20，右侧支持 Top20/Top50/全部分页。</td></tr>
+                    <tr><td><code>firstTouchDealStoreModal</code></td><td>首触-成交专营店桑基图</td><td>左侧展示首触专营店 Top20，顶部首触选择复用门店筛选弹窗，右侧成交专营店支持 Top20/Top50/全部分页。</td></tr>
                     <tr><td><code>stats-drawer</code></td><td>统计口径说明按钮</td><td>右侧抽屉，包含渠道效果、培育运营、用户群体洞察三个口径分页。</td></tr>
                 </tbody>
             </table>
@@ -333,7 +350,7 @@
 
         <!-- Footer -->
         <div class="doc-footer">
-            <p>用户洞察 · 交互逻辑说明文档 · V3.1 &nbsp;|&nbsp; 与 pages/userinsight.html + pages/workbench.html + annotations/annotations.js 同步 &nbsp;|&nbsp; 更新于 2026-06-06</p>
+            <p>用户洞察 · 交互逻辑说明文档 · V3.1 &nbsp;|&nbsp; 与 pages/userinsight.html + pages/workbench.html + annotations/annotations.js 同步 &nbsp;|&nbsp; 更新于 2026-06-16</p>
         </div>
 
     </main>
@@ -345,9 +362,9 @@
     <script>
       window.AnnotationConfig = { page: "interaction_docs" };
     </script>
-    <script src="../annotations/annotations.js?v=20260608-lead-dimension"></script>
+    <script src="../annotations/annotations.js?v=20260616-ads-source"></script>
     <script src="../js/pages/interaction-catalog.js"></script>
-    <script src="../annotations/annotation-runtime.js?v=20260606"></script>
+    <script src="../annotations/annotation-runtime.js?v=20260616-save-endpoint"></script>
 
 </body>
 </html>
